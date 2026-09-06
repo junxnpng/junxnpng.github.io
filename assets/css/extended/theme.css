@@ -1,5 +1,6 @@
 /* 배경 톤 (2026-09-06 결정): 라이트는 미색 종이, 다크는 미색과 짝이 되는 따뜻한 근흑.
-   중성 회색 다크로 돌리려면 아래 .dark 블록만 지우면 PaperMod 기본값으로 돌아간다. 글꼴은 시스템 그대로. */
+   중성 회색 다크로 돌리려면 아래 [data-theme="dark"] 블록만 지우면 PaperMod 기본값으로 돌아간다. 글꼴은 시스템 그대로.
+   PaperMod 는 다크를 :root[data-theme="dark"] 로 켠다 (.dark 클래스 아님 — 실측). */
 :root{
   --theme:#f8f6f1;      /* 페이지 */
   --entry:#fffdf9;      /* 카드·상자 */
@@ -7,7 +8,7 @@
   --border:#e6e2d9;
   --tertiary:#d9d4ca;
 }
-.dark{
+:root[data-theme="dark"]{
   --theme:#1a1917;
   --entry:#262420;
   --code-bg:#34312b;
