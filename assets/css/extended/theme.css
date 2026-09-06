@@ -1,0 +1,24 @@
+/* 배경 톤 (2026-09-06 결정): 라이트는 미색 종이, 다크는 미색과 짝이 되는 따뜻한 근흑.
+   중성 회색 다크로 돌리려면 아래 .dark 블록만 지우면 PaperMod 기본값으로 돌아간다. 글꼴은 시스템 그대로. */
+:root{
+  --theme:#f8f6f1;      /* 페이지 */
+  --entry:#fffdf9;      /* 카드·상자 */
+  --code-bg:#f0ede6;    /* 인라인 코드 */
+  --border:#e6e2d9;
+  --tertiary:#d9d4ca;
+}
+.dark{
+  --theme:#1a1917;
+  --entry:#262420;
+  --code-bg:#34312b;
+  --code-block-bg:#262420;
+  --border:#35322c;
+  --tertiary:#45413a;
+  --primary:#e6e2da;
+  --content:#cfcac0;
+  --secondary:#9c968b;
+}
+/* 본문 크기·행간 — 한국어는 행간이 더 필요하다 (390px 실측) */
+.post-content{font-size:17px;line-height:1.8}
+.post-content h2{font-size:1.3rem;margin-top:36px}
+.entry-content{line-height:1.7}

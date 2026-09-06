@@ -10,7 +10,7 @@ buildFuture: false
 timeZone: Asia/Seoul
 
 pagination:
-  pagerSize: 20
+  pagerSize: 10   # 홈 = 최근 10편 + 다음 페이지 (2026-09-06 결정)
 
 outputs:
   home: [HTML, RSS, JSON]   # JSON = 검색 색인
