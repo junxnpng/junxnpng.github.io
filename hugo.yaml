@@ -1,5 +1,5 @@
 # Hugo + PaperMod. 뼈대는 영어, 논문 노트 본문은 한국어 요약. 논문 노트와 카탈로그는 athena-papers 가 만들어 내보낸다.
-baseURL: "https://example.org/"   # 호스팅을 정하면 바꾼다
+baseURL: "https://junxnpng.github.io/athena-web/"   # GitHub Pages. 워크플로가 같은 값으로 덮어쓴다
 languageCode: en-us
 title: "Paper Notes"
 theme: PaperMod
