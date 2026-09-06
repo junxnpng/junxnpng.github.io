@@ -41,6 +41,7 @@ h3.sub .n{font-weight:normal;margin-left:6px}
 .chip.lic.ok{background:#e3f3e6;color:#1d5a2a}.chip.lic.no{background:#f6e6e3;color:#7a2a1d}
 @media (prefers-color-scheme:dark){.chip.lic.ok{background:#173a22;color:#9fd8ab}.chip.lic.no{background:#3d1f1a;color:#f0a898}}
 .badge{display:inline-block;background:var(--badge);color:var(--badgefg);padding:1px 8px;border-radius:6px;font-size:12px;margin-bottom:2px;align-self:flex-start}
+.card h4,.card .en,.card p.sum,.card details p,.sec p.blurb{word-break:keep-all;overflow-wrap:break-word} /* 한국어는 단어 단위로 접는다 (실기기 확인) */
 .card p.sum{margin:0;font-size:14px;display:-webkit-box;-webkit-line-clamp:6;-webkit-box-orient:vertical;overflow:hidden;cursor:pointer}
 .card p.sum.open{display:block;-webkit-line-clamp:unset}
 .card details{font-size:13px}.card details summary{cursor:pointer;color:var(--mut)}
