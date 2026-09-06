@@ -1,0 +1,6 @@
+/* 본문은 한국어 — 음절 단위로 갈라지지 않게. 표·코드는 건드리지 않는다 (390px 실측, 2026-09-06).
+   overflow-wrap 은 break-word — anywhere 는 표 셀 안 단어까지 쪼갠다. */
+.post-content, .post-title, .post-description, .entry-content, .entry-header h2 {
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}

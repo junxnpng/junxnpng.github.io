@@ -1,0 +1,18 @@
+#!/bin/sh
+# 빌드가 통과하고, 공개되면 안 되는 일반 패턴(사설 IP·내부 표시)이 없는지. 논문 노트의 원칙 검사는 athena-papers 가 내보내기 전에 한다.
+cd "$(dirname "$0")/.." || exit 1
+hugo --minify --quiet --destination /tmp/athena-web-check-public || exit 1
+rm -rf /tmp/athena-web-check-public
+python3 - <<'PY' || exit 1
+import re, sys
+from pathlib import Path
+pat = re.compile(r"\b10\.\d+\.\d+\.\d+\b|\b192\.168\.\d+\.\d+\b|이 스터디|🔑")
+bad = []
+for p in list(Path("content").rglob("*.md")) + list(Path("static").rglob("*.html")):
+    if pat.search(p.read_text(encoding="utf-8", errors="replace")):
+        bad.append(str(p))
+for b in bad:
+    print("FAIL 공개 금지 패턴:", b)
+sys.exit(1 if bad else 0)
+PY
+echo "check: ok"

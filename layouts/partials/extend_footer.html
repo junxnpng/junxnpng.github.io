@@ -1,0 +1,10 @@
+{{- /* mermaid 로더: 글에 다시 그린 구조도가 있을 때만. Store 플래그가 푸터 시점에 늦을 수 있어 본문도 본다. */ -}}
+{{- $has := or (.Page.Store.Get "hasMermaid") (and .Content (in .Content "<pre class=\"mermaid\">")) -}}
+{{ if $has }}
+<script type="module">
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+  const root = document.documentElement;
+  const dark = root.classList.contains("dark") || (!root.classList.contains("light") && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches);
+  mermaid.initialize({ startOnLoad: true, theme: dark ? "dark" : "neutral", securityLevel: "strict" });
+</script>
+{{ end }}

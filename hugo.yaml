@@ -1,0 +1,73 @@
+# Hugo + PaperMod. 뼈대는 영어, 논문 노트 본문은 한국어 요약. 논문 노트와 카탈로그는 athena-papers 가 만들어 내보낸다.
+baseURL: "https://example.org/"   # 호스팅을 정하면 바꾼다
+languageCode: en-us
+title: "Paper Notes"
+theme: PaperMod
+enableRobotsTXT: true
+enableEmoji: false
+buildDrafts: false
+buildFuture: false
+timeZone: Asia/Seoul
+
+pagination:
+  pagerSize: 20
+
+outputs:
+  home: [HTML, RSS, JSON]   # JSON = 검색 색인
+
+taxonomies:
+  category: categories      # 분야 10개
+  tag: tags                 # 번역 깊이 · 주제 칩
+
+menu:
+  main:
+    - {name: Papers, url: /papers/, weight: 10}     # 카탈로그 (static/papers/index.html — athena-papers 가 내보냄)
+    - {name: Notes, url: /notes/, weight: 20}       # 논문 노트 (content/notes — athena-papers 가 내보냄)
+    - {name: Archive, url: /archives/, weight: 30}
+    - {name: Search, url: /search/, weight: 40}
+    - {name: Tags, url: /tags/, weight: 50}
+    - {name: About, url: /about/, weight: 60}
+
+params:
+  env: production
+  mainSections: [notes, posts]   # 홈 목록 = 논문 노트 + 일반 글
+  description: "Reading notes on LLM inference and serving systems."
+  defaultTheme: auto
+  disableThemeToggle: false
+  ShowReadingTime: true
+  ShowWordCount: false
+  ShowToc: true
+  TocOpen: false
+  ShowPostNavLinks: true
+  ShowBreadCrumbs: true
+  ShowCodeCopyButtons: true
+  ShowShareButtons: false
+  ShowRssButtonInSectionTermList: true
+  hideSummary: false
+  disableSpecial1stPost: true
+  disableScrollToTop: false
+  comments: false
+  math: false                 # 글마다 front matter `math: true` 로 켠다
+  label:
+    text: "Paper Notes"
+  assets:
+    disableHLJS: true         # Chroma 사용
+    disableFingerprinting: false
+  fuseOpts:
+    isCaseSensitive: false
+    threshold: 0.35
+    minMatchCharLength: 2
+    keys: [title, permalink, summary, content]
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true            # 다시 그린 mermaid 등 raw HTML 허용
+  highlight:
+    noClasses: false
+    codeFences: true
+    guessSyntax: true
+    lineNos: false
+  tableOfContents:
+    startLevel: 2
+    endLevel: 3
