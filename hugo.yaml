@@ -21,7 +21,7 @@ taxonomies:
 
 menu:
   main:
-    - {name: Papers, url: /papers/, weight: 10}         # 카탈로그 (static/papers/index.html — athena-papers 가 내보냄)
+    - {name: Papers, url: /papers/, weight: 10}         # 카탈로그 (content/papers + assets/catalog 조각 — athena-papers 가 내보냄)
     - {name: Notes, url: /notes/, weight: 20}           # 논문 노트 (content/notes — athena-papers 가 내보냄)
     - {name: Publications, url: /publications/, weight: 30}  # data/publications.yaml
     - {name: CV, url: /cv/, weight: 40}

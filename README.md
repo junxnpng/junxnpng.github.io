@@ -4,7 +4,7 @@
 
 ## 구조
 - `content/notes/` — 논문 노트. **여기서 쓰지 않는다.** `athena-papers` 의 `scripts/export` 가 검증을 통과한 노트만 써 넣는다.
-- `static/papers/index.html` — 논문 카탈로그. 같은 방식으로 내보내진다.
+- `assets/catalog/catalog.fragment.html` — 논문 카탈로그 조각. 같은 방식으로 내보내지고 `layouts/papers/list.html` 이 감싼다(테마 헤더·다크 모드 포함).
 - `content/posts/` — 논문이 아닌 글. 여기서 쓴다.
 - `content/about.md` `cv.md` `archives.md` `search.md` — 뼈대 페이지(영어). 홈은 Home-Info 모드(소개 + 최신 글).
 - `data/publications.yaml` — 논문 목록 정본. `/publications/` 가 연도별로 렌더링. CV PDF 는 `static/cv/`.
