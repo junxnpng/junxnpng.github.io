@@ -1,0 +1,26 @@
+{{ define "main" }}
+<article class="post-single">
+  <header class="post-header"><h1 class="post-title">{{ .Title }}</h1>
+    {{ with .Description }}<div class="post-description">{{ . }}</div>{{ end }}</header>
+  <div class="post-content">
+    {{ .Content }}
+    {{ $pubs := site.Data.publications.items | default slice }}
+    {{ if eq (len $pubs) 0 }}
+      <p>Coming soon.</p>
+    {{ else }}
+      {{ $years := slice }}{{ range $pubs }}{{ $years = $years | append (int .year) }}{{ end }}
+      {{ range $y := $years | uniq | sort | collections.Reverse }}
+        <h2 id="y{{ $y }}">{{ $y }}</h2>
+        <ul class="pubs">
+        {{ range where $pubs "year" $y }}
+          <li><strong>{{ .title }}</strong><br>{{ .authors }}<br><em>{{ .venue }}</em>
+            {{ with .url }} · <a href="{{ . }}" target="_blank" rel="noopener">link</a>{{ end }}
+            {{ with .pdf }} · <a href="{{ . }}">pdf</a>{{ end }}
+            {{ with .note }}<br><small>{{ . }}</small>{{ end }}</li>
+        {{ end }}
+        </ul>
+      {{ end }}
+    {{ end }}
+  </div>
+</article>
+{{ end }}

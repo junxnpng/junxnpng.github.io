@@ -6,9 +6,10 @@ rm -rf /tmp/athena-web-check-public
 python3 - <<'PY' || exit 1
 import re, sys
 from pathlib import Path
-pat = re.compile(r"\b10\.\d+\.\d+\.\d+\b|\b192\.168\.\d+\.\d+\b|이 스터디|🔑")
+# 사설 IP · 내부 표시 · 전화번호(010-, +82) · 주민등록번호 — 공개 레포에 나가면 안 되는 것
+pat = re.compile(r"\b10\.\d+\.\d+\.\d+\b|\b192\.168\.\d+\.\d+\b|이 스터디|🔑|\b01[016789]-?\d{3,4}-?\d{4}\b|\+82[- ]?\d|\b\d{6}-[1-4]\d{6}\b")
 bad = []
-for p in list(Path("content").rglob("*.md")) + list(Path("static").rglob("*.html")):
+for p in list(Path("content").rglob("*.md")) + list(Path("static").rglob("*.html")) + list(Path("data").rglob("*.yaml")) + [Path("hugo.yaml")]:
     if pat.search(p.read_text(encoding="utf-8", errors="replace")):
         bad.append(str(p))
 for b in bad:

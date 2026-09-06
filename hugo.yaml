@@ -1,7 +1,7 @@
 # Hugo + PaperMod. 뼈대는 영어, 논문 노트 본문은 한국어 요약. 논문 노트와 카탈로그는 athena-papers 가 만들어 내보낸다.
-baseURL: "https://junxnpng.github.io/athena-web/"   # GitHub Pages. 워크플로가 같은 값으로 덮어쓴다
+baseURL: "https://junxnpng.github.io/"   # GitHub Pages 사용자 사이트(루트). 워크플로가 같은 값으로 덮어쓴다
 languageCode: en-us
-title: "Paper Notes"
+title: "Jun Heo"
 theme: PaperMod
 enableRobotsTXT: true
 enableEmoji: false
@@ -21,12 +21,13 @@ taxonomies:
 
 menu:
   main:
-    - {name: Papers, url: /papers/, weight: 10}     # 카탈로그 (static/papers/index.html — athena-papers 가 내보냄)
-    - {name: Notes, url: /notes/, weight: 20}       # 논문 노트 (content/notes — athena-papers 가 내보냄)
-    - {name: Archive, url: /archives/, weight: 30}
-    - {name: Search, url: /search/, weight: 40}
-    - {name: Tags, url: /tags/, weight: 50}
-    - {name: About, url: /about/, weight: 60}
+    - {name: Papers, url: /papers/, weight: 10}         # 카탈로그 (static/papers/index.html — athena-papers 가 내보냄)
+    - {name: Notes, url: /notes/, weight: 20}           # 논문 노트 (content/notes — athena-papers 가 내보냄)
+    - {name: Publications, url: /publications/, weight: 30}  # data/publications.yaml
+    - {name: CV, url: /cv/, weight: 40}
+    - {name: About, url: /about/, weight: 50}
+    - {name: Search, url: /search/, weight: 60}
+    # Archive · Tags 는 홈 소개문에서 링크한다
 
 params:
   env: production
@@ -49,7 +50,16 @@ params:
   comments: false
   math: false                 # 글마다 front matter `math: true` 로 켠다
   label:
-    text: "Paper Notes"
+    text: "Jun Heo"
+  homeInfoParams:               # Home-Info 모드: 홈 맨 위에 소개, 아래에 최신 글
+    Title: "Jun Heo"
+    Content: >
+      Reading notes on LLM inference and serving systems — KV cache, disaggregated serving, scheduling,
+      and the hardware path underneath. Notes are in Korean; everything else is in English.
+      Browse the [paper catalog](/papers/), the [archive](/archives/), or by [tag](/tags/).
+  socialIcons:
+    - {name: github, url: "https://github.com/junxnpng"}
+    - {name: rss, url: "/index.xml"}
   assets:
     disableHLJS: true         # Chroma 사용
     disableFingerprinting: false

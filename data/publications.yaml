@@ -1,0 +1,11 @@
+# 논문 목록의 정본. Publications 페이지가 연도별로 렌더링한다. 홈·CV 도 여기서 읽는다.
+# 항목: title · authors · venue · year(정수) · url(선택) · pdf(선택) · note(선택)
+# 예:
+# items:
+#   - title: "Paper title"
+#     authors: "Jun Heo, ..."
+#     venue: "ISCA 2026 (Industry Track)"
+#     year: 2026
+#     url: "https://..."
+#     pdf: "/cv/paper.pdf"
+items: []
