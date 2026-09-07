@@ -1,0 +1,36 @@
+{{- $scratch := newScratch }}
+
+{{- if not .Date.IsZero -}}
+    {{- $scratch.Add "meta" (slice (printf "<span title='%s'>%s</span>" (.Date) (.Date | time.Format (default ":date_long" site.Params.DateFormat)))) }}
+{{- end }}
+
+{{- if (.Param "ShowReadingTime") -}}
+    {{- $scratch.Add "meta" (slice (printf "<span>%s</span>" (i18n "read_time" .ReadingTime | default (printf "%d min" .ReadingTime)))) }}
+{{- end }}
+
+{{- if (.Param "ShowWordCount") -}}
+    {{- $scratch.Add "meta" (slice (printf "<span>%s</span>" (i18n "words" .WordCount | default (printf "%d words" .WordCount)))) }}
+{{- end }}
+
+{{- if not (.Param "hideAuthor") -}}
+    {{- with (partial "author.html" .) }}
+        {{- $scratch.Add "meta" (slice (printf "<span>%s</span>" .)) }}
+    {{- end }}
+{{- end }}
+
+{{/* Combine all meta information into a single string with separators and render it as HTML.*/}}
+
+{{- with ($scratch.Get "meta") }}
+    {{- delimit . "&nbsp;·&nbsp;" | safeHTML -}}
+{{- end -}}
+
+{{- /* 논문 노트 메타 한 줄 — front matter 의 자동 필드(venue·year·source_url·license)로 그린다. athena-papers 의 export 가 정본과 맞춰 준다. */ -}}
+{{- if .Params.paper }}
+<div class="paper-meta">
+  {{- with .Params.venue }}<span class="pm-venue">{{ . }}</span>{{ end }}
+  {{- with .Params.year }}<span class="pm-sep">·</span><span>{{ . }}</span>{{ end }}
+  {{- with .Params.source_url }}<span class="pm-sep">·</span><a href="{{ . }}" target="_blank" rel="noopener">Source ↗</a>{{ end }}
+  {{- with .Params.license }}<span class="pm-sep">·</span><span class="pm-lic" title="figure reuse: {{ if or (hasPrefix . "cc-") (hasPrefix . "cc0") }}allowed with credit{{ else }}not granted — figures are redrawn{{ end }}">{{ . }}</span>{{ end }}
+  {{- with .Params.depth }}<span class="pm-sep">·</span><span class="pm-depth">{{ if eq . "core" }}core note{{ else }}brief{{ end }}</span>{{ end }}
+</div>
+{{- end }}

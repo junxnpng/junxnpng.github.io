@@ -23,3 +23,11 @@
 .post-content{font-size:17px;line-height:1.8}
 .post-content h2{font-size:1.3rem;margin-top:36px}
 .entry-content{line-height:1.7}
+
+/* 논문 노트 메타 한 줄 (제목 아래) */
+.paper-meta{margin-top:6px;font-size:.86rem;color:var(--secondary);display:flex;flex-wrap:wrap;gap:0 6px;align-items:baseline}
+.paper-meta .pm-venue{font-weight:600;color:var(--primary)}
+.paper-meta .pm-sep{opacity:.6}
+.paper-meta a{color:inherit;text-decoration:underline;text-underline-offset:2px}
+.paper-meta .pm-lic{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.76rem;background:var(--code-bg);padding:0 6px;border-radius:4px}
+.paper-meta .pm-depth{font-size:.76rem;border:1px solid var(--border);border-radius:4px;padding:0 6px}
