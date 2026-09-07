@@ -1,4 +1,13 @@
+{{- /* ```mermaid 블록 → <pre class="mermaid">. 로더는 페이지의 첫 블록 뒤에 한 번만 여기서 직접 낸다 — 푸터 플래그에 의존하지 않는다(실측: 플래그가 푸터 시점에 안 잡히는 페이지가 있었다). */ -}}
 <pre class="mermaid">
 {{- .Inner | htmlEscape | safeHTML }}
 </pre>
-{{ .Page.Store.Set "hasMermaid" true }}
+{{- if not (.Page.Store.Get "hasMermaid") }}
+{{- .Page.Store.Set "hasMermaid" true }}
+<script type="module">
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+  const root = document.documentElement;
+  const dark = root.getAttribute("data-theme") === "dark" || (root.getAttribute("data-theme") !== "light" && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches);
+  mermaid.initialize({ startOnLoad: true, theme: dark ? "dark" : "neutral", securityLevel: "strict" });
+</script>
+{{- end }}
