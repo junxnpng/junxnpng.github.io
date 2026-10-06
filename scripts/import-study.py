@@ -48,7 +48,8 @@ def parse_day(path):
 def write_page(destination, relative, metadata, body=''):
     path = destination / 'content/study' / relative
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(metadata, ensure_ascii=False, indent=2) + '\n\n' + body + '\n')
+    frontmatter = json.dumps(metadata, ensure_ascii=False, indent=2)
+    path.write_text(frontmatter + ('\n\n' + body.strip() if body.strip() else '') + '\n')
 
 
 def main():
