@@ -1,0 +1,4217 @@
+[
+  {
+    "day": 1,
+    "items": [
+      {
+        "id": "GET-B001",
+        "title": "receive",
+        "verb": "GET",
+        "definition": "Receive something — 받다",
+        "tier": 1,
+        "rationale": "메시지·선물·연락 등 수령 전반에 전이되는 기본 동사.",
+        "pattern": "`get N (from sb)` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/get) [L](https://www.ldoceonline.com/dictionary/get) · 대조 위치: O1; L1",
+        "examples": [
+          "예문 [직접 작성]: Did you get my message?"
+        ],
+        "notes": ""
+      },
+      {
+        "id": "GET-B002",
+        "title": "become",
+        "verb": "GET",
+        "definition": "Become different — ~해지다",
+        "tier": 1,
+        "rationale": "감정·상태 변화에 넓게 적용되는 핵심 문형.",
+        "pattern": "`get adj` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/get) [L](https://www.ldoceonline.com/dictionary/get) · 대조 위치: O14; L17",
+        "examples": [
+          "예문 [직접 작성]: The soup is getting cold."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "GET-B003",
+        "title": "obtain",
+        "verb": "GET",
+        "definition": "Get something needed — 얻다·구하다",
+        "tier": 1,
+        "rationale": "허가·도움·일자리 확보에 넓게 적용된다.",
+        "pattern": "`get N; get sb N` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/get) [L](https://www.ldoceonline.com/dictionary/get) · 대조 위치: O2; L2",
+        "examples": [
+          "예문 [직접 작성]: We need to get permission first."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "GET-B004",
+        "title": "buy",
+        "verb": "GET",
+        "definition": "Buy something — 사다",
+        "tier": 1,
+        "rationale": "장보기·구매 요청의 기본 표현.",
+        "pattern": "`get N (for sb)` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/get) [L](https://www.ldoceonline.com/dictionary/get) · 대조 위치: O3; L4a",
+        "examples": [
+          "예문 [직접 작성]: I'll get some milk on the way home."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "GET-B005",
+        "title": "arrive",
+        "verb": "GET",
+        "definition": "Reach a place — 도착하다",
+        "tier": 1,
+        "rationale": "도착 시간과 이동 계획을 말하는 기본 문형.",
+        "pattern": "`get to place; get home/here/there` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/get) [L](https://www.ldoceonline.com/dictionary/get) · 대조 위치: O11; L11",
+        "examples": [
+          "예문 [직접 작성]: What time did you get home?"
+        ],
+        "notes": ""
+      },
+      {
+        "id": "GET-B006",
+        "title": "understand",
+        "verb": "GET",
+        "definition": "Understand the meaning — 이해하다",
+        "tier": 1,
+        "rationale": "대화 이해·확인·질문에 직접 쓰는 표현.",
+        "pattern": "`get N/wh-clause` · 표시: 비격식; 보통 진행형 불가",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/get) [L](https://www.ldoceonline.com/dictionary/get) · 대조 위치: O24; L23",
+        "examples": [
+          "예문 [직접 작성]: I don't get the last part."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "GET-B007",
+        "title": "fetch",
+        "verb": "GET",
+        "definition": "Bring back — 가져오다·데려오다",
+        "tier": 1,
+        "rationale": "물건을 가져오거나 사람을 데려오는 일상 요청.",
+        "pattern": "`get sb/sth (from place)` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/get) [L](https://www.ldoceonline.com/dictionary/get) · 대조 위치: O5; L3",
+        "examples": [
+          "예문 [직접 작성]: Could you get my coat?",
+          "예문 [사전 인용·실제 출판 예문]: “Run upstairs and get a pillow.” — [Longman get, 3](https://www.ldoceonline.com/dictionary/get)"
+        ],
+        "notes": ""
+      },
+      {
+        "id": "GET-B008",
+        "title": "move",
+        "verb": "GET",
+        "definition": "Move somewhere — 이동하다",
+        "tier": 1,
+        "rationale": "장소·방향을 바꾸며 확장하기 좋은 이동 문형.",
+        "pattern": "`get + adv/prep` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/get) [L](https://www.ldoceonline.com/dictionary/get) · 대조 위치: O12; L14",
+        "examples": [
+          "예문 [직접 작성]: We couldn't get through the narrow gate."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "GET-B009",
+        "title": "move something",
+        "verb": "GET",
+        "definition": "Move something somewhere — ~을 이동시키다",
+        "tier": 1,
+        "rationale": "사람·물건을 옮기는 결과 문형으로 전이성이 높다.",
+        "pattern": "`get O + adv/prep` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/get) [L](https://www.ldoceonline.com/dictionary/get) · 대조 위치: O12; L15",
+        "examples": [
+          "예문 [직접 작성]: How did you get the sofa upstairs?"
+        ],
+        "notes": ""
+      },
+      {
+        "id": "GET-B010",
+        "title": "travel",
+        "verb": "GET",
+        "definition": "Use transport — 교통편을 타다",
+        "tier": 1,
+        "rationale": "택시 등 교통수단 이용에 유용하되 take와 병행 학습.",
+        "pattern": "`get a bus/taxi/train` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/get) [L](https://www.ldoceonline.com/dictionary/get) · 대조 위치: O13; L16",
+        "examples": [
+          "예문 [직접 작성]: Let's get a taxi to the station."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "GET-B011",
+        "title": "illness",
+        "verb": "GET",
+        "definition": "Develop an illness — 병에 걸리다",
+        "tier": 1,
+        "rationale": "감기·통증 등 일상 건강 대화에 직접 쓴다.",
+        "pattern": "`get a cold/flu` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/get) [L](https://www.ldoceonline.com/dictionary/get) · 대조 위치: O7; L8",
+        "examples": [
+          "예문 [직접 작성]: I always get a cold in winter."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "GET-B012",
+        "title": "get-passive",
+        "verb": "GET",
+        "definition": "Experience an event — ~되다·당하다",
+        "tier": 1,
+        "rationale": "사건·피해를 말하는 생산적인 미국 회화 수동 문형.",
+        "pattern": "`get p.p.` · 표시: 비격식 경향; get 자체는 조동사가 아님",
+        "sources": "[문법](https://dictionary.cambridge.org/grammar/british-grammar/get) · 대조 위치: G",
+        "examples": [
+          "예문 [직접 작성]: My bicycle got stolen yesterday."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "GET-B013",
+        "title": "cause a state",
+        "verb": "GET",
+        "definition": "Make something different — ~한 상태로 만들다",
+        "tier": 1,
+        "rationale": "준비·청결·감정 상태를 만드는 핵심 결과 문형.",
+        "pattern": "`get O adj` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/get) [L](https://www.ldoceonline.com/dictionary/get) [문법](https://dictionary.cambridge.org/grammar/british-grammar/get) · 대조 위치: O14; L18; G",
+        "examples": [
+          "예문 [직접 작성]: We need to get the room ready."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "GET-B014",
+        "title": "arrange a service",
+        "verb": "GET",
+        "definition": "Arrange work — ~하게 맡기다",
+        "tier": 1,
+        "rationale": "수리·미용 등 서비스를 맡기는 생산적인 문형.",
+        "pattern": "`get O p.p.` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/get) [L](https://www.ldoceonline.com/dictionary/get) [문법](https://dictionary.cambridge.org/grammar/british-grammar/get) · 대조 위치: O16; L20b; G",
+        "examples": [
+          "예문 [직접 작성]: I'm getting the lock replaced tomorrow."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "GET-B015",
+        "title": "complete work",
+        "verb": "GET",
+        "definition": "Finish work — ~을 완료하다",
+        "tier": 1,
+        "rationale": "일을 끝내야 하는 상황에서 폭넓게 쓰는 결과 문형.",
+        "pattern": "`get O p.p.` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/get) [L](https://www.ldoceonline.com/dictionary/get) [문법](https://dictionary.cambridge.org/grammar/british-grammar/get) · 대조 위치: O16; L20b; G",
+        "examples": [
+          "예문 [직접 작성]: Can we get this report finished today?"
+        ],
+        "notes": ""
+      },
+      {
+        "id": "GET-B016",
+        "title": "persuade",
+        "verb": "GET",
+        "definition": "Persuade someone — ~하도록 설득하다",
+        "tier": 1,
+        "rationale": "부탁·설득·조정에 확장할 수 있는 핵심 사역 문형.",
+        "pattern": "`get sb to V` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/get) [L](https://www.ldoceonline.com/dictionary/get) [문법](https://dictionary.cambridge.org/grammar/british-grammar/get) · 대조 위치: O17; L22; G",
+        "examples": [
+          "예문 [직접 작성]: I got Leo to check the figures."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "GET-B017",
+        "title": "make a machine work",
+        "verb": "GET",
+        "definition": "Make something work — ~을 작동시키다",
+        "tier": 1,
+        "rationale": "기기·앱 작동 문제를 설명하는 생산적인 문형.",
+        "pattern": "`get O to V/V-ing` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/get) [L](https://www.ldoceonline.com/dictionary/get) [문법](https://dictionary.cambridge.org/grammar/british-grammar/get) · 대조 위치: O17; L21; G",
+        "examples": [
+          "예문 [직접 작성]: I can't get this printer to work."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "GET-B018",
+        "title": "opportunity",
+        "verb": "GET",
+        "definition": "Have a chance — ~할 기회를 얻다",
+        "tier": 1,
+        "rationale": "경험·기회에 관한 일상 질문에 직접 쓴다.",
+        "pattern": "`get to V` · 표시: 비격식",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/get) [L](https://www.ldoceonline.com/dictionary/get) · 대조 위치: O19; L32",
+        "examples": [
+          "예문 [직접 작성]: Did you get to meet the author?"
+        ],
+        "notes": ""
+      },
+      {
+        "id": "GET-B019",
+        "title": "pay",
+        "verb": "GET",
+        "definition": "Pay the bill — 값을 내다",
+        "tier": 1,
+        "rationale": "식사·음료 비용을 부담하겠다는 실용 표현.",
+        "pattern": "`get N` · 표시: 회화",
+        "sources": "[L](https://www.ldoceonline.com/dictionary/get) [C](https://dictionary.cambridge.org/dictionary/english/get) · 대조 위치: C PAY; L4b",
+        "examples": [
+          "예문 [직접 작성]: You paid last time; I'll get lunch."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "GET-B020",
+        "title": "answer",
+        "verb": "GET",
+        "definition": "Answer a call — 전화·문에 응답하다",
+        "tier": 1,
+        "rationale": "전화·현관 응답을 부탁하는 일상 표현.",
+        "pattern": "`get the phone/door` · 표시: 비격식",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/get) [L](https://www.ldoceonline.com/dictionary/get) · 대조 위치: O21; L26",
+        "examples": [
+          "예문 [직접 작성]: Can someone get the door?"
+        ],
+        "notes": ""
+      }
+    ],
+    "introductions": [
+      {
+        "verb": "GET",
+        "text": "활용: **get–got–gotten/got**. 미국 영어에서 획득·변화 등의 과거분사는 보통 gotten, 영국에서는 보통 got을 쓴다. 소유·의무의 고정형 `have got (to)`는 미국에서도 got을 유지한다. [미·영 차이 — British Council](https://learnenglish.britishcouncil.org/free-resources/grammar/b1-b2/british-english-american-english); `have got`의 소유/의무는 HAVE에서 설명한다. `get + p.p.`는 수동 문형이며 get을 완료 조동사로 쓰는 것은 아니다."
+      }
+    ],
+    "verbs": [
+      "GET"
+    ]
+  },
+  {
+    "day": 2,
+    "items": [
+      {
+        "id": "GET-I026",
+        "title": "get used to",
+        "verb": "GET",
+        "definition": "Become comfortable with — 익숙해지다",
+        "tier": 1,
+        "rationale": "새 습관·환경 적응에 널리 쓰는 핵심 문형.",
+        "pattern": "`get used to N/V-ing` · 표시: to는 전치사",
+        "sources": "[Cambridge](https://dictionary.cambridge.org/dictionary/english/get-used-to)",
+        "examples": [
+          "예문 [직접 작성]: I'm getting used to waking up early."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "GET-B023",
+        "title": "feel or think",
+        "verb": "GET",
+        "definition": "Develop a thought — 느낌·생각이 들다",
+        "tier": 1,
+        "rationale": "느낌·인상·생각이 드는 상황에 넓게 전이된다.",
+        "pattern": "`get an idea/impression/shock` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/get) [L](https://www.ldoceonline.com/dictionary/get) · 대조 위치: O1; L6",
+        "examples": [
+          "예문 [직접 작성]: I got the impression he wanted to leave."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "GET-B024",
+        "title": "experience",
+        "verb": "GET",
+        "definition": "Have an experience — 경험하다·누리다",
+        "tier": 1,
+        "rationale": "잠·운동·시간 확보를 말하는 일상 핵심 연어.",
+        "pattern": "`get sleep/exercise/a chance` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/get) [L](https://www.ldoceonline.com/dictionary/get) · 대조 위치: O1–2; L7",
+        "examples": [
+          "예문 [직접 작성]: I didn't get much sleep last night."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "GET-B027",
+        "title": "gradual understanding",
+        "verb": "GET",
+        "definition": "Come to know — 점차 알게 되다",
+        "tier": 1,
+        "rationale": "사람을 알아 가는 관계 대화의 핵심 표현.",
+        "pattern": "`get to know/like/understand` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/get) [L](https://www.ldoceonline.com/dictionary/get) · 대조 위치: O15; L33",
+        "examples": [
+          "예문 [직접 작성]: You'll get to know everyone soon."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "GET-B029",
+        "title": "start someone",
+        "verb": "GET",
+        "definition": "Start an activity — ~하게 만들다",
+        "tier": 1,
+        "rationale": "상대 반응·활동을 이끌어내는 생산적인 문형.",
+        "pattern": "`get sb V-ing` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/get) [L](https://www.ldoceonline.com/dictionary/get) [문법](https://dictionary.cambridge.org/grammar/british-grammar/get) · 대조 위치: O17; L22; G",
+        "examples": [
+          "예문 [직접 작성]: That question got everyone talking."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "GET-B031",
+        "title": "signal",
+        "verb": "GET",
+        "definition": "Receive a signal — 방송·통신이 잡히다",
+        "tier": 1,
+        "rationale": "휴대전화 신호·연결 문제의 일상 표현.",
+        "pattern": "`get reception/a channel` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/get) [L](https://www.ldoceonline.com/dictionary/get) · 대조 위치: O9; L25",
+        "examples": [
+          "예문 [직접 작성]: We can't get a signal in here."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "GET-B044",
+        "title": "hear",
+        "verb": "GET",
+        "definition": "Hear clearly — 알아듣다",
+        "tier": 1,
+        "rationale": "못 들은 이름·정보를 재확인하는 핵심 회화 표현.",
+        "pattern": "`get N` · 표시: 비격식",
+        "sources": "[C](https://dictionary.cambridge.org/dictionary/english/get) · 대조 위치: C UNDERSTAND/HEAR",
+        "examples": [
+          "예문 [직접 작성]: Sorry, I didn't get your name."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "GET-B021",
+        "title": "earn",
+        "verb": "GET",
+        "definition": "Earn money — 벌다",
+        "tier": 2,
+        "rationale": "보수·급여 대화에 유용한 수령 뜻의 확장.",
+        "pattern": "`get amount (for V-ing)` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/get) [L](https://www.ldoceonline.com/dictionary/get) · 대조 위치: O1; L5a",
+        "examples": [
+          "예문 [직접 작성]: She gets extra money for weekend shifts."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "GET-B022",
+        "title": "sale proceeds",
+        "verb": "GET",
+        "definition": "Receive a sale price — 팔아서 받다",
+        "tier": 2,
+        "rationale": "중고 판매·거래 금액을 말할 때 유용하다.",
+        "pattern": "`get amount for N` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/get) [L](https://www.ldoceonline.com/dictionary/get) · 대조 위치: O4; L5b",
+        "examples": [
+          "예문 [직접 작성]: How much did you get for the bike?"
+        ],
+        "notes": ""
+      },
+      {
+        "id": "GET-B025",
+        "title": "score",
+        "verb": "GET",
+        "definition": "Achieve a result — 점수·결과를 얻다",
+        "tier": 2,
+        "rationale": "성적·점수 대화에 유용한 상황별 확장.",
+        "pattern": "`get a grade/score` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/get) [L](https://www.ldoceonline.com/dictionary/get) · 대조 위치: O6; L9",
+        "examples": [
+          "예문 [직접 작성]: She got a perfect score on the quiz."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "GET-B026",
+        "title": "stage",
+        "verb": "GET",
+        "definition": "Reach a stage — 단계·시점에 이르다",
+        "tier": 2,
+        "rationale": "독서·작업 진도를 설명할 때 유용하다.",
+        "pattern": "`get to/as far as N` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/get) [L](https://www.ldoceonline.com/dictionary/get) · 대조 위치: O11; L12",
+        "examples": [
+          "예문 [직접 작성]: I've gotten as far as chapter six."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "GET-B028",
+        "title": "begin",
+        "verb": "GET",
+        "definition": "Begin an activity — ~하기 시작하다",
+        "tier": 2,
+        "rationale": "대화·활동의 시작을 서술하는 유용한 확장.",
+        "pattern": "`get V-ing` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/get) [L](https://www.ldoceonline.com/dictionary/get) · 대조 위치: O18; L31",
+        "examples": [
+          "예문 [직접 작성]: We got chatting about old films."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "GET-B030",
+        "title": "accidental result",
+        "verb": "GET",
+        "definition": "Cause accidental harm — 실수로 ~되게 하다",
+        "tier": 2,
+        "rationale": "실수·사고 결과를 말할 때 필요한 사역 확장.",
+        "pattern": "`get O p.p.` · 표시: 일반",
+        "sources": "[L](https://www.ldoceonline.com/dictionary/get) [C](https://dictionary.cambridge.org/dictionary/english/get) [문법](https://dictionary.cambridge.org/grammar/british-grammar/get) · 대조 위치: L19–20a; C CAUSE; G",
+        "examples": [
+          "예문 [직접 작성]: Don't get your sleeve caught in the door."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "GET-B032",
+        "title": "phone contact",
+        "verb": "GET",
+        "definition": "Reach by phone — 전화로 연결되다",
+        "tier": 2,
+        "rationale": "통화 상대·자동응답 연결을 설명하는 상황별 용법.",
+        "pattern": "`get sb` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/get) [L](https://www.ldoceonline.com/dictionary/get) · 대조 위치: O10; L30",
+        "examples": [
+          "예문 [직접 작성]: I called the office but got voicemail."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "GET-B033",
+        "title": "exist",
+        "verb": "GET",
+        "definition": "Occur in places — ~이 있다·발생하다",
+        "tier": 2,
+        "rationale": "지역의 날씨·현상을 설명하는 유용한 일반화 문형.",
+        "pattern": "`you get N; place gets N` · 표시: 비격식",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/get) [L](https://www.ldoceonline.com/dictionary/get) · 대조 위치: O25; L34",
+        "examples": [
+          "예문 [직접 작성]: You get heavy fog here in autumn."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "GET-B034",
+        "title": "annoy",
+        "verb": "GET",
+        "definition": "Annoy someone — 짜증나게 하다",
+        "tier": 2,
+        "rationale": "불만의 원인을 강조하는 비격식 표현.",
+        "pattern": "`get sb; what gets sb is...` · 표시: 비격식",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/get) [L](https://www.ldoceonline.com/dictionary/get) [C](https://dictionary.cambridge.org/dictionary/english/get) · 대조 위치: O27; L36; C ANNOY",
+        "examples": [
+          "예문 [직접 작성]: What gets me is the constant noise."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "GET-B035",
+        "title": "puzzle",
+        "verb": "GET",
+        "definition": "Leave someone puzzled — 모르게 하다·당황시키다",
+        "tier": 2,
+        "rationale": "답을 모르거나 반박하지 못할 때 쓰는 고정 어법.",
+        "pattern": "`get sb` · 표시: 비격식",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/get) [L](https://www.ldoceonline.com/dictionary/get) [C](https://dictionary.cambridge.org/dictionary/english/get) · 대조 위치: O26; L35; C CONFUSE",
+        "examples": [
+          "예문 [직접 작성]: You've got me there; I have no idea."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "GET-B036",
+        "title": "emotion",
+        "verb": "GET",
+        "definition": "Move someone emotionally — 감정을 북받치게 하다",
+        "tier": 2,
+        "rationale": "영화·이야기의 감정적 영향을 말할 때 유용하다.",
+        "pattern": "`get sb` · 표시: 비격식",
+        "sources": "[C](https://dictionary.cambridge.org/dictionary/english/get) · 대조 위치: C EMOTION",
+        "examples": [
+          "예문 [직접 작성]: That final scene always gets me."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "GET-B038",
+        "title": "punishment",
+        "verb": "GET",
+        "definition": "Receive a sentence — 형벌을 받다",
+        "tier": 2,
+        "rationale": "처벌·벌금·뉴스를 이야기할 때 자연스러운 확장.",
+        "pattern": "`get a fine/years` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/get) [L](https://www.ldoceonline.com/dictionary/get) · 대조 위치: O8; L10",
+        "examples": [
+          "예문 [직접 작성]: He got six months for the offense."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "GET-B039",
+        "title": "catch",
+        "verb": "GET",
+        "definition": "Catch someone — 붙잡다",
+        "tier": 2,
+        "rationale": "붙잡는 사건을 이야기할 때 쓰는 상황별 용법.",
+        "pattern": "`get sb (by N)` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/get) [L](https://www.ldoceonline.com/dictionary/get) · 대조 위치: O22; L27",
+        "examples": [
+          "예문 [직접 작성]: The police finally got the thief."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "GET-B041",
+        "title": "hit",
+        "verb": "GET",
+        "definition": "Hit someone — 맞히다",
+        "tier": 2,
+        "rationale": "공·물건에 맞은 일을 설명하는 상황별 표현.",
+        "pattern": "`get sb in/on N` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/get) [C](https://dictionary.cambridge.org/dictionary/english/get) · 대조 위치: O23; C HIT",
+        "examples": [
+          "예문 [직접 작성]: The ball got me on the shoulder."
+        ],
+        "notes": ""
+      }
+    ],
+    "introductions": [
+      {
+        "verb": "GET",
+        "text": "활용: **get–got–gotten/got**. 미국 영어에서 획득·변화 등의 과거분사는 보통 gotten, 영국에서는 보통 got을 쓴다. 소유·의무의 고정형 `have got (to)`는 미국에서도 got을 유지한다. [미·영 차이 — British Council](https://learnenglish.britishcouncil.org/free-resources/grammar/b1-b2/british-english-american-english); `have got`의 소유/의무는 HAVE에서 설명한다. `get + p.p.`는 수동 문형이며 get을 완료 조동사로 쓰는 것은 아니다."
+      }
+    ],
+    "verbs": [
+      "GET"
+    ]
+  },
+  {
+    "day": 3,
+    "items": [
+      {
+        "id": "GET-B042",
+        "title": "trick",
+        "verb": "GET",
+        "definition": "Trick someone — 속이다",
+        "tier": 2,
+        "rationale": "농담에 속았음을 인정할 때 유용하다.",
+        "pattern": "`get sb` · 표시: 비격식",
+        "sources": "[L](https://www.ldoceonline.com/dictionary/get) · 대조 위치: L29",
+        "examples": [
+          "예문 [직접 작성]: You got me; I thought it was real."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "GET-B045",
+        "title": "calculate",
+        "verb": "GET",
+        "definition": "Find an answer — 계산해서 답을 얻다",
+        "tier": 2,
+        "rationale": "계산·문제 풀이 대화에 유용한 결과 뜻.",
+        "pattern": "`get number (for N)` · 표시: 미국 사전 수록",
+        "sources": "[C](https://dictionary.cambridge.org/dictionary/english/get) · 대조 위치: C American CALCULATE",
+        "examples": [
+          "예문 [직접 작성]: I got twelve for the final answer."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "GET-B037",
+        "title": "prepare food",
+        "verb": "GET",
+        "definition": "Prepare food — 음식을 준비하다",
+        "tier": 3,
+        "rationale": "사전에 특히 영국 표시; 미국에서는 준비·구매 뜻 구별 필요.",
+        "pattern": "`get a meal; get sb N` · 표시: 특히 영국",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/get) [L](https://www.ldoceonline.com/dictionary/get) · 대조 위치: O20; L24",
+        "examples": [
+          "예문 [직접 작성]: I'll get supper while you unpack."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "GET-B040",
+        "title": "attack",
+        "verb": "GET",
+        "definition": "Harm someone — 해치다·보복하다",
+        "tier": 3,
+        "rationale": "위협·보복 맥락의 어조를 먼저 알아둘 표현.",
+        "pattern": "`get sb (for N)` · 표시: 비격식",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/get) [L](https://www.ldoceonline.com/dictionary/get) · 대조 위치: O22; L28",
+        "examples": [
+          "예문 [직접 작성]: The villain promised to get him."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "GET-B043",
+        "title": "subscribe",
+        "verb": "GET",
+        "definition": "Buy regularly — 신문을 정기 구독하다",
+        "tier": 3,
+        "rationale": "신문 정기 구독이라는 좁은 하위 뜻; 별도 생산 암기 이득 작음.",
+        "pattern": "`get a newspaper` · 표시: 일반",
+        "sources": "[L](https://www.ldoceonline.com/dictionary/get) · 대조 위치: L4c",
+        "examples": [
+          "예문 [직접 작성]: They still get a daily newspaper."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "GET-B046",
+        "title": "seize",
+        "verb": "GET",
+        "definition": "Take by force — 강제로 빼앗다",
+        "tier": 3,
+        "rationale": "강제 취득이라는 사건 맥락에 한정된 수령 뜻 확장.",
+        "pattern": "`get N (from sb)` · 표시: 일반",
+        "sources": "[C](https://dictionary.cambridge.org/dictionary/english/get) · 대조 위치: C TAKE",
+        "examples": [
+          "예문 [직접 작성]: The attackers got his wallet."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "HAVE-B001",
+        "title": "possess",
+        "verb": "HAVE",
+        "definition": "Own something — 소유하다",
+        "tier": 1,
+        "rationale": "소유·보유를 표현하는 필수 기본 문형.",
+        "pattern": "`have N; have got N` · 표시: 상태: 보통 진행형 불가",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/have_1) [L](https://www.ldoceonline.com/dictionary/have) [C](https://dictionary.cambridge.org/dictionary/english/have) · 대조 위치: O1; L2.3; C POSSESS",
+        "examples": [
+          "예문 [직접 작성]: Do you have a spare key?"
+        ],
+        "notes": ""
+      },
+      {
+        "id": "HAVE-B002",
+        "title": "relationship",
+        "verb": "HAVE",
+        "definition": "Be related — 가족·관계가 있다",
+        "tier": 1,
+        "rationale": "가족·인간관계를 소개하는 기본 문형.",
+        "pattern": "`have sb` · 표시: 상태",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/have_1) [L](https://www.ldoceonline.com/dictionary/have) · 대조 위치: O5; L2.16",
+        "examples": [
+          "예문 [직접 작성]: She has two younger brothers."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "HAVE-B003",
+        "title": "feature",
+        "verb": "HAVE",
+        "definition": "Have a particular quality — 특징·성질을 지니다",
+        "tier": 1,
+        "rationale": "사람·사물의 특징을 설명하는 기본 문형.",
+        "pattern": "`have N` · 표시: 상태",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/have_1) [L](https://www.ldoceonline.com/dictionary/have) · 대조 위치: O3; L2.1",
+        "examples": [
+          "예문 [직접 작성]: The room has large windows."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "HAVE-B004",
+        "title": "contain",
+        "verb": "HAVE",
+        "definition": "Contain parts — ~으로 이루어지다·포함하다",
+        "tier": 1,
+        "rationale": "구성·개수·내용을 설명하는 기본 문형.",
+        "pattern": "`have N` · 표시: 상태",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/have_1) [L](https://www.ldoceonline.com/dictionary/have) · 대조 위치: O2; L2.2",
+        "examples": [
+          "예문 [직접 작성]: The book has twenty chapters."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "HAVE-B005",
+        "title": "available",
+        "verb": "HAVE",
+        "definition": "Have available — 시간·기회·선택지가 있다",
+        "tier": 1,
+        "rationale": "시간·선택·기회 유무를 묻는 핵심 표현.",
+        "pattern": "`have time/a chance/a choice` · 표시: 상태",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/have_1) [L](https://www.ldoceonline.com/dictionary/have) · 대조 위치: O6; L2.10,25",
+        "examples": [
+          "예문 [직접 작성]: Do you have time for a quick call?"
+        ],
+        "notes": ""
+      },
+      {
+        "id": "HAVE-B006",
+        "title": "illness",
+        "verb": "HAVE",
+        "definition": "Be ill — 병·통증이 있다",
+        "tier": 1,
+        "rationale": "일상 질병·통증을 설명하는 기본 문형.",
+        "pattern": "`have a cold/headache` · 표시: 상태",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/have_1) [L](https://www.ldoceonline.com/dictionary/have) · 대조 위치: O10; L2.9",
+        "examples": [
+          "예문 [직접 작성]: I have a headache today."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "HAVE-B007",
+        "title": "eat/drink",
+        "verb": "HAVE",
+        "definition": "Eat or drink — 먹다·마시다",
+        "tier": 1,
+        "rationale": "식사·음료를 말하는 핵심 연어.",
+        "pattern": "`have breakfast/a drink` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/have_1) [L](https://www.ldoceonline.com/dictionary/have) · 대조 위치: O15; L2.6",
+        "examples": [
+          "예문 [직접 작성]: We had lunch by the river.",
+          "예문 [사전 인용·실제 출판 예문]: “I usually have breakfast at about seven o'clock.” — [Longman have, 2.6](https://www.ldoceonline.com/dictionary/have)"
+        ],
+        "notes": ""
+      },
+      {
+        "id": "HAVE-B008",
+        "title": "do an action",
+        "verb": "HAVE",
+        "definition": "Do an activity — 활동을 하다",
+        "tier": 1,
+        "rationale": "look/chat 등 일상 활동에 유용; shower 변형은 미국 take 우선.",
+        "pattern": "`have a look/rest/chat/shower` · 표시: 동작: 진행형 가능; have a bath/shower 특히 영국",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/have_1) [L](https://www.ldoceonline.com/dictionary/have) · 대조 위치: O16; L2.5",
+        "examples": [
+          "예문 [직접 작성]: Have a look at this photo."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "HAVE-B009",
+        "title": "experience",
+        "verb": "HAVE",
+        "definition": "Experience something — 경험하다",
+        "tier": 1,
+        "rationale": "즐거움·문제·경험을 말하는 핵심 연어.",
+        "pattern": "`have trouble/fun/an accident` · 표시: 동작: 진행형 가능",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/have_1) [L](https://www.ldoceonline.com/dictionary/have) · 대조 위치: O13; L2.7",
+        "examples": [
+          "예문 [직접 작성]: We had a wonderful time."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "HAVE-B010",
+        "title": "thought/feeling",
+        "verb": "HAVE",
+        "definition": "Hold a thought — 생각·감정이 있다",
+        "tier": 1,
+        "rationale": "생각·감정·아이디어를 제시하는 기본 문형.",
+        "pattern": "`have an idea/feeling` · 표시: 상태",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/have_1) [L](https://www.ldoceonline.com/dictionary/have) · 대조 위치: O9; L2.8",
+        "examples": [
+          "예문 [직접 작성]: I have a better idea."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "HAVE-B012",
+        "title": "perfect auxiliary",
+        "verb": "HAVE",
+        "definition": "Form a perfect tense to link an earlier action or state to a later time — 앞선 행동·상태를 기준 시점과 연결하는 완료형을 만들다",
+        "tier": 1,
+        "rationale": "완료 시제와 대화 응답을 구성하는 필수 조동사.",
+        "pattern": "`have/has/had + p.p.` · 표시: 조동사; 부정·의문에 do 불필요",
+        "sources": "[문법](https://dictionary.cambridge.org/grammar/british-grammar/have) [조동사](https://www.oxfordlearnersdictionaries.com/definition/english/have_2) · 대조 위치: A; G",
+        "examples": [
+          "예문 [직접 작성]: Have you finished the dishes?"
+        ],
+        "notes": "- 용법 메모: `have/has + pp`는 현재, `had + pp`는 과거의 기준 시점과 연결한다. `have/has/had been V-ing`는 완료진행형이다. 진행형의 시간·지속 의미는 함께 익힌다."
+      },
+      {
+        "id": "HAVE-B013",
+        "title": "obligation",
+        "verb": "HAVE",
+        "definition": "Need to act — ~해야 하다",
+        "tier": 1,
+        "rationale": "의무·필요·일정을 설명하는 핵심 문형.",
+        "pattern": "`have to V; have got to V` · 표시: 준조동사; have got to 특히 영국 회화",
+        "sources": "[L](https://www.ldoceonline.com/dictionary/have) [have to](https://www.oxfordlearnersdictionaries.com/definition/english/have-to) · 대조 위치: T1; L3.1",
+        "examples": [
+          "예문 [직접 작성]: I have to leave at six."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "HAVE-B014",
+        "title": "lack of necessity",
+        "verb": "HAVE",
+        "definition": "No need — ~할 필요가 없다",
+        "tier": 1,
+        "rationale": "불필요와 금지를 구별하는 핵심 부정 문형.",
+        "pattern": "`do not have to V` · 표시: 금지 뜻 아님",
+        "sources": "[L](https://www.ldoceonline.com/dictionary/have) [have to](https://www.oxfordlearnersdictionaries.com/definition/english/have-to) · 대조 위치: T1; L3.1",
+        "examples": [
+          "예문 [직접 작성]: You don't have to bring anything."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "HAVE-B015",
+        "title": "service causative",
+        "verb": "HAVE",
+        "definition": "Arrange a service — 남에게 ~하게 맡기다",
+        "tier": 1,
+        "rationale": "수리·서비스를 맡기는 생산적인 사역 문형.",
+        "pattern": "`have O p.p.` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/have_1) [L](https://www.ldoceonline.com/dictionary/have) [문법](https://dictionary.cambridge.org/grammar/british-grammar/have) · 대조 위치: O23; L2.12; G",
+        "examples": [
+          "예문 [직접 작성]: We're having the kitchen painted."
+        ],
+        "notes": ""
+      }
+    ],
+    "introductions": [
+      {
+        "verb": "GET",
+        "text": "활용: **get–got–gotten/got**. 미국 영어에서 획득·변화 등의 과거분사는 보통 gotten, 영국에서는 보통 got을 쓴다. 소유·의무의 고정형 `have got (to)`는 미국에서도 got을 유지한다. [미·영 차이 — British Council](https://learnenglish.britishcouncil.org/free-resources/grammar/b1-b2/british-english-american-english); `have got`의 소유/의무는 HAVE에서 설명한다. `get + p.p.`는 수동 문형이며 get을 완료 조동사로 쓰는 것은 아니다."
+      },
+      {
+        "verb": "HAVE",
+        "text": "활용: **have–had–had**; 현재 3인칭 단수 **has**. 소유·상태의 have는 보통 진행형을 쓰지 않지만 `I'm having lunch` 같은 동작 용법은 가능하다. 본동사는 `Do you have...?`, 완료 조동사는 `Have you finished...?`. `have got`은 특히 영국 회화의 현재 소유 표현이며 모든 have 용법을 대체하지 않는다. 출처 위치의 L2는 Longman 본동사, L3는 have to 항목이다."
+      }
+    ],
+    "verbs": [
+      "GET",
+      "HAVE"
+    ]
+  },
+  {
+    "day": 4,
+    "items": [
+      {
+        "id": "HAVE-B016",
+        "title": "instruct",
+        "verb": "HAVE",
+        "definition": "Tell someone — ~하도록 시키다",
+        "tier": 1,
+        "rationale": "업무·부탁을 조정하는 생산적인 미국 사역 문형.",
+        "pattern": "`have sb V` · 표시: L: 특히 미국; to 없는 원형",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/have_1) [L](https://www.ldoceonline.com/dictionary/have) [문법](https://dictionary.cambridge.org/grammar/british-grammar/have) · 대조 위치: O24; L2.27b; G",
+        "examples": [
+          "예문 [직접 작성]: I'll have Mina send the receipt."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "HAVE-I001",
+        "title": "had better",
+        "verb": "HAVE",
+        "definition": "Give strong advice — ~하는 게 좋겠다",
+        "tier": 1,
+        "rationale": "강한 조언·경고에 쓸 수 있는 기본 문형; 어조 구별 필요.",
+        "pattern": "`had better (not) V` · 표시: 준조동사적 고정표현; 경고 가능",
+        "sources": "[L](https://www.ldoceonline.com/dictionary/have) · 대조 위치: L1.2",
+        "examples": [
+          "예문 [직접 작성]: You'd better take an umbrella."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "HAVE-I022",
+        "title": "have no idea",
+        "verb": "HAVE",
+        "definition": "Not know — 전혀 모르다",
+        "tier": 1,
+        "rationale": "정보를 모른다고 말하는 핵심 표현.",
+        "pattern": "`have no idea + wh-clause` · 표시: 일반",
+        "sources": "[Cambridge](https://dictionary.cambridge.org/dictionary/english/have-no-idea)",
+        "examples": [
+          "예문 [직접 작성]: I have no idea where he went."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "HAVE-B017",
+        "title": "carry",
+        "verb": "HAVE",
+        "definition": "Carry something — 지니고 있다",
+        "tier": 1,
+        "rationale": "현금·물건의 휴대를 확인하는 일상 표현.",
+        "pattern": "`have N on/with sb` · 표시: 상태",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/have_1) [L](https://www.ldoceonline.com/dictionary/have) · 대조 위치: O1; L2.4",
+        "examples": [
+          "예문 [직접 작성]: I don't have any cash on me."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "HAVE-B019",
+        "title": "hold position",
+        "verb": "HAVE",
+        "definition": "Keep positioned — ~한 위치에 두다",
+        "tier": 1,
+        "rationale": "신체·사물의 위치와 상태를 설명하는 확장성 높은 문형.",
+        "pattern": "`have O + adv/prep/adj` · 표시: 상태",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/have_1) [L](https://www.ldoceonline.com/dictionary/have) · 대조 위치: O11–12; L2.15",
+        "examples": [
+          "예문 [직접 작성]: She had her hands in her pockets."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "HAVE-B020",
+        "title": "cause a state",
+        "verb": "HAVE",
+        "definition": "Keep something ready — ~한 상태가 되게 하다",
+        "tier": 1,
+        "rationale": "준비·완료 상태를 요청하는 생산적인 문형.",
+        "pattern": "`have O adj/p.p.` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/have_1) [L](https://www.ldoceonline.com/dictionary/have) · 대조 위치: O25; L2.14",
+        "examples": [
+          "예문 [직접 작성]: Please have everything ready by noon."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "HAVE-B024",
+        "title": "ongoing event",
+        "verb": "HAVE",
+        "definition": "Experience ongoing action — ~이 계속 일어나고 있다",
+        "tier": 1,
+        "rationale": "손님·전화·일정 등 진행 중인 상황에 넓게 전이된다.",
+        "pattern": "`have O V-ing` · 표시: 상태 문형",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/have_1) [L](https://www.ldoceonline.com/dictionary/have) · 대조 위치: O21; L2.7",
+        "examples": [
+          "예문 [직접 작성]: We have orders coming in every day."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "HAVE-B027",
+        "title": "organize",
+        "verb": "HAVE",
+        "definition": "Hold an event — 행사를 열다",
+        "tier": 1,
+        "rationale": "회의·파티·행사를 말하는 일상 문형.",
+        "pattern": "`have a party/meeting` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/have_1) [L](https://www.ldoceonline.com/dictionary/have) · 대조 위치: O14; L2.23",
+        "examples": [
+          "예문 [직접 작성]: We're having a meeting on Friday."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "HAVE-B029",
+        "title": "work/duty",
+        "verb": "HAVE",
+        "definition": "Have responsibilities — 일·의무가 있다",
+        "tier": 1,
+        "rationale": "해야 할 일을 말하는 생산적인 have N to V 문형.",
+        "pattern": "`have work/a duty; have N to V` · 표시: 상태",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/have_1) [L](https://www.ldoceonline.com/dictionary/have) · 대조 위치: O7–8; L2.17",
+        "examples": [
+          "예문 [직접 작성]: I have three emails to answer."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "HAVE-B031",
+        "title": "stock",
+        "verb": "HAVE",
+        "definition": "Offer for sale — 재고·빈방이 있다",
+        "tier": 1,
+        "rationale": "상품·사이즈·빈방 유무를 묻는 실용 표현.",
+        "pattern": "`have N (available)` · 표시: 상태",
+        "sources": "[L](https://www.ldoceonline.com/dictionary/have) [C](https://dictionary.cambridge.org/dictionary/english/have) · 대조 위치: L2.19; C American POSSESS",
+        "examples": [
+          "예문 [직접 작성]: Do you have this in blue?"
+        ],
+        "notes": ""
+      },
+      {
+        "id": "HAVE-B034",
+        "title": "request",
+        "verb": "HAVE",
+        "definition": "Ask to receive — 달라고 요청하다",
+        "tier": 1,
+        "rationale": "음식·물건을 정중히 요청하는 필수 회화 문형.",
+        "pattern": "`can/could/may I have N?` · 표시: 회화",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/have_1) [L](https://www.ldoceonline.com/dictionary/have) · 대조 위치: O19; L2.33",
+        "examples": [
+          "예문 [직접 작성]: Could I have some water?"
+        ],
+        "notes": ""
+      },
+      {
+        "id": "HAVE-B035",
+        "title": "order",
+        "verb": "HAVE",
+        "definition": "Choose food — 음식·음료를 주문하다",
+        "tier": 1,
+        "rationale": "식당·카페 주문에 바로 쓰는 필수 문형.",
+        "pattern": "`I'll have N` · 표시: 회화",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/have_1) [L](https://www.ldoceonline.com/dictionary/have) · 대조 위치: O15; L2.34",
+        "examples": [
+          "예문 [직접 작성]: I'll have the vegetable soup."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "HAVE-B036",
+        "title": "offer",
+        "verb": "HAVE",
+        "definition": "Offer something — 먹거나 이용하라고 권하다",
+        "tier": 1,
+        "rationale": "음식·자리 등을 권하는 생산적인 표현.",
+        "pattern": "`have N` · 표시: 회화",
+        "sources": "[L](https://www.ldoceonline.com/dictionary/have) · 대조 위치: L2.35",
+        "examples": [
+          "예문 [직접 작성]: Have another cookie."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "HAVE-B037",
+        "title": "good wishes",
+        "verb": "HAVE",
+        "definition": "Wish enjoyment — 즐겁게 보내라고 말하다",
+        "tier": 1,
+        "rationale": "주말·여행 인사에 직접 쓰는 일상 표현.",
+        "pattern": "`have a good/nice N` · 표시: 회화",
+        "sources": "[C](https://dictionary.cambridge.org/dictionary/english/have) · 대조 위치: C American EXPERIENCE",
+        "examples": [
+          "예문 [직접 작성]: Have a lovely weekend!"
+        ],
+        "notes": ""
+      },
+      {
+        "id": "HAVE-B039",
+        "title": "strong inference",
+        "verb": "HAVE",
+        "definition": "Be certain — 틀림없이 ~이다",
+        "tier": 1,
+        "rationale": "확신·추론을 말하는 미국 회화 핵심 문형.",
+        "pattern": "`have (got) to V` · 표시: 준조동사",
+        "sources": "[L](https://www.ldoceonline.com/dictionary/have) [have to](https://www.oxfordlearnersdictionaries.com/definition/english/have-to) · 대조 위치: T3; L3.4",
+        "examples": [
+          "예문 [직접 작성]: That has to be the right address."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "HAVE-B040",
+        "title": "recommend",
+        "verb": "HAVE",
+        "definition": "Strongly recommend — 꼭 ~해 보라고 권하다",
+        "tier": 1,
+        "rationale": "추천·권유를 강조하는 일상 표현.",
+        "pattern": "`have (got) to V` · 표시: 준조동사",
+        "sources": "[L](https://www.ldoceonline.com/dictionary/have) [have to](https://www.oxfordlearnersdictionaries.com/definition/english/have-to) · 대조 위치: T2; L3.5",
+        "examples": [
+          "예문 [직접 작성]: You have to try this cake."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "HAVE-B041",
+        "title": "necessary condition",
+        "verb": "HAVE",
+        "definition": "Require a condition — ~하기 위해 꼭 필요하다",
+        "tier": 1,
+        "rationale": "조건·필요를 설명하는 기본 have to의 확장.",
+        "pattern": "`have to V` · 표시: 준조동사",
+        "sources": "[L](https://www.ldoceonline.com/dictionary/have) · 대조 위치: L3.2",
+        "examples": [
+          "예문 [직접 작성]: You have to register before you can vote."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "HAVE-B042",
+        "title": "instructions",
+        "verb": "HAVE",
+        "definition": "Explain a procedure — 절차상 ~해야 한다",
+        "tier": 1,
+        "rationale": "절차·사용 방법을 설명하는 생산적인 문형.",
+        "pattern": "`have to V` · 표시: 준조동사",
+        "sources": "[L](https://www.ldoceonline.com/dictionary/have) · 대조 위치: L3.3",
+        "examples": [
+          "예문 [직접 작성]: First, you have to restart the app."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "HAVE-I024",
+        "title": "have a point",
+        "verb": "HAVE",
+        "definition": "Make a valid argument — 일리가 있다",
+        "tier": 1,
+        "rationale": "상대 의견의 타당성을 인정하는 핵심 대화 표현.",
+        "pattern": "`have a point (there)` · 표시: 일반",
+        "sources": "[Cambridge](https://dictionary.cambridge.org/dictionary/english/point)",
+        "examples": [
+          "예문 [직접 작성]: You have a point; we should wait."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "HAVE-B052",
+        "title": "concession",
+        "verb": "HAVE",
+        "definition": "Admit a point — ~라고 인정할 수밖에 없다",
+        "tier": 1,
+        "rationale": "동의·양보·평가를 부드럽게 이어가는 핵심 담화 표현.",
+        "pattern": "`I have to say/admit/confess` · 표시: 회화",
+        "sources": "[L](https://www.ldoceonline.com/dictionary/have) · 대조 위치: L3.9",
+        "examples": [
+          "예문 [직접 작성]: I have to admit, the plan worked."
+        ],
+        "notes": ""
+      }
+    ],
+    "introductions": [
+      {
+        "verb": "HAVE",
+        "text": "활용: **have–had–had**; 현재 3인칭 단수 **has**. 소유·상태의 have는 보통 진행형을 쓰지 않지만 `I'm having lunch` 같은 동작 용법은 가능하다. 본동사는 `Do you have...?`, 완료 조동사는 `Have you finished...?`. `have got`은 특히 영국 회화의 현재 소유 표현이며 모든 have 용법을 대체하지 않는다. 출처 위치의 L2는 Longman 본동사, L3는 have to 항목이다."
+      }
+    ],
+    "verbs": [
+      "HAVE"
+    ]
+  },
+  {
+    "day": 5,
+    "items": [
+      {
+        "id": "HAVE-B011",
+        "title": "receive",
+        "verb": "HAVE",
+        "definition": "Receive something — 받다",
+        "tier": 2,
+        "rationale": "회신 등 수령 경험을 말하는 유용한 확장.",
+        "pattern": "`have N (from sb)` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/have_1) [L](https://www.ldoceonline.com/dictionary/have) · 대조 위치: O19; L2.11",
+        "examples": [
+          "예문 [직접 작성]: Have you had a reply yet?"
+        ],
+        "notes": ""
+      },
+      {
+        "id": "HAVE-B018",
+        "title": "companionship",
+        "verb": "HAVE",
+        "definition": "Be accompanied — 누구와 함께 있다",
+        "tier": 2,
+        "rationale": "누구와 동행했는지 설명하는 유용한 상태 문형.",
+        "pattern": "`have sb with sb` · 표시: 상태",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/have_1) [L](https://www.ldoceonline.com/dictionary/have) · 대조 위치: O26; L2.20",
+        "examples": [
+          "예문 [직접 작성]: I had my sister with me."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "HAVE-B021",
+        "title": "make react",
+        "verb": "HAVE",
+        "definition": "Cause a reaction — ~하게 만들다",
+        "tier": 2,
+        "rationale": "상대 반응을 묘사하는 유용한 사역 확장.",
+        "pattern": "`have sb V-ing` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/have_1) [L](https://www.ldoceonline.com/dictionary/have) · 대조 위치: O25; L2.27a",
+        "examples": [
+          "예문 [직접 작성]: The story had us laughing."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "HAVE-B022",
+        "title": "undergo harm",
+        "verb": "HAVE",
+        "definition": "Suffer an event — ~을 당하다",
+        "tier": 2,
+        "rationale": "분실·피해 사건을 설명하는 상황별 문형.",
+        "pattern": "`have O p.p.` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/have_1) [L](https://www.ldoceonline.com/dictionary/have) [문법](https://dictionary.cambridge.org/grammar/british-grammar/have) · 대조 위치: O22; L2.13; G",
+        "examples": [
+          "예문 [직접 작성]: He had his phone stolen on the bus."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "HAVE-B023",
+        "title": "undergo treatment",
+        "verb": "HAVE",
+        "definition": "Receive a service — 치료·수업 등을 받다",
+        "tier": 2,
+        "rationale": "치료·수업을 받는 경험을 말할 때 유용하다.",
+        "pattern": "`have treatment/lessons` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/have_1) [L](https://www.ldoceonline.com/dictionary/have) · 대조 위치: O20; L2.7",
+        "examples": [
+          "예문 [직접 작성]: She's having treatment for her knee."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "HAVE-B025",
+        "title": "host",
+        "verb": "HAVE",
+        "definition": "Receive guests — 손님을 맞다",
+        "tier": 2,
+        "rationale": "손님 접대 상황에 유용; 미국 학습은 have over와 연결.",
+        "pattern": "`have sb to dinner/to stay` · 표시: 일반; 수동태 없음",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/have_1) [L](https://www.ldoceonline.com/dictionary/have) · 대조 위치: O28; L2.22",
+        "examples": [
+          "예문 [직접 작성]: We're having friends to dinner."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "HAVE-B026",
+        "title": "care for",
+        "verb": "HAVE",
+        "definition": "Look after temporarily — 잠시 맡아 돌보다",
+        "tier": 2,
+        "rationale": "육아·돌봄을 맡는 상황에 쓰는 확장.",
+        "pattern": "`have sb for time` · 표시: 일반; 수동태 없음",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/have_1) · 대조 위치: O27",
+        "examples": [
+          "예문 [직접 작성]: Can you have the children for an hour?"
+        ],
+        "notes": ""
+      },
+      {
+        "id": "HAVE-B028",
+        "title": "effect",
+        "verb": "HAVE",
+        "definition": "Produce an effect — 영향·결과를 내다",
+        "tier": 2,
+        "rationale": "효과·영향을 설명하는 유용한 추상 연어.",
+        "pattern": "`have an effect/influence` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/have_1) [L](https://www.ldoceonline.com/dictionary/have) · 대조 위치: O18; L2.24",
+        "examples": [
+          "예문 [직접 작성]: The medicine had little effect."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "HAVE-B030",
+        "title": "employ",
+        "verb": "HAVE",
+        "definition": "Employ workers — 고용하다·거느리다",
+        "tier": 2,
+        "rationale": "팀·고용 관계 설명에 유용한 직장 문형.",
+        "pattern": "`have staff working for sb` · 표시: 상태",
+        "sources": "[L](https://www.ldoceonline.com/dictionary/have) · 대조 위치: L2.18",
+        "examples": [
+          "예문 [직접 작성]: She has five people working for her."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "HAVE-B032",
+        "title": "give birth",
+        "verb": "HAVE",
+        "definition": "Give birth — 출산하다",
+        "tier": 2,
+        "rationale": "출산 소식·가족 대화에 유용한 상황별 용법.",
+        "pattern": "`have a baby` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/have_1) [L](https://www.ldoceonline.com/dictionary/have) · 대조 위치: O17; L2.26",
+        "examples": [
+          "예문 [직접 작성]: She had her baby last week."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "HAVE-B033",
+        "title": "pregnancy",
+        "verb": "HAVE",
+        "definition": "Expect a baby — 임신 중이다",
+        "tier": 2,
+        "rationale": "임신·출산 예정 소식을 말하는 상황별 용법.",
+        "pattern": "`be having a baby` · 표시: 일반",
+        "sources": "[C](https://dictionary.cambridge.org/dictionary/english/have) · 대조 위치: C BABY",
+        "examples": [
+          "예문 [직접 작성]: They're having a baby in March."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "HAVE-B038",
+        "title": "accept/tolerate",
+        "verb": "HAVE",
+        "definition": "Allow behavior — 용납하다",
+        "tier": 2,
+        "rationale": "행동을 허용하지 않는 단호한 어조까지 익힐 표현.",
+        "pattern": "`won't/can't have O (V-ing)` · 표시: 주로 부정",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/have_1) [L](https://www.ldoceonline.com/dictionary/have) · 대조 위치: O29; L2.36",
+        "examples": [
+          "예문 [직접 작성]: I won't have people shouting here."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "HAVE-B043",
+        "title": "show a quality",
+        "verb": "HAVE",
+        "definition": "Act with a quality — 행동으로 성품을 드러내다",
+        "tier": 2,
+        "rationale": "용기·뻔뻔함 등 평가를 말하는 유용한 연어.",
+        "pattern": "`have the courage/nerve to V` · 표시: 상태",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/have_1) [L](https://www.ldoceonline.com/dictionary/have) · 대조 위치: O4; L2.1",
+        "examples": [
+          "예문 [직접 작성]: She had the courage to disagree."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "HAVE-B044",
+        "title": "grip",
+        "verb": "HAVE",
+        "definition": "Grip someone — 꽉 붙잡다",
+        "tier": 2,
+        "rationale": "사람을 붙잡은 상태를 서술하는 상황별 문형.",
+        "pattern": "`have sb by N` · 표시: 상태",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/have_1) [L](https://www.ldoceonline.com/dictionary/have) · 대조 위치: O11; L2.21",
+        "examples": [
+          "예문 [직접 작성]: The guard had him by the arm."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "HAVE-B045",
+        "title": "outargue",
+        "verb": "HAVE",
+        "definition": "Leave without answers — 논쟁에서 꼼짝 못 하게 하다",
+        "tier": 2,
+        "rationale": "반박할 말이 없음을 인정하는 고정 표현.",
+        "pattern": "`have sb (there)` · 표시: 비격식",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/have_1) [L](https://www.ldoceonline.com/dictionary/have) · 대조 위치: O30; L2.39",
+        "examples": [
+          "예문 [직접 작성]: You have me there; I can't explain it."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "HAVE-B046",
+        "title": "deceive",
+        "verb": "HAVE",
+        "definition": "Cheat someone — 속이다",
+        "tier": 2,
+        "rationale": "속은 경험을 이야기할 때 쓰는 수동 표현.",
+        "pattern": "`be had` · 표시: 비격식; 보통 수동태",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/have_1) [L](https://www.ldoceonline.com/dictionary/have) · 대조 위치: O32; L2.44",
+        "examples": [
+          "예문 [직접 작성]: The watch was fake; we'd been had."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "HAVE-B047",
+        "title": "select",
+        "verb": "HAVE",
+        "definition": "Choose for a role — 역할을 맡기다",
+        "tier": 2,
+        "rationale": "역할·담당자를 정하는 상황에 유용하다.",
+        "pattern": "`have sb as N` · 표시: 수동태 없음",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/have_1) · 대조 위치: O33",
+        "examples": [
+          "예문 [직접 작성]: Who shall we have as chair?"
+        ],
+        "notes": ""
+      },
+      {
+        "id": "HAVE-B049",
+        "title": "annoying necessity",
+        "verb": "HAVE",
+        "definition": "Complain about behavior — 꼭 그래야 하냐고 불평하다",
+        "tier": 2,
+        "rationale": "짜증·불만을 담은 질문으로 어조 연습이 필요하다.",
+        "pattern": "`do you have to V?` · 표시: 회화",
+        "sources": "[L](https://www.ldoceonline.com/dictionary/have) [have to](https://www.oxfordlearnersdictionaries.com/definition/english/have-to) · 대조 위치: T4; L3.8",
+        "examples": [
+          "예문 [직접 작성]: Do you have to play that so loudly?"
+        ],
+        "notes": ""
+      },
+      {
+        "id": "HAVE-B050",
+        "title": "unwelcome coincidence",
+        "verb": "HAVE",
+        "definition": "Complain about timing — 하필 ~하다",
+        "tier": 2,
+        "rationale": "불운한 타이밍에 대한 불평을 말할 때 유용하다.",
+        "pattern": "`it had to V` · 표시: 회화",
+        "sources": "[L](https://www.ldoceonline.com/dictionary/have) [have to](https://www.oxfordlearnersdictionaries.com/definition/english/have-to) · 대조 위치: T4; L3.6",
+        "examples": [
+          "예문 [직접 작성]: It had to rain on our only day off."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "HAVE-B051",
+        "title": "only acceptable choice",
+        "verb": "HAVE",
+        "definition": "Accept only one — 꼭 ~여야 한다",
+        "tier": 2,
+        "rationale": "강한 선호를 표현하는 상황별 확장.",
+        "pattern": "`it has to be N` · 표시: 회화",
+        "sources": "[L](https://www.ldoceonline.com/dictionary/have) · 대조 위치: L3.7",
+        "examples": [
+          "예문 [직접 작성]: For him, it has to be fresh coffee."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "HAVE-I021",
+        "title": "have the good sense to",
+        "verb": "HAVE",
+        "definition": "Show some good judgment — 적어도 그만한 분별은 있다",
+        "tier": 2,
+        "rationale": "분별·예의를 평가하는 유용한 연어지만 칭찬·비난 어조 구별.",
+        "pattern": "`have the good sense/decency to V` · 표시: 한 가지 장점 인정",
+        "sources": "[C](https://dictionary.cambridge.org/dictionary/english/have) · 대조 위치: C POSSESS",
+        "examples": [
+          "예문 [직접 작성]: At least he had the good sense to ask for help."
+        ],
+        "notes": ""
+      }
+    ],
+    "introductions": [
+      {
+        "verb": "HAVE",
+        "text": "활용: **have–had–had**; 현재 3인칭 단수 **has**. 소유·상태의 have는 보통 진행형을 쓰지 않지만 `I'm having lunch` 같은 동작 용법은 가능하다. 본동사는 `Do you have...?`, 완료 조동사는 `Have you finished...?`. `have got`은 특히 영국 회화의 현재 소유 표현이며 모든 have 용법을 대체하지 않는다. 출처 위치의 L2는 Longman 본동사, L3는 have to 항목이다."
+      }
+    ],
+    "verbs": [
+      "HAVE"
+    ]
+  },
+  {
+    "day": 6,
+    "items": [
+      {
+        "id": "HAVE-B048",
+        "title": "sex",
+        "verb": "HAVE",
+        "definition": "Have sex — 성관계를 갖다",
+        "tier": 3,
+        "rationale": "사람을 성적 대상으로 말하는 속어; 인지·맥락 판단 우선.",
+        "pattern": "`have sb` · 표시: Oxford 속어; Longman 비격식; 대상화하는 표현",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/have_1) [L](https://www.ldoceonline.com/dictionary/have) · 대조 위치: O31; L2.31",
+        "examples": [
+          "예문 [직접 작성]: He boasted that he had had her."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "HAVE-I019",
+        "title": "had best",
+        "verb": "HAVE",
+        "definition": "Give strong advice — ~하는 게 가장 낫겠다",
+        "tier": 3,
+        "rationale": "조언의 별도 변형; had better를 먼저 생산적으로 익히는 편이 효율적.",
+        "pattern": "`had best (not) V` · 표시: Longman had better/best 병기",
+        "sources": "[L](https://www.ldoceonline.com/dictionary/have) · 대조 위치: L1.2",
+        "examples": [
+          "예문 [직접 작성]: We'd best leave before the storm."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "HAVE-I020",
+        "title": "had I known",
+        "verb": "HAVE",
+        "definition": "Imagine a different past — 만일 ~했더라면",
+        "tier": 3,
+        "rationale": "격식 있는 조건절 도치; 회화에서는 if절 우선.",
+        "pattern": "`had S p.p., ...` · 표시: 격식; if 없는 조건절 도치",
+        "sources": "[L](https://www.ldoceonline.com/dictionary/have) [조동사](https://www.oxfordlearnersdictionaries.com/definition/english/have_2) · 대조 위치: A; L1.3",
+        "examples": [
+          "예문 [직접 작성]: Had I known, I would have waited."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "TAKE-B001",
+        "title": "시간이 들다",
+        "verb": "TAKE",
+        "definition": "need time — 시간이 들다",
+        "tier": 1,
+        "rationale": "일정·소요시간 질문과 설명에 직접 쓰는 핵심 문형.",
+        "pattern": "`It takes (sb) time to V; sth takes time`",
+        "sources": "[Oxford 뜻 4](https://www.oxfordlearnersdictionaries.com/definition/english/take_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/take) · [Longman](https://www.ldoceonline.com/dictionary/take)",
+        "examples": [
+          "예문 [직접 작성]: The repair took forty minutes.",
+          "예문 [사전 인용]: “The process took about a year.” — [Oxford take, 뜻 4](https://www.oxfordlearnersdictionaries.com/definition/english/take_1)"
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립"
+      },
+      {
+        "id": "TAKE-B002",
+        "title": "데려가다",
+        "verb": "TAKE",
+        "definition": "go somewhere with someone — 데려가다",
+        "tier": 1,
+        "rationale": "이동·아이 돌봄·약속에서 데려간다는 뜻을 폭넓게 사용.",
+        "pattern": "`take sb to a place/to V/V-ing`",
+        "sources": "[Oxford 뜻 2](https://www.oxfordlearnersdictionaries.com/definition/english/take_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/take) · [Longman](https://www.ldoceonline.com/dictionary/take)",
+        "examples": [
+          "예문 [직접 작성]: I'll take the children skating tomorrow."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립"
+      },
+      {
+        "id": "TAKE-B003",
+        "title": "가져가다",
+        "verb": "TAKE",
+        "definition": "carry something elsewhere — 가져가다",
+        "tier": 1,
+        "rationale": "외출 준비와 물건 전달에 필요한 기본 이동동사.",
+        "pattern": "`take sth (with sb)/to sb; take sb sth`",
+        "sources": "[Oxford 뜻 1](https://www.oxfordlearnersdictionaries.com/definition/english/take_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/take) · [Longman](https://www.ldoceonline.com/dictionary/take)",
+        "examples": [
+          "예문 [직접 작성]: Please take these books to the office."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립"
+      },
+      {
+        "id": "TAKE-B004",
+        "title": "행동·활동을 하다",
+        "verb": "TAKE",
+        "definition": "do the named activity — 해당 행동을 하다",
+        "tier": 1,
+        "rationale": "break/look/shower 등 일상 행동을 만드는 핵심 연어; 영국 변형은 별도 참고.",
+        "pattern": "`take a break/look/walk/stroll/step/bath/shower/wash/bite/drink/sip/breath/nap/shot; take a fall; take a decision`",
+        "sources": "[Oxford 뜻 17](https://www.oxfordlearnersdictionaries.com/definition/english/take_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/take) · [Longman](https://www.ldoceonline.com/dictionary/take)",
+        "examples": [
+          "예문 [직접 작성]: Let's take a break before we start again."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립; take a decision은 영국"
+      },
+      {
+        "id": "TAKE-B005",
+        "title": "교통편·길을 이용하다",
+        "verb": "TAKE",
+        "definition": "use transport or a route — 타다·길을 택하다",
+        "tier": 1,
+        "rationale": "대중교통·길 안내에서 바로 활용하는 기본 표현.",
+        "pattern": "`take a bus/train/road/turn`",
+        "sources": "[Oxford 뜻 6](https://www.oxfordlearnersdictionaries.com/definition/english/take_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/take) · [Longman](https://www.ldoceonline.com/dictionary/take)",
+        "examples": [
+          "예문 [직접 작성]: We took the subway to the stadium."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립"
+      },
+      {
+        "id": "TAKE-B006",
+        "title": "받아들이다",
+        "verb": "TAKE",
+        "definition": "say yes to something — 제안·조언·결제를 받아들이다",
+        "tier": 1,
+        "rationale": "제안·일자리·카드 결제를 받아들이는 상황에 폭넓게 사용.",
+        "pattern": "`take a job/advice/cards/an offer`",
+        "sources": "[Oxford 뜻 22](https://www.oxfordlearnersdictionaries.com/definition/english/take_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/take) · [Longman](https://www.ldoceonline.com/dictionary/take)",
+        "examples": [
+          "예문 [직접 작성]: Does this café take cards?"
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립; 보통 진행형·수동태 안 씀"
+      },
+      {
+        "id": "TAKE-B007",
+        "title": "사진을 찍다",
+        "verb": "TAKE",
+        "definition": "make a photograph — 사진을 찍다",
+        "tier": 1,
+        "rationale": "사진을 부탁하고 여행 경험을 말하는 기본 연어.",
+        "pattern": "`take a photo/picture of sb/sth`",
+        "sources": "[Oxford 뜻 5](https://www.oxfordlearnersdictionaries.com/definition/english/take_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/take) · [Longman](https://www.ldoceonline.com/dictionary/take)",
+        "examples": [
+          "예문 [직접 작성]: Could you take a photo of both of us?"
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립"
+      },
+      {
+        "id": "TAKE-B008",
+        "title": "약물을 복용하다",
+        "verb": "TAKE",
+        "definition": "use medicine or drugs — 약·약물을 복용하다",
+        "tier": 1,
+        "rationale": "복용 여부·건강 상태를 설명할 때 필요한 생활 표현.",
+        "pattern": "`take medicine/tablets/drugs`",
+        "sources": "[Oxford 뜻 12](https://www.oxfordlearnersdictionaries.com/definition/english/take_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/take) · [Longman](https://www.ldoceonline.com/dictionary/take)",
+        "examples": [
+          "예문 [직접 작성]: She takes allergy medicine in spring."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립"
+      },
+      {
+        "id": "TAKE-B009",
+        "title": "쥐다·붙잡다",
+        "verb": "TAKE",
+        "definition": "hold with your hands — 쥐다·붙잡다",
+        "tier": 1,
+        "rationale": "물건을 받아 쥐거나 손을 잡는 기본 행동 묘사.",
+        "pattern": "`take sth; take sb by the hand/in one's arms`",
+        "sources": "[Oxford 뜻 7](https://www.oxfordlearnersdictionaries.com/definition/english/take_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/take) · [Longman](https://www.ldoceonline.com/dictionary/take)",
+        "examples": [
+          "예문 [직접 작성]: He took the cup with both hands."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립"
+      },
+      {
+        "id": "TAKE-B010",
+        "title": "선택·구매·임차하다",
+        "verb": "TAKE",
+        "definition": "choose something to have — 선택·구매·임차하다",
+        "tier": 1,
+        "rationale": "쇼핑·주문에서 I'll take...로 선택을 표현.",
+        "pattern": "`take sth/a room`",
+        "sources": "[Oxford 뜻 20](https://www.oxfordlearnersdictionaries.com/definition/english/take_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/take) · [Longman](https://www.ldoceonline.com/dictionary/take)",
+        "examples": [
+          "예문 [직접 작성]: I'll take the smaller suitcase."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립"
+      },
+      {
+        "id": "TAKE-B011",
+        "title": "앉다·자리를 차지하다",
+        "verb": "TAKE",
+        "definition": "sit or occupy a seat — 앉다·자리를 차지하다",
+        "tier": 1,
+        "rationale": "자리 권유와 빈자리 확인에 바로 사용.",
+        "pattern": "`take a seat; a seat is taken`",
+        "sources": "[Oxford 뜻 11](https://www.oxfordlearnersdictionaries.com/definition/english/take_1) · [Longman](https://www.ldoceonline.com/dictionary/take)",
+        "examples": [
+          "예문 [직접 작성]: Please take a seat near the window."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립"
+      },
+      {
+        "id": "TAKE-B012",
+        "title": "견디다",
+        "verb": "TAKE",
+        "definition": "live with something unpleasant — 견디다",
+        "tier": 1,
+        "rationale": "불편함을 견딜 수 있는지 감정·한계를 표현.",
+        "pattern": "`can/can't take sth`",
+        "sources": "[Oxford 뜻 26](https://www.oxfordlearnersdictionaries.com/definition/english/take_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/take) · [Longman](https://www.ldoceonline.com/dictionary/take)",
+        "examples": [
+          "예문 [직접 작성]: I can't take this noise much longer."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립; 보통 진행형 안 씀; 수동태 없음"
+      },
+      {
+        "id": "TAKE-B013",
+        "title": "시험을 치르다",
+        "verb": "TAKE",
+        "definition": "sit an exam — 시험을 치르다",
+        "tier": 1,
+        "rationale": "학교·면허·자격시험을 말하는 미국 기본 연어.",
+        "pattern": "`take a test/exam`",
+        "sources": "[Oxford 뜻 14](https://www.oxfordlearnersdictionaries.com/definition/english/take_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/take) · [Longman](https://www.ldoceonline.com/dictionary/take)",
+        "examples": [
+          "예문 [직접 작성]: He's taking his final exam on Monday."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립"
+      },
+      {
+        "id": "TAKE-B014",
+        "title": "수강·공부하다",
+        "verb": "TAKE",
+        "definition": "study a subject — 수강·공부하다",
+        "tier": 1,
+        "rationale": "수업·강좌 수강을 말하는 미국 기본 연어.",
+        "pattern": "`take a class/course/subject`",
+        "sources": "[Oxford 뜻 15](https://www.oxfordlearnersdictionaries.com/definition/english/take_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/take) · [Longman](https://www.ldoceonline.com/dictionary/take)",
+        "examples": [
+          "예문 [직접 작성]: I'm taking an evening class in pottery."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립"
+      },
+      {
+        "id": "TAKE-B015",
+        "title": "치우다·빼내다",
+        "verb": "TAKE",
+        "definition": "move something from its place — 치우다·빼내다",
+        "tier": 1,
+        "rationale": "물건을 꺼내고 치우는 일상 동작의 생산적 문형.",
+        "pattern": "`take sth from/off/out of a place`",
+        "sources": "[Oxford 뜻 8](https://www.oxfordlearnersdictionaries.com/definition/english/take_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/take) · [Longman](https://www.ldoceonline.com/dictionary/take)",
+        "examples": [
+          "예문 [직접 작성]: She took a coin from her pocket."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립; take sth off sb는 비격식"
+      },
+      {
+        "id": "TAKE-B016",
+        "title": "기록하다",
+        "verb": "TAKE",
+        "definition": "write information down — 받아 적다",
+        "tier": 1,
+        "rationale": "메모·메시지·연락처를 받는 생활·업무 표현.",
+        "pattern": "`take notes/a message/sb's details`",
+        "sources": "[Oxford 뜻 13](https://www.oxfordlearnersdictionaries.com/definition/english/take_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/take) · [Longman](https://www.ldoceonline.com/dictionary/take)",
+        "examples": [
+          "예문 [직접 작성]: Can you take a message for the manager?"
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립"
+      },
+      {
+        "id": "TAKE-B017",
+        "title": "반응하다",
+        "verb": "TAKE",
+        "definition": "respond in a certain way — 반응하다",
+        "tier": 1,
+        "rationale": "take seriously/personally/well로 반응과 오해를 설명.",
+        "pattern": "`take sth well/badly/personally/seriously`",
+        "sources": "[Oxford 뜻 27](https://www.oxfordlearnersdictionaries.com/definition/english/take_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/take) · [Longman](https://www.ldoceonline.com/dictionary/take)",
+        "examples": [
+          "예문 [직접 작성]: He took the feedback surprisingly well."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립"
+      }
+    ],
+    "introductions": [
+      {
+        "verb": "HAVE",
+        "text": "활용: **have–had–had**; 현재 3인칭 단수 **has**. 소유·상태의 have는 보통 진행형을 쓰지 않지만 `I'm having lunch` 같은 동작 용법은 가능하다. 본동사는 `Do you have...?`, 완료 조동사는 `Have you finished...?`. `have got`은 특히 영국 회화의 현재 소유 표현이며 모든 have 용법을 대체하지 않는다. 출처 위치의 L2는 Longman 본동사, L3는 have to 항목이다."
+      },
+      {
+        "verb": "TAKE",
+        "text": "활용: **take–took–taken**. 조동사 용법은 없다. 미국 회화 학습 티어로 배열했다. 같은 티어 안에는 세부 순위가 없으며 사전 배열순을 빈도순으로 사용하지 않았다."
+      }
+    ],
+    "verbs": [
+      "HAVE",
+      "TAKE"
+    ]
+  },
+  {
+    "day": 7,
+    "items": [
+      {
+        "id": "TAKE-B019",
+        "title": "필요로 하다",
+        "verb": "TAKE",
+        "definition": "need a resource or quality — 자원·자질을 필요로 하다",
+        "tier": 1,
+        "rationale": "어떤 일을 하는 데 필요한 노력·자질을 설명하는 생산적 문형.",
+        "pattern": "`It takes sth to V; take some V-ing`",
+        "sources": "[Oxford 뜻 34](https://www.oxfordlearnersdictionaries.com/definition/english/take_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/take) · [Longman](https://www.ldoceonline.com/dictionary/take)",
+        "examples": [
+          "예문 [직접 작성]: It takes patience to train a puppy."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립; 수동태 없음; take some V-ing는 비격식"
+      },
+      {
+        "id": "TAKE-B020",
+        "title": "훔치다·무단으로 가져가다",
+        "verb": "TAKE",
+        "definition": "remove without permission — 훔치다·무단으로 가져가다",
+        "tier": 1,
+        "rationale": "물건을 가져간 사람이나 도난 상황을 설명.",
+        "pattern": "`take sth`",
+        "sources": "[Oxford 뜻 9](https://www.oxfordlearnersdictionaries.com/definition/english/take_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/take) · [Longman](https://www.ldoceonline.com/dictionary/take)",
+        "examples": [
+          "예문 [직접 작성]: Someone took the parcel from the doorstep."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립"
+      },
+      {
+        "id": "TAKE-B021",
+        "title": "책임·비난을 떠맡거나 공로를 인정받다·주장하다",
+        "verb": "TAKE",
+        "definition": "accept responsibility or blame, or claim or receive credit — 책임·비난을 떠맡거나 공로를 인정받다·자기 공로라고 주장하다",
+        "tier": 1,
+        "rationale": "책임·비난·공로를 이야기하는 생활·업무 핵심 연어.",
+        "pattern": "`take responsibility/blame/credit for sth`",
+        "sources": "[Oxford 뜻 22](https://www.oxfordlearnersdictionaries.com/definition/english/take_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/take) · [Longman](https://www.ldoceonline.com/dictionary/take)",
+        "examples": [
+          "예문 [직접 작성]: I'll take responsibility for the delay. / I can't take credit for the idea; it was yours."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립\n- 용법 메모: `take credit`은 정당한 공로 인정도 포함하며 반드시 공을 가로챈다는 뜻은 아니다. [Cambridge take credit](https://dictionary.cambridge.org/dictionary/english/take-credit)"
+      },
+      {
+        "id": "TAKE-B018",
+        "title": "해석하다",
+        "verb": "TAKE",
+        "definition": "understand something as something — 해석하다",
+        "tier": 2,
+        "rationale": "말·행동을 어떻게 해석했는지 설명할 때 유용.",
+        "pattern": "`take sth as sth/to mean sth`",
+        "sources": "[Oxford 뜻 28](https://www.oxfordlearnersdictionaries.com/definition/english/take_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/take) · [Longman](https://www.ldoceonline.com/dictionary/take)",
+        "examples": [
+          "예문 [직접 작성]: I took her silence as a refusal."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립; 진행형 안 씀"
+      },
+      {
+        "id": "TAKE-B022",
+        "title": "기회를 잡다",
+        "verb": "TAKE",
+        "definition": "use an available chance — 기회를 잡다",
+        "tier": 2,
+        "rationale": "기회를 이용한 경험이나 의도를 설명할 때 유용.",
+        "pattern": "`take an opportunity/chance to V`",
+        "sources": "[Oxford 뜻 23](https://www.oxfordlearnersdictionaries.com/definition/english/take_1) · [Longman](https://www.ldoceonline.com/dictionary/take)",
+        "examples": [
+          "예문 [직접 작성]: She took the opportunity to ask a question."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립"
+      },
+      {
+        "id": "TAKE-B023",
+        "title": "위험을 감수하다",
+        "verb": "TAKE",
+        "definition": "accept a possible danger — 위험을 감수하다",
+        "tier": 2,
+        "rationale": "선택의 위험과 안전을 논의하는 데 유용.",
+        "pattern": "`take a risk/risks`",
+        "sources": "[Oxford 뜻 23](https://www.oxfordlearnersdictionaries.com/definition/english/take_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/take)",
+        "examples": [
+          "예문 [직접 작성]: We shouldn't take risks with the children."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립"
+      },
+      {
+        "id": "TAKE-B024",
+        "title": "느낌·태도를 갖다",
+        "verb": "TAKE",
+        "definition": "feel the named emotion — 관심·자부심·불쾌감 등을 갖다",
+        "tier": 2,
+        "rationale": "자부심·관심·불쾌감 등 감정을 정해진 연어로 표현.",
+        "pattern": "`take interest/pride/pleasure in; take offense at; take comfort from sth`",
+        "sources": "[Oxford 뜻 30](https://www.oxfordlearnersdictionaries.com/definition/english/take_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/take) · [Longman](https://www.ldoceonline.com/dictionary/take) · [Cambridge take from](https://dictionary.cambridge.org/dictionary/english/take-from)",
+        "examples": [
+          "예문 [직접 작성]: He takes pride in keeping the garden tidy. / She took comfort from his message."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립; 보통 진행형 안 씀"
+      },
+      {
+        "id": "TAKE-B025",
+        "title": "조치·접근법을 쓰다",
+        "verb": "TAKE",
+        "definition": "act to deal with something — 조치·접근법을 쓰다",
+        "tier": 2,
+        "rationale": "문제 해결·업무 진행에 관해 구체적 조치를 말함.",
+        "pattern": "`take action/steps/an approach`",
+        "sources": "[Oxford 뜻 16](https://www.oxfordlearnersdictionaries.com/definition/english/take_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/take) · [Longman](https://www.ldoceonline.com/dictionary/take)",
+        "examples": [
+          "예문 [직접 작성]: The council took action after the complaints."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립"
+      },
+      {
+        "id": "TAKE-B026",
+        "title": "고객·환자를 받다",
+        "verb": "TAKE",
+        "definition": "accept someone as a customer — 고객·환자를 받다",
+        "tier": 2,
+        "rationale": "병원 예약·서비스 문의에서 신규 고객을 받는지 질문.",
+        "pattern": "`take patients/clients/students`",
+        "sources": "[Oxford 뜻 24](https://www.oxfordlearnersdictionaries.com/definition/english/take_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/take) · [Longman](https://www.ldoceonline.com/dictionary/take)",
+        "examples": [
+          "예문 [직접 작성]: This clinic isn't taking new patients."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립; Oxford는 보통 진행형 안 씀으로 표시\n- 용법 메모: ‘보통 진행형 안 씀’은 절대 금지가 아니다. 예문은 현재의 신규 환자 수용 방침·활동을 말한다."
+      },
+      {
+        "id": "TAKE-B027",
+        "title": "음료에 넣어 먹다",
+        "verb": "TAKE",
+        "definition": "have an added ingredient — 음료에 설탕·우유 등을 넣어 먹다",
+        "tier": 2,
+        "rationale": "커피·차 기호를 묻는 상황에 유용.",
+        "pattern": "`take milk/sugar in coffee/tea`",
+        "sources": "[Oxford 뜻 12](https://www.oxfordlearnersdictionaries.com/definition/english/take_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/take) · [Longman](https://www.ldoceonline.com/dictionary/take)",
+        "examples": [
+          "예문 [직접 작성]: Do you take milk in your tea?"
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립; 보통 일상 식사·음료 자체에는 have 사용"
+      },
+      {
+        "id": "TAKE-B028",
+        "title": "오인하다·여기다",
+        "verb": "TAKE",
+        "definition": "believe someone is something — 오인하다·여기다",
+        "tier": 2,
+        "rationale": "사람·사물을 잘못 알아본 상황을 설명.",
+        "pattern": "`take sb/sth for sb/sth; take ... to be ...`",
+        "sources": "[Oxford 뜻 29](https://www.oxfordlearnersdictionaries.com/definition/english/take_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/take) · [Longman](https://www.ldoceonline.com/dictionary/take)",
+        "examples": [
+          "예문 [직접 작성]: I took him for the owner."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립; 진행형 안 씀"
+      },
+      {
+        "id": "TAKE-B029",
+        "title": "측정하다",
+        "verb": "TAKE",
+        "definition": "find a measurement — 측정하다",
+        "tier": 2,
+        "rationale": "체온·치수 측정 등 건강·생활 상황에 유용.",
+        "pattern": "`take a temperature/pulse/measurement`",
+        "sources": "[Oxford 뜻 18](https://www.oxfordlearnersdictionaries.com/definition/english/take_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/take) · [Longman](https://www.ldoceonline.com/dictionary/take)",
+        "examples": [
+          "예문 [직접 작성]: The nurse took his temperature again."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립"
+      },
+      {
+        "id": "TAKE-B030",
+        "title": "영향·타격을 받다",
+        "verb": "TAKE",
+        "definition": "receive a blow or strain — 영향·타격을 받다",
+        "tier": 2,
+        "rationale": "피해·부담·충격을 설명할 때 쓰는 비유적 확장.",
+        "pattern": "`take a beating/the strain/a hit`",
+        "sources": "[Oxford 뜻 25](https://www.oxfordlearnersdictionaries.com/definition/english/take_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/take) · [Longman](https://www.ldoceonline.com/dictionary/take)",
+        "examples": [
+          "예문 [직접 작성]: The roof took the full force of the storm."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립; 보통 진행형 안 씀"
+      },
+      {
+        "id": "TAKE-B031",
+        "title": "예로 들다",
+        "verb": "TAKE",
+        "definition": "introduce an example — 예로 들다",
+        "tier": 2,
+        "rationale": "설명 중 간단히 예를 드는 담화 기능.",
+        "pattern": "`Take sb/sth (for example)`",
+        "sources": "[Oxford 뜻 32](https://www.oxfordlearnersdictionaries.com/definition/english/take_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/take) · [Longman](https://www.ldoceonline.com/dictionary/take)",
+        "examples": [
+          "예문 [직접 작성]: Some plants thrive indoors. Take this fern."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립"
+      },
+      {
+        "id": "TAKE-B032",
+        "title": "단계·수준을 바꾸다",
+        "verb": "TAKE",
+        "definition": "move to another level — 단계·수준을 바꾸다",
+        "tier": 2,
+        "rationale": "총액·수준·논의를 다음 단계로 옮긴다고 말할 때 유용.",
+        "pattern": "`take sb/sth to/into sth/further`",
+        "sources": "[Oxford 뜻 3](https://www.oxfordlearnersdictionaries.com/definition/english/take_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/take) · [Longman](https://www.ldoceonline.com/dictionary/take)",
+        "examples": [
+          "예문 [직접 작성]: The extra fee takes the total to eighty dollars."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립"
+      },
+      {
+        "id": "TAKE-B033",
+        "title": "자료·표본·아이디어를 얻다",
+        "verb": "TAKE",
+        "definition": "get information, ideas, or material from a source — 자료·표본·아이디어를 얻다",
+        "tier": 2,
+        "rationale": "자료·영감의 출처나 검사 표본을 설명할 때 유용.",
+        "pattern": "`take a sample/quotation/name from sth; take inspiration from sth`",
+        "sources": "[Oxford 뜻 10](https://www.oxfordlearnersdictionaries.com/definition/english/take_1) · [Longman](https://www.ldoceonline.com/dictionary/take) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/take-from)",
+        "examples": [
+          "예문 [직접 작성]: They took soil samples near the bridge. / She takes inspiration from the sea."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립"
+      },
+      {
+        "id": "TAKE-B035",
+        "title": "담을 수 있다",
+        "verb": "TAKE",
+        "definition": "have room for something — 수용할 수 있다",
+        "tier": 2,
+        "rationale": "사람·물건의 수용 인원을 설명하는 상황 표현.",
+        "pattern": "`take a number/amount`",
+        "sources": "[Oxford 뜻 37](https://www.oxfordlearnersdictionaries.com/definition/english/take_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/take) · [Longman](https://www.ldoceonline.com/dictionary/take)",
+        "examples": [
+          "예문 [직접 작성]: The elevator takes six people."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립; 진행형·수동태 안 씀"
+      },
+      {
+        "id": "TAKE-B036",
+        "title": "정해진 규격을 쓰다",
+        "verb": "TAKE",
+        "definition": "need a size or supply — 규격·연료를 쓰다",
+        "tier": 2,
+        "rationale": "배터리·연료 등 제품 사용 조건을 설명.",
+        "pattern": "`take a size/battery/fuel`",
+        "sources": "[Oxford 뜻 35](https://www.oxfordlearnersdictionaries.com/definition/english/take_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/take) · [Longman](https://www.ldoceonline.com/dictionary/take)",
+        "examples": [
+          "예문 [직접 작성]: This flashlight takes two small batteries."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립; 진행형·수동태 안 씀"
+      },
+      {
+        "id": "TAKE-B037",
+        "title": "옷·신발 치수다",
+        "verb": "TAKE",
+        "definition": "wear a particular size — 특정 옷·신발 치수다",
+        "tier": 2,
+        "rationale": "쇼핑에서 치수를 묻고 답하는 상황에 유용.",
+        "pattern": "`take a size`",
+        "sources": "[Oxford 뜻 36](https://www.oxfordlearnersdictionaries.com/definition/english/take_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/take) · [Longman](https://www.ldoceonline.com/dictionary/take)",
+        "examples": [
+          "예문 [직접 작성]: What size gloves do you take?"
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립; 진행형·수동태 안 씀"
+      },
+      {
+        "id": "TAKE-B038",
+        "title": "빼다",
+        "verb": "TAKE",
+        "definition": "subtract a number — 수를 빼다",
+        "tier": 2,
+        "rationale": "간단한 계산 설명에 활용 가능하며 전문 수학에 한정되지 않음.",
+        "pattern": "`take A (away) from B`",
+        "sources": "[Oxford 뜻 31](https://www.oxfordlearnersdictionaries.com/definition/english/take_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/take) · [Longman](https://www.ldoceonline.com/dictionary/take)",
+        "examples": [
+          "예문 [직접 작성]: Take seven from twenty and you get thirteen."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립; B take away A 형태는 비격식"
+      }
+    ],
+    "introductions": [
+      {
+        "verb": "TAKE",
+        "text": "활용: **take–took–taken**. 조동사 용법은 없다. 미국 회화 학습 티어로 배열했다. 같은 티어 안에는 세부 순위가 없으며 사전 배열순을 빈도순으로 사용하지 않았다."
+      }
+    ],
+    "verbs": [
+      "TAKE"
+    ]
+  },
+  {
+    "day": 8,
+    "items": [
+      {
+        "id": "TAKE-B040",
+        "title": "우승·상을 얻다",
+        "verb": "TAKE",
+        "definition": "win a prize — 우승·상을 얻다",
+        "tier": 2,
+        "rationale": "대회·수상 결과를 말할 때 자연스러운 미국 표현.",
+        "pattern": "`take first prize/the title`",
+        "sources": "[Cambridge](https://dictionary.cambridge.org/dictionary/english/take)",
+        "examples": [
+          "예문 [직접 작성]: Her photograph took first prize."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립"
+      },
+      {
+        "id": "TAKE-B041",
+        "title": "형태·지위를 갖게 되다",
+        "verb": "TAKE",
+        "definition": "enter a state or position — 형태·지위를 갖게 되다",
+        "tier": 2,
+        "rationale": "take the lead 등은 능동 활용 가능; 취임·형태 표현은 상황에 따라 사용.",
+        "pattern": "`take the form of sth` (형태를 띠다); `take office` (취임하다); `take the lead` (선두에 서다)",
+        "sources": "[Oxford 뜻 33](https://www.oxfordlearnersdictionaries.com/definition/english/take_1) · [Longman](https://www.ldoceonline.com/dictionary/take)",
+        "examples": [
+          "예문 [직접 작성]: The discussion took the form of a debate."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립"
+      },
+      {
+        "id": "TAKE-B043",
+        "title": "장애물·굽이를 넘다",
+        "verb": "TAKE",
+        "definition": "go over or around — 장애물·굽이를 넘다",
+        "tier": 2,
+        "rationale": "운전·자전거에서 커브를 도는 방식을 설명.",
+        "pattern": "`take a bend/corner/fence`",
+        "sources": "[Oxford 뜻 39](https://www.oxfordlearnersdictionaries.com/definition/english/take_1) · [Longman](https://www.ldoceonline.com/dictionary/take)",
+        "examples": [
+          "예문 [직접 작성]: The cyclist took the corner slowly."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립"
+      },
+      {
+        "id": "TAKE-B045",
+        "title": "투표·조사를 실시하다",
+        "verb": "TAKE",
+        "definition": "collect people's choices — 투표·조사를 실시하다",
+        "tier": 2,
+        "rationale": "회의·친구 모임에서 투표·설문을 제안할 수 있음.",
+        "pattern": "`take a vote/poll/survey`",
+        "sources": "[Oxford 뜻 41](https://www.oxfordlearnersdictionaries.com/definition/english/take_1)",
+        "examples": [
+          "예문 [직접 작성]: Let's take a vote before we decide."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립"
+      },
+      {
+        "id": "TAKE-B050",
+        "title": "속이다",
+        "verb": "TAKE",
+        "definition": "cheat someone — 속이다",
+        "tier": 2,
+        "rationale": "사기·과다 지불 경험을 말하는 미국 비격식 표현.",
+        "pattern": "`take sb; get/be taken`",
+        "sources": "[Cambridge](https://dictionary.cambridge.org/dictionary/english/take)",
+        "examples": [
+          "예문 [직접 작성]: He paid far too much and felt he'd been taken."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; Cambridge 미국 항목·비격식"
+      },
+      {
+        "id": "TAKE-B034",
+        "title": "돈을 벌어들이다",
+        "verb": "TAKE",
+        "definition": "receive sales money — 매출·입장료를 벌어들이다",
+        "tier": 3,
+        "rationale": "Longman 영국 표지; 미국 능동 사용은 take in 수입 뜻을 우선.",
+        "pattern": "`take an amount`",
+        "sources": "[Oxford 뜻 22](https://www.oxfordlearnersdictionaries.com/definition/english/take_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/take) · [Longman](https://www.ldoceonline.com/dictionary/take)",
+        "examples": [
+          "예문 [직접 작성]: The stall took £300 before lunch."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; Longman 영국; 미국에서는 take in도 사용"
+      },
+      {
+        "id": "TAKE-B039",
+        "title": "점령·포획하다",
+        "verb": "TAKE",
+        "definition": "gain control by force — 점령·포획하다",
+        "tier": 3,
+        "rationale": "군사·인질 사건을 이해하기 위한 뉴스·서사 용법.",
+        "pattern": "`take a city; take sb prisoner/hostage`",
+        "sources": "[Oxford 뜻 19](https://www.oxfordlearnersdictionaries.com/definition/english/take_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/take) · [Longman](https://www.ldoceonline.com/dictionary/take)",
+        "examples": [
+          "예문 [직접 작성]: The soldiers took the bridge before dawn."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립"
+      },
+      {
+        "id": "TAKE-B042",
+        "title": "수업·예배를 이끌다",
+        "verb": "TAKE",
+        "definition": "lead a class or service — 수업·예배를 이끌다",
+        "tier": 3,
+        "rationale": "가르친다는 take는 영국 중심이며 미국 수강 뜻과 혼동 위험.",
+        "pattern": "`take a class/service; take sb for a subject`",
+        "sources": "[Oxford 뜻 38](https://www.oxfordlearnersdictionaries.com/definition/english/take_1) · [Longman](https://www.ldoceonline.com/dictionary/take)",
+        "examples": [
+          "예문 [직접 작성]: Ms Reed takes us for geography."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 수업 의미 Longman 영국"
+      },
+      {
+        "id": "TAKE-B044",
+        "title": "정해진 킥·투구를 하다",
+        "verb": "TAKE",
+        "definition": "make the specified play — 정해진 킥·투구를 하다",
+        "tier": 3,
+        "rationale": "축구 등 특정 스포츠의 정해진 경기 동작에 한정.",
+        "pattern": "`take a penalty/corner/free kick`",
+        "sources": "[Oxford 뜻 40](https://www.oxfordlearnersdictionaries.com/definition/english/take_1)",
+        "examples": [
+          "예문 [직접 작성]: Who will take the next penalty?"
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 스포츠"
+      },
+      {
+        "id": "TAKE-B046",
+        "title": "정착·효과가 나다",
+        "verb": "TAKE",
+        "definition": "start working successfully — 접붙이기·염색·치료 등이 성공하다",
+        "tier": 3,
+        "rationale": "접붙이기·이식·염색의 성공을 말하는 제한적 맥락.",
+        "pattern": "`sth takes`",
+        "sources": "[Oxford 뜻 42](https://www.oxfordlearnersdictionaries.com/definition/english/take_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/take) · [Longman](https://www.ldoceonline.com/dictionary/take)",
+        "examples": [
+          "예문 [직접 작성]: The graft has taken well."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 전문 맥락; 자동사"
+      },
+      {
+        "id": "TAKE-B047",
+        "title": "문법 요소를 요구하다",
+        "verb": "TAKE",
+        "definition": "need a grammatical form — 특정 문법 요소를 요구하다",
+        "tier": 3,
+        "rationale": "언어학·문법 설명을 읽을 때 필요한 전문 용법.",
+        "pattern": "`a verb takes an object/preposition`",
+        "sources": "[Oxford 뜻 43](https://www.oxfordlearnersdictionaries.com/definition/english/take_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/take)",
+        "examples": [
+          "예문 [직접 작성]: This verb takes a direct object."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 문법; 진행형 안 씀"
+      },
+      {
+        "id": "TAKE-B048",
+        "title": "정기 구독하다",
+        "verb": "TAKE",
+        "definition": "receive a paper regularly — 신문·잡지를 정기 구독하다",
+        "tier": 3,
+        "rationale": "격식적 신문 구독 표현으로 subscribe를 먼저 능동 학습.",
+        "pattern": "`take a newspaper/magazine`",
+        "sources": "[Oxford 뜻 21](https://www.oxfordlearnersdictionaries.com/definition/english/take_1)",
+        "examples": [
+          "예문 [직접 작성]: They still take the local newspaper."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 격식"
+      },
+      {
+        "id": "TAKE-B049",
+        "title": "야구 공을 지켜보다",
+        "verb": "TAKE",
+        "definition": "let a pitch pass — 스윙하지 않고 공을 지켜보다",
+        "tier": 3,
+        "rationale": "야구 시청·훈련 맥락의 전문 뜻; 야구 관심자에게는 우선도 상승.",
+        "pattern": "`take a pitch`",
+        "sources": "[Cambridge](https://dictionary.cambridge.org/dictionary/english/take)",
+        "examples": [
+          "예문 [직접 작성]: The batter took the first pitch."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 야구"
+      },
+      {
+        "id": "TAKE-B051",
+        "title": "목숨을 앗아가다",
+        "verb": "TAKE",
+        "definition": "cause someone's death — 목숨을 앗아가다",
+        "tier": 3,
+        "rationale": "사망 사건을 다루는 뉴스·서사 표현의 이해를 우선.",
+        "pattern": "`take a life/lives`",
+        "sources": "[Oxford 뜻 9](https://www.oxfordlearnersdictionaries.com/definition/english/take_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/take)",
+        "examples": [
+          "예문 [직접 작성]: The fire took three lives."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립"
+      },
+      {
+        "id": "TAKE-B052",
+        "title": "성관계를 갖다",
+        "verb": "TAKE",
+        "definition": "have sex with someone — 성관계를 갖다",
+        "tier": 3,
+        "rationale": "문학적 성관계 표현으로 일반 회화 생산에는 부적합.",
+        "pattern": "`take sb`",
+        "sources": "[Longman](https://www.ldoceonline.com/dictionary/take)",
+        "examples": [
+          "예문 [직접 작성]: The novel says that he took her that night."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 문학적; Longman에서 남성 주어로 설명"
+      },
+      {
+        "id": "DO-B001",
+        "title": "조동사: 의문문",
+        "verb": "DO",
+        "definition": "help form a question — 의문문을 만들다",
+        "tier": 1,
+        "rationale": "일반동사 의문문을 만드는 필수 문법.",
+        "pattern": "`do/does/did + S + V?`",
+        "sources": "[Oxford 조동사 뜻 1](https://www.oxfordlearnersdictionaries.com/definition/english/do1_2) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/do) · [Longman](https://www.ldoceonline.com/dictionary/do)",
+        "examples": [
+          "예문 [직접 작성]: Does this bus stop at the museum?"
+        ],
+        "notes": "- 분류·표지: 조동사·대동사; 중립; 본동사는 원형"
+      },
+      {
+        "id": "DO-B002",
+        "title": "조동사: 부정문",
+        "verb": "DO",
+        "definition": "help make a negative — 부정문을 만들다",
+        "tier": 1,
+        "rationale": "일반동사 부정문을 만드는 필수 문법.",
+        "pattern": "`S + do/does/did not + V`",
+        "sources": "[Oxford 조동사 뜻 1](https://www.oxfordlearnersdictionaries.com/definition/english/do1_2) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/do) · [Longman](https://www.ldoceonline.com/dictionary/do)",
+        "examples": [
+          "예문 [직접 작성]: They didn't hear the announcement."
+        ],
+        "notes": "- 분류·표지: 조동사·대동사; 중립; don't/doesn't/didn't"
+      },
+      {
+        "id": "DO-B003",
+        "title": "조동사: 부정 명령",
+        "verb": "DO",
+        "definition": "tell someone not to act — 부정 명령을 만들다",
+        "tier": 1,
+        "rationale": "금지·주의·요청을 전달하는 필수 문법.",
+        "pattern": "`Don't + V; Don't be ...`",
+        "sources": "[Oxford 조동사 뜻 1](https://www.oxfordlearnersdictionaries.com/definition/english/do1_2) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/do) · [Longman](https://www.ldoceonline.com/dictionary/do)",
+        "examples": [
+          "예문 [직접 작성]: Don't leave the gate open."
+        ],
+        "notes": "- 분류·표지: 조동사·대동사; 중립; be에도 사용"
+      },
+      {
+        "id": "DO-B004",
+        "title": "조동사: 대답·반복 생략",
+        "verb": "DO",
+        "definition": "replace an understood verb — 앞의 동사구를 대신하다",
+        "tier": 1,
+        "rationale": "짧은 대답·동의·반복 생략에 필요한 핵심 문법.",
+        "pattern": "`S + do/does/did; so/neither + do + S`",
+        "sources": "[Oxford 조동사 뜻 3](https://www.oxfordlearnersdictionaries.com/definition/english/do1_2) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/do) · [Longman](https://www.ldoceonline.com/dictionary/do)",
+        "examples": [
+          "예문 [직접 작성]: “Do you know Ben?” “Yes, I do.”"
+        ],
+        "notes": "- 분류·표지: 조동사·대동사; 중립"
+      },
+      {
+        "id": "DO-B005",
+        "title": "행동하다",
+        "verb": "DO",
+        "definition": "perform an action — 하다·행동하다",
+        "tier": 1,
+        "rationale": "현재 활동·계획·문제 대응을 묻는 기본동사.",
+        "pattern": "`do sth/anything/nothing; do sth about sth`",
+        "sources": "[Oxford 뜻 1](https://www.oxfordlearnersdictionaries.com/definition/english/do1_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/do) · [Longman](https://www.ldoceonline.com/dictionary/do)",
+        "examples": [
+          "예문 [직접 작성]: What are you doing after dinner?"
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립"
+      },
+      {
+        "id": "DO-B006",
+        "title": "업무·운동·과제를 하다",
+        "verb": "DO",
+        "definition": "carry out an activity — 업무·운동·과제를 하다",
+        "tier": 1,
+        "rationale": "과제·일·운동을 표현하는 기본 연어.",
+        "pattern": "`do homework/research/exercise/a job/business`",
+        "sources": "[Oxford 뜻 4](https://www.oxfordlearnersdictionaries.com/definition/english/do1_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/do) · [Longman](https://www.ldoceonline.com/dictionary/do)",
+        "examples": [
+          "예문 [직접 작성]: I need to do my homework before dinner."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립"
+      }
+    ],
+    "introductions": [
+      {
+        "verb": "TAKE",
+        "text": "활용: **take–took–taken**. 조동사 용법은 없다. 미국 회화 학습 티어로 배열했다. 같은 티어 안에는 세부 순위가 없으며 사전 배열순을 빈도순으로 사용하지 않았다."
+      },
+      {
+        "verb": "DO",
+        "text": "활용: **do–did–done**, 3인칭 단수 **does**. 본동사와 조동사를 구별한다. 미국 회화 학습 티어로 배열했다. 같은 티어 안에는 세부 순위가 없으며 사전 배열순을 빈도순으로 사용하지 않았다."
+      }
+    ],
+    "verbs": [
+      "TAKE",
+      "DO"
+    ]
+  },
+  {
+    "day": 9,
+    "items": [
+      {
+        "id": "DO-B007",
+        "title": "집안일을 하다",
+        "verb": "DO",
+        "definition": "perform a household task — 집안일을 하다",
+        "tier": 1,
+        "rationale": "집안일 분담을 이야기하는 생활 핵심 표현.",
+        "pattern": "`do the washing/cleaning/shopping/dishes`",
+        "sources": "[Oxford 뜻 5](https://www.oxfordlearnersdictionaries.com/definition/english/do1_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/do) · [Longman](https://www.ldoceonline.com/dictionary/do)",
+        "examples": [
+          "예문 [직접 작성]: I'll do the dishes if you dry them."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립; do the washing-up은 영국"
+      },
+      {
+        "id": "DO-B008",
+        "title": "상태·성과가 어떻다",
+        "verb": "DO",
+        "definition": "progress in a certain way — 상태·성과가 어떻다",
+        "tier": 1,
+        "rationale": "안부와 진행 상황을 묻는 핵심 대화 문형.",
+        "pattern": "`do well/badly/fine; How are you doing?`",
+        "sources": "[Oxford 뜻 3](https://www.oxfordlearnersdictionaries.com/definition/english/do1_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/do) · [Longman](https://www.ldoceonline.com/dictionary/do)",
+        "examples": [
+          "예문 [직접 작성]: How is your new café doing?"
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립; How are you doing?는 비격식"
+      },
+      {
+        "id": "DO-B009",
+        "title": "직업으로 하다",
+        "verb": "DO",
+        "definition": "work at a job — 직업으로 하다",
+        "tier": 1,
+        "rationale": "직업을 묻고 설명하는 기본 기능.",
+        "pattern": "`What do you do (for a living)?`",
+        "sources": "[Oxford 뜻 7](https://www.oxfordlearnersdictionaries.com/definition/english/do1_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/do) · [Longman](https://www.ldoceonline.com/dictionary/do)",
+        "examples": [
+          "예문 [직접 작성]: What does your sister do for a living?",
+          "예문 [사전 인용]: “What do you do?” — [Oxford do, 뜻 7](https://www.oxfordlearnersdictionaries.com/definition/english/do1_1)"
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립"
+      },
+      {
+        "id": "DO-B010",
+        "title": "충분·적당하다",
+        "verb": "DO",
+        "definition": "be enough or suitable — 충분·적당하다",
+        "tier": 1,
+        "rationale": "물건·양이 충분한지 평가하는 간단한 표현.",
+        "pattern": "`sth will do; do for/as sth; do sb`",
+        "sources": "[Oxford 뜻 11](https://www.oxfordlearnersdictionaries.com/definition/english/do1_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/do) · [Longman](https://www.ldoceonline.com/dictionary/do)",
+        "examples": [
+          "예문 [직접 작성]: One blanket will do for tonight."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립; do sb는 특히 영국; 진행형 안 씀"
+      },
+      {
+        "id": "DO-B011",
+        "title": "조동사: 확인 꼬리질문",
+        "verb": "DO",
+        "definition": "check a statement — 부가의문문으로 확인하다",
+        "tier": 1,
+        "rationale": "사실을 확인하고 동의를 구하는 기본 꼬리질문.",
+        "pattern": "`긍정 주절, don't/doesn't/didn't + 주어 대명사?`; `부정 주절, do/does/did + 주어 대명사?`",
+        "sources": "[Oxford 조동사 뜻 2](https://www.oxfordlearnersdictionaries.com/definition/english/do1_2) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/do) · [Longman](https://www.ldoceonline.com/dictionary/do)",
+        "examples": [
+          "예문 [직접 작성]: You still work here, don't you? / You don't drive, do you?"
+        ],
+        "notes": "- 분류·표지: 조동사·대동사; 중립\n- 용법 메모: 여기서는 do를 쓰는 일반동사 주절의 반대 극성 확인 태그를 다룬다. 조동사·be가 있는 주절은 해당 동사를 태그에서 사용한다. [Cambridge Grammar](https://dictionary.cambridge.org/grammar/british-grammar/question-tags)"
+      },
+      {
+        "id": "DO-B012",
+        "title": "조동사: 강조",
+        "verb": "DO",
+        "definition": "make a verb stronger — 본동사를 강조하다",
+        "tier": 1,
+        "rationale": "사실을 강조하거나 부정을 바로잡는 핵심 문법.",
+        "pattern": "`do/does/did + V`",
+        "sources": "[Oxford 조동사 뜻 4](https://www.oxfordlearnersdictionaries.com/definition/english/do1_2) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/do) · [Longman](https://www.ldoceonline.com/dictionary/do)",
+        "examples": [
+          "예문 [직접 작성]: I did send the email yesterday."
+        ],
+        "notes": "- 분류·표지: 조동사·대동사; 중립; 강세를 둠"
+      },
+      {
+        "id": "DO-B017",
+        "title": "대동사: do it/that",
+        "verb": "DO",
+        "definition": "refer to a known action — 이미 아는 행동을 가리키다",
+        "tier": 1,
+        "rationale": "앞서 말한 행동을 재지칭하는 생산적인 기본 표현.",
+        "pattern": "`do it/that`",
+        "sources": "[Cambridge 문법](https://dictionary.cambridge.org/grammar/british-grammar/do)",
+        "examples": [
+          "예문 [직접 작성]: Someone needs to reset the router; can you do it?"
+        ],
+        "notes": "- 분류·표지: 조동사·대동사; 중립; that은 특정 행동을 강조 가능"
+      },
+      {
+        "id": "DO-B020",
+        "title": "정돈·손질하다",
+        "verb": "DO",
+        "definition": "make something neat — 청소·손질·정돈하다",
+        "tier": 1,
+        "rationale": "머리·손톱 손질과 청소 등 생활 행동을 간단히 말함.",
+        "pattern": "`do one's hair/nails/a room/the flowers`",
+        "sources": "[Oxford 뜻 6](https://www.oxfordlearnersdictionaries.com/definition/english/do1_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/do) · [Longman](https://www.ldoceonline.com/dictionary/do)",
+        "examples": [
+          "예문 [직접 작성]: She did her hair before the interview."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립"
+      },
+      {
+        "id": "DO-B022",
+        "title": "문제를 풀다",
+        "verb": "DO",
+        "definition": "find an answer — 문제·퍼즐을 풀다",
+        "tier": 1,
+        "rationale": "숙제·수학 문제·퍼즐을 푼다고 말하는 생산적 표현.",
+        "pattern": "`do a sum/puzzle/crossword`",
+        "sources": "[Oxford 뜻 9](https://www.oxfordlearnersdictionaries.com/definition/english/do1_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/do) · [Longman](https://www.ldoceonline.com/dictionary/do)",
+        "examples": [
+          "예문 [직접 작성]: Can you do the last question?"
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립"
+      },
+      {
+        "id": "DO-B026",
+        "title": "끝내다",
+        "verb": "DO",
+        "definition": "finish an activity — 끝내다",
+        "tier": 1,
+        "rationale": "끝났는지 묻고 작업 완료를 알리는 미국 핵심 표현.",
+        "pattern": "`be done (V-ing/with sth)` (미국 연습 기본형); `have done (V-ing)`; `get sth done`",
+        "sources": "[Oxford 뜻 14](https://www.oxfordlearnersdictionaries.com/definition/english/do1_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/do)",
+        "examples": [
+          "예문 [직접 작성]: Are you done using the printer?"
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립"
+      },
+      {
+        "id": "DO-B030",
+        "title": "최선을 다하다",
+        "verb": "DO",
+        "definition": "try as hard as possible — 최선을 다하다",
+        "tier": 1,
+        "rationale": "최선을 다하겠다는 약속·격려에 바로 쓰는 표현.",
+        "pattern": "`do one's best (to V)`",
+        "sources": "[Cambridge](https://dictionary.cambridge.org/dictionary/english/do)",
+        "examples": [
+          "예문 [직접 작성]: I'll do my best to finish today."
+        ],
+        "notes": "- 분류·표지: 관용표현·고정 연어; 중립"
+      },
+      {
+        "id": "DO-B031",
+        "title": "부탁을 들어주다",
+        "verb": "DO",
+        "definition": "help someone with a task — 부탁을 들어주다",
+        "tier": 1,
+        "rationale": "작은 도움을 부탁하는 핵심 대화 표현.",
+        "pattern": "`do sb a favor; do a favor for sb`",
+        "sources": "[Cambridge](https://dictionary.cambridge.org/dictionary/english/do)",
+        "examples": [
+          "예문 [직접 작성]: Could you do me a favor and hold this door?"
+        ],
+        "notes": "- 분류·표지: 관용표현·고정 연어; 중립"
+      },
+      {
+        "id": "DO-B019",
+        "title": "행동 방식을 따르다",
+        "verb": "DO",
+        "definition": "behave in a stated way — ~한 방식대로 행동하다",
+        "tier": 2,
+        "rationale": "지시·선호에 따른 행동 방식을 설명.",
+        "pattern": "`do as ...`",
+        "sources": "[Oxford 뜻 2](https://www.oxfordlearnersdictionaries.com/definition/english/do1_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/do) · [Longman](https://www.ldoceonline.com/dictionary/do)",
+        "examples": [
+          "예문 [직접 작성]: Please do as the instructor says."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립"
+      },
+      {
+        "id": "DO-B023",
+        "title": "만들다·그리다",
+        "verb": "DO",
+        "definition": "produce something — 만들다·그리다",
+        "tier": 2,
+        "rationale": "그림·스케치를 만드는 특정 활동에 유용.",
+        "pattern": "`do a drawing/copy; do sb sth`",
+        "sources": "[Oxford 뜻 10](https://www.oxfordlearnersdictionaries.com/definition/english/do1_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/do)",
+        "examples": [
+          "예문 [직접 작성]: She did a quick sketch of the bridge."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 다소 비격식(Oxford 용법 설명)"
+      },
+      {
+        "id": "DO-B024",
+        "title": "제공·판매하다",
+        "verb": "DO",
+        "definition": "offer a product or service — 상품·서비스를 제공하다",
+        "tier": 2,
+        "rationale": "상점·업체가 제공하는 상품·서비스를 묻는 상황 표현.",
+        "pattern": "`do food/repairs/a service`",
+        "sources": "[Oxford 뜻 10](https://www.oxfordlearnersdictionaries.com/definition/english/do1_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/do) · [Longman](https://www.ldoceonline.com/dictionary/do)",
+        "examples": [
+          "예문 [직접 작성]: Does this café do breakfast all day?"
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립"
+      },
+      {
+        "id": "DO-B025",
+        "title": "요리하다",
+        "verb": "DO",
+        "definition": "cook or prepare food — 요리하다",
+        "tier": 2,
+        "rationale": "요리할 메뉴·조리 방식을 말하는 상황 표현.",
+        "pattern": "`do a meal; have food done`",
+        "sources": "[Oxford 뜻 21](https://www.oxfordlearnersdictionaries.com/definition/english/do1_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/do) · [Longman](https://www.ldoceonline.com/dictionary/do)",
+        "examples": [
+          "예문 [직접 작성]: I'll do pasta for dinner."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립"
+      },
+      {
+        "id": "DO-B027",
+        "title": "기간을 보내다",
+        "verb": "DO",
+        "definition": "spend time in an activity — 일·복무 등에 시간을 보내다",
+        "tier": 2,
+        "rationale": "근무·교육 등 일정 기간의 경험을 설명.",
+        "pattern": "`do a year/two months in/at ...`",
+        "sources": "[Oxford 뜻 19](https://www.oxfordlearnersdictionaries.com/definition/english/do1_1) · [Longman](https://www.ldoceonline.com/dictionary/do)",
+        "examples": [
+          "예문 [직접 작성]: She did six months at a small design firm."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; Longman 비격식"
+      },
+      {
+        "id": "DO-B028",
+        "title": "공연하다",
+        "verb": "DO",
+        "definition": "perform a show — 연극·공연을 하다",
+        "tier": 2,
+        "rationale": "공연·연극 참여 경험을 이야기할 때 유용.",
+        "pattern": "`do a play/show/role`",
+        "sources": "[Oxford 뜻 12](https://www.oxfordlearnersdictionaries.com/definition/english/do1_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/do) · [Longman](https://www.ldoceonline.com/dictionary/do)",
+        "examples": [
+          "예문 [직접 작성]: The drama club is doing a comedy this term."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립"
+      },
+      {
+        "id": "DO-B029",
+        "title": "효과를 주다",
+        "verb": "DO",
+        "definition": "cause an effect — 영향을 주다",
+        "tier": 2,
+        "rationale": "결과·효과를 설명하는 상위 연어 묶음; 개별 good/harm 항목과 함께 사용.",
+        "pattern": "`do good/harm/damage; do sth for sb`",
+        "sources": "[Cambridge](https://dictionary.cambridge.org/dictionary/english/do) · [Longman](https://www.ldoceonline.com/dictionary/do)",
+        "examples": [
+          "예문 [직접 작성]: The break did us a lot of good."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립"
+      },
+      {
+        "id": "DO-B032",
+        "title": "제 몫을 하다",
+        "verb": "DO",
+        "definition": "contribute a fair share — 자기 몫을 하다",
+        "tier": 2,
+        "rationale": "공동 작업에서 자기 몫·책임을 설명.",
+        "pattern": "`do one's part/share/bit`",
+        "sources": "[Cambridge](https://dictionary.cambridge.org/dictionary/english/do) · [Longman](https://www.ldoceonline.com/dictionary/do-your-bit)",
+        "examples": [
+          "예문 [직접 작성]: Everyone did their part to clean up."
+        ],
+        "notes": "- 분류·표지: 관용표현·고정 연어; 중립; do one's bit 비격식"
+      }
+    ],
+    "introductions": [
+      {
+        "verb": "DO",
+        "text": "활용: **do–did–done**, 3인칭 단수 **does**. 본동사와 조동사를 구별한다. 미국 회화 학습 티어로 배열했다. 같은 티어 안에는 세부 순위가 없으며 사전 배열순을 빈도순으로 사용하지 않았다."
+      }
+    ],
+    "verbs": [
+      "DO"
+    ]
+  },
+  {
+    "day": 10,
+    "items": [
+      {
+        "id": "DO-B033",
+        "title": "좋은 효과를 주다",
+        "verb": "DO",
+        "definition": "improve someone's condition — 도움·이익을 주다",
+        "tier": 2,
+        "rationale": "휴식·변화가 도움이 된다고 말하는 상황 표현.",
+        "pattern": "`do sb good; do some good`",
+        "sources": "[Longman](https://www.ldoceonline.com/dictionary/do)",
+        "examples": [
+          "예문 [직접 작성]: A quiet evening will do you good."
+        ],
+        "notes": "- 분류·표지: 관용표현·고정 연어; 중립"
+      },
+      {
+        "id": "DO-B034",
+        "title": "피해를 주다",
+        "verb": "DO",
+        "definition": "cause harm — 해를 끼치다",
+        "tier": 2,
+        "rationale": "피해·손상·해로운 결과를 설명하는 기본 연어.",
+        "pattern": "`do harm/damage to sth; do sb harm`",
+        "sources": "[Longman](https://www.ldoceonline.com/dictionary/do)",
+        "examples": [
+          "예문 [직접 작성]: The leak did serious damage to the floor."
+        ],
+        "notes": "- 분류·표지: 관용표현·고정 연어; 중립"
+      },
+      {
+        "id": "DO-B041",
+        "title": "do lunch/a movie",
+        "verb": "DO",
+        "definition": "meet for a social activity — 만나서 점심·영화를 함께하다",
+        "tier": 2,
+        "rationale": "함께 식사·활동을 하자고 제안하는 비격식 표현.",
+        "pattern": "`do lunch/a movie`",
+        "sources": "[Oxford 뜻 4](https://www.oxfordlearnersdictionaries.com/definition/english/do1_1) · [Longman](https://www.ldoceonline.com/dictionary/do)",
+        "examples": [
+          "예문 [직접 작성]: Let's do lunch when you're back in town."
+        ],
+        "notes": "- 분류·표지: 관용표현·고정 연어; 비격식"
+      },
+      {
+        "id": "DO-B045",
+        "title": "거리를 가다",
+        "verb": "DO",
+        "definition": "travel a distance — 일정 거리를 가다",
+        "tier": 2,
+        "rationale": "여행·운전·운동에서 이동 거리를 말하는 미국 용법.",
+        "pattern": "`do a distance`",
+        "sources": "[Oxford 뜻 15](https://www.oxfordlearnersdictionaries.com/definition/english/do1_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/do) · [Longman](https://www.ldoceonline.com/dictionary/do)",
+        "examples": [
+          "예문 [직접 작성]: We did nearly two hundred kilometers yesterday."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립"
+      },
+      {
+        "id": "DO-B046",
+        "title": "연비가 나오다",
+        "verb": "DO",
+        "definition": "travel per unit of fuel — 특정 연비가 나오다",
+        "tier": 2,
+        "rationale": "자동차 연비를 이야기하는 생활·구매 상황에 유용.",
+        "pattern": "`do miles to the gallon`",
+        "sources": "[Oxford 뜻 15](https://www.oxfordlearnersdictionaries.com/definition/english/do1_1)",
+        "examples": [
+          "예문 [직접 작성]: The old car does thirty miles to the gallon."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립"
+      },
+      {
+        "id": "DO-B047",
+        "title": "여정을 마치다",
+        "verb": "DO",
+        "definition": "complete a journey — 여정을 마치다",
+        "tier": 2,
+        "rationale": "여행 구간을 얼마 만에 마쳤는지 설명.",
+        "pattern": "`do a trip/journey in time`",
+        "sources": "[Oxford 뜻 16](https://www.oxfordlearnersdictionaries.com/definition/english/do1_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/do)",
+        "examples": [
+          "예문 [직접 작성]: We did the whole journey in one day."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립"
+      },
+      {
+        "id": "DO-B048",
+        "title": "속도를 내다",
+        "verb": "DO",
+        "definition": "travel at a speed — 일정 속도로 달리다",
+        "tier": 2,
+        "rationale": "미국에서도 운전 속도를 doing+숫자로 말하므로 능동 상황 학습.",
+        "pattern": "`do a speed`",
+        "sources": "[Oxford 뜻 17](https://www.oxfordlearnersdictionaries.com/definition/english/do1_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/do) · [Longman](https://www.ldoceonline.com/dictionary/do)",
+        "examples": [
+          "예문 [직접 작성]: The train was doing about eighty kilometers an hour."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립"
+      },
+      {
+        "id": "DO-B049",
+        "title": "관광하다",
+        "verb": "DO",
+        "definition": "visit as a tourist — 관광하다",
+        "tier": 2,
+        "rationale": "여행 일정과 관광한 장소를 비격식으로 말함.",
+        "pattern": "`do a city/sight`",
+        "sources": "[Oxford 뜻 18](https://www.oxfordlearnersdictionaries.com/definition/english/do1_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/do) · [Longman](https://www.ldoceonline.com/dictionary/do)",
+        "examples": [
+          "예문 [직접 작성]: We did the old town before lunch."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 비격식"
+      },
+      {
+        "id": "DO-B050",
+        "title": "흉내내다",
+        "verb": "DO",
+        "definition": "copy someone's voice or behavior — 흉내내다",
+        "tier": 2,
+        "rationale": "목소리·억양 흉내 능력을 이야기하는 사회적 상황 표현.",
+        "pattern": "`do sb/an accent/an impression`",
+        "sources": "[Oxford 뜻 13](https://www.oxfordlearnersdictionaries.com/definition/english/do1_1) · [Longman](https://www.ldoceonline.com/dictionary/do)",
+        "examples": [
+          "예문 [직접 작성]: He can do a convincing Scottish accent."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립"
+      },
+      {
+        "id": "DO-B051",
+        "title": "담당하여 처리하다",
+        "verb": "DO",
+        "definition": "attend to someone or something — 담당하여 처리하다",
+        "tier": 2,
+        "rationale": "미용 등 서비스를 받을 순서·예약을 설명; 구체적 문맥 필요.",
+        "pattern": "`do sb/sth`",
+        "sources": "[Oxford 뜻 20](https://www.oxfordlearnersdictionaries.com/definition/english/do1_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/do)",
+        "examples": [
+          "예문 [직접 작성]: The stylist can do you at two o'clock."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립"
+      },
+      {
+        "id": "DO-B052",
+        "title": "장식하다",
+        "verb": "DO",
+        "definition": "decorate a room — 방·집을 장식하다",
+        "tier": 2,
+        "rationale": "집·방의 색과 장식을 설명하는 생활 상황 용법.",
+        "pattern": "`do a room in a color/style`",
+        "sources": "[Longman](https://www.ldoceonline.com/dictionary/do)",
+        "examples": [
+          "예문 [직접 작성]: They did the nursery in pale green."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 중립"
+      },
+      {
+        "id": "DO-B056",
+        "title": "마약을 하다",
+        "verb": "DO",
+        "definition": "use illegal drugs — 마약을 하다",
+        "tier": 2,
+        "rationale": "미국에서도 약물 사용 여부·거절·경험을 말하는 상황 표현.",
+        "pattern": "`do drugs`",
+        "sources": "[Oxford 뜻 25](https://www.oxfordlearnersdictionaries.com/definition/english/do1_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/do) · [Longman](https://www.ldoceonline.com/dictionary/do)",
+        "examples": [
+          "예문 [직접 작성]: He says he doesn't do drugs."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 비격식"
+      },
+      {
+        "id": "DO-B058",
+        "title": "복역하다",
+        "verb": "DO",
+        "definition": "spend time in prison — 복역하다",
+        "tier": 2,
+        "rationale": "복역 이력을 이야기하는 미국 비격식 상황 표현.",
+        "pattern": "`do time/years (for sth)`",
+        "sources": "[Oxford 뜻 19](https://www.oxfordlearnersdictionaries.com/definition/english/do1_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/do) · [Longman](https://www.ldoceonline.com/dictionary/do)",
+        "examples": [
+          "예문 [직접 작성]: He did three years for fraud."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 비격식"
+      },
+      {
+        "id": "DO-B013",
+        "title": "조동사: 권유·명령 강조",
+        "verb": "DO",
+        "definition": "urge someone to act — 권유·명령을 강조하다",
+        "tier": 3,
+        "rationale": "Do come...류 권유는 강조된 정중체로 보통 미국 권유보다 말투 제약이 큼.",
+        "pattern": "`Do + V; Do be ...`",
+        "sources": "[Oxford 조동사 뜻 4](https://www.oxfordlearnersdictionaries.com/definition/english/do1_2) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/do) · [Longman](https://www.ldoceonline.com/dictionary/do)",
+        "examples": [
+          "예문 [직접 작성]: Do come inside; it's freezing out there."
+        ],
+        "notes": "- 분류·표지: 조동사·대동사; 정중한 권유 또는 강한 요청"
+      },
+      {
+        "id": "DO-B016",
+        "title": "대동사: do so",
+        "verb": "DO",
+        "definition": "refer back to an action — 앞서 말한 행동을 가리키다",
+        "tier": 3,
+        "rationale": "do so는 do it/that보다 격식적이어서 설명문 이해를 우선.",
+        "pattern": "`do so`",
+        "sources": "[Cambridge 문법](https://dictionary.cambridge.org/grammar/british-grammar/do)",
+        "examples": [
+          "예문 [직접 작성]: They promised to refund the fee and did so promptly."
+        ],
+        "notes": "- 분류·표지: 조동사·대동사; do it/that보다 격식"
+      },
+      {
+        "id": "DO-B014",
+        "title": "조동사: 놀람 꼬리질문",
+        "verb": "DO",
+        "definition": "show surprised interest — 동일 극성 꼬리질문으로 놀람을 보이다",
+        "tier": 3,
+        "rationale": "동일 극성 꼬리질문은 억양에 따라 도전·의심으로 들려 이해를 먼저 학습.",
+        "pattern": "`S V, do/does/did S?`",
+        "sources": "[Cambridge](https://dictionary.cambridge.org/dictionary/english/do)",
+        "examples": [
+          "예문 [직접 작성]: So you won the prize, did you?"
+        ],
+        "notes": "- 분류·표지: 조동사·대동사; 말투에 따라 놀람·의심"
+      },
+      {
+        "id": "DO-B015",
+        "title": "조동사: 부정어 도치",
+        "verb": "DO",
+        "definition": "support negative inversion — 부정어 뒤 도치를 만들다",
+        "tier": 3,
+        "rationale": "부정어 도치는 격식적 강조 구조로 일반 회화 후순위.",
+        "pattern": "`Never/Rarely ... do/does/did S V`",
+        "sources": "[Oxford 조동사 뜻 5](https://www.oxfordlearnersdictionaries.com/definition/english/do1_2) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/do)",
+        "examples": [
+          "예문 [직접 작성]: Never did I expect such a warm welcome."
+        ],
+        "notes": "- 분류·표지: 조동사·대동사; 격식"
+      },
+      {
+        "id": "DO-B018",
+        "title": "대동사: 조동사 뒤 do",
+        "verb": "DO",
+        "definition": "stand for an earlier action — 조동사 뒤에서 앞 행동을 대신하다",
+        "tier": 3,
+        "rationale": "조동사 뒤 대동사 do는 특히 영국형으로 미국 생산 학습 후순위.",
+        "pattern": "`may/might/could/should + do`",
+        "sources": "[Cambridge 문법](https://dictionary.cambridge.org/grammar/british-grammar/do) · [Longman](https://www.ldoceonline.com/dictionary/do)",
+        "examples": [
+          "예문 [직접 작성]: “Will she join us?” “She might do.”"
+        ],
+        "notes": "- 분류·표지: 조동사·대동사; 특히 영국; 미국에서는 do 없이도 표현"
+      },
+      {
+        "id": "DO-B021",
+        "title": "공부하다",
+        "verb": "DO",
+        "definition": "study a subject — 과목·작가를 공부하다",
+        "tier": 3,
+        "rationale": "과목 수강 의미는 영국형이며 미국에서는 take/study 우선.",
+        "pattern": "`do a subject/course/an author`",
+        "sources": "[Oxford 뜻 8](https://www.oxfordlearnersdictionaries.com/definition/english/do1_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/do) · [Longman](https://www.ldoceonline.com/dictionary/do)",
+        "examples": [
+          "예문 [직접 작성]: We did chemistry at school."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; Longman 영국"
+      },
+      {
+        "id": "DO-B053",
+        "title": "사기치다",
+        "verb": "DO",
+        "definition": "cheat someone — 사기치다",
+        "tier": 3,
+        "rationale": "사기 의미 do는 영국 비격식으로 미국에서는 cheat/scam 우선.",
+        "pattern": "`do sb; be/get done; do sb for an amount`",
+        "sources": "[Oxford 뜻 22](https://www.oxfordlearnersdictionaries.com/definition/english/do1_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/do) · [Longman](https://www.ldoceonline.com/dictionary/do) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/do-for)",
+        "examples": [
+          "예문 [직접 작성]: That watch is a fake; you've been done."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 영국·비격식; 흔히 수동태"
+      }
+    ],
+    "introductions": [
+      {
+        "verb": "DO",
+        "text": "활용: **do–did–done**, 3인칭 단수 **does**. 본동사와 조동사를 구별한다. 미국 회화 학습 티어로 배열했다. 같은 티어 안에는 세부 순위가 없으며 사전 배열순을 빈도순으로 사용하지 않았다."
+      }
+    ],
+    "verbs": [
+      "DO"
+    ]
+  },
+  {
+    "day": 11,
+    "items": [
+      {
+        "id": "DO-B054",
+        "title": "처벌하다",
+        "verb": "DO",
+        "definition": "punish for an offence — 위법 행위로 처벌하다",
+        "tier": 3,
+        "rationale": "입건·처벌 의미 do는 영국 비격식으로 이해 중심.",
+        "pattern": "`do sb for sth/V-ing`",
+        "sources": "[Oxford 뜻 23](https://www.oxfordlearnersdictionaries.com/definition/english/do1_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/do) · [Longman](https://www.ldoceonline.com/dictionary/do) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/do-for)",
+        "examples": [
+          "예문 [직접 작성]: He got done for driving without insurance."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 영국·비격식·구어"
+      },
+      {
+        "id": "DO-B055",
+        "title": "털다",
+        "verb": "DO",
+        "definition": "steal from a building — 건물을 털다",
+        "tier": 3,
+        "rationale": "범죄를 다루는 특수한 비격식 표현이라 서사 이해를 먼저 학습.",
+        "pattern": "`do a shop/house`",
+        "sources": "[Oxford 뜻 24](https://www.oxfordlearnersdictionaries.com/definition/english/do1_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/do)",
+        "examples": [
+          "예문 [직접 작성]: The gang did two shops in one night."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 비격식"
+      },
+      {
+        "id": "DO-B057",
+        "title": "성관계하다",
+        "verb": "DO",
+        "definition": "have sex — 성관계하다",
+        "tier": 3,
+        "rationale": "성적 완곡·속어로 문맥과 상대에 따른 제약이 커 이해 우선.",
+        "pattern": "`do sb; do it`",
+        "sources": "[Oxford 뜻 26](https://www.oxfordlearnersdictionaries.com/definition/english/do1_1) · [Cambridge](https://dictionary.cambridge.org/dictionary/english/do-it) · [Longman](https://www.ldoceonline.com/dictionary/do)",
+        "examples": [
+          "예문 [직접 작성]: The couple said they had not done it yet."
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 속어(Oxford); do it은 비격식·완곡(Longman)"
+      },
+      {
+        "id": "DO-B059",
+        "title": "what's doing?",
+        "verb": "DO",
+        "definition": "ask what is happening — 무슨 일이 있느냐고 묻다",
+        "tier": 3,
+        "rationale": "일반 안부·계획 질문보다 특정 말투이므로 이해를 먼저 익힘.",
+        "pattern": "`What's doing (at/in ...)?`",
+        "sources": "[Cambridge](https://dictionary.cambridge.org/dictionary/english/do) · [Longman](https://www.ldoceonline.com/dictionary/do)",
+        "examples": [
+          "예문 [직접 작성]: What's doing at the club tonight?"
+        ],
+        "notes": "- 분류·표지: 기본 뜻·문형·연어; 구어·비격식"
+      },
+      {
+        "id": "MAKE-B001",
+        "title": "만들다·제작하다",
+        "verb": "MAKE",
+        "definition": "Build or create a thing. — 물건을 만들다",
+        "tier": 1,
+        "rationale": "물건 제작을 말하는 기본 타동사이며 다양한 목적어로 확장된다.",
+        "pattern": "`make sth; make sb sth; make sth for sb` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/make_1), [C](https://dictionary.cambridge.org/dictionary/english/make), [L](https://www.ldoceonline.com/dictionary/make)",
+        "examples": [
+          "예문 [직접 작성]: They make wooden toys in this workshop."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MAKE-B002",
+        "title": "음식을 준비하다",
+        "verb": "MAKE",
+        "definition": "Prepare food or a drink. — 음식·음료를 만들다",
+        "tier": 1,
+        "rationale": "식사·음료 준비를 일상에서 즉시 말하는 핵심 연어다.",
+        "pattern": "`make breakfast/coffee; make sb a sandwich` · 표시: 일반",
+        "sources": "[C](https://dictionary.cambridge.org/dictionary/english/make), [L](https://www.ldoceonline.com/dictionary/make)",
+        "examples": [
+          "예문 [직접 작성]: I'll make some soup for lunch."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MAKE-B003",
+        "title": "상태를 바꾸다",
+        "verb": "MAKE",
+        "definition": "Cause a different state. — 어떤 상태가 되게 하다",
+        "tier": 1,
+        "rationale": "make O adjective는 감정·편의·변화를 폭넓게 표현한다.",
+        "pattern": "`make O adjective; make it adjective to V/that…` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/make_1), [C](https://dictionary.cambridge.org/dictionary/english/make)",
+        "examples": [
+          "예문 [직접 작성]: The new lamp makes the room brighter."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MAKE-B004",
+        "title": "행동·반응을 일으키다",
+        "verb": "MAKE",
+        "definition": "Cause someone to act. — 행동하거나 반응하게 하다",
+        "tier": 1,
+        "rationale": "make O 동사원형으로 이유·반응을 설명하는 생산적 문형이다.",
+        "pattern": "`make O bare infinitive` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/make_1), [L](https://www.ldoceonline.com/dictionary/make)",
+        "examples": [
+          "예문 [직접 작성]: That smell always makes me feel hungry."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MAKE-B005",
+        "title": "강제로 시키다",
+        "verb": "MAKE",
+        "definition": "Force someone to act. — 억지로 ~하게 하다",
+        "tier": 1,
+        "rationale": "강제 사역과 수동태의 to 차이를 말하기에서 익혀야 한다.",
+        "pattern": "`make O bare infinitive; be made to V` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/make_1), [C](https://dictionary.cambridge.org/dictionary/english/make), [L](https://www.ldoceonline.com/dictionary/make)",
+        "examples": [
+          "예문 [직접 작성]: The coach made us run another lap."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MAKE-B006",
+        "title": "결정하다",
+        "verb": "MAKE",
+        "definition": "Choose what to do. — 결정을 내리다",
+        "tier": 1,
+        "rationale": "개인·업무의 결정을 표현하는 기본 연어다.",
+        "pattern": "`make a decision (about/on sth)` · 표시: 일반; 주요 연어",
+        "sources": "[C](https://dictionary.cambridge.org/dictionary/english/make), [L](https://www.ldoceonline.com/dictionary/make)",
+        "examples": [
+          "예문 [직접 작성]: We need to make a decision before Friday."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MAKE-B007",
+        "title": "실수하다",
+        "verb": "MAKE",
+        "definition": "Do something incorrectly. — 실수를 저지르다",
+        "tier": 1,
+        "rationale": "실수 인정·수정을 말할 때 바로 쓰는 연어다.",
+        "pattern": "`make a mistake/error` · 표시: 일반; 주요 연어",
+        "sources": "[C](https://dictionary.cambridge.org/dictionary/english/make), [L](https://www.ldoceonline.com/dictionary/make)",
+        "examples": [
+          "예문 [직접 작성]: I made a mistake when I entered the date."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MAKE-B008",
+        "title": "전화하다",
+        "verb": "MAKE",
+        "definition": "Call someone. — 전화를 걸다",
+        "tier": 1,
+        "rationale": "전화 요청·일정 설명에 두루 쓰인다.",
+        "pattern": "`make a (phone) call (to sb)` · 표시: 일반; 주요 연어",
+        "sources": "[C](https://dictionary.cambridge.org/dictionary/english/make), [L](https://www.ldoceonline.com/dictionary/make)",
+        "examples": [
+          "예문 [직접 작성]: Can I make a quick call before we leave?"
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MAKE-B009",
+        "title": "노력하다",
+        "verb": "MAKE",
+        "definition": "Try to achieve something. — 노력하다",
+        "tier": 1,
+        "rationale": "노력·시도를 설명하는 생산적 연어다.",
+        "pattern": "`make an effort/attempt to V` · 표시: 일반; 주요 연어",
+        "sources": "[C](https://dictionary.cambridge.org/dictionary/english/make), [L](https://www.ldoceonline.com/dictionary/make)",
+        "examples": [
+          "예문 [직접 작성]: He made an effort to remember everyone's name."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MAKE-B010",
+        "title": "제안하다",
+        "verb": "MAKE",
+        "definition": "Suggest an idea or offer a deal or help. — 제안을 하다",
+        "tier": 1,
+        "rationale": "의견 제안에 유용하되 suggestion과 offer의 목적어 차이는 보완해야 한다.",
+        "pattern": "`make a suggestion/offer` · 표시: 일반; 주요 연어",
+        "sources": "[C](https://dictionary.cambridge.org/dictionary/english/make), [L](https://www.ldoceonline.com/dictionary/make)",
+        "examples": [
+          "예문 [직접 작성]: I'd like to make a suggestion about the schedule."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MAKE-B012",
+        "title": "진전하다",
+        "verb": "MAKE",
+        "definition": "Move closer to a goal. — 진전을 이루다",
+        "tier": 1,
+        "rationale": "학습·작업·회복의 진전을 폭넓게 말한다.",
+        "pattern": "`make progress (with/on sth)` · 표시: 일반; 주요 연어",
+        "sources": "[C](https://dictionary.cambridge.org/dictionary/english/make)",
+        "examples": [
+          "예문 [직접 작성]: We're making progress with the repairs."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MAKE-B013",
+        "title": "돈을 벌다",
+        "verb": "MAKE",
+        "definition": "Earn money. — 돈을 벌다",
+        "tier": 1,
+        "rationale": "소득·생계·금액을 말하는 핵심 뜻이다.",
+        "pattern": "`make money; make an amount; make a living (doing sth)` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/make_1), [C](https://dictionary.cambridge.org/dictionary/english/make), [L](https://www.ldoceonline.com/dictionary/make)",
+        "examples": [
+          "예문 [직접 작성]: She makes enough to cover the rent."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MAKE-B015",
+        "title": "행사에 참석하다",
+        "verb": "MAKE",
+        "definition": "Manage to attend. — 행사·약속에 참석할 수 있다",
+        "tier": 1,
+        "rationale": "참석 가능·불가를 짧게 전달하는 미국 회화 핵심이다.",
+        "pattern": "`make a meeting/party; make it (to sth)` · 표시: Cambridge 비격식",
+        "sources": "[C](https://dictionary.cambridge.org/dictionary/english/make), [L](https://www.ldoceonline.com/dictionary/make-the-meeting-the-party-tuesday-etc)",
+        "examples": [
+          "예문 [직접 작성]: Sorry, I can't make the meeting tomorrow."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MAKE-B016",
+        "title": "도착하다",
+        "verb": "MAKE",
+        "definition": "Reach a place successfully. — 목적지에 이르다",
+        "tier": 1,
+        "rationale": "make it to의 도착·도달을 우선 익히고 bare make+장소는 분리 인식한다.",
+        "pattern": "`make a place; make it to a place` · 표시: make it to는 회화; bare make+장소는 Longman 구식(old-fashioned), Cambridge 비격식",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/make_1), [C](https://dictionary.cambridge.org/dictionary/english/make), [L](https://www.ldoceonline.com/dictionary/make)",
+        "examples": [
+          "예문 [직접 작성]: We made it to the station before the rain started."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MAKE-B017",
+        "title": "기한·목표를 달성하다",
+        "verb": "MAKE",
+        "definition": "Reach a required target. — 마감·목표를 맞추다",
+        "tier": 1,
+        "rationale": "일·공부의 마감 달성을 바로 표현할 수 있다.",
+        "pattern": "`make the deadline/target` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/make_1), [L](https://www.ldoceonline.com/dictionary/make)",
+        "examples": [
+          "예문 [직접 작성]: We can still make the deadline if we start now."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MAKE-B018",
+        "title": "소리·혼란 등을 일으키다",
+        "verb": "MAKE",
+        "definition": "Bring about an effect. — 소리·혼란·인상 등을 일으키다",
+        "tier": 1,
+        "rationale": "mess/noise/impression 등 재사용 범위가 큰 기본 연어군이다.",
+        "pattern": "`make a noise/mess/fuss/impression` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/make_1), [C](https://dictionary.cambridge.org/dictionary/english/make)",
+        "examples": [
+          "예문 [직접 작성]: The children made a mess with the flour."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MAKE-B019",
+        "title": "침대를 정리하다",
+        "verb": "MAKE",
+        "definition": "Arrange bed covers neatly. — 이부자리를 정돈하다",
+        "tier": 1,
+        "rationale": "가사·숙소에서 쓰는 대표적인 make 연어다.",
+        "pattern": "`make a/the bed` · 표시: 연어",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/make_1), [C](https://dictionary.cambridge.org/dictionary/english/make)",
+        "examples": [
+          "예문 [직접 작성]: Please make your bed before breakfast."
+        ],
+        "notes": ""
+      }
+    ],
+    "introductions": [
+      {
+        "verb": "DO",
+        "text": "활용: **do–did–done**, 3인칭 단수 **does**. 본동사와 조동사를 구별한다. 미국 회화 학습 티어로 배열했다. 같은 티어 안에는 세부 순위가 없으며 사전 배열순을 빈도순으로 사용하지 않았다."
+      },
+      {
+        "verb": "MAKE",
+        "text": "make–made–made. 조동사 용법은 없다. 사역문 `make O V`는 능동태에서 to 없이, 수동태에서는 `be made to V`로 쓴다. 재료·방법: `made of`는 구성 재료, `made from`은 가공 원료, `made out of`는 재료를 다른 물건으로 바꿈, `made with`는 주로 음식 재료, `made by`는 제작자·제작 방법을 나타낸다. [Cambridge](https://dictionary.cambridge.org/dictionary/english/make)·[Longman](https://www.ldoceonline.com/dictionary/make).\n\n1–3티어는 미국 일상·일반 직장 회화의 학습 우선순위 판단이다. 기본 뜻과 생산적인 연어를 여기에, 고정 관용표현을 idioms.md에 수록했다. ID는 파일 이동과 관계없이 유지한다."
+      }
+    ],
+    "verbs": [
+      "DO",
+      "MAKE"
+    ]
+  },
+  {
+    "day": 12,
+    "items": [
+      {
+        "id": "MAKE-B020",
+        "title": "친구·적을 만들다",
+        "verb": "MAKE",
+        "definition": "Gain friends or enemies. — 친구·적이 생기게 하다",
+        "tier": 1,
+        "rationale": "친구 사귀기는 핵심이나 enemies에 with를 일괄 적용하지 않아야 한다.",
+        "pattern": "`make friends (with sb); make enemies; make an enemy of sb` · 표시: 연어",
+        "sources": "[C](https://dictionary.cambridge.org/dictionary/english/make)",
+        "examples": [
+          "예문 [직접 작성]: She made friends with the family next door."
+        ],
+        "notes": "- 용법 메모: `with sb`를 enemies에까지 같은 방식으로 확장하지 않는다. [Cambridge enemy](https://dictionary.cambridge.org/us/dictionary/english/enemy)"
+      },
+      {
+        "id": "MAKE-B021",
+        "title": "공간을 내다",
+        "verb": "MAKE",
+        "definition": "Create space for someone. — 자리·공간·길을 내주다",
+        "tier": 1,
+        "rationale": "자리·수납 공간을 마련하는 요청에 직접 쓰인다.",
+        "pattern": "`make room/space/way for sb/sth` · 표시: 연어",
+        "sources": "[C](https://dictionary.cambridge.org/dictionary/english/make)",
+        "examples": [
+          "예문 [직접 작성]: Could you move that box and make room for another chair?"
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MAKE-B024",
+        "title": "글·작품·규칙을 만들다",
+        "verb": "MAKE",
+        "definition": "Create written or artistic work. — 글·영화·규칙 등을 만들다",
+        "tier": 1,
+        "rationale": "make a list/rule 같은 생산적 목적어군은 직업을 가리지 않고 유용하다.",
+        "pattern": "`make a film/list/will/rule/statement` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/make_1), [C](https://dictionary.cambridge.org/dictionary/english/make), [L](https://www.ldoceonline.com/dictionary/make)",
+        "examples": [
+          "예문 [직접 작성]: They made a short film about the village."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MAKE-B026",
+        "title": "종류·역할을 바꾸다",
+        "verb": "MAKE",
+        "definition": "Turn someone into something. — 어떤 종류의 사람·것이 되게 하다",
+        "tier": 1,
+        "rationale": "make O noun으로 결과·정체성의 변화를 표현하는 핵심 확장이다.",
+        "pattern": "`make O noun; make a … of O` · 표시: 일반; make of의 전환 용법과 연결",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/make_1), [C](https://dictionary.cambridge.org/dictionary/english/make-of)",
+        "examples": [
+          "예문 [직접 작성]: The training made her a confident speaker."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MAKE-B029",
+        "title": "잘 어울리다·되다",
+        "verb": "MAKE",
+        "definition": "Be suitable for a role. — ~로 적합하다; 훌륭한 ~가 되다",
+        "tier": 1,
+        "rationale": "You'd make a good…처럼 적합성을 평가하는 생산적 미국 회화 문형이다.",
+        "pattern": "`make (a/an) noun` · 표시: 연결동사",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/make_1), [L](https://www.ldoceonline.com/dictionary/make)",
+        "examples": [
+          "예문 [직접 작성]: That spare room would make a good study."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MAKE-B031",
+        "title": "누적 횟수가 되다",
+        "verb": "MAKE",
+        "definition": "Bring the count to a number. — 이번 것으로 누적 수가 ~가 되다",
+        "tier": 1,
+        "rationale": "That makes…로 일상 수량·횟수를 갱신하는 생산적 문형이다.",
+        "pattern": "`that makes + number/count` · 표시: 연결동사",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/make_1), [C](https://dictionary.cambridge.org/dictionary/english/make)",
+        "examples": [
+          "예문 [직접 작성]: That makes four calls this morning."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MAKE-B040",
+        "title": "지불·대출·투자하다",
+        "verb": "MAKE",
+        "definition": "Pay, lend, or invest money. — 지급·대출·투자를 하다",
+        "tier": 1,
+        "rationale": "1티어은 일상 청구·납부의 make a payment를 기준으로 하며 loan/investment는 상황적 추가 연어다.",
+        "pattern": "`make a payment/loan/investment` · 표시: 사업 연어",
+        "sources": "[C](https://dictionary.cambridge.org/dictionary/english/make)",
+        "examples": [
+          "예문 [직접 작성]: We made the final payment yesterday."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MAKE-B105",
+        "title": "돌다·이동 행동을 하다",
+        "verb": "MAKE",
+        "definition": "Perform a movement or journey. — 회전·착륙·여행 등의 행동을 하다",
+        "tier": 1,
+        "rationale": "make a turn/trip은 이동 안내·여행의 생산적 연어다.",
+        "pattern": "`make a turn/landing/trip/exit` · 표시: 기능동사 연어의 이동 용법",
+        "sources": "[C](https://dictionary.cambridge.org/dictionary/english/make), [O](https://www.oxfordlearnersdictionaries.com/definition/english/make_1)",
+        "examples": [
+          "예문 [직접 작성]: Make a left turn after the bridge."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MAKE-B011",
+        "title": "일을 시작하다",
+        "verb": "MAKE",
+        "definition": "Begin an activity. — 일을 시작하다",
+        "tier": 2,
+        "rationale": "시작을 제안하는 유효한 표현이지만 핵심 start/get started 뒤에 익혀도 된다.",
+        "pattern": "`make a start on/with sth` · 표시: 일반; 주요 연어",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/make_1), [C](https://dictionary.cambridge.org/dictionary/english/make)",
+        "examples": [
+          "예문 [직접 작성]: Let's make a start on dinner."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MAKE-B014",
+        "title": "이익을 내다",
+        "verb": "MAKE",
+        "definition": "Earn more than costs. — 비용보다 많이 벌어 이익을 내다",
+        "tier": 2,
+        "rationale": "사업·판매 수익에 유용하지만 모든 생활 대화의 필수 문형은 아니다.",
+        "pattern": "`make a profit` · 표시: 회계·사업 연어",
+        "sources": "[C](https://dictionary.cambridge.org/dictionary/english/make), [L](https://www.ldoceonline.com/dictionary/make)",
+        "examples": [
+          "예문 [직접 작성]: The café made a small profit last month."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MAKE-B025",
+        "title": "구멍·자국을 내다",
+        "verb": "MAKE",
+        "definition": "Leave a physical mark. — 구멍·흠·자국을 내다",
+        "tier": 2,
+        "rationale": "파손·공작·수리를 설명할 때 쓰는 구체적 상황 용법이다.",
+        "pattern": "`make a hole/dent/mark in/on sth` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/make_1), [L](https://www.ldoceonline.com/dictionary/make)",
+        "examples": [
+          "예문 [직접 작성]: The branch made a scratch on the roof."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MAKE-B027",
+        "title": "의사를 전달하다",
+        "verb": "MAKE",
+        "definition": "Get others to hear or understand. — 말·뜻·존재가 전달되게 하다",
+        "tier": 2,
+        "rationale": "의사소통 성공·자기소개 장면에 유용한 한정된 보어군이다.",
+        "pattern": "`make oneself heard/understood/known` · 표시: 연어; 과거분사 보어",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/make_1), [L](https://www.ldoceonline.com/dictionary/make-yourself-heard-understood-known-etc)",
+        "examples": [
+          "예문 [직접 작성]: He spoke slowly to make himself understood."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MAKE-B028",
+        "title": "임명하다",
+        "verb": "MAKE",
+        "definition": "Choose someone for a role. — 직책에 임명하다",
+        "tier": 2,
+        "rationale": "직책·팀 역할을 정하는 장면에서 유용하다.",
+        "pattern": "`make O noun; be made noun` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/make_1), [C](https://dictionary.cambridge.org/dictionary/english/make), [L](https://www.ldoceonline.com/dictionary/make-somebody-captain-leader-etc)",
+        "examples": [
+          "예문 [직접 작성]: They made Rosa team leader."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MAKE-B030",
+        "title": "합계가 되다",
+        "verb": "MAKE",
+        "definition": "Add up to an amount. — 합해서 얼마가 되다",
+        "tier": 2,
+        "rationale": "합계 설명에는 쓰이나 숫자 계산 장면에 한정된다.",
+        "pattern": "`number and number make number` · 표시: 연결동사",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/make_1), [C](https://dictionary.cambridge.org/dictionary/english/make), [L](https://www.ldoceonline.com/dictionary/make)",
+        "examples": [
+          "예문 [직접 작성]: Seven and eight make fifteen."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MAKE-B033",
+        "title": "선수단에 들다",
+        "verb": "MAKE",
+        "definition": "Win a place on a team. — 팀·대표단에 뽑히다",
+        "tier": 2,
+        "rationale": "학교·운동 팀 선발을 말하는 미국 상황에서 유용하다.",
+        "pattern": "`make the team/squad` · 표시: 일반",
+        "sources": "[C](https://dictionary.cambridge.org/dictionary/english/make), [O](https://www.oxfordlearnersdictionaries.com/definition/english/make_1)",
+        "examples": [
+          "예문 [직접 작성]: He trained all winter but didn't make the team."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MAKE-B034",
+        "title": "뉴스에 나오다",
+        "verb": "MAKE",
+        "definition": "Become a news story. — 신문·주요 뉴스에 실리다",
+        "tier": 2,
+        "rationale": "뉴스·화제의 보도를 이야기할 때 쓰는 연어다.",
+        "pattern": "`make the papers/headlines/front page` · 표시: 연어",
+        "sources": "[C](https://dictionary.cambridge.org/dictionary/english/make), [L](https://www.ldoceonline.com/dictionary/make-the-papers-headlines-front-page-etc)",
+        "examples": [
+          "예문 [직접 작성]: The discovery made the headlines that evening."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MAKE-B035",
+        "title": "성공을 결정짓다",
+        "verb": "MAKE",
+        "definition": "Provide the best final part. — 어떤 것을 멋지게 완성하다",
+        "tier": 2,
+        "rationale": "행사·경험을 좋게 만든 요소를 강조할 때 유용하다.",
+        "pattern": "`make O` · 표시: Cambridge·Longman 비격식",
+        "sources": "[C](https://dictionary.cambridge.org/dictionary/english/make), [L](https://www.ldoceonline.com/dictionary/make)",
+        "examples": [
+          "예문 [직접 작성]: The live music really made the evening."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MAKE-B097",
+        "title": "손실을 내다",
+        "verb": "MAKE",
+        "definition": "Lose money overall. — 비용보다 적게 벌어 손실을 내다",
+        "tier": 2,
+        "rationale": "사업 손실에 유용하나 미국 산출용 대안 lose money도 함께 익힌다.",
+        "pattern": "`make a loss` · 표시: 회계·사업 연어",
+        "sources": "[C](https://dictionary.cambridge.org/dictionary/english/make), [L](https://www.ldoceonline.com/dictionary/make)",
+        "examples": [
+          "예문 [직접 작성]: The shop made a loss in its first year."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MAKE-B102",
+        "title": "요청하다",
+        "verb": "MAKE",
+        "definition": "Ask for something. — 요청하다",
+        "tier": 2,
+        "rationale": "공식 요청에는 유용하지만 일반 부탁의 핵심 ask 뒤에 익혀도 된다.",
+        "pattern": "`make a request (for sth)` · 표시: 주요 연어",
+        "sources": "[C](https://dictionary.cambridge.org/dictionary/english/make)",
+        "examples": [
+          "예문 [직접 작성]: They made a request for extra blankets."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MAKE-B103",
+        "title": "연설·발표·발언하다",
+        "verb": "MAKE",
+        "definition": "Say something publicly or formally. — 공식적으로 발언·발표하다",
+        "tier": 2,
+        "rationale": "발표·공식 발언·행사 장면에 유용한 연어군이다.",
+        "pattern": "`make a speech/announcement/comment/statement` · 표시: 주요 연어",
+        "sources": "[C](https://dictionary.cambridge.org/dictionary/english/make)",
+        "examples": [
+          "예문 [직접 작성]: The director made a short announcement after lunch."
+        ],
+        "notes": ""
+      }
+    ],
+    "introductions": [
+      {
+        "verb": "MAKE",
+        "text": "make–made–made. 조동사 용법은 없다. 사역문 `make O V`는 능동태에서 to 없이, 수동태에서는 `be made to V`로 쓴다. 재료·방법: `made of`는 구성 재료, `made from`은 가공 원료, `made out of`는 재료를 다른 물건으로 바꿈, `made with`는 주로 음식 재료, `made by`는 제작자·제작 방법을 나타낸다. [Cambridge](https://dictionary.cambridge.org/dictionary/english/make)·[Longman](https://www.ldoceonline.com/dictionary/make).\n\n1–3티어는 미국 일상·일반 직장 회화의 학습 우선순위 판단이다. 기본 뜻과 생산적인 연어를 여기에, 고정 관용표현을 idioms.md에 수록했다. ID는 파일 이동과 관계없이 유지한다."
+      }
+    ],
+    "verbs": [
+      "MAKE"
+    ]
+  },
+  {
+    "day": 13,
+    "items": [
+      {
+        "id": "MAKE-B104",
+        "title": "기부하다",
+        "verb": "MAKE",
+        "definition": "Give money for a cause. — 기부금을 내다",
+        "tier": 2,
+        "rationale": "기부·모금·지역 활동에 유용하다.",
+        "pattern": "`make a donation (to sth)` · 표시: 주요 연어",
+        "sources": "[C](https://dictionary.cambridge.org/dictionary/english/make)",
+        "examples": [
+          "예문 [직접 작성]: They made a donation to the animal shelter."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MAKE-B036",
+        "title": "어떻게 묘사하다",
+        "verb": "MAKE",
+        "definition": "Show someone in a particular way. — 그림·연기 등에서 ~로 표현하다",
+        "tier": 2,
+        "rationale": "그림·묘사 평가에 쓰이며 기본 make O adjective의 확장으로 익힐 수 있다.",
+        "pattern": "`make O adjective/noun` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/make_1)",
+        "examples": [
+          "예문 [직접 작성]: In your drawing, you've made my ears enormous."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MAKE-B032",
+        "title": "계산·판단하다",
+        "verb": "MAKE",
+        "definition": "Calculate a value. — 수치·시간이 ~라고 계산하다",
+        "tier": 3,
+        "rationale": "계산값을 말하는 이 문형에는 영국 표지가 있어 미국 산출 우선도가 낮다.",
+        "pattern": "`make O number; make O to be number` · 표시: Cambridge 영국; Oxford 수동태 불가",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/make_1), [C](https://dictionary.cambridge.org/dictionary/english/make), [L](https://www.ldoceonline.com/dictionary/make)",
+        "examples": [
+          "예문 [직접 작성]: I make the total ninety dollars."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MAKE-B037",
+        "title": "거리를 가다",
+        "verb": "MAKE",
+        "definition": "Cover a distance. — 일정 거리를 이동하다",
+        "tier": 3,
+        "rationale": "이동 거리 서술에 제한적이며 일상에서는 cover/go가 더 직접적 대안이다.",
+        "pattern": "`make distance (per day)` · 표시: 일반",
+        "sources": "[C](https://dictionary.cambridge.org/dictionary/english/make)",
+        "examples": [
+          "예문 [직접 작성]: With the wind behind us, we made thirty miles before lunch."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "MAKE-B038",
+        "title": "스포츠 점수를 내다",
+        "verb": "MAKE",
+        "definition": "Score a certain number. — 스포츠에서 특정 득점을 올리다",
+        "tier": 3,
+        "rationale": "현재 예문은 크리켓 득점 문맥이므로 일반 미국 스포츠 산출과 구별해야 한다.",
+        "pattern": "`make + score` · 표시: 스포츠",
+        "sources": "[L](https://www.ldoceonline.com/dictionary/make)",
+        "examples": [
+          "예문 [직접 작성]: Their opening batter made sixty runs."
+        ],
+        "notes": "- 용법 메모: 현재 예문은 크리켓이다. 미국 야구 등 다른 종목의 일반 득점 표현으로 그대로 확장하지 않는다."
+      },
+      {
+        "id": "MAKE-B039",
+        "title": "시장을 조성하다",
+        "verb": "MAKE",
+        "definition": "Offer to buy and sell securities. — 증권을 지속적으로 사고팔 시세를 제시하다",
+        "tier": 3,
+        "rationale": "증권시장 조성이라는 금융 전문 뜻이다.",
+        "pattern": "`make a market in sth` · 표시: 금융 전문",
+        "sources": "[C](https://dictionary.cambridge.org/dictionary/english/make), [L](https://www.ldoceonline.com/dictionary/make)",
+        "examples": [
+          "예문 [직접 작성]: The bank makes a market in government bonds."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "KEEP-B001",
+        "title": "계속 하다",
+        "verb": "KEEP",
+        "definition": "Continue an action. — 행동을 계속하다",
+        "tier": 1,
+        "rationale": "keep doing의 지속 뜻은 기본적인 생산 문형이다.",
+        "pattern": "`keep doing sth; keep on doing sth` · 표시: 일반; to부정사 불가",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/keep_1), [C](https://dictionary.cambridge.org/dictionary/english/keep), [L](https://www.ldoceonline.com/dictionary/keep)",
+        "examples": [
+          "예문 [직접 작성]: Keep stirring until the sauce is smooth."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "KEEP-B002",
+        "title": "반복해서 하다",
+        "verb": "KEEP",
+        "definition": "Do something again and again. — 행동이 반복되다",
+        "tier": 1,
+        "rationale": "원치 않는 반복·습관을 설명하는 keep doing은 핵심 회화다.",
+        "pattern": "`keep doing sth` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/keep_1), [C](https://dictionary.cambridge.org/dictionary/english/keep), [L](https://www.ldoceonline.com/dictionary/keep)",
+        "examples": [
+          "예문 [직접 작성]: I keep leaving my keys in the kitchen."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "KEEP-B003",
+        "title": "계속 갖고 있다",
+        "verb": "KEEP",
+        "definition": "Continue to have something. — 버리거나 돌려주지 않고 간직하다",
+        "tier": 1,
+        "rationale": "물건을 돌려주지 않거나 간직하는 기본 소유 뜻이다.",
+        "pattern": "`keep sth` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/keep_1), [C](https://dictionary.cambridge.org/dictionary/english/keep), [L](https://www.ldoceonline.com/dictionary/keep)",
+        "examples": [
+          "예문 [직접 작성]: You can keep the book when you've finished it."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "KEEP-B004",
+        "title": "보관하다",
+        "verb": "KEEP",
+        "definition": "Store in a chosen place. — 정해진 곳에 두다",
+        "tier": 1,
+        "rationale": "물건·자료의 위치를 묻고 설명하는 핵심 용법이다.",
+        "pattern": "`keep O + place` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/keep_1), [C](https://dictionary.cambridge.org/dictionary/english/keep), [L](https://www.ldoceonline.com/dictionary/keep)",
+        "examples": [
+          "예문 [직접 작성]: We keep spare batteries in this drawer."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "KEEP-B005",
+        "title": "상태를 유지하다",
+        "verb": "KEEP",
+        "definition": "Stay in a state. — 상태를 계속 유지하다",
+        "tier": 1,
+        "rationale": "keep calm/warm/busy 등 상태 지속을 폭넓게 표현한다.",
+        "pattern": "`keep adjective` · 표시: 연결동사",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/keep_1), [C](https://dictionary.cambridge.org/dictionary/english/keep), [L](https://www.ldoceonline.com/dictionary/keep)",
+        "examples": [
+          "예문 [직접 작성]: Try to keep calm while we wait."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "KEEP-B006",
+        "title": "상태를 유지시키다",
+        "verb": "KEEP",
+        "definition": "Make a state continue. — 상태·위치를 유지시키다",
+        "tier": 1,
+        "rationale": "keep O adjective로 온도·상태·감정을 유지시키는 핵심 문형이다.",
+        "pattern": "`keep O adjective/adverb/PP` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/keep_1), [C](https://dictionary.cambridge.org/dictionary/english/keep), [L](https://www.ldoceonline.com/dictionary/keep)",
+        "examples": [
+          "예문 [직접 작성]: This lid keeps the soup warm."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "KEEP-B007",
+        "title": "동작을 지속시키다",
+        "verb": "KEEP",
+        "definition": "Make an action continue. — 계속 ~하게 하다",
+        "tier": 1,
+        "rationale": "keep O doing은 기계·사람의 지속 행동을 표현한다.",
+        "pattern": "`keep O doing sth` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/keep_1), [C](https://dictionary.cambridge.org/dictionary/english/keep), [L](https://www.ldoceonline.com/dictionary/keep)",
+        "examples": [
+          "예문 [직접 작성]: Keep the engine running for a moment."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "KEEP-B008",
+        "title": "기다리게 하다",
+        "verb": "KEEP",
+        "definition": "Make someone wait. — 사람을 기다리게 하다",
+        "tier": 1,
+        "rationale": "기다리게 한 데 사과하거나 설명하는 기본 연어다.",
+        "pattern": "`keep sb waiting` · 표시: 주요 연어",
+        "sources": "[L](https://www.ldoceonline.com/dictionary/keep-somebody-waiting), [C](https://dictionary.cambridge.org/dictionary/english/keep)",
+        "examples": [
+          "예문 [직접 작성]: Sorry to keep you waiting outside."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "KEEP-B009",
+        "title": "비밀을 지키다",
+        "verb": "KEEP",
+        "definition": "Not reveal private information. — 비밀을 누설하지 않다",
+        "tier": 1,
+        "rationale": "비밀을 지킬 수 있는지 묻는 일상 대화에 직접 쓰인다.",
+        "pattern": "`keep a secret; keep sth secret (from sb)` · 표시: 주요 연어",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/keep_1), [L](https://www.ldoceonline.com/dictionary/keep-a-secret)",
+        "examples": [
+          "예문 [직접 작성]: Can you keep a secret until Monday?"
+        ],
+        "notes": ""
+      },
+      {
+        "id": "KEEP-B010",
+        "title": "약속을 지키다",
+        "verb": "KEEP",
+        "definition": "Do what you promised. — 약속을 이행하다",
+        "tier": 1,
+        "rationale": "약속·신뢰를 이야기하는 기본 연어다.",
+        "pattern": "`keep a promise/one's word` · 표시: 주요 연어",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/keep_1), [C](https://dictionary.cambridge.org/dictionary/english/keep), [L](https://www.ldoceonline.com/dictionary/keep)",
+        "examples": [
+          "예문 [직접 작성]: She always keeps her word."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "KEEP-B012",
+        "title": "기록하다",
+        "verb": "KEEP",
+        "definition": "Maintain a written record. — 일지·기록을 꾸준히 남기다",
+        "tier": 1,
+        "rationale": "업무·일기·가계 기록을 유지하는 생산적 용법이다.",
+        "pattern": "`keep a diary/record/account of sth` · 표시: 주요 연어",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/keep_1), [C](https://dictionary.cambridge.org/dictionary/english/keep), [L](https://www.ldoceonline.com/dictionary/keep-a-record-account-diary-etc)",
+        "examples": [
+          "예문 [직접 작성]: We keep a record of every repair."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "KEEP-B013",
+        "title": "지체시키다",
+        "verb": "KEEP",
+        "definition": "Delay someone. — 붙잡아 두거나 늦어지게 하다",
+        "tier": 1,
+        "rationale": "대화를 끝내거나 지연을 설명할 때 간결하게 쓴다.",
+        "pattern": "`keep sb` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/keep_1), [C](https://dictionary.cambridge.org/dictionary/english/keep), [L](https://www.ldoceonline.com/dictionary/keep)",
+        "examples": [
+          "예문 [직접 작성]: I won't keep you; I just need your signature."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "KEEP-B036",
+        "title": "조용히 하다",
+        "verb": "KEEP",
+        "definition": "Stop speaking or making noise. — 말·소리를 내지 않다",
+        "tier": 1,
+        "rationale": "조용히 해 달라는 직접적인 일상 요청이다.",
+        "pattern": "`keep quiet` · 표시: 구어·주요 연어",
+        "sources": "[C](https://dictionary.cambridge.org/dictionary/english/keep), [L](https://www.ldoceonline.com/dictionary/keep-quiet)",
+        "examples": [
+          "예문 [직접 작성]: Please keep quiet during the announcement."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "KEEP-B016",
+        "title": "계속 왼쪽·근처에 있다",
+        "verb": "KEEP",
+        "definition": "Stay in a position or direction. — 위치·방향을 유지하다",
+        "tier": 1,
+        "rationale": "길 안내·위치 유지에 쓰는 생산적 방향 문형이다.",
+        "pattern": "`keep left/right/close; keep + PP` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/keep_1), [C](https://dictionary.cambridge.org/dictionary/english/keep), [L](https://www.ldoceonline.com/dictionary/keep)",
+        "examples": [
+          "예문 [직접 작성]: Keep right when the path divides."
+        ],
+        "notes": ""
+      }
+    ],
+    "introductions": [
+      {
+        "verb": "MAKE",
+        "text": "make–made–made. 조동사 용법은 없다. 사역문 `make O V`는 능동태에서 to 없이, 수동태에서는 `be made to V`로 쓴다. 재료·방법: `made of`는 구성 재료, `made from`은 가공 원료, `made out of`는 재료를 다른 물건으로 바꿈, `made with`는 주로 음식 재료, `made by`는 제작자·제작 방법을 나타낸다. [Cambridge](https://dictionary.cambridge.org/dictionary/english/make)·[Longman](https://www.ldoceonline.com/dictionary/make).\n\n1–3티어는 미국 일상·일반 직장 회화의 학습 우선순위 판단이다. 기본 뜻과 생산적인 연어를 여기에, 고정 관용표현을 idioms.md에 수록했다. ID는 파일 이동과 관계없이 유지한다."
+      },
+      {
+        "verb": "KEEP",
+        "text": "keep–kept–kept. 조동사 용법은 없다. `keep doing`은 본동사 keep의 동명사 보어 문형이다. 1–3티어는 미국 일상·일반 직장 회화의 학습 우선순위 판단이다."
+      }
+    ],
+    "verbs": [
+      "MAKE",
+      "KEEP"
+    ]
+  },
+  {
+    "day": 14,
+    "items": [
+      {
+        "id": "KEEP-B035",
+        "title": "계속 운영하다",
+        "verb": "KEEP",
+        "definition": "Make something continue operating. — 사업·불·기계 등을 계속 돌아가게 하다",
+        "tier": 1,
+        "rationale": "일·대화·사업을 계속되게 한다는 생산적 문형이다.",
+        "pattern": "`keep sth going` · 표시: 주요 연어",
+        "sources": "[C](https://dictionary.cambridge.org/dictionary/english/keep), [L](https://www.ldoceonline.com/dictionary/keep-going)",
+        "examples": [
+          "예문 [직접 작성]: Donations keep the shelter going."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "KEEP-B040",
+        "title": "관리를 유지하다",
+        "verb": "KEEP",
+        "definition": "Make something stay within limits. — 일정 범위 안에서 통제하다",
+        "tier": 1,
+        "rationale": "비용·감정·상황 통제를 말하는 범용 표현이다.",
+        "pattern": "`keep sth under control` · 표시: 주요 연어",
+        "sources": "[C](https://dictionary.cambridge.org/dictionary/english/keep)",
+        "examples": [
+          "예문 [직접 작성]: We need to keep spending under control."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "KEEP-B011",
+        "title": "예약·약속을 지켜 가다",
+        "verb": "KEEP",
+        "definition": "Attend as arranged. — 예정된 약속·진료에 참석하다",
+        "tier": 2,
+        "rationale": "진료·서비스 예약 준수에 유용한 상황 연어다.",
+        "pattern": "`keep an appointment` · 표시: 주요 연어",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/keep_1), [C](https://dictionary.cambridge.org/dictionary/english/keep), [L](https://www.ldoceonline.com/dictionary/keep)",
+        "examples": [
+          "예문 [직접 작성]: He couldn't keep his appointment because his train was canceled."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "KEEP-B014",
+        "title": "신선하게 유지되다",
+        "verb": "KEEP",
+        "definition": "Stay good to eat. — 음식이 상하지 않고 보존되다",
+        "tier": 2,
+        "rationale": "음식 보관 기한을 이야기할 때 유용하다.",
+        "pattern": "`food keeps (for a period)` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/keep_1), [C](https://dictionary.cambridge.org/dictionary/english/keep), [L](https://www.ldoceonline.com/dictionary/keep)",
+        "examples": [
+          "예문 [직접 작성]: This bread keeps well in an airtight box."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "KEEP-B017",
+        "title": "떠나지 못하게 하다",
+        "verb": "KEEP",
+        "definition": "Make someone remain somewhere. — 감금·입원 등으로 머물게 하다",
+        "tier": 2,
+        "rationale": "대기·구금·입원을 설명하는 상황적 유지 문형이다.",
+        "pattern": "`keep sb in/at a place` · 표시: 일반",
+        "sources": "[L](https://www.ldoceonline.com/dictionary/keep)",
+        "examples": [
+          "예문 [직접 작성]: They kept him at the station until midnight."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "KEEP-B018",
+        "title": "동물을 기르다",
+        "verb": "KEEP",
+        "definition": "Own and care for animals. — 동물을 사육·관리하다",
+        "tier": 2,
+        "rationale": "동물·농장·반려동물 보유와 사육 맥락에 유용하다.",
+        "pattern": "`keep animals/pets` · 표시: Cambridge 농장동물 중심; Oxford 애완동물도 포함",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/keep_1), [C](https://dictionary.cambridge.org/dictionary/english/keep), [L](https://www.ldoceonline.com/dictionary/keep)",
+        "examples": [
+          "예문 [직접 작성]: Her neighbors keep a few goats."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "KEEP-B020",
+        "title": "나중에 해도 되다",
+        "verb": "KEEP",
+        "definition": "Be able to wait. — 소식·일을 나중으로 미뤄도 되다",
+        "tier": 2,
+        "rationale": "소식·일을 나중으로 미루자는 대화에 사용할 수 있다.",
+        "pattern": "`it/news will keep; can it keep?` · 표시: Oxford 비격식 비유",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/keep_1), [C](https://dictionary.cambridge.org/dictionary/english/keep), [L](https://www.ldoceonline.com/dictionary/keep)",
+        "examples": [
+          "예문 [직접 작성]: The news will keep until you've finished lunch."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "KEEP-B027",
+        "title": "정확한 시각을 가리키다",
+        "verb": "KEEP",
+        "definition": "Show the correct time. — 시계가 정확히 가다",
+        "tier": 2,
+        "rationale": "시계의 정확도를 이야기할 때 유용하다.",
+        "pattern": "`a clock/watch keeps good time` · 표시: keep time 연어",
+        "sources": "[C](https://dictionary.cambridge.org/dictionary/english/keep)",
+        "examples": [
+          "예문 [직접 작성]: This old watch still keeps good time."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "KEEP-B029",
+        "title": "박자를 맞추다",
+        "verb": "KEEP",
+        "definition": "Follow a musical beat. — 음악의 박자를 맞추거나 짚다",
+        "tier": 2,
+        "rationale": "음악·춤의 박자를 말하는 상황에 유용하다.",
+        "pattern": "`keep time (with sth)` · 표시: keep time 연어",
+        "sources": "[C](https://dictionary.cambridge.org/dictionary/english/keep)",
+        "examples": [
+          "예문 [직접 작성]: She kept time by tapping her foot."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "KEEP-B037",
+        "title": "함구하다",
+        "verb": "KEEP",
+        "definition": "Avoid telling people. — 문제·정보를 알리지 않다",
+        "tier": 2,
+        "rationale": "비밀이나 논란에 대해 말하지 않는 행동을 설명한다.",
+        "pattern": "`keep sth quiet; keep quiet about sth` · 표시: 주요 연어",
+        "sources": "[C](https://dictionary.cambridge.org/dictionary/english/keep), [L](https://www.ldoceonline.com/dictionary/keep-something-quiet-keep-quiet-about-something)",
+        "examples": [
+          "예문 [직접 작성]: They kept quiet about the surprise party."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "KEEP-B038",
+        "title": "경계하다",
+        "verb": "KEEP",
+        "definition": "Watch for danger. — 망을 보거나 지키다",
+        "tier": 2,
+        "rationale": "경계·야영·안전 담당을 이야기하는 상황적 연어다.",
+        "pattern": "`keep watch/guard (over sth)` · 표시: 주요 연어",
+        "sources": "[L](https://www.ldoceonline.com/dictionary/keep-guard-watch)",
+        "examples": [
+          "예문 [직접 작성]: One sailor kept watch while the others slept."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "KEEP-B022",
+        "title": "아이를 돌보다",
+        "verb": "KEEP",
+        "definition": "Look after someone's children. — 부모 대신 아이를 봐주다",
+        "tier": 2,
+        "rationale": "미국 아이 돌봄 뜻이므로 육아 맥락에서는 능동적으로 유용하다.",
+        "pattern": "`keep sb's children` · 표시: 미국",
+        "sources": "[C](https://dictionary.cambridge.org/dictionary/english/keep)",
+        "examples": [
+          "예문 [직접 작성]: My aunt kept the children while we went shopping."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "KEEP-B026",
+        "title": "상품을 비치하다",
+        "verb": "KEEP",
+        "definition": "Have goods available. — 상품·재고를 갖추어 두다",
+        "tier": 2,
+        "rationale": "재고·비상 물품을 갖추는 표현은 생활·소매 상황에 유용하다.",
+        "pattern": "`keep a supply/stock of sth` · 표시: 사업",
+        "sources": "[C](https://dictionary.cambridge.org/dictionary/english/keep)",
+        "examples": [
+          "예문 [직접 작성]: The shop keeps a small supply of travel adapters."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "KEEP-B030",
+        "title": "경기 시간을 관리하다",
+        "verb": "KEEP",
+        "definition": "Measure an event's allowed time. — 경기·행사의 제한시간을 재다",
+        "tier": 2,
+        "rationale": "경기·게임·행사의 시간 담당이라는 실용적 상황 표현이다.",
+        "pattern": "`keep time (for an event)` · 표시: keep time 연어; 스포츠",
+        "sources": "[C](https://dictionary.cambridge.org/dictionary/english/keep)",
+        "examples": [
+          "예문 [직접 작성]: An official keeps time during each round."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "KEEP-B019",
+        "title": "부양하다",
+        "verb": "KEEP",
+        "definition": "Pay for someone's needs. — 생활비·필수품을 대어 부양하다",
+        "tier": 3,
+        "rationale": "bare keep somebody 부양은 미국 일반 회화의 우선 산출형이 아니므로 support와 구별한다.",
+        "pattern": "`keep sb/oneself (in sth)` · 표시: 일반",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/keep_1), [C](https://dictionary.cambridge.org/dictionary/english/keep), [L](https://www.ldoceonline.com/dictionary/keep)",
+        "examples": [
+          "예문 [직접 작성]: One salary was barely enough to keep the family."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "KEEP-B015",
+        "title": "남겨 두다",
+        "verb": "KEEP",
+        "definition": "Save for someone. — 자리·물건 등을 확보해 두다",
+        "tier": 3,
+        "rationale": "남의 자리를 확보하는 이 표현은 특히 영국으로 미국 save a seat보다 후순위다.",
+        "pattern": "`keep sth for sb; keep sb sth` · 표시: Oxford 특히 영국",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/keep_1), [L](https://www.ldoceonline.com/dictionary/keep)",
+        "examples": [
+          "예문 [직접 작성]: Could you keep me a seat near the door?"
+        ],
+        "notes": ""
+      },
+      {
+        "id": "KEEP-B021",
+        "title": "건강하게 지내다",
+        "verb": "KEEP",
+        "definition": "Be in a state of health. — 건강이 어떻다",
+        "tier": 3,
+        "rationale": "주로 영국·구식 건강 인사이므로 미국 능동 산출은 후순위다.",
+        "pattern": "`How are you keeping?; keep well` · 표시: Oxford 비격식; Cambridge 주로 영국·구식(old-fashioned)",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/keep_1), [C](https://dictionary.cambridge.org/dictionary/english/keep), [C: how are you keeping](https://dictionary.cambridge.org/dictionary/english/how-are-you-keeping)",
+        "examples": [
+          "예문 [직접 작성]: How is your father keeping these days?"
+        ],
+        "notes": ""
+      },
+      {
+        "id": "KEEP-B023",
+        "title": "가게를 운영하다",
+        "verb": "KEEP",
+        "definition": "Run a small shop. — 작은 상점을 운영하다",
+        "tier": 3,
+        "rationale": "가게 운영 뜻은 영국·구식 표지가 있다.",
+        "pattern": "`keep a shop/store` · 표시: Longman 영국·구식(old-fashioned); Oxford 특히 영국",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/keep_1), [C](https://dictionary.cambridge.org/dictionary/english/keep), [L](https://www.ldoceonline.com/dictionary/keep)",
+        "examples": [
+          "예문 [직접 작성]: Her grandparents kept a small shop by the harbor."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "KEEP-B024",
+        "title": "보호하다",
+        "verb": "KEEP",
+        "definition": "Protect someone. — 위험에서 지켜주다",
+        "tier": 3,
+        "rationale": "기도·격식의 보호 뜻이며 일반 keep O safe와 구별해 인식한다.",
+        "pattern": "`keep sb; keep sb from harm` · 표시: 격식·기도문 용법",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/keep_1), [L](https://www.ldoceonline.com/dictionary/keep)",
+        "examples": [
+          "예문 [직접 작성]: We prayed that God would keep them from harm."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "KEEP-B025",
+        "title": "골문·위켓을 지키다",
+        "verb": "KEEP",
+        "definition": "Defend the goal or wicket. — 골키퍼·위켓키퍼를 맡다",
+        "tier": 3,
+        "rationale": "골키퍼·위켓키퍼라는 스포츠·지역 용어를 먼저 인식한다.",
+        "pattern": "`keep goal/wicket` · 표시: 스포츠; keep goal Cambridge 영국",
+        "sources": "[O](https://www.oxfordlearnersdictionaries.com/definition/english/keep_1), [C](https://dictionary.cambridge.org/dictionary/english/keep), [L](https://www.ldoceonline.com/dictionary/keep-goal-wicket)",
+        "examples": [
+          "예문 [직접 작성]: She kept goal for the school team."
+        ],
+        "notes": ""
+      },
+      {
+        "id": "KEEP-B028",
+        "title": "시간을 재다",
+        "verb": "KEEP",
+        "definition": "Measure passing time. — 흐르는 시간을 측정하다",
+        "tier": 3,
+        "rationale": "해·별로 시간 측정을 서술하는 장면은 일반 회화 산출 범위가 좁다.",
+        "pattern": "`keep time by/with sth` · 표시: keep time 연어",
+        "sources": "[C](https://dictionary.cambridge.org/dictionary/english/keep)",
+        "examples": [
+          "예문 [직접 작성]: Before they had clocks, they kept time by the sun."
+        ],
+        "notes": ""
+      }
+    ],
+    "introductions": [
+      {
+        "verb": "KEEP",
+        "text": "keep–kept–kept. 조동사 용법은 없다. `keep doing`은 본동사 keep의 동명사 보어 문형이다. 1–3티어는 미국 일상·일반 직장 회화의 학습 우선순위 판단이다."
+      }
+    ],
+    "verbs": [
+      "KEEP"
+    ]
+  }
+]

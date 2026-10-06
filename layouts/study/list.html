@@ -1,0 +1,37 @@
+{{ define "main" }}
+<article class="study" lang="ko">
+  <header class="study-header">
+    <p class="study-eyebrow">ENGLISH / DAILY PRACTICE</p>
+    <h1>{{ .Title }}</h1>
+    <p>{{ .Description }}</p>
+  </header>
+  {{ if eq .Params.course "basic-verbs" }}
+  {{ $days := hugo.Data.study.basic_verbs }}
+  <div class="study-overview">
+    <div><strong>14일, 하루 20–21개 뜻</strong><p>뜻과 문형을 읽고, 예문을 보기 전에 내 문장으로 말해보세요.</p></div>
+    <a class="study-link" href="{{ "study/basic-verbs/guide/" | relURL }}">읽는 법 · 문형 약호 ↗</a>
+  </div>
+  {{ $total := 0 }}{{ range $days }}{{ $total = add $total (len .items) }}{{ end }}
+  <div class="study-course-progress"><span data-course-progress>0 / {{ $total }} 학습 완료</span><progress data-course-meter value="0" max="{{ $total }}" aria-label="전체 학습 진행률"></progress></div>
+  <p class="study-saving">완료 기록은 이 브라우저에 저장됩니다. 다른 기기와 동기화되지 않습니다.</p>
+  <p data-storage-note hidden role="status">저장이 허용되지 않아 이번 방문에서만 완료 표시를 유지합니다.</p>
+  <div class="study-days">
+    {{ range $days }}
+    <a class="study-day-link" data-day-link data-ids="{{ range .items }}{{ .id }} {{ end }}" href="{{ printf "study/basic-verbs/day-%02d/" (int .day) | relURL }}">
+      <div class="study-day-top"><span class="study-eyebrow">DAY {{ printf "%02d" (int .day) }}</span><span aria-hidden="true">↗</span></div>
+      <h2>{{ delimit .verbs " / " }}</h2>
+      <p>{{ len .items }}개 뜻 <span class="study-dot">·</span> {{ $tier1 := 0 }}{{ range .items }}{{ if eq (int .tier) 1 }}{{ $tier1 = add $tier1 1 }}{{ end }}{{ end }}{{ if $tier1 }}핵심 {{ $tier1 }}개{{ else }}상황별 · 참고 표현{{ end }}</p>
+      <div class="study-day-progress"><progress value="0" max="{{ len .items }}" aria-label="{{ .day }}일차 진행률"></progress><span data-day-count>0 / {{ len .items }}</span></div>
+    </a>
+    {{ end }}
+  </div>
+  <p class="study-footnote">티어는 미국 일상·일반 직장 회화를 위한 학습 우선순위입니다. 실측 빈도 순위는 아닙니다.</p>
+  {{ else }}
+  <a class="study-course-link" href="{{ "study/basic-verbs/" | relURL }}">
+    <span class="study-eyebrow">14-DAY COURSE</span><h2>Basic verbs <span aria-hidden="true">↗</span></h2>
+    <p>GET · HAVE · TAKE · DO · MAKE · KEEP</p><p class="study-footnote">285개 뜻 · 하루 20–21개 · 뜻, 문형, 예문과 출처</p>
+  </a>
+  {{ end }}
+</article>
+{{ partial "study-script.html" . }}
+{{ end }}

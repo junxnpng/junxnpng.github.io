@@ -1,0 +1,43 @@
+{{ define "main" }}
+{{ $day := index hugo.Data.study.basic_verbs (sub (int .Params.day) 1) }}
+<article class="study study-lesson" lang="ko" data-study-day="{{ $day.day }}">
+  <nav class="study-breadcrumb" aria-label="학습 경로"><a href="{{ "study/" | relURL }}">Study</a><span>/</span><a href="{{ "study/basic-verbs/" | relURL }}">Basic verbs · 14일 목차</a></nav>
+  <header class="study-header study-lesson-header">
+    <p class="study-eyebrow">DAY {{ printf "%02d" (int $day.day) }} / 14</p>
+    <h1>{{ delimit $day.verbs " / " }}<span>{{ $day.day }}일차</span></h1>
+    <p>오늘의 뜻 {{ len $day.items }}개. 문형을 읽고 예문을 직접 떠올린 뒤 확인하세요.</p>
+  </header>
+  <div class="study-lesson-progress"><span data-day-progress>0 / {{ len $day.items }} 학습 완료</span><progress data-day-meter value="0" max="{{ len $day.items }}" aria-label="오늘의 학습 진행률"></progress></div>
+  <p class="study-saving">완료 기록은 이 브라우저에만 저장됩니다. <a class="study-link" href="{{ "study/basic-verbs/guide/" | relURL }}">문형 약호 · 읽는 법</a></p>
+  <p data-storage-note hidden role="status">저장이 허용되지 않아 이번 방문에서만 완료 표시를 유지합니다.</p>
+  <details class="study-usage"><summary>동사 활용과 사용 안내</summary><div>{{ range $day.introductions }}<h2>{{ .verb }}</h2>{{ .text | markdownify }}{{ end }}</div></details>
+  <div class="study-toolbar" hidden data-toolbar>
+    <div class="study-filter-row">
+      <label class="study-search"><span>표현 찾기</span><input type="search" placeholder="뜻, 문형, 예문 검색" data-search></label>
+      <label class="study-tier"><span>티어</span><select data-tier aria-label="티어"><option value="all">전체 티어</option><option value="1">1 · 핵심 발화</option><option value="2">2 · 상황별 발화</option><option value="3">3 · 이해·참고</option></select></label>
+    </div>
+    <div class="study-actions"><label><input type="checkbox" data-pending> 미완료만</label><button type="button" data-toggle-examples>예문 모두 펼치기</button><span data-visible-count>{{ len $day.items }}개 표시</span></div>
+  </div>
+  <noscript><p class="study-footnote">예문과 출처는 펼쳐서 읽을 수 있습니다. 완료 기록과 필터를 사용하려면 JavaScript를 허용하세요.</p></noscript>
+  <div class="study-cards">
+    {{ range $index, $item := $day.items }}
+    <section class="study-card" id="{{ .id }}" data-id="{{ .id }}" data-tier="{{ .tier }}">
+      <div class="study-card-top"><span class="study-card-number">{{ printf "%02d" (add $index 1) }}</span><span class="study-tag" data-level="{{ .tier }}">{{ .tier }}티어 · {{ if eq (int .tier) 1 }}핵심 발화{{ else if eq (int .tier) 2 }}상황별 발화{{ else }}이해·참고{{ end }}</span><a class="study-item-id" href="#{{ .id }}" aria-label="{{ .id }} 항목 링크">{{ .id }}</a></div>
+      <h2>{{ .title }}</h2>
+      <div class="study-definition">{{ .definition | markdownify }}</div>
+      <div class="study-pattern"><span>문형</span><div>{{ .pattern | markdownify }}</div></div>
+      {{ with .notes }}<div class="study-notes">{{ . | markdownify }}</div>{{ end }}
+      <details class="study-example-details" data-example><summary>예문 확인</summary><div class="study-example">{{ range .examples }}<p>{{ . | markdownify }}</p>{{ end }}<p class="study-speaking">소리 내어 읽고, 같은 문형으로 내 상황을 말해보세요.</p></div></details>
+      <div class="study-card-bottom"><details class="study-source"><summary>출처 · 티어 판단</summary><div>{{ .sources | markdownify }}<p>판단 근거: {{ .rationale }}</p></div></details><label class="study-done" hidden data-done-control><input type="checkbox" data-done> 학습 완료</label></div>
+    </section>
+    {{ end }}
+  </div>
+  <p class="study-empty" data-empty hidden>조건에 맞는 항목이 없습니다. 검색어나 필터를 바꿔보세요.</p>
+  <nav class="study-pagination" aria-label="날짜별 학습 이동">
+    {{ if gt $day.day 1 }}<a href="{{ printf "study/basic-verbs/day-%02d/" (sub (int $day.day) 1) | relURL }}">← 이전 날 · {{ sub (int $day.day) 1 }}일차</a>{{ else }}<a href="{{ "study/basic-verbs/" | relURL }}">← 14일 목차</a>{{ end }}
+    {{ if lt $day.day 14 }}<a href="{{ printf "study/basic-verbs/day-%02d/" (add (int $day.day) 1) | relURL }}">다음 날 · {{ add (int $day.day) 1 }}일차 →</a>{{ else }}<a href="{{ "study/basic-verbs/" | relURL }}">14일 목차로 돌아가기 →</a>{{ end }}
+  </nav>
+  <p class="study-footnote">1티어는 핵심 발화, 2티어는 상황별 발화, 3티어는 이해·참고 우선. 티어는 실측 빈도 순위가 아닙니다.</p>
+</article>
+{{ partial "study-script.html" . }}
+{{ end }}

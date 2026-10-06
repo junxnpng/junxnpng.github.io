@@ -26,6 +26,7 @@ menu:
     - {name: Publications, url: /publications/, weight: 30}  # data/publications.yaml
     - {name: CV, url: /cv/, weight: 40}
     - {name: About, url: /about/, weight: 50}
+    - {name: Study, url: /study/, weight: 55}
     - {name: Search, url: /search/, weight: 60}
     # Archive · Tags 는 홈 소개문에서 링크한다
 
