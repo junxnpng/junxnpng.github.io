@@ -2,17 +2,35 @@
   const root = document.querySelector('.study');
   if (!root) return;
   const key = 'jun-study.basic-verbs.completed.v1';
+  const itemPrefix = 'jun-study.basic-verbs.item.v1.';
   let completed = new Set();
   const storageNote = root.querySelector('[data-storage-note]');
   const warn = () => { if (storageNote) storageNote.hidden = false; };
-  try {
-    const saved = JSON.parse(localStorage.getItem(key) || '[]');
-    if (!Array.isArray(saved)) throw new Error('Invalid saved progress');
-    completed = new Set(saved.filter(id => typeof id === 'string'));
-  } catch { warn(); }
+  function readProgress() {
+    try {
+      // Retain historical records; per-item values override checks and unchecks.
+      const saved = JSON.parse(localStorage.getItem(key) || '[]');
+      if (!Array.isArray(saved)) throw new Error('Invalid saved progress');
+      const result = new Set(saved.filter(id => typeof id === 'string'));
+      for (let index = 0; index < localStorage.length; index++) {
+        const itemKey = localStorage.key(index);
+        if (!itemKey || !itemKey.startsWith(itemPrefix)) continue;
+        const id = itemKey.slice(itemPrefix.length);
+        const value = localStorage.getItem(itemKey);
+        if (value === '1') result.add(id);
+        else if (value === '0') result.delete(id);
+      }
+      return result;
+    } catch {
+      warn();
+      return completed;
+    }
+  }
+  completed = readProgress();
 
   const dayLinks = [...root.querySelectorAll('[data-day-link]')];
-  if (dayLinks.length) {
+  function updateOverview() {
+    if (!dayLinks.length) return;
     let total = 0, count = 0;
     dayLinks.forEach(link => {
       const ids = link.dataset.ids.trim().split(/\s+/);
@@ -27,6 +45,17 @@
   }
 
   const cards = [...root.querySelectorAll('.study-card')];
+  function refreshProgress() {
+    completed = readProgress();
+    updateOverview();
+    if (cards.length) update();
+  }
+  window.addEventListener('storage', event => {
+    if (event.key === null || event.key === key || event.key.startsWith(itemPrefix)) refreshProgress();
+  });
+  window.addEventListener('pageshow', refreshProgress);
+  window.addEventListener('focus', refreshProgress);
+  updateOverview();
   if (!cards.length) return;
   const search = root.querySelector('[data-search]');
   const tier = root.querySelector('select[data-tier]');
@@ -58,7 +87,11 @@
     card.querySelector('[data-done]').addEventListener('change', event => {
       if (event.target.checked) completed.add(card.dataset.id);
       else completed.delete(card.dataset.id);
-      try { localStorage.setItem(key, JSON.stringify([...completed])); } catch { warn(); }
+      try {
+        // Independent keys prevent another day or stale tab from erasing progress.
+        localStorage.setItem(itemPrefix + card.dataset.id, event.target.checked ? '1' : '0');
+        completed = readProgress();
+      } catch { warn(); }
       update();
     });
   });

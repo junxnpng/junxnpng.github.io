@@ -24,7 +24,7 @@ GitHub Pages(사용자 사이트). main 푸시 → `.github/workflows/hugo.yml` 
 
 ## 영어 학습 자료 반영
 
-`/study/basic-verbs/`는 하루 20–21개 뜻을 카드로 보여준다. 예문 펼치기, 티어·검색 필터, 미완료 복습과 날짜별 진행률을 제공한다. 완료 기록은 브라우저 `localStorage`에만 저장되며 기기 간 동기화하지 않는다. 사이트와 저장소의 학습 자료는 공개된다.
+`/study/basic-verbs/`는 하루 20–21개 뜻을 카드로 보여준다. 예문 펼치기, 티어·검색 필터, 미완료 복습과 날짜별 진행률을 제공한다. 완료 기록은 브라우저 `localStorage`에 항목별로 저장되며 기기 간 동기화하지 않는다. 같은 브라우저의 다른 탭과 뒤로가기로 복원된 페이지는 최신 기록을 다시 읽는다. 이전 버전의 완료 기록도 유지한다. 사이트와 저장소의 학습 자료는 공개된다.
 
 원본 Markdown을 수정한 뒤 저장소 루트에서 실행한다. 생성된 `content/study/`와 `data/study/`는 직접 수정하지 않는다.
 
@@ -42,4 +42,5 @@ sh scripts/check
 hugo server --disableFastRender
 # 다른 터미널에서
 python3 tests/study_browser.py http://127.0.0.1:1313
+python3 tests/study_persistence.py http://127.0.0.1:1313
 ```
