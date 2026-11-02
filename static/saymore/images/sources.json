@@ -1,0 +1,384 @@
+[
+  {
+    "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/vowels/svg/i.svg",
+    "upstreamPath": "midsaggital_articulations/vowels/svg/i.svg",
+    "originalSymbol": "i",
+    "kind": "vowel",
+    "authors": [
+      "Richard Wright",
+      "Dan McCloy"
+    ],
+    "license": "CC0-1.0",
+    "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "https://github.com/drammock/phonetics-teaching-assets",
+    "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
+    "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
+    "file": "vowel-i.svg"
+  },
+  {
+    "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/vowels/svg/%C9%AA.svg",
+    "upstreamPath": "midsaggital_articulations/vowels/svg/ɪ.svg",
+    "originalSymbol": "ɪ",
+    "kind": "vowel",
+    "authors": [
+      "Richard Wright",
+      "Dan McCloy"
+    ],
+    "license": "CC0-1.0",
+    "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "https://github.com/drammock/phonetics-teaching-assets",
+    "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
+    "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
+    "file": "vowel-ih.svg"
+  },
+  {
+    "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/vowels/svg/%C9%9B.svg",
+    "upstreamPath": "midsaggital_articulations/vowels/svg/ɛ.svg",
+    "originalSymbol": "ɛ",
+    "kind": "vowel",
+    "authors": [
+      "Richard Wright",
+      "Dan McCloy"
+    ],
+    "license": "CC0-1.0",
+    "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "https://github.com/drammock/phonetics-teaching-assets",
+    "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
+    "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
+    "file": "vowel-epsilon.svg"
+  },
+  {
+    "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/vowels/svg/%C3%A6.svg",
+    "upstreamPath": "midsaggital_articulations/vowels/svg/æ.svg",
+    "originalSymbol": "æ",
+    "kind": "vowel",
+    "authors": [
+      "Richard Wright",
+      "Dan McCloy"
+    ],
+    "license": "CC0-1.0",
+    "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "https://github.com/drammock/phonetics-teaching-assets",
+    "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
+    "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
+    "file": "vowel-ae.svg"
+  },
+  {
+    "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/vowels/svg/u.svg",
+    "upstreamPath": "midsaggital_articulations/vowels/svg/u.svg",
+    "originalSymbol": "u",
+    "kind": "vowel",
+    "authors": [
+      "Richard Wright",
+      "Dan McCloy"
+    ],
+    "license": "CC0-1.0",
+    "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "https://github.com/drammock/phonetics-teaching-assets",
+    "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
+    "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
+    "file": "vowel-u.svg"
+  },
+  {
+    "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/vowels/svg/%CA%8A.svg",
+    "upstreamPath": "midsaggital_articulations/vowels/svg/ʊ.svg",
+    "originalSymbol": "ʊ",
+    "kind": "vowel",
+    "authors": [
+      "Richard Wright",
+      "Dan McCloy"
+    ],
+    "license": "CC0-1.0",
+    "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "https://github.com/drammock/phonetics-teaching-assets",
+    "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
+    "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
+    "file": "vowel-upsilon.svg"
+  },
+  {
+    "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/consonants/svg/p.svg",
+    "upstreamPath": "midsaggital_articulations/consonants/svg/p.svg",
+    "originalSymbol": "p",
+    "kind": "consonant",
+    "authors": [
+      "Richard Wright",
+      "Dan McCloy"
+    ],
+    "license": "CC0-1.0",
+    "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "https://github.com/drammock/phonetics-teaching-assets",
+    "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
+    "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
+    "file": "consonant-p.svg"
+  },
+  {
+    "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/consonants/svg/b.svg",
+    "upstreamPath": "midsaggital_articulations/consonants/svg/b.svg",
+    "originalSymbol": "b",
+    "kind": "consonant",
+    "authors": [
+      "Richard Wright",
+      "Dan McCloy"
+    ],
+    "license": "CC0-1.0",
+    "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "https://github.com/drammock/phonetics-teaching-assets",
+    "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
+    "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
+    "file": "consonant-b.svg"
+  },
+  {
+    "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/consonants/svg/t.svg",
+    "upstreamPath": "midsaggital_articulations/consonants/svg/t.svg",
+    "originalSymbol": "t",
+    "kind": "consonant",
+    "authors": [
+      "Richard Wright",
+      "Dan McCloy"
+    ],
+    "license": "CC0-1.0",
+    "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "https://github.com/drammock/phonetics-teaching-assets",
+    "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
+    "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
+    "file": "consonant-t.svg"
+  },
+  {
+    "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/consonants/svg/d.svg",
+    "upstreamPath": "midsaggital_articulations/consonants/svg/d.svg",
+    "originalSymbol": "d",
+    "kind": "consonant",
+    "authors": [
+      "Richard Wright",
+      "Dan McCloy"
+    ],
+    "license": "CC0-1.0",
+    "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "https://github.com/drammock/phonetics-teaching-assets",
+    "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
+    "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
+    "file": "consonant-d.svg"
+  },
+  {
+    "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/consonants/svg/k.svg",
+    "upstreamPath": "midsaggital_articulations/consonants/svg/k.svg",
+    "originalSymbol": "k",
+    "kind": "consonant",
+    "authors": [
+      "Richard Wright",
+      "Dan McCloy"
+    ],
+    "license": "CC0-1.0",
+    "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "https://github.com/drammock/phonetics-teaching-assets",
+    "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
+    "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
+    "file": "consonant-k.svg"
+  },
+  {
+    "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/consonants/svg/g.svg",
+    "upstreamPath": "midsaggital_articulations/consonants/svg/g.svg",
+    "originalSymbol": "ɡ",
+    "kind": "consonant",
+    "authors": [
+      "Richard Wright",
+      "Dan McCloy"
+    ],
+    "license": "CC0-1.0",
+    "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "https://github.com/drammock/phonetics-teaching-assets",
+    "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
+    "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
+    "file": "consonant-g.svg"
+  },
+  {
+    "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/consonants/svg/f.svg",
+    "upstreamPath": "midsaggital_articulations/consonants/svg/f.svg",
+    "originalSymbol": "f",
+    "kind": "consonant",
+    "authors": [
+      "Richard Wright",
+      "Dan McCloy"
+    ],
+    "license": "CC0-1.0",
+    "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "https://github.com/drammock/phonetics-teaching-assets",
+    "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
+    "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
+    "file": "consonant-f.svg"
+  },
+  {
+    "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/consonants/svg/v.svg",
+    "upstreamPath": "midsaggital_articulations/consonants/svg/v.svg",
+    "originalSymbol": "v",
+    "kind": "consonant",
+    "authors": [
+      "Richard Wright",
+      "Dan McCloy"
+    ],
+    "license": "CC0-1.0",
+    "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "https://github.com/drammock/phonetics-teaching-assets",
+    "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
+    "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
+    "file": "consonant-v.svg"
+  },
+  {
+    "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/consonants/svg/%CE%B8.svg",
+    "upstreamPath": "midsaggital_articulations/consonants/svg/θ.svg",
+    "originalSymbol": "θ",
+    "kind": "consonant",
+    "authors": [
+      "Richard Wright",
+      "Dan McCloy"
+    ],
+    "license": "CC0-1.0",
+    "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "https://github.com/drammock/phonetics-teaching-assets",
+    "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
+    "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
+    "file": "consonant-theta.svg"
+  },
+  {
+    "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/consonants/svg/eth.svg",
+    "upstreamPath": "midsaggital_articulations/consonants/svg/eth.svg",
+    "originalSymbol": "ð",
+    "kind": "consonant",
+    "authors": [
+      "Richard Wright",
+      "Dan McCloy"
+    ],
+    "license": "CC0-1.0",
+    "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "https://github.com/drammock/phonetics-teaching-assets",
+    "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
+    "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
+    "file": "consonant-eth.svg"
+  },
+  {
+    "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/consonants/svg/s_apical.svg",
+    "upstreamPath": "midsaggital_articulations/consonants/svg/s_apical.svg",
+    "originalSymbol": "s",
+    "kind": "consonant",
+    "authors": [
+      "Richard Wright",
+      "Dan McCloy"
+    ],
+    "license": "CC0-1.0",
+    "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "https://github.com/drammock/phonetics-teaching-assets",
+    "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
+    "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
+    "file": "consonant-s-apical.svg"
+  },
+  {
+    "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/consonants/svg/z_apical.svg",
+    "upstreamPath": "midsaggital_articulations/consonants/svg/z_apical.svg",
+    "originalSymbol": "z",
+    "kind": "consonant",
+    "authors": [
+      "Richard Wright",
+      "Dan McCloy"
+    ],
+    "license": "CC0-1.0",
+    "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "https://github.com/drammock/phonetics-teaching-assets",
+    "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
+    "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
+    "file": "consonant-z-apical.svg"
+  },
+  {
+    "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/consonants/svg/%CA%83_laminal.svg",
+    "upstreamPath": "midsaggital_articulations/consonants/svg/ʃ_laminal.svg",
+    "originalSymbol": "ʃ",
+    "kind": "consonant",
+    "authors": [
+      "Richard Wright",
+      "Dan McCloy"
+    ],
+    "license": "CC0-1.0",
+    "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "https://github.com/drammock/phonetics-teaching-assets",
+    "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
+    "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
+    "file": "consonant-sh-laminal.svg"
+  },
+  {
+    "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/consonants/svg/%CA%92_apical.svg",
+    "upstreamPath": "midsaggital_articulations/consonants/svg/ʒ_apical.svg",
+    "originalSymbol": "ʒ",
+    "kind": "consonant",
+    "authors": [
+      "Richard Wright",
+      "Dan McCloy"
+    ],
+    "license": "CC0-1.0",
+    "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "https://github.com/drammock/phonetics-teaching-assets",
+    "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
+    "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
+    "file": "consonant-zh-apical.svg"
+  },
+  {
+    "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/consonants/svg/m.svg",
+    "upstreamPath": "midsaggital_articulations/consonants/svg/m.svg",
+    "originalSymbol": "m",
+    "kind": "consonant",
+    "authors": [
+      "Richard Wright",
+      "Dan McCloy"
+    ],
+    "license": "CC0-1.0",
+    "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "https://github.com/drammock/phonetics-teaching-assets",
+    "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
+    "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
+    "file": "consonant-m.svg"
+  },
+  {
+    "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/consonants/svg/n.svg",
+    "upstreamPath": "midsaggital_articulations/consonants/svg/n.svg",
+    "originalSymbol": "n",
+    "kind": "consonant",
+    "authors": [
+      "Richard Wright",
+      "Dan McCloy"
+    ],
+    "license": "CC0-1.0",
+    "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "https://github.com/drammock/phonetics-teaching-assets",
+    "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
+    "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
+    "file": "consonant-n.svg"
+  },
+  {
+    "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/consonants/svg/%C5%8B.svg",
+    "upstreamPath": "midsaggital_articulations/consonants/svg/ŋ.svg",
+    "originalSymbol": "ŋ",
+    "kind": "consonant",
+    "authors": [
+      "Richard Wright",
+      "Dan McCloy"
+    ],
+    "license": "CC0-1.0",
+    "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "https://github.com/drammock/phonetics-teaching-assets",
+    "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
+    "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
+    "file": "consonant-ng.svg"
+  },
+  {
+    "upstreamRawURL": "https://upload.wikimedia.org/wikipedia/commons/7/75/Places_of_articulation.svg",
+    "originalSymbol": null,
+    "kind": "anatomy",
+    "authors": [
+      "ish shwar",
+      "Rohieb"
+    ],
+    "license": "CC-BY-SA-3.0",
+    "licenseURL": "https://creativecommons.org/licenses/by-sa/3.0/",
+    "source": "https://commons.wikimedia.org/wiki/File:Places_of_articulation.svg",
+    "note": "Use unchanged with credit and license link. Numbered anatomy includes places beyond English.",
+    "file": "places-of-articulation.svg"
+  }
+]

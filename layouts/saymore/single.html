@@ -1,0 +1,65 @@
+{{ define "main" }}
+{{ $ipa := hugo.Data.saymore.ipa }}
+<article class="saymore" lang="ko">
+  <nav class="sm-breadcrumb" aria-label="학습 경로"><a href="{{ "saymore/" | relURL }}">Say More</a><span aria-hidden="true">/</span><span>미국식 IPA</span></nav>
+  <header class="sm-page-header">
+    <p class="sm-eyebrow">US ENGLISH · SOUND GUIDE</p>
+    <h1>소리가 만들어지는 자리.</h1>
+    <p class="sm-lead">기호를 고르고, 혀와 입술의 움직임을 확인하세요.</p>
+    <p class="sm-footnote">번호는 아이폰 <strong>eng_ipa</strong>의 파일 번호와 같습니다. 설명과 그림을 보면서 해당 번호의 sound → word를 들어보세요.</p>
+  </header>
+  <nav class="sm-section-nav" aria-label="발음 설명 목차">
+    <a href="#mouth">구강 구조</a>{{ range $ipa.groups }}<a href="#{{ .id }}">{{ .title }}</a>{{ end }}<a href="#notation">표기 읽는 법</a>
+  </nav>
+  <section class="sm-reading-note" aria-labelledby="sm-reading-title">
+    <h2 id="sm-reading-title">소리의 길이보다, 위치와 움직임</h2>
+    <p>한글 독음으로 바꾸기보다 입 안에서 무엇이 달라지는지 관찰하세요. <span class="sm-inline-ipa">/iː/</span>와 <span class="sm-inline-ipa">/ɪ/</span>는 단순히 길고 짧은 차이만 있는 것이 아닙니다. 아래 설명은 미국식 영어의 기본 조음 안내이며, 말하는 사람과 앞뒤 소리에 따라 달라질 수 있습니다.</p>
+  </section>
+  <section class="sm-anatomy" id="mouth" aria-labelledby="mouth-title">
+    <div><p class="sm-eyebrow">입 안의 지도</p><h2 id="mouth-title">혀는 어디에 닿을까요?</h2>
+      <p>그림은 입과 목을 옆에서 본 단면입니다. 특정 기호를 발음하는 자세가 아니라, 아래 설명에 나오는 <strong>부위의 위치</strong>를 보여줍니다.</p>
+      <dl class="sm-anatomy-key">
+        <div><dt>1·2 입술 / 3 치아</dt><dd>입술을 닫거나, 아랫입술과 윗니 사이로 공기를 보냅니다.</dd></div>
+        <div><dt>4 잇몸 융기</dt><dd>윗니 바로 뒤의 볼록한 곳. /t d n l/의 기준 위치입니다.</dd></div>
+        <div><dt>7 경구개 / 8 연구개</dt><dd>단단한 앞쪽 입천장과 부드러운 뒤쪽 입천장입니다.</dd></div>
+        <div><dt>11 성대 / 17 혀끝</dt><dd>성대의 진동과 혀끝의 접촉 여부를 구별해 보세요.</dd></div>
+      </dl>
+    </div>
+    <figure><a href="{{ "saymore/images/places-of-articulation.svg" | relURL }}" aria-label="구강 구조 그림 크게 보기"><img src="{{ "saymore/images/places-of-articulation.svg" | relURL }}" width="800" height="1000" alt="입과 목의 옆면 단면도. 입술 1·2, 치아 3, 잇몸 융기 4, 경구개 7, 연구개 8, 성대 11, 혀끝 17이 표시되어 있습니다."></a><figcaption>ish shwar · Rohieb, <a href="https://commons.wikimedia.org/wiki/File:Places_of_articulation.svg">Places of articulation</a>, <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a>. 원본 그림, 변경 없음.</figcaption></figure>
+  </section>
+  {{ range $ipa.groups }}
+  <section class="sm-group" id="{{ .id }}" aria-labelledby="{{ .id }}-title">
+    <header class="sm-group-header"><div><p class="sm-eyebrow">{{ .label }}</p><h2 id="{{ .id }}-title">{{ .title }}</h2></div><p>{{ .intro }}</p></header>
+    <nav class="sm-symbols" aria-label="{{ .title }} 기호 바로가기">{{ range .items }}<a href="#ipa-{{ .number }}"><small>{{ printf "%02d" (int .number) }}</small><span lang="en">{{ .symbol }}</span></a>{{ end }}</nav>
+    <div class="sm-cards">
+    {{ range .items }}
+      {{ $item := . }}
+      <section class="sm-card{{ with .image }} sm-card-illustrated{{ end }}" id="ipa-{{ .number }}" aria-labelledby="ipa-{{ .number }}-title">
+        <div class="sm-card-heading"><span class="sm-track">{{ printf "%02d" (int .number) }}</span><h3 id="ipa-{{ .number }}-title"><span class="sm-ipa" lang="en">{{ .symbol }}</span><span class="sm-example" lang="en">{{ .example }}</span></h3><a class="sm-permalink" href="#ipa-{{ .number }}" aria-label="{{ .symbol }} 발음 설명 링크">#</a></div>
+        <p class="sm-articulation">{{ .place }}</p>
+        <div class="sm-card-body"><div class="sm-card-copy"><h4>이렇게 발음해요</h4><p>{{ .how }}</p><h4>확인할 점</h4><p>{{ .check }}</p>{{ with .note }}<p class="sm-card-note">{{ . }}</p>{{ end }}</div>
+        {{ with .image }}<figure class="sm-mouth-image"><a href="{{ printf "saymore/images/%s" . | relURL }}" aria-label="{{ $item.symbol }} 조음 그림 크게 보기"><img src="{{ printf "saymore/images/%s" . | relURL }}" width="300" height="424" loading="lazy" alt="[{{ $item.image_symbol }}] 조음의 입·혀 단면 참고 그림"></a><figcaption>[{{ $item.image_symbol }}] 조음 참고도 · <a href="#sources">Wright · McCloy, CC0</a></figcaption></figure>{{ end }}</div>
+      </section>
+    {{ end }}
+    </div>
+    <a class="sm-back" href="#{{ .id }}">{{ .title }} 기호표로 ↑</a>
+  </section>
+  {{ end }}
+  <section class="sm-notation" id="notation"><h2>사전마다 기호가 조금 달라요</h2>
+    <p>여기서는 아이폰 음성과 연결하기 위해 <strong>Cambridge 표기</strong>를 사용합니다. 다른 미국식 사전의 /i u ɑ ɔ ɛ/는 이 페이지에서 /iː uː ɑː ɔː e/로 보일 수 있습니다. 길이 표시 /ː/만 보고 무조건 길게 늘이지 마세요.</p>
+    <p>사전의 /r/는 미국식 영어에서 주로 접근음 [ɹ]로 실현됩니다. /t̬/는 Cambridge가 쓰는 표기이며, 미국식 탄설음을 다른 자료에서는 [ɾ]로 표시하기도 합니다. /ɝː/와 /ɚ/는 각각 강세가 있는 경우와 없는 경우의 r색채 모음입니다.</p>
+    <p>/ɑː/와 /ɔː/를 구별하지 않는 미국 화자도 있습니다. /ɒ̃ x/는 차용어·특정 이름 등에 나오는 보조 소리이며, 처음부터 모든 미국 화자처럼 똑같이 내야 하는 필수 목록은 아닙니다.</p>
+  </section>
+  <section class="sm-sources" id="sources"><h2>출처와 더 살펴볼 자료</h2>
+    <p>기호·번호·예시 단어는 Cambridge 발음표의 미국식 항목과 맞췄습니다. 조음 설명은 아래 자료를 참고해 한국어로 작성한 학습 안내입니다. 음성은 이 웹페이지에 포함하지 않습니다.</p>
+    <ul>
+      <li><a href="https://dictionary.cambridge.org/help/phonetics.html">Cambridge Dictionary · Pronunciation symbols</a> — 기호와 미국식 예시 단어.</li>
+      <li><a href="https://www.oxfordlearnersdictionaries.com/us/about/american_english/pronunciation_american_english.html">Oxford · American English pronunciation guide</a> — 미국식 사전 표기 비교.</li>
+      <li><a href="https://linguistics.berkeley.edu/~kjohnson/English_Phonetics/">UC Berkeley · American English Pronunciation Workbook</a> — 실제 미국식 대화 속 소리와 발음 변이.</li>
+      <li><a href="https://opentext.ku.edu/amenglishpronunciation/chapter/chapter-1/">University of Kansas · Vowel Sounds</a> — 모음과 r색채 모음 설명.</li>
+      <li><a href="https://blog.fluent-forever.com/chapter3/">Fluent Forever · Chapter 3</a> — 발음 원리와 최소 대립쌍 학습.</li>
+      <li><a href="https://github.com/drammock/phonetics-teaching-assets">Richard Wright · Daniel McCloy · Phonetics teaching assets</a> — 개별 조음 그림. <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0</a>. 원본 그림을 사용하며, 그림은 움직임 전체가 아닌 한 순간의 참고 자세입니다.</li>
+    </ul><p class="sm-footnote">확인일 2026-11-03 · 조음 그림은 전형적인 자세를 보여주는 참고도이며, 미국 화자 모두의 혀 모양이 동일하다는 뜻은 아닙니다.</p>
+  </section>
+</article>
+{{ end }}

@@ -1,0 +1,82 @@
+.main:has(> .saymore) { max-width: 1080px; }
+.saymore { --sm-accent: #4157ad; --sm-wash: #edf0fa; line-height: 1.8; word-break: keep-all; overflow-wrap: anywhere; }
+:root[data-theme="dark"] .saymore { --sm-accent: #a9bbff; --sm-wash: #252b40; }
+.saymore a { text-underline-offset: 4px; }
+.saymore a:focus-visible { outline: 3px solid var(--sm-accent); outline-offset: 5px; border-radius: 3px; }
+.sm-eyebrow { color: var(--sm-accent); font-size: 12px; letter-spacing: .1em; font-weight: 650; margin: 0 0 10px; }
+.sm-hero { padding: 48px 0 60px; }
+.sm-hero h1 { font-size: clamp(44px, 7vw, 76px); line-height: 1.2; letter-spacing: -.055em; margin: 0 0 24px; }
+.sm-lead { font-size: 19px; color: var(--secondary); margin: 14px 0 22px; }
+.sm-primary-link { display: inline-flex; gap: 30px; align-items: center; background: var(--sm-accent); color: var(--theme); padding: 13px 22px; border-radius: 8px; font-size: 16px; font-weight: 600; }
+.sm-primary-link:hover { filter: brightness(1.1); }
+.sm-home-note { padding: 28px; border: 1px solid var(--border); border-radius: 12px; display: grid; grid-template-columns: auto 1fr; gap: 32px; align-items: center; background: var(--entry); }
+.sm-home-note h2 { font-size: 21px; margin-bottom: 6px; }
+.sm-home-note p { font-size: 16px; color: var(--secondary); }
+.sm-sample, .sm-ipa, .sm-inline-ipa, .sm-symbols a > span { font-family: "Charis SIL", "Doulos SIL", Georgia, "Times New Roman", serif; font-weight: 400; }
+.sm-sample { font-size: 42px; white-space: nowrap; color: var(--sm-accent); }
+.sm-footnote { font-size: 13px; color: var(--secondary); margin: 18px 0; }
+.sm-breadcrumb { display: flex; gap: 12px; color: var(--secondary); font-size: 13px; margin: 10px 0 34px; }
+.sm-breadcrumb a { text-decoration: underline; }
+.sm-page-header h1 { font-size: clamp(32px, 5vw, 50px); line-height: 1.3; letter-spacing: -.04em; }
+.sm-page-header .sm-footnote { max-width: 640px; }
+.sm-section-nav { display: flex; flex-wrap: wrap; gap: 8px; padding: 18px 0 28px; }
+.sm-section-nav a { padding: 7px 14px; border-radius: 6px; border: 1px solid var(--border); font-size: 14px; }
+.sm-section-nav a:hover, .sm-symbols a:hover { background: var(--sm-wash); border-color: var(--sm-accent); }
+.sm-reading-note { background: var(--sm-wash); border-left: 3px solid var(--sm-accent); padding: 20px 24px; border-radius: 0 8px 8px 0; font-size: 15px; }
+.sm-reading-note h2 { font-size: 18px; margin-bottom: 8px; }
+.sm-inline-ipa { font-size: 20px; white-space: nowrap; }
+.sm-anatomy { display: grid; grid-template-columns: 1.15fr .85fr; gap: 48px; padding: 55px 0 36px; align-items: center; }
+.sm-anatomy h2, .sm-group h2, .sm-notation h2, .sm-sources h2 { font-size: 26px; letter-spacing: -.035em; margin: 0 0 14px; }
+.sm-anatomy p, .sm-anatomy-key { font-size: 15px; }
+.sm-anatomy-key > div { border-bottom: 1px solid var(--border); padding: 13px 0; }
+.sm-anatomy-key dt { font-weight: 650; font-size: 14px; }
+.sm-anatomy-key dd { margin: 4px 0 0; color: var(--secondary); }
+.sm-anatomy figure { margin: 0; }
+.sm-anatomy img { width: 100%; height: auto; max-height: 420px; object-fit: contain; background: #fff; padding: 15px; border-radius: 10px; }
+.saymore figcaption { font-size: 11px; line-height: 1.6; margin-top: 10px; color: var(--secondary); }
+.saymore figcaption a, .sm-sources a { text-decoration: underline; }
+.sm-group { padding-top: 45px; border-top: 1px solid var(--border); margin-top: 30px; scroll-margin-top: 20px; }
+.sm-group-header { display: flex; justify-content: space-between; gap: 32px; align-items: flex-end; }
+.sm-group-header > p { max-width: 400px; font-size: 14px; color: var(--secondary); margin: 0 0 14px; }
+.sm-symbols { display: grid; grid-template-columns: repeat(auto-fill, minmax(66px, 1fr)); gap: 8px; margin: 20px 0 28px; }
+.sm-symbols a { display: flex; flex-direction: column; align-items: center; border: 1px solid var(--border); border-radius: 8px; background: var(--entry); padding: 7px 5px 9px; }
+.sm-symbols small { font-family: ui-monospace, monospace; font-size: 10px; color: var(--secondary); }
+.sm-symbols a > span { font-size: 27px; line-height: 1.4; }
+.sm-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.sm-card { background: var(--entry); border: 1px solid var(--border); border-radius: 10px; padding: 23px; scroll-margin-top: 22px; }
+.sm-card:target { outline: 2px solid var(--sm-accent); outline-offset: 3px; }
+.sm-card-heading { display: flex; align-items: baseline; gap: 13px; }
+.sm-track { font-size: 12px; font-family: ui-monospace, monospace; color: var(--secondary); }
+.sm-card-heading h3 { display: flex; flex-wrap: wrap; align-items: baseline; gap: 15px; flex: 1; }
+.sm-ipa { color: var(--sm-accent); font-size: 40px; line-height: 1.25; }
+.sm-example { font-size: 19px; font-weight: 450; }
+.sm-permalink { font-size: 16px; color: var(--secondary); }
+.sm-articulation { font-size: 12px; color: var(--secondary); padding: 10px 0 16px; margin-bottom: 15px; border-bottom: 1px solid var(--border); }
+.sm-card-body { display: grid; gap: 16px; }
+.sm-card-illustrated .sm-card-body { grid-template-columns: minmax(0, 1fr) 150px; }
+.sm-card h4 { font-size: 12px; color: var(--sm-accent); margin: 0 0 4px; font-weight: 650; }
+.sm-card-copy p { font-size: 14px; line-height: 1.8; margin: 0 0 15px; }
+.sm-card-copy p:last-child { margin-bottom: 0; }
+.sm-mouth-image { margin: 0; align-self: start; }
+.sm-mouth-image img { width: 100%; height: auto; background: #fff; border-radius: 6px; padding: 7px; }
+.sm-mouth-image figcaption { font-size: 10px; }
+.sm-back { display: inline-block; margin-top: 22px; font-size: 13px; color: var(--sm-accent); }
+.sm-notation, .sm-sources { margin-top: 50px; padding-top: 30px; border-top: 1px solid var(--border); scroll-margin-top: 20px; }
+.sm-notation p, .sm-sources p, .sm-sources li { font-size: 14px; line-height: 1.9; margin: 12px 0; }
+.sm-sources ul { padding-left: 20px; }
+@media (max-width: 760px) {
+  .sm-cards { grid-template-columns: 1fr; }
+  .sm-card-illustrated .sm-card-body { grid-template-columns: 1fr; }
+  .sm-mouth-image { width: 180px; margin: 3px auto 0; }
+  .sm-card-copy p { font-size: 16px; }
+  .sm-anatomy { grid-template-columns: 1fr; gap: 26px; }
+  .sm-anatomy figure { max-width: 330px; margin: auto; }
+  .sm-home-note { grid-template-columns: 1fr; gap: 15px; padding: 23px; }
+  .sm-group-header { display: block; }
+  .sm-hero { padding-top: 28px; }
+}
+@media (max-width: 380px) {
+  .sm-card { padding: 18px; }
+  .sm-card-illustrated .sm-card-body { grid-template-columns: 1fr; gap: 12px; }
+  .sm-primary-link { gap: 12px; font-size: 14px; padding: 13px 16px; }
+}
