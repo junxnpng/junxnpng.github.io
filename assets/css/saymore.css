@@ -55,6 +55,8 @@
 .sm-card-body { display: grid; gap: 16px; }
 .sm-card-illustrated .sm-card-body { grid-template-columns: minmax(0, 1fr) 150px; }
 .sm-card h4 { font-size: 12px; color: var(--sm-accent); margin: 0 0 4px; font-weight: 650; }
+.sm-card-notation { background: var(--sm-wash); border-radius: 6px; padding: 12px 14px; margin: 0 0 18px; }
+.sm-card-notation p { font-size: 14px; line-height: 1.8; margin: 0; }
 .sm-card-copy p { font-size: 14px; line-height: 1.8; margin: 0 0 15px; }
 .sm-card-copy p:last-child { margin-bottom: 0; }
 .sm-mouth-image { margin: 0; align-self: start; }
