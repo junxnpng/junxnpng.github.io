@@ -58,12 +58,23 @@
 .sm-card-notation p { font-size: 14px; line-height: 1.8; margin: 0; }
 .sm-card-copy p { font-size: 14px; line-height: 1.8; margin: 0 0 15px; }
 .sm-card-copy p:last-child { margin-bottom: 0; }
-.sm-mouth-image { width: min(100%, 260px); margin: 4px auto 0; align-self: start; }
+.sm-mouth-image { width: min(100%, 320px); margin: 4px auto 0; align-self: start; }
+.sm-diagram-heading { margin-bottom: 12px; }
+.sm-diagram-heading p { font-size: 15px; line-height: 1.6; margin: 4px 0 8px; }
+.sm-voice { display: inline-block; font-size: 12px; font-weight: 600; padding: 4px 10px; border: 1px solid var(--sm-accent); border-radius: 4px; color: var(--sm-accent); }
+.sm-diagram-heading .sm-same-place { font-size: 12px; color: var(--secondary); margin-top: 8px; }
 .sm-mouth-image > a { display: block; background: #fff; border: 1px solid #cbd5e1; border-radius: 8px; overflow: hidden; color: #344866; }
 .sm-mouth-image img { display: block; width: 100%; height: auto; background: #fff; padding: 10px; }
 .sm-image-zoom { display: block; padding: 8px; border-top: 1px solid #e2e8f0; font-size: 11px; text-align: center; }
 .sm-mouth-image figcaption { font-size: 11px; }
 .sm-image-key { display: block; margin-bottom: 5px; }
+.sm-image-key > span { display: block; }
+.sm-diagram-heading .sm-image-key { font-size: 12px; }
+.sm-key-active::before, .sm-key-reference::before { content: ""; display: inline-block; width: 22px; margin-right: 7px; vertical-align: middle; border-top: 3px solid #4157ad; }
+.sm-key-reference::before { border-top: 3px dashed #b45309; }
+.sm-diagram-limit { display: block; margin: 7px 0; }
+.sm-compare-note { font-size: 14px; line-height: 1.8; padding: 12px 14px; background: var(--sm-wash); border-radius: 6px; margin-top: 14px; }
+.sm-compare-note a { display: block; font-weight: 600; color: var(--sm-accent); margin-bottom: 5px; }
 .sm-back { display: inline-block; margin-top: 22px; font-size: 13px; color: var(--sm-accent); }
 .sm-notation, .sm-sources { margin-top: 50px; padding-top: 30px; border-top: 1px solid var(--border); scroll-margin-top: 20px; }
 .sm-notation p, .sm-sources p, .sm-sources li { font-size: 14px; line-height: 1.9; margin: 12px 0; }

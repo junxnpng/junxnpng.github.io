@@ -26,6 +26,8 @@ GitHub Pages(사용자 사이트). main 푸시 → `.github/workflows/hugo.yml` 
 
 `/saymore/`는 개인 영어 발음 학습 공간이며, `/saymore/ipa/`에서 미국식 IPA의 조음 설명과 구강 구조 그림을 제공한다. 설명 데이터는 `data/saymore/ipa.json`, 화면은 `layouts/saymore/`, 스타일은 `assets/css/saymore.css`에 있다. 번호는 `eng_ipa` 음성 목록과 대응하며 MP3 파일은 사이트에 포함하지 않는다. 그림 출처와 개별 라이선스는 `static/saymore/images/sources.json` 및 페이지 하단에 기록한다.
 
+모음 그림은 Wright·McCloy의 원본 혀 윤곽 두 개를 겹친 비교도(CC0)이며, 자음 그림은 Tavin·Nardog의 단면도를 편집한 자료(CC BY-SA 4.0)다. 유성·무성 쌍은 같은 입 위치를 공유할 수 있으므로 성대 표시와 설명을 함께 제공한다. 그림을 수정할 때 원본 출처·변경 사항·라이선스를 유지한다.
+
 `/study/basic-verbs/`는 하루 20–21개 뜻을 카드로 보여준다. 예문 펼치기, 티어·검색 필터, 미완료 복습과 날짜별 진행률을 제공한다. 완료 기록은 브라우저 `localStorage`에 항목별로 저장되며 기기 간 동기화하지 않는다. 같은 브라우저의 다른 탭과 뒤로가기로 복원된 페이지는 최신 기록을 다시 읽는다. 이전 버전의 완료 기록도 유지한다. 사이트와 저장소의 학습 자료는 공개된다.
 
 원본 Markdown을 수정한 뒤 저장소 루트에서 실행한다. 생성된 `content/study/`와 `data/study/`는 직접 수정하지 않는다.

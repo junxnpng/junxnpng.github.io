@@ -15,7 +15,16 @@
           "check": "/ɪ/보다 혀가 높습니다. 소리를 길게 늘이는 것만으로 구별하지 마세요.",
           "image": "vowel-i.svg",
           "image_symbol": "i",
-          "notation": "다른 미국식 사전에서는 /i/로 쓰기도 합니다. /ː/가 없다고 /ɪ/로 바뀌는 것은 아닙니다. 실제 길이는 강세와 앞뒤 소리에 따라 달라집니다."
+          "notation": "다른 미국식 사전에서는 /i/로 쓰기도 합니다. /ː/가 없다고 /ɪ/로 바뀌는 것은 아닙니다. 실제 길이는 강세와 앞뒤 소리에 따라 달라집니다.",
+          "diagram": {
+            "kind": "comparison",
+            "focus": "높은 /iː/와 조금 낮은 /ɪ/",
+            "compare_number": 2,
+            "compare_symbol": "ɪ",
+            "compare_note": "/ɪ/보다 혀 위쪽 윤곽이 높습니다.",
+            "width": 400,
+            "height": 410
+          }
         },
         {
           "number": 2,
@@ -25,7 +34,16 @@
           "how": "/iː/ 자세에서 혀를 조금 낮추고 힘을 풉니다. 입술을 둥글게 모으지 않습니다.",
           "check": "ship과 sheep을 비교하세요. 입과 혀의 자세가 달라져야 합니다.",
           "image": "vowel-ih.svg",
-          "image_symbol": "ɪ"
+          "image_symbol": "ɪ",
+          "diagram": {
+            "kind": "comparison",
+            "focus": "조금 낮은 /ɪ/와 높은 /iː/",
+            "compare_number": 1,
+            "compare_symbol": "iː",
+            "compare_note": "/iː/보다 혀를 조금 낮춥니다.",
+            "width": 400,
+            "height": 410
+          }
         },
         {
           "number": 3,
@@ -44,7 +62,16 @@
           "how": "혀를 앞쪽에 두고 턱을 내립니다. /e/보다 입을 더 열어 소리를 냅니다.",
           "check": "턱만 벌리면서 혀를 뒤로 당기지 마세요. hat의 모음을 확인하세요.",
           "image": "vowel-ae.svg",
-          "image_symbol": "æ"
+          "image_symbol": "æ",
+          "diagram": {
+            "kind": "comparison",
+            "focus": "낮은 /æ/와 더 높은 /e/",
+            "compare_number": 9,
+            "compare_symbol": "e",
+            "compare_note": "/e/보다 혀가 낮고 턱이 더 열립니다.",
+            "width": 400,
+            "height": 410
+          }
         },
         {
           "number": 5,
@@ -72,7 +99,16 @@
           "check": "/ʊ/보다 높고 모인 느낌을 확인하세요. 입술을 과하게 내밀 필요는 없습니다.",
           "image": "vowel-u.svg",
           "image_symbol": "u",
-          "notation": "다른 미국식 사전에서는 /u/로 쓰기도 합니다. /ː/ 유무만으로 길게 또는 짧게 읽는 규칙을 만들지 마세요."
+          "notation": "다른 미국식 사전에서는 /u/로 쓰기도 합니다. /ː/ 유무만으로 길게 또는 짧게 읽는 규칙을 만들지 마세요.",
+          "diagram": {
+            "kind": "comparison",
+            "focus": "높은 /uː/와 조금 낮은 /ʊ/",
+            "compare_number": 8,
+            "compare_symbol": "ʊ",
+            "compare_note": "/ʊ/보다 혀가 높고 입술이 더 모입니다.",
+            "width": 400,
+            "height": 410
+          }
         },
         {
           "number": 8,
@@ -82,7 +118,16 @@
           "how": "/uː/보다 혀를 조금 낮추고 입술의 조임을 풉니다. 입술은 가볍게 둥글게 하세요.",
           "check": "foot과 food를 비교하세요. 단지 길이만 줄여 같은 모음을 내지 마세요.",
           "image": "vowel-upsilon.svg",
-          "image_symbol": "ʊ"
+          "image_symbol": "ʊ",
+          "diagram": {
+            "kind": "comparison",
+            "focus": "조금 낮은 /ʊ/와 높은 /uː/",
+            "compare_number": 7,
+            "compare_symbol": "uː",
+            "compare_note": "/uː/보다 혀를 조금 낮추고 입술의 조임을 풉니다.",
+            "width": 400,
+            "height": 410
+          }
         },
         {
           "number": 9,
@@ -93,7 +138,16 @@
           "check": "head의 모음입니다. 알파벳 이름처럼 /eɪ/로 미끄러지지 않도록 하세요.",
           "image": "vowel-epsilon.svg",
           "image_symbol": "ɛ",
-          "notation": "이 페이지의 /e/는 다른 미국식 사전에서 /ɛ/로 쓰는 head의 모음입니다. day의 /eɪ/와 다릅니다. 그림의 [ɛ]도 이 소리의 참고 표기입니다."
+          "notation": "이 페이지의 /e/는 다른 미국식 사전에서 /ɛ/로 쓰는 head의 모음입니다. day의 /eɪ/와 다릅니다. 그림의 [ɛ]도 이 소리의 참고 표기입니다.",
+          "diagram": {
+            "kind": "comparison",
+            "focus": "더 높은 /e/와 낮은 /æ/",
+            "compare_number": 4,
+            "compare_symbol": "æ",
+            "compare_note": "/æ/보다 혀가 높고 턱이 덜 열립니다.",
+            "width": 400,
+            "height": 410
+          }
         },
         {
           "number": 10,
@@ -177,7 +231,18 @@
           "how": "두 입술로 공기를 잠시 막았다가 엽니다. 성대 진동을 목표로 하지 않습니다.",
           "check": "강세 음절 첫머리에서는 숨이 더 나옵니다. 끝에 별도 모음을 붙이지 마세요.",
           "image": "consonant-p.svg",
-          "image_symbol": "p"
+          "image_symbol": "p",
+          "diagram": {
+            "kind": "articulation",
+            "focus": "두 입술이 만나는 곳",
+            "voice": "무성 · 성대 진동 없음",
+            "compare_number": 19,
+            "compare_symbol": "b",
+            "compare_note": "/b/와 입의 막는 위치는 같습니다. /p/는 무성이고, 강세 음절 첫머리에서 숨이 더 나옵니다.",
+            "width": 378,
+            "height": 400,
+            "same_place_symbol": "b"
+          }
         },
         {
           "number": 19,
@@ -187,7 +252,18 @@
           "how": "입술을 닫아 공기를 막았다가 엽니다. /p/와 같은 위치에서 유성 소리를 만듭니다.",
           "check": "/v/처럼 윗니로 아랫입술을 누르지 마세요. 두 입술이 만납니다.",
           "image": "consonant-b.svg",
-          "image_symbol": "b"
+          "image_symbol": "b",
+          "diagram": {
+            "kind": "articulation",
+            "focus": "두 입술이 만나는 곳",
+            "voice": "유성 · 성대 울림",
+            "compare_number": 18,
+            "compare_symbol": "p",
+            "compare_note": "/p/와 입의 막는 위치는 같습니다. 입 모양보다 울림과 숨의 차이를 확인하세요.",
+            "width": 378,
+            "height": 400,
+            "same_place_symbol": "p"
+          }
         },
         {
           "number": 20,
@@ -197,7 +273,18 @@
           "how": "혀끝이나 혀 앞부분을 윗니 뒤 볼록한 곳에 대어 막은 뒤 뗍니다.",
           "check": "혀를 치아 사이로 내밀지 마세요. 단어 끝의 t는 항상 크게 터지는 것은 아닙니다.",
           "image": "consonant-t.svg",
-          "image_symbol": "t"
+          "image_symbol": "t",
+          "diagram": {
+            "kind": "articulation",
+            "focus": "혀끝과 윗니 뒤 잇몸의 접촉",
+            "voice": "무성 · 성대 진동 없음",
+            "compare_number": 23,
+            "compare_symbol": "k",
+            "compare_note": "/k/는 혀 뒤쪽으로 막지만 /t/는 혀끝 쪽으로 막습니다. /d/와는 막는 위치가 같습니다.",
+            "width": 378,
+            "height": 400,
+            "same_place_symbol": "d"
+          }
         },
         {
           "number": 21,
@@ -216,7 +303,18 @@
           "how": "/t/와 같은 위치에서 혀로 공기를 막았다가 뗍니다. 유성 소리를 목표로 합니다.",
           "check": "유성 파열음의 진동은 위치에 따라 약해질 수 있습니다. 길게 버티며 억지로 울리지 마세요.",
           "image": "consonant-d.svg",
-          "image_symbol": "d"
+          "image_symbol": "d",
+          "diagram": {
+            "kind": "articulation",
+            "focus": "혀끝과 윗니 뒤 잇몸의 접촉",
+            "voice": "유성 · 성대 울림",
+            "compare_number": 20,
+            "compare_symbol": "t",
+            "compare_note": "/t/와 막는 위치는 같습니다. 유성·무성과 강세 음절 첫머리의 숨 차이를 확인하세요.",
+            "width": 378,
+            "height": 400,
+            "same_place_symbol": "t"
+          }
         },
         {
           "number": 23,
@@ -226,7 +324,18 @@
           "how": "혀의 뒤쪽을 부드러운 뒤쪽 입천장에 대어 공기를 막았다가 엽니다.",
           "check": "혀끝으로 막지 않습니다. 뒤에서 막힌 공기가 풀리는 느낌을 확인하세요.",
           "image": "consonant-k.svg",
-          "image_symbol": "k"
+          "image_symbol": "k",
+          "diagram": {
+            "kind": "articulation",
+            "focus": "혀 뒤쪽과 연구개의 접촉",
+            "voice": "무성 · 성대 진동 없음",
+            "compare_number": 20,
+            "compare_symbol": "t",
+            "compare_note": "/t/보다 훨씬 뒤쪽에서 공기를 막습니다. /g/와는 막는 위치가 같습니다.",
+            "width": 378,
+            "height": 400,
+            "same_place_symbol": "g"
+          }
         },
         {
           "number": 24,
@@ -236,7 +345,18 @@
           "how": "/k/와 같은 뒤쪽 위치에서 공기를 막고 풀며 유성 소리를 냅니다.",
           "check": "give의 첫 소리입니다. 끝에 한국어 모음을 덧붙이지 마세요.",
           "image": "consonant-g.svg",
-          "image_symbol": "ɡ"
+          "image_symbol": "ɡ",
+          "diagram": {
+            "kind": "articulation",
+            "focus": "혀 뒤쪽과 연구개의 접촉",
+            "voice": "유성 · 성대 울림",
+            "compare_number": 23,
+            "compare_symbol": "k",
+            "compare_note": "/k/와 막는 위치는 같습니다. 유성 소리를 목표로 하되 진동을 억지로 오래 유지하지 마세요.",
+            "width": 378,
+            "height": 400,
+            "same_place_symbol": "k"
+          }
         },
         {
           "number": 25,
@@ -246,7 +366,18 @@
           "how": "윗니를 아랫입술에 가볍게 대고, 틈으로 공기를 계속 보냅니다.",
           "check": "두 입술을 닫았다 터뜨리면 /p/에 가까워집니다. 마찰을 이어 보세요.",
           "image": "consonant-f.svg",
-          "image_symbol": "f"
+          "image_symbol": "f",
+          "diagram": {
+            "kind": "articulation",
+            "focus": "윗니와 아랫입술 사이의 틈",
+            "voice": "무성 · 성대 진동 없음",
+            "compare_number": 18,
+            "compare_symbol": "p",
+            "compare_note": "/p/는 두 입술을 닫지만 /f/는 윗니와 아랫입술 사이로 공기를 계속 보냅니다.",
+            "width": 378,
+            "height": 400,
+            "same_place_symbol": "v"
+          }
         },
         {
           "number": 26,
@@ -256,7 +387,18 @@
           "how": "/f/의 입 모양을 유지하면서 성대를 울립니다. 좁은 틈으로 공기가 계속 흐릅니다.",
           "check": "/b/처럼 두 입술을 완전히 닫지 마세요. 목에 손을 대고 울림을 느껴보세요.",
           "image": "consonant-v.svg",
-          "image_symbol": "v"
+          "image_symbol": "v",
+          "diagram": {
+            "kind": "articulation",
+            "focus": "윗니와 아랫입술 사이의 틈",
+            "voice": "유성 · 성대 울림",
+            "compare_number": 19,
+            "compare_symbol": "b",
+            "compare_note": "/b/처럼 두 입술을 닫지 않습니다. /f/와 입 모양이 비슷하며 울림을 더합니다.",
+            "width": 378,
+            "height": 400,
+            "same_place_symbol": "f"
+          }
         },
         {
           "number": 27,
@@ -266,7 +408,18 @@
           "how": "혀끝을 윗니에 가볍게 대거나 치아 사이에 조금 내밉니다. 좁은 틈으로 숨을 보냅니다.",
           "check": "혀를 세게 깨물지 마세요. /s/나 /t/로 바꾸지 않고 공기를 이어 보세요.",
           "image": "consonant-theta.svg",
-          "image_symbol": "θ"
+          "image_symbol": "θ",
+          "diagram": {
+            "kind": "articulation",
+            "focus": "혀끝이 윗니에 닿는 자리",
+            "voice": "무성 · 성대 진동 없음",
+            "compare_number": 29,
+            "compare_symbol": "s",
+            "compare_note": "/s/보다 혀끝이 치아 쪽으로 갑니다. /ð/와는 비슷한 위치이며 성대 울림이 다릅니다.",
+            "width": 378,
+            "height": 400,
+            "same_place_symbol": "ð"
+          }
         },
         {
           "number": 28,
@@ -276,7 +429,18 @@
           "how": "/θ/와 비슷한 혀 위치에서 성대 진동을 더합니다. 통로를 완전히 막지 않습니다.",
           "check": "this와 think의 첫 소리를 비교하세요. 입 모양보다 울림 차이에 주목합니다.",
           "image": "consonant-eth.svg",
-          "image_symbol": "ð"
+          "image_symbol": "ð",
+          "diagram": {
+            "kind": "articulation",
+            "focus": "혀끝이 윗니에 닿는 자리",
+            "voice": "유성 · 성대 울림",
+            "compare_number": 27,
+            "compare_symbol": "θ",
+            "compare_note": "/θ/와 입 모양은 비슷합니다. this와 think의 첫 소리를 번갈아 내며 목의 울림을 확인하세요.",
+            "width": 378,
+            "height": 400,
+            "same_place_symbol": "θ"
+          }
         },
         {
           "number": 29,
@@ -286,7 +450,18 @@
           "how": "혀 앞부분을 잇몸 융기 가까이 올려 좁은 공기 통로를 만듭니다. 치아 사이로 혀를 내밀지 않습니다.",
           "check": "공기가 중앙을 따라 흐르는지 확인하세요. 혀로 완전히 막으면 안 됩니다.",
           "image": "consonant-s-apical.svg",
-          "image_symbol": "s"
+          "image_symbol": "s",
+          "diagram": {
+            "kind": "articulation",
+            "focus": "혀 앞부분과 잇몸 사이의 좁은 틈",
+            "voice": "무성 · 성대 진동 없음",
+            "compare_number": 31,
+            "compare_symbol": "ʃ",
+            "compare_note": "/ʃ/보다 앞쪽에서 틈을 만듭니다. 혀로 완전히 막지 않습니다.",
+            "width": 378,
+            "height": 400,
+            "same_place_symbol": "z"
+          }
         },
         {
           "number": 30,
@@ -296,7 +471,18 @@
           "how": "/s/의 좁은 통로를 유지하면서 성대를 울려 소리를 냅니다.",
           "check": "모음을 덧붙이지 않고 마찰음을 이어 보세요. /s/와 번갈아 울림을 비교합니다.",
           "image": "consonant-z-apical.svg",
-          "image_symbol": "z"
+          "image_symbol": "z",
+          "diagram": {
+            "kind": "articulation",
+            "focus": "혀 앞부분과 잇몸 사이의 좁은 틈",
+            "voice": "유성 · 성대 울림",
+            "compare_number": 29,
+            "compare_symbol": "s",
+            "compare_note": "/s/와 입의 위치는 비슷합니다. 좁은 틈을 유지하면서 성대 울림을 더합니다.",
+            "width": 378,
+            "height": 400,
+            "same_place_symbol": "s"
+          }
         },
         {
           "number": 31,
@@ -306,7 +492,18 @@
           "how": "/s/보다 조금 뒤쪽에서 혀의 앞부분을 입천장 가까이 올립니다. 입술을 살짝 모아 공기를 보냅니다.",
           "check": "혀를 완전히 붙여 막지 마세요. /tʃ/처럼 시작에 파열을 넣지 않습니다.",
           "image": "consonant-sh-laminal.svg",
-          "image_symbol": "ʃ"
+          "image_symbol": "ʃ",
+          "diagram": {
+            "kind": "articulation",
+            "focus": "잇몸 융기 뒤쪽의 좁은 틈",
+            "voice": "무성 · 성대 진동 없음",
+            "compare_number": 29,
+            "compare_symbol": "s",
+            "compare_note": "/s/보다 뒤쪽에서 통로를 좁힙니다. 입술도 살짝 모읍니다.",
+            "width": 378,
+            "height": 400,
+            "same_place_symbol": "ʒ"
+          }
         },
         {
           "number": 32,
@@ -316,7 +513,18 @@
           "how": "/ʃ/와 비슷한 좁은 통로에서 성대를 울리며 공기를 이어 보냅니다.",
           "check": "vision의 가운데 소리입니다. /dʒ/처럼 먼저 막았다 터뜨리지 마세요.",
           "image": "consonant-zh-apical.svg",
-          "image_symbol": "ʒ"
+          "image_symbol": "ʒ",
+          "diagram": {
+            "kind": "articulation",
+            "focus": "잇몸 융기 뒤쪽의 좁은 틈",
+            "voice": "유성 · 성대 울림",
+            "compare_number": 31,
+            "compare_symbol": "ʃ",
+            "compare_note": "/ʃ/와 입 모양이 비슷합니다. 같은 마찰을 유지하면서 울림을 더합니다.",
+            "width": 378,
+            "height": 400,
+            "same_place_symbol": "ʃ"
+          }
         },
         {
           "number": 33,
@@ -342,7 +550,17 @@
           "how": "두 입술을 닫고 성대를 울립니다. 입 대신 코로 공기가 빠져나가게 합니다.",
           "check": "입술을 열지 않고도 소리가 이어집니다. 코 주변의 울림을 느껴보세요.",
           "image": "consonant-m.svg",
-          "image_symbol": "m"
+          "image_symbol": "m",
+          "diagram": {
+            "kind": "articulation",
+            "focus": "닫힌 두 입술과 열린 코 쪽 통로",
+            "voice": "유성 · 코로 공기",
+            "compare_number": 36,
+            "compare_symbol": "n",
+            "compare_note": "/n/은 혀끝으로 막고 /m/은 입술로 막습니다. /b/와 달리 코로 소리를 이어갑니다.",
+            "width": 378,
+            "height": 400
+          }
         },
         {
           "number": 36,
@@ -352,7 +570,17 @@
           "how": "혀끝을 윗니 뒤 잇몸 융기에 대고, 성대를 울리며 코로 공기를 보냅니다.",
           "check": "입술로 막는 /m/과 혀 뒤로 막는 /ŋ/을 함께 비교하세요.",
           "image": "consonant-n.svg",
-          "image_symbol": "n"
+          "image_symbol": "n",
+          "diagram": {
+            "kind": "articulation",
+            "focus": "혀끝의 접촉과 열린 코 쪽 통로",
+            "voice": "유성 · 코로 공기",
+            "compare_number": 37,
+            "compare_symbol": "ŋ",
+            "compare_note": "/ŋ/보다 앞쪽인 잇몸에서 막습니다. /d/와 달리 코로 공기를 보냅니다.",
+            "width": 378,
+            "height": 400
+          }
         },
         {
           "number": 37,
@@ -362,7 +590,17 @@
           "how": "혀 뒤쪽으로 입 안의 통로를 막고 코로 소리를 보냅니다.",
           "check": "sing의 끝입니다. 뒤에 /g/가 자동으로 붙는 것은 아닙니다.",
           "image": "consonant-ng.svg",
-          "image_symbol": "ŋ"
+          "image_symbol": "ŋ",
+          "diagram": {
+            "kind": "articulation",
+            "focus": "혀 뒤쪽의 접촉과 열린 코 쪽 통로",
+            "voice": "유성 · 코로 공기",
+            "compare_number": 36,
+            "compare_symbol": "n",
+            "compare_note": "/n/보다 뒤쪽에서 막습니다. /g/와 비슷한 입의 위치에서 코로 공기를 보냅니다.",
+            "width": 378,
+            "height": 400
+          }
         },
         {
           "number": 38,

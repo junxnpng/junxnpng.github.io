@@ -14,7 +14,8 @@
     "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
     "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
     "file": "vowel-i.svg",
-    "modifications": "Cropped viewBox to oral and throat region; increased outline contrast and width; recolored lower tongue/jaw shape blue and upper palate/teeth shape beige. Original path geometry unchanged."
+    "modifications": "Mirrored and cropped to upper oral region; retained original active tongue/jaw shape and overlaid the comparison vowel upper tongue contour with an orange dashed stroke. Source geometry unchanged.",
+    "comparisonSource": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/vowels/svg/%C9%AA.svg"
   },
   {
     "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/vowels/svg/%C9%AA.svg",
@@ -31,7 +32,8 @@
     "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
     "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
     "file": "vowel-ih.svg",
-    "modifications": "Cropped viewBox to oral and throat region; increased outline contrast and width; recolored lower tongue/jaw shape blue and upper palate/teeth shape beige. Original path geometry unchanged."
+    "modifications": "Mirrored and cropped to upper oral region; retained original active tongue/jaw shape and overlaid the comparison vowel upper tongue contour with an orange dashed stroke. Source geometry unchanged.",
+    "comparisonSource": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/vowels/svg/i.svg"
   },
   {
     "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/vowels/svg/%C9%9B.svg",
@@ -48,7 +50,8 @@
     "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
     "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
     "file": "vowel-epsilon.svg",
-    "modifications": "Cropped viewBox to oral and throat region; increased outline contrast and width; recolored lower tongue/jaw shape blue and upper palate/teeth shape beige. Original path geometry unchanged."
+    "modifications": "Mirrored and cropped to upper oral region; retained original active tongue/jaw shape and overlaid the comparison vowel upper tongue contour with an orange dashed stroke. Source geometry unchanged.",
+    "comparisonSource": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/vowels/svg/%C3%A6.svg"
   },
   {
     "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/vowels/svg/%C3%A6.svg",
@@ -65,7 +68,8 @@
     "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
     "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
     "file": "vowel-ae.svg",
-    "modifications": "Cropped viewBox to oral and throat region; increased outline contrast and width; recolored lower tongue/jaw shape blue and upper palate/teeth shape beige. Original path geometry unchanged."
+    "modifications": "Mirrored and cropped to upper oral region; retained original active tongue/jaw shape and overlaid the comparison vowel upper tongue contour with an orange dashed stroke. Source geometry unchanged.",
+    "comparisonSource": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/vowels/svg/%C9%9B.svg"
   },
   {
     "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/vowels/svg/u.svg",
@@ -82,7 +86,8 @@
     "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
     "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
     "file": "vowel-u.svg",
-    "modifications": "Cropped viewBox to oral and throat region; increased outline contrast and width; recolored lower tongue/jaw shape blue and upper palate/teeth shape beige. Original path geometry unchanged."
+    "modifications": "Mirrored and cropped to upper oral region; retained original active tongue/jaw shape and overlaid the comparison vowel upper tongue contour with an orange dashed stroke. Source geometry unchanged.",
+    "comparisonSource": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/vowels/svg/%CA%8A.svg"
   },
   {
     "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/vowels/svg/%CA%8A.svg",
@@ -99,296 +104,252 @@
     "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
     "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
     "file": "vowel-upsilon.svg",
-    "modifications": "Cropped viewBox to oral and throat region; increased outline contrast and width; recolored lower tongue/jaw shape blue and upper palate/teeth shape beige. Original path geometry unchanged."
+    "modifications": "Mirrored and cropped to upper oral region; retained original active tongue/jaw shape and overlaid the comparison vowel upper tongue contour with an orange dashed stroke. Source geometry unchanged.",
+    "comparisonSource": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/vowels/svg/u.svg"
   },
   {
-    "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/consonants/svg/p.svg",
-    "upstreamPath": "midsaggital_articulations/consonants/svg/p.svg",
-    "originalSymbol": "p",
-    "kind": "consonant",
-    "authors": [
-      "Richard Wright",
-      "Dan McCloy"
-    ],
-    "license": "CC0-1.0",
-    "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
-    "source": "https://github.com/drammock/phonetics-teaching-assets",
-    "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
-    "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
     "file": "consonant-p.svg",
-    "modifications": "Cropped viewBox to oral and throat region; increased outline contrast and width; recolored lower tongue/jaw shape blue and upper palate/teeth shape beige. Original path geometry unchanged."
-  },
-  {
-    "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/consonants/svg/b.svg",
-    "upstreamPath": "midsaggital_articulations/consonants/svg/b.svg",
-    "originalSymbol": "b",
     "kind": "consonant",
     "authors": [
-      "Richard Wright",
-      "Dan McCloy"
+      "Tavin",
+      "Nardog"
     ],
-    "license": "CC0-1.0",
-    "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
-    "source": "https://github.com/drammock/phonetics-teaching-assets",
-    "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
-    "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
+    "license": "CC-BY-SA-4.0",
+    "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiced_bilabial_plosive.svg",
+    "upstreamRawURL": "https://upload.wikimedia.org/wikipedia/commons/d/dd/Voiced_bilabial_plosive.svg",
+    "note": "A schematic mid-sagittal section of an articulation of a voiced bilabial plosive [b].",
+    "modifications": "Added scalable viewBox and color coding. Original oral path geometry unchanged. Voiceless variant of the cited voiced articulation: replaced the wavy glottis with the straight unvoiced glottis from the cited [s] diagram.",
+    "glottisSource": "https://commons.wikimedia.org/wiki/File:Voiceless_alveolar_fricative_articulation.svg"
+  },
+  {
     "file": "consonant-b.svg",
-    "modifications": "Cropped viewBox to oral and throat region; increased outline contrast and width; recolored lower tongue/jaw shape blue and upper palate/teeth shape beige. Original path geometry unchanged."
-  },
-  {
-    "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/consonants/svg/t.svg",
-    "upstreamPath": "midsaggital_articulations/consonants/svg/t.svg",
-    "originalSymbol": "t",
     "kind": "consonant",
     "authors": [
-      "Richard Wright",
-      "Dan McCloy"
+      "Tavin",
+      "Nardog"
     ],
-    "license": "CC0-1.0",
-    "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
-    "source": "https://github.com/drammock/phonetics-teaching-assets",
-    "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
-    "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
+    "license": "CC-BY-SA-4.0",
+    "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiced_bilabial_plosive.svg",
+    "upstreamRawURL": "https://upload.wikimedia.org/wikipedia/commons/d/dd/Voiced_bilabial_plosive.svg",
+    "note": "A schematic mid-sagittal section of an articulation of a voiced bilabial plosive [b].",
+    "modifications": "Added scalable viewBox and color coding. Original oral path geometry unchanged."
+  },
+  {
     "file": "consonant-t.svg",
-    "modifications": "Cropped viewBox to oral and throat region; increased outline contrast and width; recolored lower tongue/jaw shape blue and upper palate/teeth shape beige. Original path geometry unchanged."
-  },
-  {
-    "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/consonants/svg/d.svg",
-    "upstreamPath": "midsaggital_articulations/consonants/svg/d.svg",
-    "originalSymbol": "d",
     "kind": "consonant",
     "authors": [
-      "Richard Wright",
-      "Dan McCloy"
+      "Tavin",
+      "Nardog"
     ],
-    "license": "CC0-1.0",
-    "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
-    "source": "https://github.com/drammock/phonetics-teaching-assets",
-    "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
-    "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
+    "license": "CC-BY-SA-4.0",
+    "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiced_alveolar_plosive.svg",
+    "upstreamRawURL": "https://upload.wikimedia.org/wikipedia/commons/6/62/Voiced_alveolar_plosive.svg",
+    "note": "A schematic mid-sagittal section of an articulation of a voiced alveolar plosive [d].",
+    "modifications": "Added scalable viewBox and color coding. Original oral path geometry unchanged. Voiceless variant of the cited voiced articulation: replaced the wavy glottis with the straight unvoiced glottis from the cited [s] diagram.",
+    "glottisSource": "https://commons.wikimedia.org/wiki/File:Voiceless_alveolar_fricative_articulation.svg"
+  },
+  {
     "file": "consonant-d.svg",
-    "modifications": "Cropped viewBox to oral and throat region; increased outline contrast and width; recolored lower tongue/jaw shape blue and upper palate/teeth shape beige. Original path geometry unchanged."
-  },
-  {
-    "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/consonants/svg/k.svg",
-    "upstreamPath": "midsaggital_articulations/consonants/svg/k.svg",
-    "originalSymbol": "k",
     "kind": "consonant",
     "authors": [
-      "Richard Wright",
-      "Dan McCloy"
+      "Tavin",
+      "Nardog"
     ],
-    "license": "CC0-1.0",
-    "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
-    "source": "https://github.com/drammock/phonetics-teaching-assets",
-    "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
-    "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
+    "license": "CC-BY-SA-4.0",
+    "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiced_alveolar_plosive.svg",
+    "upstreamRawURL": "https://upload.wikimedia.org/wikipedia/commons/6/62/Voiced_alveolar_plosive.svg",
+    "note": "A schematic mid-sagittal section of an articulation of a voiced alveolar plosive [d].",
+    "modifications": "Added scalable viewBox and color coding. Original oral path geometry unchanged."
+  },
+  {
     "file": "consonant-k.svg",
-    "modifications": "Cropped viewBox to oral and throat region; increased outline contrast and width; recolored lower tongue/jaw shape blue and upper palate/teeth shape beige. Original path geometry unchanged."
-  },
-  {
-    "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/consonants/svg/g.svg",
-    "upstreamPath": "midsaggital_articulations/consonants/svg/g.svg",
-    "originalSymbol": "ɡ",
     "kind": "consonant",
     "authors": [
-      "Richard Wright",
-      "Dan McCloy"
+      "Tavin",
+      "Nardog"
     ],
-    "license": "CC0-1.0",
-    "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
-    "source": "https://github.com/drammock/phonetics-teaching-assets",
-    "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
-    "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
+    "license": "CC-BY-SA-4.0",
+    "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiced_velar_plosive.svg",
+    "upstreamRawURL": "https://upload.wikimedia.org/wikipedia/commons/b/bf/Voiced_velar_plosive.svg",
+    "note": "A schematic mid-sagittal section of an articulation of a voiced velar plosive [ɡ].",
+    "modifications": "Added scalable viewBox and color coding. Original oral path geometry unchanged. Voiceless variant of the cited voiced articulation: replaced the wavy glottis with the straight unvoiced glottis from the cited [s] diagram.",
+    "glottisSource": "https://commons.wikimedia.org/wiki/File:Voiceless_alveolar_fricative_articulation.svg"
+  },
+  {
     "file": "consonant-g.svg",
-    "modifications": "Cropped viewBox to oral and throat region; increased outline contrast and width; recolored lower tongue/jaw shape blue and upper palate/teeth shape beige. Original path geometry unchanged."
-  },
-  {
-    "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/consonants/svg/f.svg",
-    "upstreamPath": "midsaggital_articulations/consonants/svg/f.svg",
-    "originalSymbol": "f",
     "kind": "consonant",
     "authors": [
-      "Richard Wright",
-      "Dan McCloy"
+      "Tavin",
+      "Nardog"
     ],
-    "license": "CC0-1.0",
-    "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
-    "source": "https://github.com/drammock/phonetics-teaching-assets",
-    "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
-    "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
+    "license": "CC-BY-SA-4.0",
+    "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiced_velar_plosive.svg",
+    "upstreamRawURL": "https://upload.wikimedia.org/wikipedia/commons/b/bf/Voiced_velar_plosive.svg",
+    "note": "A schematic mid-sagittal section of an articulation of a voiced velar plosive [ɡ].",
+    "modifications": "Added scalable viewBox and color coding. Original oral path geometry unchanged."
+  },
+  {
     "file": "consonant-f.svg",
-    "modifications": "Cropped viewBox to oral and throat region; increased outline contrast and width; recolored lower tongue/jaw shape blue and upper palate/teeth shape beige. Original path geometry unchanged."
-  },
-  {
-    "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/consonants/svg/v.svg",
-    "upstreamPath": "midsaggital_articulations/consonants/svg/v.svg",
-    "originalSymbol": "v",
     "kind": "consonant",
     "authors": [
-      "Richard Wright",
-      "Dan McCloy"
+      "Tavin",
+      "Nardog"
     ],
-    "license": "CC0-1.0",
-    "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
-    "source": "https://github.com/drammock/phonetics-teaching-assets",
-    "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
-    "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
+    "license": "CC-BY-SA-4.0",
+    "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiced_labiodental_fricative_articulation.svg",
+    "upstreamRawURL": "https://upload.wikimedia.org/wikipedia/commons/c/c4/Voiced_labiodental_fricative_articulation.svg",
+    "note": "A schematic mid-sagittal section of an articulation of a voiced labiodental fricative [v].",
+    "modifications": "Added scalable viewBox and color coding. Original oral path geometry unchanged. Voiceless variant of the cited voiced articulation: replaced the wavy glottis with the straight unvoiced glottis from the cited [s] diagram.",
+    "glottisSource": "https://commons.wikimedia.org/wiki/File:Voiceless_alveolar_fricative_articulation.svg"
+  },
+  {
     "file": "consonant-v.svg",
-    "modifications": "Cropped viewBox to oral and throat region; increased outline contrast and width; recolored lower tongue/jaw shape blue and upper palate/teeth shape beige. Original path geometry unchanged."
-  },
-  {
-    "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/consonants/svg/%CE%B8.svg",
-    "upstreamPath": "midsaggital_articulations/consonants/svg/θ.svg",
-    "originalSymbol": "θ",
     "kind": "consonant",
     "authors": [
-      "Richard Wright",
-      "Dan McCloy"
+      "Tavin",
+      "Nardog"
     ],
-    "license": "CC0-1.0",
-    "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
-    "source": "https://github.com/drammock/phonetics-teaching-assets",
-    "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
-    "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
+    "license": "CC-BY-SA-4.0",
+    "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiced_labiodental_fricative_articulation.svg",
+    "upstreamRawURL": "https://upload.wikimedia.org/wikipedia/commons/c/c4/Voiced_labiodental_fricative_articulation.svg",
+    "note": "A schematic mid-sagittal section of an articulation of a voiced labiodental fricative [v].",
+    "modifications": "Added scalable viewBox and color coding. Original oral path geometry unchanged."
+  },
+  {
     "file": "consonant-theta.svg",
-    "modifications": "Cropped viewBox to oral and throat region; increased outline contrast and width; recolored lower tongue/jaw shape blue and upper palate/teeth shape beige. Original path geometry unchanged."
-  },
-  {
-    "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/consonants/svg/eth.svg",
-    "upstreamPath": "midsaggital_articulations/consonants/svg/eth.svg",
-    "originalSymbol": "ð",
     "kind": "consonant",
     "authors": [
-      "Richard Wright",
-      "Dan McCloy"
+      "Tavin",
+      "Nardog"
     ],
-    "license": "CC0-1.0",
-    "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
-    "source": "https://github.com/drammock/phonetics-teaching-assets",
-    "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
-    "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
+    "license": "CC-BY-SA-4.0",
+    "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiced_dental_fricative_articulation.svg",
+    "upstreamRawURL": "https://upload.wikimedia.org/wikipedia/commons/c/c8/Voiced_dental_fricative_articulation.svg",
+    "note": "A schematic mid-sagittal section of an articulation of a voiced dental fricative [ð].",
+    "modifications": "Added scalable viewBox and color coding. Original oral path geometry unchanged. Voiceless variant of the cited voiced articulation: replaced the wavy glottis with the straight unvoiced glottis from the cited [s] diagram.",
+    "glottisSource": "https://commons.wikimedia.org/wiki/File:Voiceless_alveolar_fricative_articulation.svg"
+  },
+  {
     "file": "consonant-eth.svg",
-    "modifications": "Cropped viewBox to oral and throat region; increased outline contrast and width; recolored lower tongue/jaw shape blue and upper palate/teeth shape beige. Original path geometry unchanged."
-  },
-  {
-    "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/consonants/svg/s_apical.svg",
-    "upstreamPath": "midsaggital_articulations/consonants/svg/s_apical.svg",
-    "originalSymbol": "s",
     "kind": "consonant",
     "authors": [
-      "Richard Wright",
-      "Dan McCloy"
+      "Tavin",
+      "Nardog"
     ],
-    "license": "CC0-1.0",
-    "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
-    "source": "https://github.com/drammock/phonetics-teaching-assets",
-    "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
-    "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
+    "license": "CC-BY-SA-4.0",
+    "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiced_dental_fricative_articulation.svg",
+    "upstreamRawURL": "https://upload.wikimedia.org/wikipedia/commons/c/c8/Voiced_dental_fricative_articulation.svg",
+    "note": "A schematic mid-sagittal section of an articulation of a voiced dental fricative [ð].",
+    "modifications": "Added scalable viewBox and color coding. Original oral path geometry unchanged."
+  },
+  {
     "file": "consonant-s-apical.svg",
-    "modifications": "Cropped viewBox to oral and throat region; increased outline contrast and width; recolored lower tongue/jaw shape blue and upper palate/teeth shape beige. Original path geometry unchanged."
-  },
-  {
-    "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/consonants/svg/z_apical.svg",
-    "upstreamPath": "midsaggital_articulations/consonants/svg/z_apical.svg",
-    "originalSymbol": "z",
     "kind": "consonant",
     "authors": [
-      "Richard Wright",
-      "Dan McCloy"
+      "Tavin",
+      "Nardog"
     ],
-    "license": "CC0-1.0",
-    "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
-    "source": "https://github.com/drammock/phonetics-teaching-assets",
-    "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
-    "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
+    "license": "CC-BY-SA-4.0",
+    "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiceless_alveolar_fricative_articulation.svg",
+    "upstreamRawURL": "https://upload.wikimedia.org/wikipedia/commons/c/c9/Voiceless_alveolar_fricative_articulation.svg",
+    "note": "A schematic mid-sagittal section of an articulation of a voiceless alveolar fricative [s].",
+    "modifications": "Added scalable viewBox and color coding. Original oral path geometry unchanged."
+  },
+  {
     "file": "consonant-z-apical.svg",
-    "modifications": "Cropped viewBox to oral and throat region; increased outline contrast and width; recolored lower tongue/jaw shape blue and upper palate/teeth shape beige. Original path geometry unchanged."
-  },
-  {
-    "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/consonants/svg/%CA%83_laminal.svg",
-    "upstreamPath": "midsaggital_articulations/consonants/svg/ʃ_laminal.svg",
-    "originalSymbol": "ʃ",
     "kind": "consonant",
     "authors": [
-      "Richard Wright",
-      "Dan McCloy"
+      "Tavin",
+      "Nardog"
     ],
-    "license": "CC0-1.0",
-    "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
-    "source": "https://github.com/drammock/phonetics-teaching-assets",
-    "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
-    "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
+    "license": "CC-BY-SA-4.0",
+    "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiced_alveolar_fricative.svg",
+    "upstreamRawURL": "https://upload.wikimedia.org/wikipedia/commons/1/18/Voiced_alveolar_fricative.svg",
+    "note": "A schematic mid-sagittal section of an articulation of a voiced alveolar fricative [z].",
+    "modifications": "Added scalable viewBox and color coding. Original oral path geometry unchanged."
+  },
+  {
     "file": "consonant-sh-laminal.svg",
-    "modifications": "Cropped viewBox to oral and throat region; increased outline contrast and width; recolored lower tongue/jaw shape blue and upper palate/teeth shape beige. Original path geometry unchanged."
-  },
-  {
-    "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/consonants/svg/%CA%92_apical.svg",
-    "upstreamPath": "midsaggital_articulations/consonants/svg/ʒ_apical.svg",
-    "originalSymbol": "ʒ",
     "kind": "consonant",
     "authors": [
-      "Richard Wright",
-      "Dan McCloy"
+      "Tavin",
+      "Nardog"
     ],
-    "license": "CC0-1.0",
-    "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
-    "source": "https://github.com/drammock/phonetics-teaching-assets",
-    "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
-    "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
+    "license": "CC-BY-SA-4.0",
+    "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiced_palato-alveolar_fricative_articulation.svg",
+    "upstreamRawURL": "https://upload.wikimedia.org/wikipedia/commons/0/03/Voiced_palato-alveolar_fricative_articulation.svg",
+    "note": "A schematic mid-sagittal section of an articulation of a voiced palato-alveolar fricative [ʒ].",
+    "modifications": "Added scalable viewBox and color coding. Original oral path geometry unchanged. Voiceless variant of the cited voiced articulation: replaced the wavy glottis with the straight unvoiced glottis from the cited [s] diagram.",
+    "glottisSource": "https://commons.wikimedia.org/wiki/File:Voiceless_alveolar_fricative_articulation.svg"
+  },
+  {
     "file": "consonant-zh-apical.svg",
-    "modifications": "Cropped viewBox to oral and throat region; increased outline contrast and width; recolored lower tongue/jaw shape blue and upper palate/teeth shape beige. Original path geometry unchanged."
-  },
-  {
-    "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/consonants/svg/m.svg",
-    "upstreamPath": "midsaggital_articulations/consonants/svg/m.svg",
-    "originalSymbol": "m",
     "kind": "consonant",
     "authors": [
-      "Richard Wright",
-      "Dan McCloy"
+      "Tavin",
+      "Nardog"
     ],
-    "license": "CC0-1.0",
-    "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
-    "source": "https://github.com/drammock/phonetics-teaching-assets",
-    "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
-    "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
+    "license": "CC-BY-SA-4.0",
+    "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiced_palato-alveolar_fricative_articulation.svg",
+    "upstreamRawURL": "https://upload.wikimedia.org/wikipedia/commons/0/03/Voiced_palato-alveolar_fricative_articulation.svg",
+    "note": "A schematic mid-sagittal section of an articulation of a voiced palato-alveolar fricative [ʒ].",
+    "modifications": "Added scalable viewBox and color coding. Original oral path geometry unchanged."
+  },
+  {
     "file": "consonant-m.svg",
-    "modifications": "Cropped viewBox to oral and throat region; increased outline contrast and width; recolored lower tongue/jaw shape blue and upper palate/teeth shape beige. Original path geometry unchanged."
-  },
-  {
-    "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/consonants/svg/n.svg",
-    "upstreamPath": "midsaggital_articulations/consonants/svg/n.svg",
-    "originalSymbol": "n",
     "kind": "consonant",
     "authors": [
-      "Richard Wright",
-      "Dan McCloy"
+      "Tavin",
+      "Nardog"
     ],
-    "license": "CC0-1.0",
-    "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
-    "source": "https://github.com/drammock/phonetics-teaching-assets",
-    "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
-    "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
+    "license": "CC-BY-SA-4.0",
+    "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiced_bilabial_nasal.svg",
+    "upstreamRawURL": "https://upload.wikimedia.org/wikipedia/commons/e/ed/Voiced_bilabial_nasal.svg",
+    "note": "A schematic mid-sagittal section of an articulation of a voiced bilabial nasal [m].",
+    "modifications": "Added scalable viewBox and color coding. Original oral path geometry unchanged."
+  },
+  {
     "file": "consonant-n.svg",
-    "modifications": "Cropped viewBox to oral and throat region; increased outline contrast and width; recolored lower tongue/jaw shape blue and upper palate/teeth shape beige. Original path geometry unchanged."
-  },
-  {
-    "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/consonants/svg/%C5%8B.svg",
-    "upstreamPath": "midsaggital_articulations/consonants/svg/ŋ.svg",
-    "originalSymbol": "ŋ",
     "kind": "consonant",
     "authors": [
-      "Richard Wright",
-      "Dan McCloy"
+      "Tavin",
+      "Nardog"
     ],
-    "license": "CC0-1.0",
-    "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
-    "source": "https://github.com/drammock/phonetics-teaching-assets",
-    "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
-    "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
+    "license": "CC-BY-SA-4.0",
+    "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiced_alveolar_nasal.svg",
+    "upstreamRawURL": "https://upload.wikimedia.org/wikipedia/commons/0/07/Voiced_alveolar_nasal.svg",
+    "note": "A schematic mid-sagittal section of an articulation of a voiced alveolar nasal [n].",
+    "modifications": "Added scalable viewBox and color coding. Original oral path geometry unchanged."
+  },
+  {
     "file": "consonant-ng.svg",
-    "modifications": "Cropped viewBox to oral and throat region; increased outline contrast and width; recolored lower tongue/jaw shape blue and upper palate/teeth shape beige. Original path geometry unchanged."
+    "kind": "consonant",
+    "authors": [
+      "Tavin",
+      "Nardog"
+    ],
+    "license": "CC-BY-SA-4.0",
+    "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiced_velar_nasal.svg",
+    "upstreamRawURL": "https://upload.wikimedia.org/wikipedia/commons/0/06/Voiced_velar_nasal.svg",
+    "note": "A schematic mid-sagittal section of an articulation of a voiced velar nasal [ŋ].",
+    "modifications": "Added scalable viewBox and color coding. Original oral path geometry unchanged."
   },
   {
     "upstreamRawURL": "https://upload.wikimedia.org/wikipedia/commons/7/75/Places_of_articulation.svg",
