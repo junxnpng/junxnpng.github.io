@@ -39,7 +39,11 @@
         <p class="sm-articulation">{{ .place }}</p>
         {{ with .notation }}<aside class="sm-card-notation" aria-label="표기와 발음 참고"><h4>표기·발음 참고</h4><p>{{ . }}</p></aside>{{ end }}
         <div class="sm-card-body"><div class="sm-card-copy"><h4>이렇게 발음해요</h4><p>{{ .how }}</p><h4>확인할 점</h4><p>{{ .check }}</p>{{ with .note }}<p class="sm-card-note">{{ . }}</p>{{ end }}</div>
-        {{ with .image }}<figure class="sm-mouth-image"><a href="{{ printf "saymore/images/%s" . | relURL }}" aria-label="{{ $item.symbol }} 조음 그림 크게 보기"><img src="{{ printf "saymore/images/%s" . | relURL }}" width="300" height="424" loading="lazy" alt="[{{ $item.image_symbol }}] 조음의 입·혀 단면 참고 그림"></a><figcaption>[{{ $item.image_symbol }}] 조음 참고도 · <a href="#sources">Wright · McCloy, CC0</a></figcaption></figure>{{ end }}</div>
+        {{ with .image }}
+        {{ $imagePath := printf "saymore/images/%s" . }}
+        {{ $imageVersion := substr (sha256 (readFile (printf "static/%s" $imagePath))) 0 12 }}
+        {{ $imageURL := printf "%s?v=%s" ($imagePath | relURL) $imageVersion }}
+        <figure class="sm-mouth-image"><a href="{{ $imageURL }}" aria-label="{{ $item.symbol }} 조음 그림 크게 보기"><img src="{{ $imageURL }}" width="440" height="640" loading="lazy" alt="[{{ $item.image_symbol }}] 조음의 입 안 확대 단면도. 파란 부분은 혀와 아래턱, 베이지 부분은 입천장과 윗니입니다."><span class="sm-image-zoom">입 안 확대 · 클릭해서 크게 보기 ↗</span></a><figcaption><span class="sm-image-key">파랑: 혀·아래턱 / 베이지: 입천장·윗니</span>[{{ $item.image_symbol }}] 조음 참고도 · <a href="#sources">Wright · McCloy, CC0</a></figcaption></figure>{{ end }}</div>
       </section>
     {{ end }}
     </div>
@@ -59,7 +63,7 @@
       <li><a href="https://linguistics.berkeley.edu/~kjohnson/English_Phonetics/">UC Berkeley · American English Pronunciation Workbook</a> — 실제 미국식 대화 속 소리와 발음 변이.</li>
       <li><a href="https://opentext.ku.edu/amenglishpronunciation/chapter/chapter-1/">University of Kansas · Vowel Sounds</a> — 모음과 r색채 모음 설명.</li>
       <li><a href="https://blog.fluent-forever.com/chapter3/">Fluent Forever · Chapter 3</a> — 발음 원리와 최소 대립쌍 학습.</li>
-      <li><a href="https://github.com/drammock/phonetics-teaching-assets">Richard Wright · Daniel McCloy · Phonetics teaching assets</a> — 개별 조음 그림. <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0</a>. 원본 그림을 사용하며, 그림은 움직임 전체가 아닌 한 순간의 참고 자세입니다.</li>
+      <li><a href="https://github.com/drammock/phonetics-teaching-assets">Richard Wright · Daniel McCloy · Phonetics teaching assets</a> — 개별 조음 그림. <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0</a>. 원본의 선 모양을 유지하며 입 주변 확대, 색상·선 굵기를 보정했습니다. 그림은 움직임 전체가 아닌 한 순간의 참고 자세입니다.</li>
     </ul><p class="sm-footnote">확인일 2026-11-03 · 조음 그림은 전형적인 자세를 보여주는 참고도이며, 미국 화자 모두의 혀 모양이 동일하다는 뜻은 아닙니다.</p>
   </section>
 </article>

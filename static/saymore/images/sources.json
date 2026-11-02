@@ -13,7 +13,8 @@
     "source": "https://github.com/drammock/phonetics-teaching-assets",
     "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
     "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
-    "file": "vowel-i.svg"
+    "file": "vowel-i.svg",
+    "modifications": "Cropped viewBox to oral and throat region; increased outline contrast and width; recolored lower tongue/jaw shape blue and upper palate/teeth shape beige. Original path geometry unchanged."
   },
   {
     "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/vowels/svg/%C9%AA.svg",
@@ -29,7 +30,8 @@
     "source": "https://github.com/drammock/phonetics-teaching-assets",
     "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
     "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
-    "file": "vowel-ih.svg"
+    "file": "vowel-ih.svg",
+    "modifications": "Cropped viewBox to oral and throat region; increased outline contrast and width; recolored lower tongue/jaw shape blue and upper palate/teeth shape beige. Original path geometry unchanged."
   },
   {
     "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/vowels/svg/%C9%9B.svg",
@@ -45,7 +47,8 @@
     "source": "https://github.com/drammock/phonetics-teaching-assets",
     "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
     "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
-    "file": "vowel-epsilon.svg"
+    "file": "vowel-epsilon.svg",
+    "modifications": "Cropped viewBox to oral and throat region; increased outline contrast and width; recolored lower tongue/jaw shape blue and upper palate/teeth shape beige. Original path geometry unchanged."
   },
   {
     "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/vowels/svg/%C3%A6.svg",
@@ -61,7 +64,8 @@
     "source": "https://github.com/drammock/phonetics-teaching-assets",
     "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
     "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
-    "file": "vowel-ae.svg"
+    "file": "vowel-ae.svg",
+    "modifications": "Cropped viewBox to oral and throat region; increased outline contrast and width; recolored lower tongue/jaw shape blue and upper palate/teeth shape beige. Original path geometry unchanged."
   },
   {
     "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/vowels/svg/u.svg",
@@ -77,7 +81,8 @@
     "source": "https://github.com/drammock/phonetics-teaching-assets",
     "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
     "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
-    "file": "vowel-u.svg"
+    "file": "vowel-u.svg",
+    "modifications": "Cropped viewBox to oral and throat region; increased outline contrast and width; recolored lower tongue/jaw shape blue and upper palate/teeth shape beige. Original path geometry unchanged."
   },
   {
     "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/vowels/svg/%CA%8A.svg",
@@ -93,7 +98,8 @@
     "source": "https://github.com/drammock/phonetics-teaching-assets",
     "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
     "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
-    "file": "vowel-upsilon.svg"
+    "file": "vowel-upsilon.svg",
+    "modifications": "Cropped viewBox to oral and throat region; increased outline contrast and width; recolored lower tongue/jaw shape blue and upper palate/teeth shape beige. Original path geometry unchanged."
   },
   {
     "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/consonants/svg/p.svg",
@@ -109,7 +115,8 @@
     "source": "https://github.com/drammock/phonetics-teaching-assets",
     "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
     "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
-    "file": "consonant-p.svg"
+    "file": "consonant-p.svg",
+    "modifications": "Cropped viewBox to oral and throat region; increased outline contrast and width; recolored lower tongue/jaw shape blue and upper palate/teeth shape beige. Original path geometry unchanged."
   },
   {
     "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/consonants/svg/b.svg",
@@ -125,7 +132,8 @@
     "source": "https://github.com/drammock/phonetics-teaching-assets",
     "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
     "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
-    "file": "consonant-b.svg"
+    "file": "consonant-b.svg",
+    "modifications": "Cropped viewBox to oral and throat region; increased outline contrast and width; recolored lower tongue/jaw shape blue and upper palate/teeth shape beige. Original path geometry unchanged."
   },
   {
     "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/consonants/svg/t.svg",
@@ -141,7 +149,8 @@
     "source": "https://github.com/drammock/phonetics-teaching-assets",
     "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
     "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
-    "file": "consonant-t.svg"
+    "file": "consonant-t.svg",
+    "modifications": "Cropped viewBox to oral and throat region; increased outline contrast and width; recolored lower tongue/jaw shape blue and upper palate/teeth shape beige. Original path geometry unchanged."
   },
   {
     "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/consonants/svg/d.svg",
@@ -157,7 +166,8 @@
     "source": "https://github.com/drammock/phonetics-teaching-assets",
     "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
     "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
-    "file": "consonant-d.svg"
+    "file": "consonant-d.svg",
+    "modifications": "Cropped viewBox to oral and throat region; increased outline contrast and width; recolored lower tongue/jaw shape blue and upper palate/teeth shape beige. Original path geometry unchanged."
   },
   {
     "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/consonants/svg/k.svg",
@@ -173,7 +183,8 @@
     "source": "https://github.com/drammock/phonetics-teaching-assets",
     "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
     "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
-    "file": "consonant-k.svg"
+    "file": "consonant-k.svg",
+    "modifications": "Cropped viewBox to oral and throat region; increased outline contrast and width; recolored lower tongue/jaw shape blue and upper palate/teeth shape beige. Original path geometry unchanged."
   },
   {
     "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/consonants/svg/g.svg",
@@ -189,7 +200,8 @@
     "source": "https://github.com/drammock/phonetics-teaching-assets",
     "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
     "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
-    "file": "consonant-g.svg"
+    "file": "consonant-g.svg",
+    "modifications": "Cropped viewBox to oral and throat region; increased outline contrast and width; recolored lower tongue/jaw shape blue and upper palate/teeth shape beige. Original path geometry unchanged."
   },
   {
     "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/consonants/svg/f.svg",
@@ -205,7 +217,8 @@
     "source": "https://github.com/drammock/phonetics-teaching-assets",
     "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
     "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
-    "file": "consonant-f.svg"
+    "file": "consonant-f.svg",
+    "modifications": "Cropped viewBox to oral and throat region; increased outline contrast and width; recolored lower tongue/jaw shape blue and upper palate/teeth shape beige. Original path geometry unchanged."
   },
   {
     "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/consonants/svg/v.svg",
@@ -221,7 +234,8 @@
     "source": "https://github.com/drammock/phonetics-teaching-assets",
     "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
     "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
-    "file": "consonant-v.svg"
+    "file": "consonant-v.svg",
+    "modifications": "Cropped viewBox to oral and throat region; increased outline contrast and width; recolored lower tongue/jaw shape blue and upper palate/teeth shape beige. Original path geometry unchanged."
   },
   {
     "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/consonants/svg/%CE%B8.svg",
@@ -237,7 +251,8 @@
     "source": "https://github.com/drammock/phonetics-teaching-assets",
     "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
     "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
-    "file": "consonant-theta.svg"
+    "file": "consonant-theta.svg",
+    "modifications": "Cropped viewBox to oral and throat region; increased outline contrast and width; recolored lower tongue/jaw shape blue and upper palate/teeth shape beige. Original path geometry unchanged."
   },
   {
     "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/consonants/svg/eth.svg",
@@ -253,7 +268,8 @@
     "source": "https://github.com/drammock/phonetics-teaching-assets",
     "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
     "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
-    "file": "consonant-eth.svg"
+    "file": "consonant-eth.svg",
+    "modifications": "Cropped viewBox to oral and throat region; increased outline contrast and width; recolored lower tongue/jaw shape blue and upper palate/teeth shape beige. Original path geometry unchanged."
   },
   {
     "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/consonants/svg/s_apical.svg",
@@ -269,7 +285,8 @@
     "source": "https://github.com/drammock/phonetics-teaching-assets",
     "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
     "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
-    "file": "consonant-s-apical.svg"
+    "file": "consonant-s-apical.svg",
+    "modifications": "Cropped viewBox to oral and throat region; increased outline contrast and width; recolored lower tongue/jaw shape blue and upper palate/teeth shape beige. Original path geometry unchanged."
   },
   {
     "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/consonants/svg/z_apical.svg",
@@ -285,7 +302,8 @@
     "source": "https://github.com/drammock/phonetics-teaching-assets",
     "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
     "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
-    "file": "consonant-z-apical.svg"
+    "file": "consonant-z-apical.svg",
+    "modifications": "Cropped viewBox to oral and throat region; increased outline contrast and width; recolored lower tongue/jaw shape blue and upper palate/teeth shape beige. Original path geometry unchanged."
   },
   {
     "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/consonants/svg/%CA%83_laminal.svg",
@@ -301,7 +319,8 @@
     "source": "https://github.com/drammock/phonetics-teaching-assets",
     "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
     "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
-    "file": "consonant-sh-laminal.svg"
+    "file": "consonant-sh-laminal.svg",
+    "modifications": "Cropped viewBox to oral and throat region; increased outline contrast and width; recolored lower tongue/jaw shape blue and upper palate/teeth shape beige. Original path geometry unchanged."
   },
   {
     "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/consonants/svg/%CA%92_apical.svg",
@@ -317,7 +336,8 @@
     "source": "https://github.com/drammock/phonetics-teaching-assets",
     "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
     "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
-    "file": "consonant-zh-apical.svg"
+    "file": "consonant-zh-apical.svg",
+    "modifications": "Cropped viewBox to oral and throat region; increased outline contrast and width; recolored lower tongue/jaw shape blue and upper palate/teeth shape beige. Original path geometry unchanged."
   },
   {
     "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/consonants/svg/m.svg",
@@ -333,7 +353,8 @@
     "source": "https://github.com/drammock/phonetics-teaching-assets",
     "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
     "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
-    "file": "consonant-m.svg"
+    "file": "consonant-m.svg",
+    "modifications": "Cropped viewBox to oral and throat region; increased outline contrast and width; recolored lower tongue/jaw shape blue and upper palate/teeth shape beige. Original path geometry unchanged."
   },
   {
     "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/consonants/svg/n.svg",
@@ -349,7 +370,8 @@
     "source": "https://github.com/drammock/phonetics-teaching-assets",
     "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
     "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
-    "file": "consonant-n.svg"
+    "file": "consonant-n.svg",
+    "modifications": "Cropped viewBox to oral and throat region; increased outline contrast and width; recolored lower tongue/jaw shape blue and upper palate/teeth shape beige. Original path geometry unchanged."
   },
   {
     "upstreamRawURL": "https://raw.githubusercontent.com/drammock/phonetics-teaching-assets/4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e/midsaggital_articulations/consonants/svg/%C5%8B.svg",
@@ -365,7 +387,8 @@
     "source": "https://github.com/drammock/phonetics-teaching-assets",
     "commit": "4d02e4aadcef2f8f6b92d2e55b43e8d61e8ce39e",
     "note": "Generic IPA articulation schematic; not a claim of a uniquely General American realization.",
-    "file": "consonant-ng.svg"
+    "file": "consonant-ng.svg",
+    "modifications": "Cropped viewBox to oral and throat region; increased outline contrast and width; recolored lower tongue/jaw shape blue and upper palate/teeth shape beige. Original path geometry unchanged."
   },
   {
     "upstreamRawURL": "https://upload.wikimedia.org/wikipedia/commons/7/75/Places_of_articulation.svg",
