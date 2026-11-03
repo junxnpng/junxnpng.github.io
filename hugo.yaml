@@ -1,7 +1,7 @@
-# Hugo + PaperMod. 뼈대는 영어, 논문 노트 본문은 한국어 요약. 논문 노트와 카탈로그는 athena-papers 가 만들어 내보낸다.
+# Say More. 기존 자료는 저장소에 보관하고 영어 발음 학습 공간만 공개한다.
 baseURL: "https://junxnpng.github.io/"   # GitHub Pages 사용자 사이트(루트). 워크플로가 같은 값으로 덮어쓴다
-languageCode: en-us
-title: "Jun Heo"
+languageCode: ko-kr
+title: "Say More"
 theme: PaperMod
 enableRobotsTXT: true
 enableEmoji: false
@@ -9,32 +9,26 @@ buildDrafts: false
 buildFuture: false
 timeZone: Asia/Seoul
 
-pagination:
-  pagerSize: 10   # 홈 = 최근 10편 + 다음 페이지 (2026-09-06 결정)
+module:
+  mounts:
+    - source: content/saymore
+      target: content
+    - source: static
+      target: static
+      files: [saymore/**, robots.txt]
 
 outputs:
-  home: [HTML, RSS, JSON]   # JSON = 검색 색인
+  home: [HTML]
 
-taxonomies:
-  category: categories      # 분야 10개
-  tag: tags                 # 번역 깊이 · 주제 칩
+disableKinds: [taxonomy, term, RSS]
 
 menu:
   main:
-    - {name: Papers, url: /papers/, weight: 10}         # 카탈로그 (content/papers + assets/catalog 조각 — athena-papers 가 내보냄)
-    - {name: Notes, url: /notes/, weight: 20}           # 논문 노트 (content/notes — athena-papers 가 내보냄)
-    - {name: Publications, url: /publications/, weight: 30}  # data/publications.yaml
-    - {name: CV, url: /cv/, weight: 40}
-    - {name: About, url: /about/, weight: 50}
-    - {name: Study, url: /study/, weight: 55}
-    - {name: Say More, url: /saymore/, weight: 56}
-    - {name: Search, url: /search/, weight: 60}
-    # Archive · Tags 는 홈 소개문에서 링크한다
+    - {name: IPA, url: /saymore/ipa/, weight: 10}
 
 params:
   env: production
-  mainSections: [notes, posts]   # 홈 목록 = 논문 노트 + 일반 글
-  description: "Reading notes on LLM inference and serving systems."
+  description: "Fluent Forever의 발음 우선 학습에서 영감을 받은 나만의 영어 회화 연습실."
   defaultTheme: auto
   disableThemeToggle: false
   ShowReadingTime: true
@@ -52,16 +46,7 @@ params:
   comments: false
   math: false                 # 글마다 front matter `math: true` 로 켠다
   label:
-    text: "Jun Heo"
-  homeInfoParams:               # Home-Info 모드: 홈 맨 위에 소개, 아래에 최신 글
-    Title: "Jun Heo"
-    Content: >
-      Reading notes on LLM inference and serving systems — KV cache, disaggregated serving, scheduling,
-      and the hardware path underneath. Notes are in Korean; everything else is in English.
-      Browse the [paper catalog](/papers/), the [archive](/archives/), or by [tag](/tags/).
-  socialIcons:
-    - {name: github, url: "https://github.com/junxnpng"}
-    - {name: rss, url: "/index.xml"}
+    text: "Say More"
   assets:
     disableHLJS: true         # Chroma 사용
     disableFingerprinting: false
