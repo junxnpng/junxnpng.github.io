@@ -30,6 +30,9 @@
 .sm-reading-note { background: var(--sm-wash); border-left: 3px solid var(--sm-accent); padding: 20px 24px; border-radius: 0 8px 8px 0; font-size: 15px; }
 .sm-reading-note h2 { font-size: 18px; margin-bottom: 8px; }
 .sm-reading-help { margin-top: 14px; }
+.sm-anatomy-more { margin-block: 12px; font-size: 14px; }
+.sm-anatomy-more summary { color: var(--sm-accent); cursor: pointer; }
+.sm-anatomy-more summary:focus-visible { outline: 2px solid var(--sm-accent); outline-offset: 3px; }
 .sm-word-focus { font-weight: 750; text-decoration: underline; text-decoration-color: var(--sm-accent); text-decoration-thickness: 2px; text-underline-offset: .18em; }
 .sm-inline-ipa { font-size: 20px; white-space: nowrap; }
 .sm-anatomy { display: grid; grid-template-columns: 1.15fr .85fr; gap: 48px; padding: 55px 0 36px; align-items: center; }
@@ -58,6 +61,8 @@
 .sm-ipa { color: var(--sm-accent); font-size: 40px; line-height: 1.25; }
 .sm-example { font-size: 19px; font-weight: 450; }
 .sm-example-reading { font-family: "Charis SIL", "Doulos SIL", Georgia, serif; font-size: 18px; color: var(--sm-accent); margin: 8px 0; }
+.sm-example-reading a { font: 13px/1.6 system-ui, sans-serif; text-decoration: underline; margin-inline-start: .5em; white-space: nowrap; }
+.sm-reading-help a, .sm-anatomy a:not(:has(img)), .sm-notation a, .sm-image-key a { color: var(--sm-accent); text-decoration: underline; }
 .sm-example-note { font-size: 12px; color: var(--secondary); line-height: 1.7; margin: 10px 0 0; }
 .sm-permalink { font-size: 16px; color: var(--secondary); }
 .sm-articulation { font-size: 12px; color: var(--secondary); padding: 10px 0 16px; margin-bottom: 15px; border-bottom: 1px solid var(--border); }
@@ -79,23 +84,29 @@
 .sm-diagram-heading { margin-bottom: 12px; }
 .sm-diagram-heading p { font-size: 15px; line-height: 1.6; margin: 4px 0 8px; }
 .sm-voice { display: inline-block; font-size: 12px; font-weight: 600; padding: 4px 10px; border: 1px solid var(--sm-accent); border-radius: 4px; color: var(--sm-accent); }
-.sm-diagram-heading .sm-same-place { font-size: 12px; color: var(--secondary); margin-top: 8px; }
-.sm-mouth-image > a { display: block; background: #fff; border: 1px solid #cbd5e1; border-radius: 8px; overflow: hidden; color: #344866; }
+.sm-diagram-heading .sm-pair-hint { color: var(--secondary); font-size: 13px; }
+.sm-card-comparison { grid-column: 1 / -1; }
+.sm-card-comparison .sm-card-body { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 28px; }
+.sm-card-comparison .sm-mouth-image { width: 100%; }
+.sm-figure-panels { display: grid; }
+.sm-figure-pair { grid-template-columns: repeat(auto-fit, minmax(min(100%, 175px), 1fr)); gap: 10px; }
+.sm-figure-link { display: flex; flex-direction: column; background: #fff; border: 1px solid #cbd5e1; border-radius: 8px; overflow: hidden; color: #344866; }
+.sm-figure-label { padding: 7px 10px; font-size: 17px; text-align: center; border-bottom: 1px solid #e2e8f0; }
+.sm-figure-label b { font-family: "Charis SIL", Georgia, serif; margin-inline-start: .3em; }
 .sm-mouth-image img { display: block; width: 100%; height: auto; background: #fff; padding: 10px; }
 .sm-image-zoom { display: block; padding: 8px; border-top: 1px solid #e2e8f0; font-size: 11px; text-align: center; }
 .sm-mouth-image figcaption { font-size: 11px; }
-.sm-image-key { display: block; margin-bottom: 5px; }
-.sm-image-key > span { display: block; }
-.sm-diagram-heading .sm-image-key { font-size: 12px; }
-.sm-key-active::before, .sm-key-reference::before { content: ""; display: inline-block; width: 22px; margin-right: 7px; vertical-align: middle; border-top: 3px solid #4157ad; }
-.sm-key-reference::before { border-top: 3px dashed #b45309; }
-.sm-diagram-limit { display: block; margin: 7px 0; }
+.sm-image-key { display: block; font-size: 13px; margin: 7px 0 5px; }
 .sm-compare-note { font-size: 14px; line-height: 1.8; padding: 12px 14px; background: var(--sm-wash); border-radius: 6px; margin-top: 14px; }
 .sm-compare-note a { display: block; font-weight: 600; color: var(--sm-accent); margin-bottom: 5px; }
 .sm-back { display: inline-block; margin-top: 22px; font-size: 13px; color: var(--sm-accent); }
 .sm-notation, .sm-sources { margin-top: 50px; padding-top: 30px; border-top: 1px solid var(--border); scroll-margin-top: 20px; }
 .sm-notation p, .sm-sources p, .sm-sources li { font-size: 14px; line-height: 1.9; margin: 12px 0; }
 .sm-sources ul { padding-left: 20px; }
+@media (max-width: 900px) {
+  .sm-card-comparison .sm-card-body { grid-template-columns: 1fr; }
+  .sm-card-comparison .sm-mouth-image { grid-row: 1; }
+}
 @media (max-width: 760px) {
   .sm-cards { grid-template-columns: 1fr; }
   .sm-card-copy p { font-size: 16px; }

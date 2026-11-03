@@ -8,13 +8,13 @@
   <nav class="sm-breadcrumb" aria-label="학습 경로"><a href="{{ "" | relURL }}">Say More</a><span aria-hidden="true">/</span><span>미국식 IPA</span></nav>
   <aside class="sm-sound-reference" aria-label="Cambridge 원본 발음표">
     <a class="sm-primary-link" href="https://dictionary.cambridge.org/help/phonetics.html" target="_blank" rel="noopener noreferrer">Cambridge 발음표 · 소리 듣기 <span aria-hidden="true">↗</span></a>
-    <p>새 탭에서 Cambridge 원본 발음표가 열립니다. US 스피커를 눌러 미국식 음성을 들어보세요.</p>
+    <p>발음표에서 기호 옆의 US 스피커를 누르면 소리 하나를, 예시 단어 옆의 US 스피커를 누르면 단어 전체를 들을 수 있습니다.</p>
   </aside>
   <header class="sm-page-header">
     <p class="sm-eyebrow">US ENGLISH · SOUND GUIDE</p>
-    <h1>소리가 만들어지는 자리.</h1>
-    <p class="sm-lead">기호를 고르고, 혀와 입술의 움직임을 확인하세요.</p>
-    <p class="sm-footnote">번호는 아이폰 <strong>eng_ipa</strong>의 파일 번호와 같습니다. 설명과 그림을 보면서 해당 번호의 sound → word를 들어보세요. 50–52번 음절·강세 표시는 독립된 소리가 없어 word만 듣습니다.</p>
+    <h1>미국식 영어 발음기호 읽기</h1>
+    <p class="sm-lead">IPA(국제음성기호)는 말소리를 기호로 적는 체계입니다. 기호를 고르면 단어 속에서 나는 소리와 그때의 혀·입술 자세를 볼 수 있습니다.</p>
+    <p class="sm-footnote">01–52는 이 사이트의 학습 순서이자 개인 음원 모음 <strong>eng_ipa</strong>의 파일 번호입니다. 음원 모음을 쓰는 경우 01–49는 sound → word 순서로, 50–52는 word로 들으세요.</p>
   </header>
   <nav class="sm-section-nav" aria-label="발음 설명 목차">
     <a href="#mouth">구강 구조</a>{{ range $ipa.groups }}<a href="#{{ .id }}">{{ .title }}</a>{{ end }}<a href="#notation">표기 읽는 법</a>
@@ -22,31 +22,34 @@
   <section class="sm-reading-note" aria-labelledby="sm-reading-title">
     <h2 id="sm-reading-title">소리의 길이보다, 위치와 움직임</h2>
     <p>한글 독음으로 바꾸기보다 입 안에서 무엇이 달라지는지 관찰하세요. <span class="sm-inline-ipa">/iː/</span>와 <span class="sm-inline-ipa">/ɪ/</span>는 단순히 길고 짧은 차이만 있는 것이 아닙니다. 아래 설명은 미국식 영어의 기본 조음 안내이며, 말하는 사람과 앞뒤 소리에 따라 달라질 수 있습니다.</p>
-    <p class="sm-reading-help">예시 단어에서 <strong class="sm-word-focus">굵은 밑줄</strong>은 목표 소리에 해당하는 철자입니다. 철자와 소리가 정확히 맞지 않는 경우에는 카드에 설명을 덧붙였습니다. 강세 항목에서는 해당 음절을 표시합니다.</p>
-    <p class="sm-reading-help">각 카드의 <strong>혀 → 입술·턱 → 공기·울림</strong>을 차례로 확인하고 짧은 연습을 해보세요. 혀끝과 혀 몸통은 따로 움직일 수 있습니다. 자세는 소리를 찾는 출발점이므로 힘으로 고정하지 말고, 거울과 녹음으로 음성과 함께 확인하세요.</p>
+    <p class="sm-reading-help"><span lang="en">sh<strong class="sm-word-focus">ee</strong>p</span> <span class="sm-inline-ipa">/ʃiːp/</span>에서는 가운데 /iː/가 밑줄 친 두 글자 <span lang="en">ee</span>에 해당합니다. 단어 아래의 / / 안을 왼쪽부터 읽고, ‘미국식 발음 듣기’에서 US 음성과 비교해 보세요. 강세 카드의 밑줄은 강조할 음절을 보여줍니다.</p>
+    <p class="sm-reading-help">혀의 위치는 그림으로, 입술과 턱의 움직임은 거울로 확인해 보세요. <a href="#notation">사전 표기 비교</a>에서는 같은 단어가 /kɑːr/와 /kɑr/로 다르게 보이는 이유를 살펴봅니다.</p>
   </section>
   <section class="sm-anatomy" id="mouth" aria-labelledby="mouth-title">
-    <div><p class="sm-eyebrow">입 안의 지도</p><h2 id="mouth-title">혀는 어디에 닿을까요?</h2>
-      <p>그림은 입과 목을 옆에서 본 단면입니다. 특정 기호를 발음하는 자세가 아니라, 아래 설명에 나오는 <strong>부위의 위치</strong>를 보여줍니다.</p>
+    <div><p class="sm-eyebrow">입 안의 지도</p><h2 id="mouth-title">혀끝과 혀몸통은 어디일까요?</h2>
+      <p>왼쪽이 앞니와 입술, 오른쪽이 목입니다. 빨간 그림은 입 안의 부위에 번호를 붙인 지도입니다. 입술 쪽에서 목 쪽으로 혀의 윗선을 따라가 보세요.</p>
       <dl class="sm-anatomy-key">
-        <div><dt>1·2 입술 / 3 치아</dt><dd>입술을 닫거나, 아랫입술과 윗니 사이로 공기를 보냅니다.</dd></div>
-        <div><dt>4 잇몸 융기</dt><dd>윗니 바로 뒤의 볼록한 곳. /t d n l/의 기준 위치입니다.</dd></div>
-        <div><dt>7 경구개 / 8 연구개</dt><dd>단단한 앞쪽 입천장과 부드러운 뒤쪽 입천장입니다.</dd></div>
-        <div><dt>11 성대 / 17 혀끝</dt><dd>성대의 진동과 혀끝의 접촉 여부를 구별해 보세요.</dd></div>
+        <div><dt>17 혀끝 → 16 혀끝 바로 뒤 → 15 혀몸통 앞쪽 → 14 혀몸통 뒤쪽</dt><dd>17은 뾰족한 끝, 16은 바로 뒤의 얇은 면, 15는 그보다 안쪽의 넓은 윗면입니다. /iː/에서 볼록하게 올라오는 곳은 15번 부근입니다.</dd></div>
+        <div><dt>1·2 입술 · 3 치아 · 4 잇몸 융기 · 5 융기 뒤쪽</dt><dd>윗니 바로 뒤에서 혀끝으로 느껴지는 도톰한 곳이 4번입니다. /t/에서는 이곳에 혀가 닿고, /ʃ/에서는 조금 더 뒤인 5번 부근에 틈을 만듭니다. /f/에서는 윗니가 아랫입술에 닿습니다.</dd></div>
+        <div><dt>7 단단한 입천장(경구개) · 8 부드러운 입천장(연구개)</dt><dd>/iː/에서는 15번 부근이 7번 가까이 올라가고, 혀 가운데로 공기가 흐를 틈이 남습니다. /k/에서는 혀 뒤쪽이 8번에 닿아 공기를 잠시 막습니다.</dd></div>
+        <div><dt>11 성대가 있는 자리</dt><dd>/s/와 /z/를 번갈아 길게 내면 입 안의 틈은 비슷해도 /z/에서 목의 진동을 느낄 수 있습니다.</dd></div>
       </dl>
+      <details class="sm-anatomy-more"><summary>그림에 나온 다른 부위</summary><p>1은 입술 바깥쪽, 2는 입 안을 향한 쪽입니다. 6은 단단한 입천장의 앞쪽 경사면, 9는 목젖, 10은 목구멍의 뒤 벽입니다. 12는 후두덮개, 13은 혀뿌리, 18은 혀끝의 아랫면입니다.</p></details>
+      <p><a href="#ipa-1">같은 부위 번호로 sheep과 ship 비교하기 →</a></p>
     </div>
-    <figure><a href="{{ "saymore/images/places-of-articulation.svg" | relURL }}" aria-label="구강 구조 그림 크게 보기"><img src="{{ "saymore/images/places-of-articulation.svg" | relURL }}" width="800" height="1000" alt="입과 목의 옆면 단면도. 입술 1·2, 치아 3, 잇몸 융기 4, 경구개 7, 연구개 8, 성대 11, 혀끝 17이 표시되어 있습니다."></a><figcaption>ish shwar · Rohieb, <a href="https://commons.wikimedia.org/wiki/File:Places_of_articulation.svg">Places of articulation</a>, <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a>. 원본 그림, 변경 없음.</figcaption></figure>
+    <figure><a href="{{ "saymore/images/places-of-articulation.svg" | relURL }}" aria-label="구강 구조 그림 크게 보기"><img src="{{ "saymore/images/places-of-articulation.svg" | relURL }}" width="800" height="1000" alt="왼쪽이 입술인 옆면 단면도. 혀 윗면에는 앞에서부터 17 혀끝, 16 혀끝 바로 뒤, 15 혀몸통 앞쪽, 14 혀몸통 뒤쪽이 표시됩니다. 7은 단단한 입천장, 8은 부드러운 입천장입니다."></a><figcaption>구조도의 숫자는 부위 번호입니다. <a href="https://commons.wikimedia.org/wiki/File:Places_of_articulation.svg#Summary">전체 번호 설명 · ish shwar, Rohieb</a> · <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a></figcaption></figure>
   </section>
   {{ range $ipa.groups }}
+  {{ $groupItems := .items }}
   <section class="sm-group" id="{{ .id }}" aria-labelledby="{{ .id }}-title">
     <header class="sm-group-header"><div><p class="sm-eyebrow">{{ .label }}</p><h2 id="{{ .id }}-title">{{ .title }}</h2></div><p>{{ .intro }}</p></header>
-    <nav class="sm-symbols" aria-label="{{ .title }} 기호 바로가기">{{ range .items }}<a href="#ipa-{{ .number }}"><small>{{ printf "%02d" (int .number) }}</small><span lang="en">{{ .symbol }}</span></a>{{ end }}</nav>
+    <nav class="sm-symbols" aria-label="{{ .title }} 기호 바로가기">{{ range .items }}<a href="#ipa-{{ .number }}"><small>{{ printf "%02d" (int .number) }}</small><span lang="en">{{ .display_symbol | default .symbol }}</span></a>{{ end }}</nav>
     <div class="sm-cards">
     {{ range .items }}
       {{ $item := . }}
-      <section class="sm-card{{ with .image }} sm-card-illustrated{{ end }}" id="ipa-{{ .number }}" aria-labelledby="ipa-{{ .number }}-title">
-        <div class="sm-card-heading"><span class="sm-track">{{ printf "%02d" (int .number) }}</span><h3 id="ipa-{{ .number }}-title"><span class="sm-ipa" lang="en">{{ .symbol }}</span><span class="sm-example" lang="en">{{ with .example_parts }}{{ range . }}{{ if .highlight }}<strong class="sm-word-focus">{{ .text }}</strong>{{ else }}{{ .text }}{{ end }}{{ end }}{{ else }}{{ .example }}{{ end }}</span></h3><a class="sm-permalink" href="#ipa-{{ .number }}" aria-label="{{ .symbol }} 발음 설명 링크">#</a></div>
-        {{ with .example_reading }}<p class="sm-example-reading" lang="en">{{ . }}</p>{{ end }}
+      <section class="sm-card{{ with .diagram }}{{ if eq .kind "comparison" }} sm-card-comparison{{ end }}{{ end }}" id="ipa-{{ .number }}" aria-labelledby="ipa-{{ .number }}-title">
+        <div class="sm-card-heading"><span class="sm-track">{{ printf "%02d" (int .number) }}</span><h3 id="ipa-{{ .number }}-title"><span class="sm-ipa" lang="en">{{ .display_symbol | default .symbol }}</span><span class="sm-example" lang="en">{{ with .example_parts }}{{ range . }}{{ if .highlight }}<strong class="sm-word-focus">{{ .text }}</strong>{{ else }}{{ .text }}{{ end }}{{ end }}{{ else }}{{ .example }}{{ end }}</span></h3><a class="sm-permalink" href="#ipa-{{ .number }}" aria-label="{{ .display_symbol | default .symbol }} 발음 설명 링크">#</a></div>
+        <p class="sm-example-reading"><span lang="en">{{ .example_reading }}</span> <a href="https://dictionary.cambridge.org/pronunciation/english/{{ .example }}" aria-label="{{ .example }} 미국식 발음 듣기">미국식 발음 듣기</a></p>
         {{ with .example_note }}<p class="sm-example-note">{{ . }}</p>{{ end }}
         <p class="sm-articulation">{{ .place }}</p>
         {{ with .notation }}<aside class="sm-card-notation" aria-label="표기와 발음 참고"><h4>표기·발음 참고</h4><p>{{ . }}</p></aside>{{ end }}
@@ -63,17 +66,28 @@
           {{ with .reference }}<p class="sm-reference"><a href="{{ .url }}" target="_blank" rel="noopener noreferrer">{{ .label }} <span aria-hidden="true">↗</span><span class="sm-sr-only"> (새 탭)</span></a></p>{{ end }}
         </div>
         {{ with .image }}
-        {{ $imagePath := printf "saymore/images/%s" . }}
-        {{ $imageVersion := substr (sha256 (readFile (printf "static/%s" $imagePath))) 0 12 }}
-        {{ $imageURL := printf "%s?v=%s" ($imagePath | relURL) $imageVersion }}
         {{ $diagram := $item.diagram }}
         {{ $source := index $imageSources . }}
+        {{ $pair := eq $diagram.kind "comparison" }}
+        {{ $panels := slice $item }}
+        {{ if $pair }}{{ $partner := index (where $groupItems "number" $diagram.compare_number) 0 }}{{ $panels = sort (slice $item $partner) "number" }}{{ end }}
         <figure class="sm-mouth-image">
-          <div class="sm-diagram-heading"><h4>{{ if eq $diagram.kind "comparison" }}혀 윤곽 겹쳐 보기{{ else }}그림에서 볼 곳{{ end }}</h4><p>{{ $diagram.focus }}</p>{{ if eq $diagram.kind "comparison" }}<p class="sm-image-key"><span class="sm-key-active">파랑 실선: /{{ $item.symbol }}/</span><span class="sm-key-reference">주황 점선: /{{ $diagram.compare_symbol }}/</span></p>{{ end }}{{ with $diagram.voice }}<span class="sm-voice">{{ . }}</span>{{ end }}{{ with $diagram.same_place_symbol }}<p class="sm-same-place">/{{ . }}/와 조음 위치가 같고, 울림이 다릅니다.</p>{{ end }}</div>
-          <a href="{{ $imageURL }}" aria-label="{{ $item.symbol }} 조음 그림 크게 보기"><img src="{{ $imageURL }}" width="{{ $diagram.width }}" height="{{ $diagram.height }}" loading="lazy" alt="{{ if eq $diagram.kind "comparison" }}/{{ $item.symbol }}/와 /{{ $diagram.compare_symbol }}/의 혀 윤곽 비교. 파랑 실선은 /{{ $item.symbol }}/, 주황 점선은 /{{ $diagram.compare_symbol }}/입니다.{{ else }}[{{ $item.image_symbol }}] 입 안 단면도. {{ $diagram.focus }}을 관찰하세요.{{ end }}"><span class="sm-image-zoom">클릭해서 크게 보기 ↗</span></a>
+          <div class="sm-diagram-heading"><h4>{{ if $pair }}두 모음의 혀 위치{{ else }}그림에서 볼 곳{{ end }}</h4><p>{{ $diagram.focus }}</p>{{ with $diagram.voice }}<span class="sm-voice">{{ . }}</span>{{ end }}{{ with $diagram.same_place_symbol }}<p class="sm-pair-hint">/{{ . }}/도 비슷한 자리에서 냅니다.</p>{{ end }}</div>
+          <div class="sm-figure-panels{{ if $pair }} sm-figure-pair{{ end }}">
+            {{ range $panels }}
+            {{ $path := printf "saymore/images/%s" .image }}
+            {{ $version := substr (sha256 (readFile (printf "static/%s" $path))) 0 12 }}
+            {{ $url := printf "%s?v=%s" ($path | relURL) $version }}
+            <a class="sm-figure-link" href="{{ $url }}" aria-label="{{ .example }}의 {{ .symbol }} 그림 크게 보기">
+              {{ if $pair }}<span class="sm-figure-label" lang="en">{{ .example }} <b>/{{ .symbol }}/</b></span>{{ end }}
+              <img src="{{ $url }}" width="{{ .diagram.width }}" height="{{ .diagram.height }}" loading="lazy" alt="{{ if $pair }}{{ .diagram.alt }}{{ else }}[{{ .image_symbol }}] 옆면 단면도. {{ .diagram.focus }}.{{ end }}">
+              <span class="sm-image-zoom">크게 보기 ↗</span>
+            </a>
+            {{ end }}
+          </div>
           <figcaption>
-            {{ if eq $diagram.kind "comparison" }}<span class="sm-diagram-limit">전형적인 IPA 자세의 비교도입니다. 실제 화자의 혀 모양·움직임은 달라질 수 있습니다.</span>{{ else }}<span class="sm-image-key">파랑: 혀·아래턱 / 베이지: 입천장·윗니<br>오른쪽 아래 성대: 물결선은 유성, 직선은 무성</span>{{ end }}
-            <a href="{{ $source.source }}">{{ delimit $source.authors " · " }}</a> · <a href="{{ $source.licenseURL }}">{{ $source.license }}</a> · {{ if eq $diagram.kind "comparison" }}윤곽 비교 편집{{ else }}색상·성대 표시 편집{{ end }}
+            <span class="sm-image-key">왼쪽은 입술, 오른쪽은 목입니다.{{ if $pair }} 아랫니 뒤에서 둥글게 이어지는 파란 윗선이 혀 표면입니다. 숫자는 <a href="#mouth">구조도의 부위 번호</a>입니다.{{ else }} 베이지색은 윗니·입천장 쪽, 파란색은 혀·아래턱 쪽입니다. 오른쪽 아래의 물결선은 성대 진동, 곧은 선은 무성을 나타냅니다. <a href="#mouth">입 안의 지도</a>{{ end }}</span>
+            <a href="{{ $source.source }}">{{ delimit $source.authors " · " }}</a> · <a href="{{ $source.licenseURL }}">{{ $source.license }}</a> · {{ if $pair }}혀 윤곽과 부위 표시{{ else }}색상·성대 표시 및 조음 위치 표시{{ end }}
           </figcaption>
           <p class="sm-compare-note"><a href="#ipa-{{ $diagram.compare_number }}">/{{ $diagram.compare_symbol }}/와 비교 →</a>{{ $diagram.compare_note }}</p>
         </figure>{{ end }}</div>
@@ -84,23 +98,27 @@
   </section>
   {{ end }}
   <section class="sm-notation" id="notation"><h2>사전마다 기호가 조금 달라요</h2>
-    <p>여기서는 아이폰 음성과 연결하기 위해 <strong>Cambridge 표기</strong>를 사용합니다. 다른 미국식 사전의 /i u ɑ ɔ ɛ/는 이 페이지에서 /iː uː ɑː ɔː e/로 보일 수 있습니다. 길이 표시 /ː/만 보고 무조건 길게 늘이지 마세요.</p>
-    <p>사전의 /r/는 미국식 영어에서 주로 접근음 [ɹ]로 실현됩니다. /t̬/는 Cambridge가 쓰는 표기이며, 미국식 탄설음을 다른 자료에서는 [ɾ]로 표시하기도 합니다. /ɝː/와 /ɚ/는 각각 강세가 있는 경우와 없는 경우의 r색채 모음입니다.</p>
-    <p>/ɑː/와 /ɔː/를 구별하지 않는 미국 화자도 있습니다. /ɒ̃ x/는 차용어·특정 이름 등에 나오는 보조 소리이며, 처음부터 모든 미국 화자처럼 똑같이 내야 하는 필수 목록은 아닙니다.</p>
+    <p>이 가이드는 Cambridge <span lang="en">Pronunciation symbols</span> 발음표의 US 항목을 따릅니다. 같은 Cambridge 안에서도 <span lang="en">American Dictionary</span>와 <span lang="en">Essential American English Dictionary</span>는 /iː, uː, ɑː, ɔː/에 길이 표시 ː를 생략하고, 음절 경계에는 온점 . 대신 가운데점 ·을 씁니다. <a href="https://dictionary.cambridge.org/help/phonetics.html">Cambridge 표기 안내</a></p>
+    <p><strong lang="en">car</strong>의 미국식 표기 <span class="sm-inline-ipa">/kɑːr/</span>와 <span class="sm-inline-ipa">/kɑr/</span>는 둘 다 r을 발음합니다. 두 표기의 차이는 모음의 길이 표시입니다. 이와 달리 <span lang="en">architecture</span>의 첫 음절을 영국식 /ɑː/와 미국식 /ɑːr/로 비교하면 실제로 뒤의 r 소리도 달라집니다. <a href="https://dictionary.cambridge.org/dictionary/english/car">car의 두 표기</a> · <a href="https://dictionary.cambridge.org/pronunciation/english/architecture">architecture의 영국식·미국식 음성</a></p>
+    <p><strong>단어 하나 읽어 보기</strong> · <span lang="en">architecture</span> <span class="sm-inline-ipa">/ˈɑːr.kə.tek.tʃɚ/</span>. 점을 기준으로 네 음절을 찾고, ˈ가 붙은 첫 음절에 강세를 두세요. 첫 음절은 <a href="#ipa-3">/ɑː/</a>에서 <a href="#ipa-39">/r/</a>로 이어집니다. 둘째 음절의 <a href="#ipa-11">/ə/</a>는 가볍게, 끝 음절은 <a href="#ipa-33">/tʃ/</a>에서 <a href="#ipa-12">/ɚ/</a>로 이어서 읽어 보세요.</p>
+    <p><strong lang="en">head</strong>의 모음은 여기서 /e/, 다른 미국식 사전에서는 /ɛ/로 보일 수 있습니다. / /는 사전에서 소리를 구별하는 표기이고, [ ]는 실제로 낸 소리를 더 구체적으로 적을 때 씁니다. 예를 들어 <span lang="en">run</span>의 /r/는 보통 [ɹ]이고, <span lang="en">cutting</span>의 /t̬/는 혀가 한 번 스치는 [ɾ]로 흔히 발음합니다.</p>
+    <p><strong lang="en">bird</strong>의 /ɝː/에는 강세가 있고 <strong lang="en">mother</strong> 끝의 /ɚ/에는 강세가 없습니다. <span lang="en">cot–caught</span>처럼 미국 안에서도 두 모음을 구별하는 화자와 같은 모음으로 발음하는 화자가 있으니, 한 화자의 음성을 골라 비교해 보세요.</p>
   </section>
   <section class="sm-sources" id="sources"><h2>출처와 더 살펴볼 자료</h2>
-    <p>기호·번호·예시 단어는 Cambridge 발음표에서 미국식 음성을 제공하는 항목과 맞췄습니다. 공통 기호와 실제 미국식 단어 표기가 다른 경우에는 카드에 따로 설명했습니다. 조음 설명과 짧은 연습은 아래 자료를 참고해 한국어로 새로 작성한 학습 안내입니다. 음성은 이 웹페이지에 포함하지 않습니다.</p>
+    <p>Cambridge 발음표에서 미국식 음성이 있는 항목을 골라 개인 음원 순서에 맞춰 번호를 붙였습니다. 단어 아래에는 Cambridge의 대표 미국식 발음과 원문 링크를 실었습니다. 입 안의 자세는 대학 음성학 자료와 미국식 발음 시범을 바탕으로 한국어로 풀어 썼습니다.</p>
     <ul>
       <li><a href="https://dictionary.cambridge.org/help/phonetics.html" target="_blank" rel="noopener noreferrer">Cambridge Dictionary · Pronunciation symbols ↗</a> — 기호와 미국식 예시 단어. 새 탭에서 열립니다.</li>
       <li><a href="https://rachelsenglish.com/english-pronounce-ee-vowel/" target="_blank" rel="noopener noreferrer">Rachel’s English · EE [i]와 미국식 발음 설명 ↗</a> — 혀끝·혀 몸통·입술·턱의 움직임을 확인하는 참고 자료. 각 소리 카드의 링크에서 해당 설명과 영상을 새 탭으로 볼 수 있습니다. Rachel의 [i]는 이 페이지의 /iː/에 대응합니다. 영상·이미지·대본은 원본 사이트에서 확인하세요.</li>
-      <li><a href="https://www.oxfordlearnersdictionaries.com/us/about/american_english/pronunciation_american_english.html">Oxford · American English pronunciation guide</a> — 미국식 사전 표기 비교.</li>
+      <li><a href="https://www.oxfordlearnersdictionaries.com/us/about/pronunciation_american_english">Oxford · American English pronunciation guide</a> — 미국식 사전 표기 비교.</li>
       <li><a href="https://linguistics.berkeley.edu/~kjohnson/English_Phonetics/">UC Berkeley · American English Pronunciation Workbook</a> — 실제 미국식 대화 속 소리와 발음 변이.</li>
       <li><a href="https://opentext.ku.edu/amenglishpronunciation/chapter/chapter-1/">University of Kansas · Vowel Sounds</a> — 모음과 r색채 모음 설명.</li>
       <li><a href="https://blog.fluent-forever.com/chapter3/">Fluent Forever · Chapter 3</a> — 발음 원리와 최소 대립쌍 학습.</li>
-      <li><a href="https://github.com/drammock/phonetics-teaching-assets">Richard Wright · Dan McCloy · Phonetics teaching assets</a> — 모음 윤곽 비교도의 원본. <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0</a>. 원본 윤곽을 유지하고, 두 모음을 겹쳐 그린 뒤 입술이 왼쪽에 오도록 좌우 반전했습니다. 입술의 둥글기와 발음의 시간적 변화는 이 윤곽만으로 알 수 없습니다.</li>
-      <li><a href="https://commons.wikimedia.org/wiki/Category:SVG_plain_gray_articulation_place_diagrams">Tavin · Nardog · Articulation diagrams</a> — 자음 단면도의 원본. <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>. 입 안의 원본 선 모양은 유지하고 색상을 보정했습니다. 일부 무성 쌍은 같은 입 위치의 유성 그림에 원본 무성 성대 표시를 결합했습니다. 편집된 자음 그림에도 같은 라이선스를 적용합니다. 각 그림 아래 링크에서 해당 원본을 확인할 수 있습니다.</li>
+      <li><a href="https://opentextbooks.rug.nl/americanenglishphonetics2/chapter/5-5-the-mouth/">흐로닝언 대학교 · The mouth</a> — 혀끝과 바로 뒤의 얇은 면, 단단한 입천장을 마주 보는 혀몸통 앞쪽의 구분.</li>
+      <li><a href="https://www.phon.ox.ac.uk/jcoleman/consonant_acoustics.htm">옥스퍼드 대학교 · Acoustic structure of consonants</a> — 파열음에서 막힘을 풀고 성대 진동이 시작되는 시점. <a href="https://linguistics.berkeley.edu/~kjohnson/English_Phonetics/cons_syllabic.html">UC Berkeley · Syllabic consonants</a> — 자음이 음절을 이루는 실제 발화.</li>
+      <li><a href="https://github.com/drammock/phonetics-teaching-assets">Richard Wright · Dan McCloy · Phonetics teaching assets</a> — 모음 비교도의 원본. <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0</a>. 같은 축척의 원본 윤곽을 입술이 왼쪽에 오도록 뒤집고 부위 표시를 추가했습니다. 혀 높이를 비교하는 그림이며 입술의 둥글기는 정면에서 확인하세요.</li>
+      <li><a href="https://commons.wikimedia.org/wiki/Category:SVG_plain_gray_articulation_place_diagrams">Tavin · Nardog · Articulation diagrams</a> — 자음 단면도의 원본. <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>. 원본 윤곽에 색을 입히고 공기를 막거나 좁히는 자리에 한글 이름표를 붙였습니다. 일부 무성음에는 같은 위치의 유성음 그림과 무성 성대 표시를 함께 사용했습니다. 편집본에도 같은 라이선스를 적용합니다.</li>
       <li><a href="https://seeingspeech.ac.uk/ipa-charts/">University of Glasgow · Seeing Speech</a> — 기호를 눌러 혀와 입술의 움직임을 영상으로 관찰할 수 있는 국제 IPA 자료입니다. 이 페이지의 미국식 단어 음성을 대신하는 자료는 아닙니다.</li>
-    </ul><p class="sm-footnote">Cambridge 발음표·음성의 권리는 Cambridge University Press &amp; Assessment에 있습니다. Say More는 Cambridge 원본 페이지로 연결하는 독립 학습 사이트이며, 공식·제휴 서비스가 아닙니다. <a href="https://dictionary.cambridge.org/license.html" target="_blank" rel="noopener noreferrer">Cambridge 라이선스 안내</a></p><p class="sm-footnote">확인일 2026-11-03 · 조음 그림은 전형적인 자세를 보여주는 참고도이며, 미국 화자 모두의 혀 모양이 동일하다는 뜻은 아닙니다.</p>
+    </ul><p class="sm-footnote">Cambridge 발음표·음성의 권리는 Cambridge University Press &amp; Assessment에 있습니다. Say More는 Cambridge 원본 페이지로 연결하는 독립 학습 사이트입니다. <a href="https://dictionary.cambridge.org/license.html" target="_blank" rel="noopener noreferrer">Cambridge 라이선스 안내</a></p><p class="sm-footnote">내용 확인일 2026-11-04 · 조음 그림은 대표적인 자세를 그린 참고도입니다. 실제 혀 모양은 화자와 앞뒤 소리에 따라 달라집니다.</p>
   </section>
 </article>
 {{ end }}

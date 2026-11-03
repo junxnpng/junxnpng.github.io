@@ -1,6 +1,7 @@
 # Say More. 기존 자료는 저장소에 보관하고 영어 발음 학습 공간만 공개한다.
 baseURL: "https://junxnpng.github.io/"   # GitHub Pages 사용자 사이트(루트). 워크플로가 같은 값으로 덮어쓴다
-languageCode: ko-kr
+defaultContentLanguage: ko
+locale: ko-KR
 title: "Say More"
 theme: PaperMod
 enableRobotsTXT: true
@@ -48,6 +49,11 @@ params:
   label:
     text: "Say More"
   assets:
+    favicon: saymore/icons/speech.svg
+    favicon16x16: saymore/icons/speech-16.png
+    favicon32x32: saymore/icons/speech-32.png
+    apple_touch_icon: saymore/icons/speech-180.png
+    safari_pinned_tab: saymore/icons/speech.svg
     disableHLJS: true         # Chroma 사용
     disableFingerprinting: false
   fuseOpts:
