@@ -29,6 +29,8 @@
 .sm-section-nav a:hover, .sm-symbols a:hover { background: var(--sm-wash); border-color: var(--sm-accent); }
 .sm-reading-note { background: var(--sm-wash); border-left: 3px solid var(--sm-accent); padding: 20px 24px; border-radius: 0 8px 8px 0; font-size: 15px; }
 .sm-reading-note h2 { font-size: 18px; margin-bottom: 8px; }
+.sm-reading-help { margin-top: 14px; }
+.sm-word-focus { font-weight: 750; text-decoration: underline; text-decoration-color: var(--sm-accent); text-decoration-thickness: 2px; text-underline-offset: .18em; }
 .sm-inline-ipa { font-size: 20px; white-space: nowrap; }
 .sm-anatomy { display: grid; grid-template-columns: 1.15fr .85fr; gap: 48px; padding: 55px 0 36px; align-items: center; }
 .sm-anatomy h2, .sm-group h2, .sm-notation h2, .sm-sources h2 { font-size: 26px; letter-spacing: -.035em; margin: 0 0 14px; }
@@ -55,6 +57,8 @@
 .sm-card-heading h3 { display: flex; flex-wrap: wrap; align-items: baseline; gap: 15px; flex: 1; }
 .sm-ipa { color: var(--sm-accent); font-size: 40px; line-height: 1.25; }
 .sm-example { font-size: 19px; font-weight: 450; }
+.sm-example-reading { font-family: "Charis SIL", "Doulos SIL", Georgia, serif; font-size: 18px; color: var(--sm-accent); margin: 8px 0; }
+.sm-example-note { font-size: 12px; color: var(--secondary); line-height: 1.7; margin: 10px 0 0; }
 .sm-permalink { font-size: 16px; color: var(--secondary); }
 .sm-articulation { font-size: 12px; color: var(--secondary); padding: 10px 0 16px; margin-bottom: 15px; border-bottom: 1px solid var(--border); }
 .sm-card-body { display: grid; gap: 16px; }
@@ -63,6 +67,14 @@
 .sm-card-notation p { font-size: 14px; line-height: 1.8; margin: 0; }
 .sm-card-copy p { font-size: 14px; line-height: 1.8; margin: 0 0 15px; }
 .sm-card-copy p:last-child { margin-bottom: 0; }
+.sm-mouth-steps { font-size: 14px; line-height: 1.8; margin: 0 0 18px; }
+.sm-mouth-steps > div { border-top: 1px solid var(--border); padding: 11px 0; }
+.sm-mouth-steps dt { color: var(--sm-accent); font-size: 12px; font-weight: 650; margin-bottom: 4px; }
+.sm-mouth-steps dd { margin: 0; }
+.sm-practice { background: var(--sm-wash); border-radius: 6px; padding: 14px; margin: 0 0 18px; }
+.sm-card-copy .sm-practice p { margin: 0; }
+.sm-reference a { color: var(--sm-accent); text-decoration: underline; font-size: 13px; }
+.sm-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
 .sm-mouth-image { width: min(100%, 320px); margin: 4px auto 0; align-self: start; }
 .sm-diagram-heading { margin-bottom: 12px; }
 .sm-diagram-heading p { font-size: 15px; line-height: 1.6; margin: 4px 0 8px; }
@@ -87,6 +99,7 @@
 @media (max-width: 760px) {
   .sm-cards { grid-template-columns: 1fr; }
   .sm-card-copy p { font-size: 16px; }
+  .sm-mouth-steps { font-size: 16px; }
   .sm-anatomy { grid-template-columns: 1fr; gap: 26px; }
   .sm-anatomy figure { max-width: 330px; margin: auto; }
   .sm-home-note { grid-template-columns: 1fr; gap: 15px; padding: 23px; }

@@ -14,7 +14,7 @@
     <p class="sm-eyebrow">US ENGLISH · SOUND GUIDE</p>
     <h1>소리가 만들어지는 자리.</h1>
     <p class="sm-lead">기호를 고르고, 혀와 입술의 움직임을 확인하세요.</p>
-    <p class="sm-footnote">번호는 아이폰 <strong>eng_ipa</strong>의 파일 번호와 같습니다. 설명과 그림을 보면서 해당 번호의 sound → word를 들어보세요.</p>
+    <p class="sm-footnote">번호는 아이폰 <strong>eng_ipa</strong>의 파일 번호와 같습니다. 설명과 그림을 보면서 해당 번호의 sound → word를 들어보세요. 50–52번 음절·강세 표시는 독립된 소리가 없어 word만 듣습니다.</p>
   </header>
   <nav class="sm-section-nav" aria-label="발음 설명 목차">
     <a href="#mouth">구강 구조</a>{{ range $ipa.groups }}<a href="#{{ .id }}">{{ .title }}</a>{{ end }}<a href="#notation">표기 읽는 법</a>
@@ -22,6 +22,8 @@
   <section class="sm-reading-note" aria-labelledby="sm-reading-title">
     <h2 id="sm-reading-title">소리의 길이보다, 위치와 움직임</h2>
     <p>한글 독음으로 바꾸기보다 입 안에서 무엇이 달라지는지 관찰하세요. <span class="sm-inline-ipa">/iː/</span>와 <span class="sm-inline-ipa">/ɪ/</span>는 단순히 길고 짧은 차이만 있는 것이 아닙니다. 아래 설명은 미국식 영어의 기본 조음 안내이며, 말하는 사람과 앞뒤 소리에 따라 달라질 수 있습니다.</p>
+    <p class="sm-reading-help">예시 단어에서 <strong class="sm-word-focus">굵은 밑줄</strong>은 목표 소리에 해당하는 철자입니다. 철자와 소리가 정확히 맞지 않는 경우에는 카드에 설명을 덧붙였습니다. 강세 항목에서는 해당 음절을 표시합니다.</p>
+    <p class="sm-reading-help">각 카드의 <strong>혀 → 입술·턱 → 공기·울림</strong>을 차례로 확인하고 짧은 연습을 해보세요. 혀끝과 혀 몸통은 따로 움직일 수 있습니다. 자세는 소리를 찾는 출발점이므로 힘으로 고정하지 말고, 거울과 녹음으로 음성과 함께 확인하세요.</p>
   </section>
   <section class="sm-anatomy" id="mouth" aria-labelledby="mouth-title">
     <div><p class="sm-eyebrow">입 안의 지도</p><h2 id="mouth-title">혀는 어디에 닿을까요?</h2>
@@ -43,10 +45,23 @@
     {{ range .items }}
       {{ $item := . }}
       <section class="sm-card{{ with .image }} sm-card-illustrated{{ end }}" id="ipa-{{ .number }}" aria-labelledby="ipa-{{ .number }}-title">
-        <div class="sm-card-heading"><span class="sm-track">{{ printf "%02d" (int .number) }}</span><h3 id="ipa-{{ .number }}-title"><span class="sm-ipa" lang="en">{{ .symbol }}</span><span class="sm-example" lang="en">{{ .example }}</span></h3><a class="sm-permalink" href="#ipa-{{ .number }}" aria-label="{{ .symbol }} 발음 설명 링크">#</a></div>
+        <div class="sm-card-heading"><span class="sm-track">{{ printf "%02d" (int .number) }}</span><h3 id="ipa-{{ .number }}-title"><span class="sm-ipa" lang="en">{{ .symbol }}</span><span class="sm-example" lang="en">{{ with .example_parts }}{{ range . }}{{ if .highlight }}<strong class="sm-word-focus">{{ .text }}</strong>{{ else }}{{ .text }}{{ end }}{{ end }}{{ else }}{{ .example }}{{ end }}</span></h3><a class="sm-permalink" href="#ipa-{{ .number }}" aria-label="{{ .symbol }} 발음 설명 링크">#</a></div>
+        {{ with .example_reading }}<p class="sm-example-reading" lang="en">{{ . }}</p>{{ end }}
+        {{ with .example_note }}<p class="sm-example-note">{{ . }}</p>{{ end }}
         <p class="sm-articulation">{{ .place }}</p>
         {{ with .notation }}<aside class="sm-card-notation" aria-label="표기와 발음 참고"><h4>표기·발음 참고</h4><p>{{ . }}</p></aside>{{ end }}
-        <div class="sm-card-body"><div class="sm-card-copy"><h4>이렇게 발음해요</h4><p>{{ .how }}</p><h4>확인할 점</h4><p>{{ .check }}</p>{{ with .note }}<p class="sm-card-note">{{ . }}</p>{{ end }}</div>
+        <div class="sm-card-body"><div class="sm-card-copy">
+          <h4>이렇게 발음해요</h4><p>{{ .how }}</p>
+          {{ with .mouth }}<dl class="sm-mouth-steps">
+            <div><dt>혀</dt><dd>{{ .tongue }}</dd></div>
+            <div><dt>입술·턱</dt><dd>{{ .lips_jaw }}</dd></div>
+            <div><dt>공기·울림</dt><dd>{{ .air_voice }}</dd></div>
+          </dl>{{ end }}
+          {{ with .practice }}<div class="sm-practice"><h4>짧게 연습해요</h4><p>{{ . }}</p></div>{{ end }}
+          <h4>확인할 점</h4><p>{{ .check }}</p>
+          {{ with .note }}<p class="sm-card-note">{{ . }}</p>{{ end }}
+          {{ with .reference }}<p class="sm-reference"><a href="{{ .url }}" target="_blank" rel="noopener noreferrer">{{ .label }} <span aria-hidden="true">↗</span><span class="sm-sr-only"> (새 탭)</span></a></p>{{ end }}
+        </div>
         {{ with .image }}
         {{ $imagePath := printf "saymore/images/%s" . }}
         {{ $imageVersion := substr (sha256 (readFile (printf "static/%s" $imagePath))) 0 12 }}
@@ -74,9 +89,10 @@
     <p>/ɑː/와 /ɔː/를 구별하지 않는 미국 화자도 있습니다. /ɒ̃ x/는 차용어·특정 이름 등에 나오는 보조 소리이며, 처음부터 모든 미국 화자처럼 똑같이 내야 하는 필수 목록은 아닙니다.</p>
   </section>
   <section class="sm-sources" id="sources"><h2>출처와 더 살펴볼 자료</h2>
-    <p>기호·번호·예시 단어는 Cambridge 발음표의 미국식 항목과 맞췄습니다. 조음 설명은 아래 자료를 참고해 한국어로 작성한 학습 안내입니다. 음성은 이 웹페이지에 포함하지 않습니다.</p>
+    <p>기호·번호·예시 단어는 Cambridge 발음표에서 미국식 음성을 제공하는 항목과 맞췄습니다. 공통 기호와 실제 미국식 단어 표기가 다른 경우에는 카드에 따로 설명했습니다. 조음 설명과 짧은 연습은 아래 자료를 참고해 한국어로 새로 작성한 학습 안내입니다. 음성은 이 웹페이지에 포함하지 않습니다.</p>
     <ul>
       <li><a href="https://dictionary.cambridge.org/help/phonetics.html" target="_blank" rel="noopener noreferrer">Cambridge Dictionary · Pronunciation symbols ↗</a> — 기호와 미국식 예시 단어. 새 탭에서 열립니다.</li>
+      <li><a href="https://rachelsenglish.com/english-pronounce-ee-vowel/" target="_blank" rel="noopener noreferrer">Rachel’s English · EE [i]와 미국식 발음 설명 ↗</a> — 혀끝·혀 몸통·입술·턱의 움직임을 확인하는 참고 자료. 각 소리 카드의 링크에서 해당 설명과 영상을 새 탭으로 볼 수 있습니다. Rachel의 [i]는 이 페이지의 /iː/에 대응합니다. 영상·이미지·대본은 원본 사이트에서 확인하세요.</li>
       <li><a href="https://www.oxfordlearnersdictionaries.com/us/about/american_english/pronunciation_american_english.html">Oxford · American English pronunciation guide</a> — 미국식 사전 표기 비교.</li>
       <li><a href="https://linguistics.berkeley.edu/~kjohnson/English_Phonetics/">UC Berkeley · American English Pronunciation Workbook</a> — 실제 미국식 대화 속 소리와 발음 변이.</li>
       <li><a href="https://opentext.ku.edu/amenglishpronunciation/chapter/chapter-1/">University of Kansas · Vowel Sounds</a> — 모음과 r색채 모음 설명.</li>
