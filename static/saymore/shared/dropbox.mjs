@@ -14,7 +14,7 @@ export function validateCallback(params, transaction, now = Date.now()) {
 
 export class DropboxClient {
   constructor({appKey, storage=globalThis.localStorage, fetchImpl=globalThis.fetch}) {
-    this.appKey=appKey; this.storage=storage; this.fetch=fetchImpl; this.tokenTask=null;
+    this.appKey=appKey; this.storage=storage; this.fetch=fetchImpl.bind(globalThis); this.tokenTask=null;
   }
   get credentials() {
     try {

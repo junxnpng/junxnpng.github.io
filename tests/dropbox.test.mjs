@@ -46,3 +46,12 @@ test('new files are never silently renamed or overwritten', async () => {
 });
 
 function memory(){const map=new Map();return {getItem:k=>map.get(k)??null,setItem:(k,v)=>map.set(k,v),removeItem:k=>map.delete(k)};}
+
+test('native browser fetch keeps its Window receiver through the client',async()=>{
+  const client=new api.DropboxClient({appKey:'app',storage:memory(),fetchImpl:function(){
+    if(this!==globalThis)throw new TypeError('Illegal invocation');
+    return Promise.resolve(new Response('{"ok":true}',{status:200}));
+  }});
+  const result=await client.request('https://example.com/',{method:'GET'});
+  assert.equal(result.status,200);
+});

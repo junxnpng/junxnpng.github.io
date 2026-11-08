@@ -2,7 +2,7 @@ import {newCard, editCard, rateCard, reviewOptions, dueCards, dateLabel, interva
 import {FolderStore, rememberedFolder, friendlyError} from './storage.mjs';
 import {el, showCard} from './view.mjs';
 import {DropboxStore} from './dropbox-store.mjs';
-import {openDropbox} from '../shared/dropbox.mjs';
+import {openDropbox} from '../shared/dropbox.mjs?v=2';
 
 const $=id=>document.getElementById(id);
 let store=null, cachedFolder=null, view='library', busy=false, dirty=false, editedId=null, previewBack=false;
