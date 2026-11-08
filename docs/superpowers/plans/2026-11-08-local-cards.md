@@ -52,7 +52,7 @@ Files: `layouts/home.html`, `examples/coffee-card/demo.html`, generated example 
 
 - [x] Link home to the working card collection and the old example to the new editor. Rebuild the self-contained example from its public seed media only.
 - [x] Run `node --test tests/cards-model.test.mjs`, storage/browser checks, and `sh scripts/check`.
-- [ ] Review only this task's diff, commit, fast-forward push, wait for Pages, and verify the published add route and home link.
+- [x] Review only this task's diff, commit, fast-forward push, wait for Pages, and verify the published add route and home link.
 
 ## Reference sources
 
@@ -61,3 +61,7 @@ Files: `layouts/home.html`, `examples/coffee-card/demo.html`, generated example 
 - https://github.com/open-spaced-repetition/ts-fsrs
 - https://developer.mozilla.org/en-US/docs/Web/API/Window/showDirectoryPicker
 - https://developer.mozilla.org/en-US/docs/Web/API/FileSystemFileHandle/createWritable
+
+## Result
+
+Published implementation: `81af2818df04fa6c6dc30eabd9688e25e946d4c7`. [Pages deployment](https://github.com/junxnpng/junxnpng.github.io/actions/runs/42484544120) succeeded. Published HTML and modules match the verified local source. Model, Chromium storage, authoring/review, permission-failure retry, and responsive checks passed. Native macOS folder selection was not automated.
