@@ -28,7 +28,7 @@
 .sm-sound-reference p { font-size: 13px; line-height: 1.7; margin: 10px 0 0; }
 .sm-section-nav { display: flex; flex-wrap: wrap; gap: 8px; padding: 18px 0 28px; }
 .sm-section-nav a { padding: 7px 14px; border-radius: 6px; border: 1px solid var(--border); font-size: 14px; }
-.sm-section-nav a:hover, .sm-symbols a:hover { background: var(--sm-wash); border-color: var(--sm-accent); }
+.sm-section-nav a:hover, .sm-choice-select:hover { background: var(--sm-wash); border-color: var(--sm-accent); }
 .sm-reading-note { background: var(--sm-wash); border-left: 3px solid var(--sm-accent); padding: 20px 24px; border-radius: 0 8px 8px 0; font-size: 15px; }
 .sm-reading-note h2 { font-size: 18px; margin-bottom: 8px; }
 .sm-reading-help { margin-top: 14px; }
@@ -50,10 +50,18 @@
 .sm-group { padding-top: 45px; border-top: 1px solid var(--border); margin-top: 30px; scroll-margin-top: 20px; }
 .sm-group-header { display: flex; justify-content: space-between; gap: 32px; align-items: flex-end; }
 .sm-group-header > p { max-width: 400px; font-size: 14px; color: var(--secondary); margin: 0 0 14px; }
-.sm-symbols { display: grid; grid-template-columns: repeat(auto-fill, minmax(66px, 1fr)); gap: 8px; margin: 20px 0 28px; }
-.sm-symbols a { display: flex; flex-direction: column; align-items: center; border: 1px solid var(--border); border-radius: 8px; background: var(--entry); padding: 7px 5px 9px; }
-.sm-symbols small { font-family: ui-monospace, monospace; font-size: 10px; color: var(--secondary); }
-.sm-symbols a > span { font-size: 27px; line-height: 1.4; }
+.sm-symbols { display: grid; grid-template-columns: repeat(auto-fill, minmax(82px, 1fr)); gap: 8px; margin: 20px 0 14px; }
+.sm-choice { position: relative; min-width: 0; border: 1px solid var(--border); border-radius: 8px; background: var(--entry); }
+.sm-choice-select { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 88px; padding: 12px 5px 9px; border-radius: 7px; }
+.sm-choice-select small { position: absolute; top: 6px; left: 7px; font: 10px/1.4 ui-monospace, monospace; color: var(--secondary); }
+.sm-choice-symbol { font: 28px/1.3 "Charis SIL", "Doulos SIL", Georgia, "Times New Roman", serif; }
+.sm-choice-word { font-size: 12px; line-height: 1.5; max-width: 100%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.sm-choice-listen { position: absolute; top: 0; right: 0; display: grid; place-items: center; width: 30px; height: 30px; font-size: 11px; color: var(--sm-accent); border-radius: 6px; }
+.sm-choice-listen:hover { background: var(--sm-wash); }
+.sm-choice.is-selected { border-color: var(--sm-accent); box-shadow: inset 0 0 0 1px var(--sm-accent); background: var(--sm-wash); }
+.sm-picker-extra { grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); }
+.sm-picker-extra .sm-choice-select { min-height: 85px; }
+.sm-picker-extra .sm-choice-symbol { font-size: 25px; }
 .sm-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
 .sm-card { background: var(--entry); border: 1px solid var(--border); border-radius: 10px; padding: 23px; scroll-margin-top: 22px; }
 .sm-card:target { outline: 2px solid var(--sm-accent); outline-offset: 3px; }
@@ -105,10 +113,6 @@
 .sm-notation, .sm-sources { margin-top: 50px; padding-top: 30px; border-top: 1px solid var(--border); scroll-margin-top: 20px; }
 .sm-notation p, .sm-sources p, .sm-sources li { font-size: 14px; line-height: 1.9; margin: 12px 0; }
 .sm-sources ul { padding-left: 20px; }
-.sm-extra-nav { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 24px; }
-.sm-extra-nav a { border: 1px solid var(--border); border-radius: 6px; padding: 7px 12px; font-size: 13px; }
-.sm-extra-nav a:hover { background: var(--sm-wash); border-color: var(--sm-accent); }
-.sm-extra-nav span { font-family: "Charis SIL", "Doulos SIL", "Times New Roman", serif; font-size: 18px; margin-inline-end: 5px; }
 .sm-extra-symbol { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 10px; font-size: 32px; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 6px; }
 .sm-extra-play { font: 12px/1.5 system-ui, sans-serif; }
 .sm-extra-copy { margin-top: 20px; }
@@ -138,4 +142,53 @@
 @media (max-width: 380px) {
   .sm-card { padding: 18px; }
   .sm-primary-link { gap: 12px; font-size: 14px; padding: 13px 16px; }
+}
+
+.saymore [hidden] { display: none !important; }
+.sm-reference-panel { margin: 18px 0; border: 1px solid var(--border); border-radius: 8px; background: var(--entry); }
+.sm-reference-panel > summary { padding: 15px 18px; color: var(--sm-accent); font-size: 15px; font-weight: 600; cursor: pointer; }
+.sm-reference-content { padding: 0 18px 18px; }
+.sm-reference-content .sm-anatomy { padding-top: 25px; }
+.sm-reference-content .sm-reading-note { margin-top: 6px; }
+.sm-reference-panel.sm-notation, .sm-reference-panel.sm-sources { padding-top: 0; margin-top: 18px; }
+.sm-reference-panel > summary:focus-visible, .saymore button:focus-visible, .sm-search input:focus-visible { outline: 3px solid var(--sm-accent); outline-offset: 3px; }
+.sm-search { margin: 20px 0 12px; }
+.sm-search label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+.sm-search-input { display: flex; gap: 8px; }
+.sm-search input { min-width: 0; flex: 1; background: var(--entry); color: var(--primary); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; font-size: 16px; }
+.sm-search button, .sm-group-tools button { border: 1px solid var(--border); border-radius: 6px; color: var(--sm-accent); background: var(--entry); padding: 9px 12px; font-size: 13px; cursor: pointer; }
+.sm-search p { margin: 7px 0 0; font-size: 12px; color: var(--secondary); }
+.sm-section-nav { position: sticky; top: 0; z-index: 5; flex-wrap: nowrap; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: thin; background: var(--theme); padding: 12px 0; margin: 14px 0; }
+.sm-section-nav a { white-space: nowrap; flex-shrink: 0; }
+.sm-section-nav a[aria-current="true"] { color: var(--sm-accent); border-color: var(--sm-accent); background: var(--sm-wash); }
+.sm-group, .sm-card, .sm-reference-panel, #mouth { scroll-margin-top: 85px; }
+.sm-explorer-ready .sm-group { padding-top: 28px; margin-top: 22px; }
+.sm-group-tools { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: 12px 0 18px; }
+.sm-selection-status { flex: 1; min-width: 150px; font-size: 12px; color: var(--secondary); }
+.sm-group-tools button[aria-pressed="true"] { background: var(--sm-accent); color: var(--theme); border-color: var(--sm-accent); }
+.sm-explorer-ready .sm-cards { grid-template-columns: minmax(0, 1fr); }
+.sm-explorer-ready .sm-cards.sm-compare-view { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
+.sm-explorer-ready .sm-card { grid-column: auto; }
+.sm-explorer-ready .sm-cards:not(.sm-compare-view) .sm-card-illustrated .sm-card-body { grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr); gap: 28px; }
+.sm-explorer-ready .sm-cards:not(.sm-compare-view) .sm-mouth-image { width: 100%; }
+.sm-explorer-ready .sm-compare-view .sm-card-body { grid-template-columns: minmax(0, 1fr); }
+.sm-explorer-ready .sm-compare-view .sm-figure-pair { grid-template-columns: minmax(0, 1fr); }
+.sm-explorer-ready .sm-card-copy { max-width: 800px; }
+.sm-explorer-ready .sm-back { display: none; }
+.sm-no-results { padding: 22px; background: var(--sm-wash); border-radius: 8px; }
+@media (max-width: 900px) {
+  .sm-explorer-ready .sm-cards:not(.sm-compare-view) .sm-card-illustrated .sm-card-body { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 760px) {
+  .sm-symbols { grid-template-columns: repeat(auto-fill, minmax(72px, 1fr)); }
+  .sm-picker-extra { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sm-explorer-ready .sm-cards.sm-compare-view { grid-template-columns: minmax(0, 1fr); }
+  .sm-reference-content { padding: 0 14px 14px; }
+  .sm-group-tools { gap: 8px; }
+  .sm-selection-status { order: 3; flex-basis: 100%; }
+  .sm-search button { padding-inline: 9px; }
+  .sm-explorer-ready .sm-group-header > p { font-size: 13px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html:has(.saymore) { scroll-behavior: auto; }
 }

@@ -1,0 +1,26 @@
+<nav class="sm-symbols sm-picker{{ if .extra }} sm-picker-extra{{ end }}" aria-label="{{ .title }} 기호 선택">
+  {{ range .items }}
+    {{ $id := printf "ipa-%v" .number }}
+    {{ $symbol := .display_symbol | default .symbol }}
+    {{ $word := .example }}
+    {{ $url := printf "https://dictionary.cambridge.org/pronunciation/english/%s" .example }}
+    {{ $search := printf "%s %s %s %s %s" $symbol .symbol .example .example_reading (.notation | default "") }}
+    {{ if $.extra }}
+      {{ $id = .id }}{{ $word = .name }}{{ $url = (index .listen 0).url }}
+      {{ $search = printf "%s %s %s" .symbol .name (.notation | default "") }}
+    {{ end }}
+    <div class="sm-choice" data-search="{{ $search }}">
+      <a class="sm-choice-select" data-ipa-select="{{ $id }}" href="#{{ $id }}" aria-controls="{{ $id }}" aria-expanded="true" aria-label="{{ $symbol }} {{ $word }} 설명 보기">
+        {{ if not $.extra }}<small>{{ printf "%02d" (int .number) }}</small>{{ end }}
+        <span class="sm-choice-symbol" lang="en">{{ $symbol }}</span>
+        <span class="sm-choice-word" title="{{ $word }}">{{ $word }}</span>
+      </a>
+      <a class="sm-choice-listen" href="{{ $url }}" target="_blank" rel="noopener noreferrer" aria-label="{{ $symbol }} {{ $word }} 원본에서 듣기 (새 탭)" title="원본에서 듣기 · 새 탭"><span aria-hidden="true">▶</span></a>
+    </div>
+  {{ end }}
+</nav>
+<div class="sm-group-tools" hidden>
+  <button type="button" data-ipa-compare aria-pressed="false">두 소리 비교</button>
+  <span class="sm-selection-status" role="status" aria-live="polite">기호를 고르면 이 표 아래에 설명이 열립니다.</span>
+  <button type="button" data-ipa-close hidden>설명 닫기</button>
+</div>
