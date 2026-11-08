@@ -1,0 +1,17 @@
+{{ $sync := readFile "static/saymore/sync-config.json" | transform.Unmarshal }}
+<section class="sm-progress" aria-label="나의 IPA 학습 기록" data-ipa-progress data-dropbox-app-key="{{ $sync.dropbox_app_key }}" hidden>
+  <div class="sm-progress-heading"><h2>나의 학습 기록</h2><strong data-ipa-progress-count>0개 외움</strong></div>
+  <progress data-ipa-progress-bar max="67" value="0" aria-label="외운 항목 진행률"></progress>
+  <div class="sm-progress-tools">
+    <button type="button" data-ipa-unlearned aria-pressed="false">복습할 항목만</button>
+    <button type="button" data-dropbox-connect>Dropbox 연결</button>
+    <button type="button" data-dropbox-sync hidden>지금 동기화</button>
+  </div>
+  <p class="sm-progress-status" data-ipa-progress-status role="status" aria-live="polite">이 브라우저에 저장합니다. Dropbox를 연결하면 다른 기기에서도 이어서 공부할 수 있습니다.</p>
+  <details class="sm-progress-settings"><summary>저장·백업 설정</summary>
+    <p>아이폰과 맥에서 각각 같은 Dropbox 계정을 연결하세요. 웹이 열려 있을 때 변경 내용을 주고받습니다. 인터넷이 끊겨도 이 브라우저에 먼저 저장하고, 다시 연결되면 합칩니다.</p>
+    <p>Obsidian 노트는 맥의 자동 반영 기능을 통해 갱신합니다. 맥이 꺼져 있는 동안에도 웹 기록은 Dropbox에 저장되며, 맥이 다시 켜지면 노트에 반영됩니다.</p>
+    <div class="sm-progress-tools"><button type="button" data-ipa-export>기록 파일 받기</button><label class="sm-import-button">기록 파일 불러오기<input type="file" data-ipa-import accept="application/json,.json"></label><button type="button" data-dropbox-disconnect hidden>이 브라우저 연결 해제</button></div>
+    <p>백업 파일에는 외운 상태와 변경 시각만 들어갑니다. Dropbox 연결 권한은 포함하지 않습니다. 연결을 해제해도 저장된 학습 기록은 삭제하지 않습니다.</p>
+  </details>
+</section>

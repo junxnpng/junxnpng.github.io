@@ -17,6 +17,7 @@
         <span class="sm-choice-word" title="{{ $word }}">{{ $word }}</span>
       </a>
       <a class="sm-choice-listen" href="{{ $url }}" target="_blank" rel="noopener noreferrer" aria-label="{{ $symbol }} {{ $word }} 원본에서 듣기 (새 탭)" title="원본에서 듣기 · 새 탭"><span aria-hidden="true">▶</span></a>
+      <label class="sm-choice-progress" hidden><input type="checkbox" data-ipa-mastered="{{ $id }}" aria-label="{{ $symbol }} {{ $word }} 외웠어요"><span>외웠어요</span></label>
     </div>
   {{ end }}
 </nav>

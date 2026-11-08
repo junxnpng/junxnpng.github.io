@@ -15,6 +15,7 @@
     <h1>미국식 영어 발음기호 읽기</h1>
     <p class="sm-lead">기호를 고르면 해당 분류 표 바로 아래에 설명이 열립니다. ▶는 원본 발음 듣기입니다.</p>
   </header>
+  {{ partial "saymore/ipa-progress.html" . }}
   <div class="sm-search" hidden>
     <label for="ipa-search">소리 찾기</label>
     <div class="sm-search-input"><input id="ipa-search" type="search" placeholder="기호·단어 검색 — sheep, glottal stop" autocomplete="off" spellcheck="false" aria-describedby="ipa-search-status"><button type="button" data-ipa-clear hidden>검색 지우기</button></div>
@@ -135,6 +136,6 @@
     </ul><p class="sm-footnote">Cambridge 발음표·음성의 권리는 Cambridge University Press &amp; Assessment에 있습니다. Say More는 원본 발음·영상 페이지로 연결하는 독립 학습 사이트입니다. 외부 음성·영상은 이 사이트에 복제하지 않으며 각 원본 제공처의 권리와 이용 조건을 따릅니다. <a href="https://dictionary.cambridge.org/license.html" target="_blank" rel="noopener noreferrer">Cambridge 라이선스 안내</a></p><p class="sm-footnote">내용 확인일 2026-11-08 · 조음 그림은 대표적인 자세를 그린 참고도입니다. 실제 혀 모양은 화자와 앞뒤 소리에 따라 달라집니다.</p>
   </div></details>
 </article>
-{{ $explorerScript := resources.Get "js/saymore-ipa.js" | minify | fingerprint }}
+{{ $explorerScript := slice (resources.Get "js/saymore-progress-core.js") (resources.Get "js/saymore-ipa-progress.js") (resources.Get "js/saymore-ipa.js") | resources.Concat "js/saymore-ipa-bundle.js" | minify | fingerprint }}
 <script defer src="{{ $explorerScript.RelPermalink }}" integrity="{{ $explorerScript.Data.Integrity }}"></script>
 {{ end }}

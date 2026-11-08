@@ -59,6 +59,28 @@
 .sm-choice-listen { position: absolute; top: 0; right: 0; display: grid; place-items: center; width: 30px; height: 30px; font-size: 11px; color: var(--sm-accent); border-radius: 6px; }
 .sm-choice-listen:hover { background: var(--sm-wash); }
 .sm-choice.is-selected { border-color: var(--sm-accent); box-shadow: inset 0 0 0 1px var(--sm-accent); background: var(--sm-wash); }
+.sm-choice.is-mastered .sm-choice-symbol { color: #227347; }
+:root[data-theme="dark"] .sm-choice.is-mastered .sm-choice-symbol { color: #8dd8aa; }
+.sm-choice-progress { display: flex; min-height: 40px; align-items: center; justify-content: center; gap: 5px; padding: 5px 2px 9px; font-size: 11px; cursor: pointer; }
+.sm-choice-progress input, .sm-card-progress input { width: 17px; height: 17px; accent-color: var(--sm-accent); cursor: pointer; flex-shrink: 0; }
+.sm-card-progress { display: inline-flex; align-items: center; gap: 8px; margin: 0 0 14px; font-size: 14px; cursor: pointer; padding: 7px 0; }
+.sm-progress { padding: 20px; border: 1px solid var(--border); border-radius: 10px; margin: 22px 0; background: var(--entry); }
+.sm-progress-heading { display: flex; justify-content: space-between; align-items: center; gap: 15px; }
+.sm-progress-heading h2 { font-size: 17px; margin: 0; }
+.sm-progress-heading strong { color: var(--sm-accent); font-size: 14px; white-space: nowrap; }
+.sm-progress progress { width: 100%; height: 7px; display: block; margin: 14px 0 17px; accent-color: var(--sm-accent); }
+.sm-progress-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.sm-progress button, .sm-import-button { border: 1px solid var(--border); border-radius: 6px; background: var(--entry); color: var(--sm-accent); padding: 9px 12px; font: inherit; font-size: 13px; cursor: pointer; }
+.sm-progress button[aria-pressed="true"] { background: var(--sm-accent); color: var(--theme); }
+.sm-progress button:disabled { opacity: .55; cursor: wait; }
+.sm-progress-status, .sm-progress-settings { font-size: 12px; color: var(--secondary); margin-top: 12px; }
+.sm-progress-status.is-error { color: #ae3333; }
+:root[data-theme="dark"] .sm-progress-status.is-error { color: #ffa6a6; }
+.sm-progress-settings summary { cursor: pointer; color: var(--sm-accent); }
+.sm-progress-settings p { margin: 10px 0; }
+.sm-import-button { position: relative; overflow: hidden; }
+.sm-import-button input { position: absolute; inset: 0; width: 100%; opacity: 0; cursor: pointer; }
+.sm-import-button:focus-within { outline: 3px solid var(--sm-accent); outline-offset: 3px; }
 .sm-picker-extra { grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); }
 .sm-picker-extra .sm-choice-select { min-height: 85px; }
 .sm-picker-extra .sm-choice-symbol { font-size: 25px; }

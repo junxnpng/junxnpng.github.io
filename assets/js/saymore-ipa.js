@@ -94,7 +94,8 @@
     for (const group of groups) {
       let matches = 0;
       for (const record of group.items) {
-        const match = words.every(word => record.search.includes(word));
+        const pendingOnly = root.querySelector("[data-ipa-unlearned]")?.getAttribute("aria-pressed") === "true";
+        const match = words.every(word => record.search.includes(word)) && (!pendingOnly || !globalThis.SayMoreIPAState?.isMastered(record.card.id));
         record.choice.hidden = !match;
         if (match) matches++;
       }
@@ -103,7 +104,9 @@
     }
     clearSearch.hidden = query.length === 0;
     empty.hidden = count !== 0;
-    searchStatus.textContent = query
+    searchStatus.textContent = root.querySelector("[data-ipa-unlearned]")?.getAttribute("aria-pressed") === "true"
+      ? `복습할 항목 ${count}개가 표시됩니다. 외웠어요 체크를 해제하면 다시 복습 목록에 들어갑니다.`
+      : query
       ? `${count}개 항목을 찾았습니다. 기호를 고르면 검색을 마치고 설명이 열립니다.`
       : "모음·자음 표에서 기호를 선택하세요. 두 소리를 나란히 비교할 수도 있습니다.";
     root.querySelector("#extra-practice").hidden = query.length > 0;
@@ -115,6 +118,7 @@
   }
 
   function select(record, { toggle = false, fromHash = false, scroll = true } = {}) {
+    if (globalThis.SayMoreIPAState?.isMastered(record.card.id)) root.querySelector("[data-ipa-unlearned]")?.setAttribute("aria-pressed", "false");
     clearFilter();
     if (activeGroup !== record.group) {
       activeGroup = record.group;
@@ -220,6 +224,12 @@
     filter();
   });
   clearSearch.addEventListener("click", () => { clearFilter(); input.focus(); });
+  root.querySelector("[data-ipa-unlearned]")?.addEventListener("click", event => {
+    const button = event.currentTarget;
+    button.setAttribute("aria-pressed", String(button.getAttribute("aria-pressed") !== "true"));
+    filter();
+  });
+  root.addEventListener("saymore-progress-changed", filter);
   window.addEventListener("hashchange", followHash);
   render();
   root.classList.add("sm-explorer-ready");

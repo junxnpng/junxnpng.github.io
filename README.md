@@ -62,3 +62,17 @@ hugo server --disableFastRender
 python3 tests/study_browser.py http://127.0.0.1:1313
 python3 tests/study_persistence.py http://127.0.0.1:1313
 ```
+
+## Dropbox 학습 기록
+
+IPA의 외운 상태와 단어장 카드·첨부파일·FSRS 전체 복습 기록은 같은 Dropbox 앱 연결을 사용한다. 각 브라우저에서 같은 계정을 한 번 연결한다. 앱은 App folder 범위이며 공개 식별자만 `static/saymore/sync-config.json`에 둔다. 앱 비밀은 사용하지 않고 OAuth PKCE로 연결한다. 브라우저의 지속 연결 정보는 해당 기기의 localStorage에만 저장되며 Git·백업 내보내기에는 포함하지 않는다.
+
+- `/ipa-progress.json`: 항목 ID별 외운 상태·변경 시각. 읽은 Dropbox revision으로만 갱신하고 충돌 시 다시 읽어 합친다. 체크 해제도 기록하여 과거 백업이 외운 상태를 되살리지 않게 한다.
+- `/cards/library.json`: 카드 정본. 카드 ID·스케줄·복습 이력을 유지한다. 서로 다른 카드의 변경은 합치며 같은 카드에 동시 변경이 생기면 저장을 중단하고 입력을 화면에 남긴다. 첨부파일을 먼저 올리고 정본을 마지막에 갱신한다.
+- `/cards/media`, `/cards/notes`, `/cards/backups`: 비공개 첨부파일, 읽기용 노트, 수정 전 정본. 기존 폴더 가져오기는 파일을 다시 내려받아 원본과 비교하고 원본을 삭제하지 않는다.
+
+웹페이지는 다시 열기·화면 복귀·30초 간격으로 변경을 확인한다. 단어장 저장은 온라인에서 수행하며 저장 실패 시 입력을 유지한다. IPA 체크는 먼저 브라우저에 저장하고 연결이 복구되면 합친다. ‘외웠어요’ 표시와 FSRS 복습 상태는 별개다.
+
+IPA 기록의 Obsidian 자동 반영은 맥에서 `scripts/ipa-obsidian-sync.py`를 사용한다. `--authorize /path/to/vault`로 읽기 전용 Dropbox 연결을 완료한 뒤 `--install`로 로그인 후 1분 간격 실행을 등록한다. `--sync`는 한 번 실행한다. 연결 정보는 macOS 키체인, 보관함 경로는 사용자 Application Support에 저장하며 공개 저장소와 보관함에 인증 정보를 넣지 않는다. `SayMore/IPA 학습기록.md`의 생성 영역만 갱신하고 추가 메모는 유지한다. 맥이 꺼진 동안에도 웹의 Dropbox 저장은 계속 가능하며 노트는 맥이 켜지면 갱신된다.
+
+검사: `node --test tests/cards-model.test.mjs tests/cards-dropbox.test.mjs tests/dropbox.test.mjs tests/ipa_progress.test.cjs`, `python3 -m unittest discover -s tests -p test_ipa_obsidian.py`, `sh scripts/check`.

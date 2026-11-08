@@ -1,5 +1,7 @@
 public/
 resources/_gen/
+__pycache__/
+*.py[cod]
 .hugo_build.lock
 .DS_Store
 __pycache__/
