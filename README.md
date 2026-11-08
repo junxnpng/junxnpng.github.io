@@ -4,8 +4,9 @@ Say More — Fluent Forever의 발음 우선 학습에서 영감을 받은 개�
 
 ## 구조
 
-- `/` — Say More 메인. 학습 메뉴에서 IPA로 진입한다. 화면은 `layouts/home.html`.
+- `/` — Say More 메인. 학습 메뉴에서 IPA와 첫 단어 카드 예시로 진입한다. 화면은 `layouts/home.html`.
 - `/saymore/ipa/` — 미국식 IPA 발음 가이드. 기존 주소를 유지한다.
+- `/saymore/card-demo/` — 사진·발음·예문으로 연습하고 옵시디언 폴더에 저장하는 coffee 카드 예시. 소스와 사용법은 `examples/coffee-card/`.
 - `/saymore/` — 메인 `/`으로 연결하는 이전 주소.
 - `content/saymore/` — 공개 콘텐츠. Hugo에서 콘텐츠 루트로 사용한다.
 - `data/saymore/ipa.json` · `layouts/saymore/` · `assets/css/saymore.css` — 발음 설명 데이터, 가이드 화면, 스타일.
