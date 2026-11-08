@@ -24,7 +24,7 @@
     {{ range $ipa.groups }}<a href="#{{ .id }}">{{ .title }}</a>{{ end }}<a href="#sound-variants">발음 변이</a><a href="#r-connections">모음+r</a><a href="#dialect-reference">방언 참고</a><a href="#mouth">구강 구조</a><a href="#wikipedia-comparison">표기 비교</a>
   </nav>
   <p class="sm-no-results" hidden>일치하는 소리가 없습니다. 예시 단어나 영어 이름으로 다시 찾아보세요.</p>
-  <details class="sm-reference-panel" id="ipa-guide"><summary>IPA 읽는 법 · 입 안의 구조</summary><div class="sm-reference-content">
+  <details class="sm-reference-panel" id="ipa-guide"><summary>IPA 읽는 법 · 소리의 원리 · 입 안의 구조</summary><div class="sm-reference-content">
 <p class="sm-footnote">01–52는 이 사이트의 학습 순서이자 개인 음원 모음 <strong>eng_ipa</strong>의 파일 번호입니다. 음원 모음을 쓰는 경우 01–49는 sound → word 순서로, 50–52는 word로 들으세요.</p>
   <section class="sm-reading-note" aria-labelledby="sm-reading-title">
     <h2 id="sm-reading-title">소리의 길이보다, 위치와 움직임</h2>
@@ -32,6 +32,7 @@
     <p class="sm-reading-help"><span lang="en">sh<strong class="sm-word-focus">ee</strong>p</span> <span class="sm-inline-ipa">/ʃiːp/</span>에서는 가운데 /iː/가 밑줄 친 두 글자 <span lang="en">ee</span>에 해당합니다. 단어 아래의 / / 안을 왼쪽부터 읽고, ‘미국식 발음 듣기’에서 US 음성과 비교해 보세요. 강세 카드의 밑줄은 강조할 음절을 보여줍니다.</p>
     <p class="sm-reading-help">혀의 위치는 그림으로, 입술과 턱의 움직임은 거울로 확인해 보세요. <a href="#notation">사전 표기 비교</a>에서는 같은 단어가 /kɑːr/와 /kɑr/로 다르게 보이는 이유를 살펴봅니다.</p>
   </section>
+  {{ partial "saymore/ipa-principles.html" . }}
   <section class="sm-anatomy" id="mouth" aria-labelledby="mouth-title">
     <div><p class="sm-eyebrow">입 안의 지도</p><h2 id="mouth-title">혀끝과 혀몸통은 어디일까요?</h2>
       <p>왼쪽이 앞니와 입술, 오른쪽이 목입니다. 빨간 그림은 입 안의 부위에 번호를 붙인 지도입니다. 입술 쪽에서 목 쪽으로 혀의 윗선을 따라가 보세요.</p>
@@ -59,7 +60,7 @@
         <div class="sm-card-heading"><span class="sm-track">{{ printf "%02d" (int .number) }}</span><h3 id="ipa-{{ .number }}-title"><span class="sm-ipa" lang="en">{{ .display_symbol | default .symbol }}</span><span class="sm-example" lang="en">{{ with .example_parts }}{{ range . }}{{ if .highlight }}<strong class="sm-word-focus">{{ .text }}</strong>{{ else }}{{ .text }}{{ end }}{{ end }}{{ else }}{{ .example }}{{ end }}</span></h3><a class="sm-permalink" href="#ipa-{{ .number }}" aria-label="{{ .display_symbol | default .symbol }} 발음 설명 링크">#</a></div>
         <p class="sm-example-reading"><span lang="en">{{ .example_reading }}</span> <a href="https://dictionary.cambridge.org/pronunciation/english/{{ .example }}" target="_blank" rel="noopener noreferrer" aria-label="{{ .example }} 미국식 발음 듣기 (새 탭)">미국식 발음 듣기 ↗</a></p>
         {{ with .example_note }}<p class="sm-example-note">{{ . }}</p>{{ end }}
-        <p class="sm-articulation">{{ .place }}</p>
+        {{ with .traits }}<dl class="sm-sound-traits" aria-label="자음의 세 가지 기준"><div><dt>울림</dt><dd>{{ .voicing }}</dd></div><div><dt>위치</dt><dd>{{ .place }}</dd></div><div><dt>방식</dt><dd>{{ .manner }}</dd></div></dl>{{ else }}<p class="sm-articulation">{{ .place }}</p>{{ end }}
         {{ with .notation }}<aside class="sm-card-notation" aria-label="표기와 발음 참고"><h4>표기·발음 참고</h4><p>{{ . }}</p></aside>{{ end }}
         <div class="sm-card-body"><div class="sm-card-copy">
           <h4>이렇게 발음해요</h4><p>{{ .how }}</p>
@@ -116,6 +117,8 @@
   <details class="sm-sources sm-reference-panel" id="sources"><summary>출처와 더 살펴볼 자료</summary><div class="sm-reference-content">
     <p>Cambridge 발음표에서 미국식 음성이 있는 항목을 골라 개인 음원 순서에 맞춰 번호를 붙였습니다. 단어 아래에는 Cambridge의 대표 미국식 발음과 원문 링크를 실었습니다. 입 안의 자세는 대학 음성학 자료와 미국식 발음 시범을 바탕으로 한국어로 풀어 썼습니다.</p>
     <ul>
+      <li>Gabe · TowerofBabelfish, 영어 발음과 IPA 강의 1–3 — 사용자 제공 스크립트. 영어에 필요한 원리를 정리하고 현재 미국식 발음 안내와 대조했습니다.</li>
+      <li><a href="https://www.internationalphoneticassociation.org/IPAcharts/IPA_charts_EI/IPA_charts_EI.html" target="_blank" rel="noopener noreferrer">International Phonetic Association · 공식 IPA 표 ↗</a> — 자음 위치·방식과 모음표. <a href="https://corpus.eduhk.hk/english_pronunciation/index.php/3-2-acoustic-aspects-of-consonants/" target="_blank" rel="noopener noreferrer">홍콩교육대학교 · 영어 자음 ↗</a> — 영어 자음 분류와 기식. <a href="https://pressbooks.utrgv.edu/engl6360/chapter/describing-vowels/" target="_blank" rel="noopener noreferrer">UTRGV · 모음의 세 가지 특성 ↗</a> — 혀 높이·앞뒤 위치·입술 둥글기.</li>
       <li><a href="https://dictionary.cambridge.org/help/phonetics.html" target="_blank" rel="noopener noreferrer">Cambridge Dictionary · Pronunciation symbols ↗</a> — 기호와 미국식 예시 단어. 새 탭에서 열립니다.</li>
       <li><a href="https://en.wikipedia.org/wiki/Help:IPA/English" target="_blank" rel="noopener noreferrer">Wikipedia · Help:IPA/English ↗</a> — 영어 기호 목록·여러 방언의 표기 대응을 비교하는 참고 자료. 추가 카드의 설명은 미국식 학습 목적에 맞춰 새로 작성했습니다.</li>
       <li><a href="https://www.oxfordlearnersdictionaries.com/about/english/pronunciation_english" target="_blank" rel="noopener noreferrer">Oxford · 발음 변이 안내 ↗</a> — [ʔ] 성문폐쇄음과 [ɫ] 어두운 l. <a href="https://opentextbooks.rug.nl/americanenglishphonetics2/chapter/6-5-r-colored-vowels/" target="_blank" rel="noopener noreferrer">흐로닝언 대학교 · R-colored vowels ↗</a> — 모음과 r의 연결.</li>

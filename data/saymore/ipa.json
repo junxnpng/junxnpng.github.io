@@ -4,7 +4,7 @@
       "id": "vowels",
       "title": "모음",
       "label": "VOWELS · 01–17",
-      "intro": "혀의 높이와 앞뒤 위치, 입술 모양을 살펴보세요. 이중모음은 한 음절 안에서 움직입니다.",
+      "intro": "혀의 높이·앞뒤 위치·입술의 둥글기를 확인하세요. 이중모음은 한 음절 안에서 움직입니다.",
       "items": [
         {
           "number": 1,
@@ -12,7 +12,7 @@
           "example": "sheep",
           "place": "앞쪽 높은 모음 · 입술을 둥글게 하지 않음",
           "how": "혀끝(구조도 17번)을 아래 앞니 뒤에 편하게 두세요. 그 뒤의 넓은 윗면(15번)이 단단한 입천장(7번) 가까이 올라오면 혀 위로 좁은 틈이 남습니다.",
-          "check": "sheep과 ship을 비교할 때 혀의 넓은 윗면과 입천장 사이의 틈을 보세요. sheep 쪽이 더 좁습니다.",
+          "check": "sheep과 ship에서는 혀의 높이와 모음의 성질이 달라집니다. /iː/를 길게 늘이기만 해서는 구별되지 않습니다. 그림에서 sheep 쪽의 혀 윗면과 입천장 사이 틈이 더 좁은지 보세요.",
           "image": "vowel-i.svg",
           "image_symbol": "i",
           "notation": "sheep의 모음을 Cambridge 공통 발음표에서는 /iː/, American Dictionary에서는 /i/로 적습니다. /ɪ/는 ship에 들어가는 다른 모음입니다.",
@@ -58,7 +58,7 @@
           "example": "ship",
           "place": "앞쪽에 가까운 높은 모음",
           "how": "sheep의 자세에서 혀끝은 아래 앞니 뒤에 편하게 둡니다. 혀몸통 앞쪽(15번)을 조금 낮추고 턱을 살짝 열어 ship의 모음을 내 보세요.",
-          "check": "ship과 sheep을 비교하세요. 입과 혀의 자세가 달라져야 합니다.",
+          "check": "ship을 sheep의 모음보다 짧게 끊는 것만으로 만들지 마세요. 혀와 턱의 자세를 바꾸고 모음 자체가 다르게 들리는지 비교합니다.",
           "image": "vowel-ih.svg",
           "image_symbol": "ɪ",
           "diagram": {
@@ -137,7 +137,7 @@
           "example": "hat",
           "place": "앞쪽 낮은 모음",
           "how": "혀를 앞쪽에 두고 턱을 내립니다. /e/보다 입을 더 열어 소리를 냅니다.",
-          "check": "턱만 벌리면서 혀를 뒤로 당기지 마세요. hat의 모음을 확인하세요.",
+          "check": "bed의 모음(이 페이지 /e/, 다른 자료 /ɛ/)에서 cat의 /æ/로 가면 혀가 더 내려갑니다. 턱만 벌리면서 혀를 뒤로 당기지 마세요.",
           "image": "vowel-ae.svg",
           "image_symbol": "æ",
           "diagram": {
@@ -250,7 +250,7 @@
           "example": "blue",
           "place": "높은 모음 · 둥근 입술",
           "how": "혀를 높이고 입술을 둥글게 모읍니다. 미국식에서는 혀가 아주 뒤쪽까지 가지 않는 경우도 많습니다.",
-          "check": "/ʊ/보다 높고 모인 느낌을 확인하세요. 입술을 과하게 내밀 필요는 없습니다.",
+          "check": "pool의 /uː/와 pull의 /ʊ/는 길이뿐 아니라 모음의 성질도 다릅니다. 미국식 /uː/의 혀를 무조건 아주 뒤로 끌어당기지 마세요.",
           "image": "vowel-u.svg",
           "image_symbol": "u",
           "notation": "blue의 모음을 Cambridge 공통 발음표는 /uː/, American Dictionary는 /u/로 적습니다. 같은 소리도 뒤 자음과 말의 속도에 따라 길이가 달라집니다.",
@@ -292,7 +292,7 @@
           "example": "foot",
           "place": "뒤쪽에 가까운 높은 모음",
           "how": "/uː/보다 혀를 조금 낮추고 입술의 조임을 풉니다. 입술은 가볍게 둥글게 하세요.",
-          "check": "foot을 듣고 가운데 모음에 집중하세요. Luke의 /uː/와 비교할 때 길이와 함께 모음의 소리 자체를 들어 보세요.",
+          "check": "pull–pool을 비교하면서 혀 높이와 입술의 조임도 바꿔보세요. 모음의 길이만 줄여 같은 소리를 내지 않습니다.",
           "image": "vowel-upsilon.svg",
           "image_symbol": "ʊ",
           "diagram": {
@@ -337,7 +337,7 @@
           "example": "head",
           "place": "앞쪽 중간 높이 모음",
           "how": "혀를 앞쪽에 두되 /ɪ/보다 낮춥니다. 입술을 둥글게 하지 않고 턱을 편하게 엽니다.",
-          "check": "head의 모음입니다. 알파벳 이름처럼 /eɪ/로 미끄러지지 않도록 하세요.",
+          "check": "see → bed → cat의 /iː/ → /e/ → /æ/에서 가운데 높이의 소리를 찾아보세요. head의 모음에는 day의 /eɪ/처럼 끝으로 미끄러지는 움직임을 넣지 않습니다.",
           "image": "vowel-epsilon.svg",
           "image_symbol": "ɛ",
           "notation": "head의 모음은 이 표에서 /e/, 다른 미국식 자료에서는 /ɛ/로 보일 수 있습니다. 비교 그림은 [ɛ]의 혀 윤곽을 사용합니다. day의 /eɪ/는 한 음절 안에서 혀가 움직이는 별도의 모음입니다.",
@@ -383,7 +383,7 @@
           "example": "bird",
           "place": "강세가 있는 r색채 모음",
           "how": "혀끝을 살짝 뒤로 향하게 하거나 혀의 몸통을 모으는 방법으로 r의 울림을 만듭니다. 혀가 입천장을 막지는 않습니다.",
-          "check": "혀끝을 입천장에 반드시 붙이거나 말아야 하는 것은 아닙니다. bird를 하나의 모음 흐름으로 내세요.",
+          "check": "bird·turn의 강세 있는 r 모음입니다. 혀끝을 올리는 자세와 혀 몸통을 모으는 자세가 모두 가능하므로 반드시 입천장에 붙이거나 말아야 한다고 고정하지 마세요.",
           "notation": "다른 자료에서는 /ɝ/처럼 길이 표시를 생략하기도 합니다. 이 항목은 강세가 있는 r색채 모음이며, 12번 /ɚ/는 강세가 없는 경우입니다.",
           "mouth": {
             "tongue": "혀끝을 살짝 뒤로 향하게 하거나, 혀끝을 낮춘 채 혀 몸통을 모으는 자세 중 편한 방법을 시도하세요. 혀 양옆은 위쪽 어금니 안쪽 부근에 닿을 수 있지만 가운데 통로를 막지 않습니다.",
@@ -417,7 +417,7 @@
           "example": "above",
           "place": "슈와 · 힘을 뺀 비강세 모음",
           "how": "입과 혀를 편한 중앙 위치에 두고 가볍게 소리를 냅니다. 앞뒤 소리에 따라 자세가 조금 달라집니다.",
-          "check": "above의 첫 음절입니다. 또렷한 한국어 모음으로 힘주어 읽지 마세요.",
+          "check": "above·about의 첫 음절이나 a tree의 약한 a를 들어보세요. 영어에서 보통 강세 없는 위치의 모음이며, /ʌ/와 단순히 길이만 다른 쌍은 아닙니다.",
           "mouth": {
             "tongue": "특정 위치에 혀를 단단히 고정하지 말고 앞뒤 소리 사이에서 힘을 풉니다. 혀끝도 치아나 입천장을 누르지 않습니다.",
             "lips_jaw": "입술과 턱의 힘을 빼고 작은 움직임으로 준비합니다. 약한 음절을 또렷하게 만들려고 입을 과장해서 벌리지 않습니다.",
@@ -446,7 +446,7 @@
           "example": "mother",
           "place": "강세가 없는 r색채 모음",
           "how": "힘을 뺀 모음에 r의 울림을 함께 만듭니다. 혀끝이나 혀의 몸통으로 통로를 좁히되 막지 않습니다.",
-          "check": "mother의 끝부분입니다. 강한 모음 다음에 별도의 r 음절을 덧붙이지 마세요.",
+          "check": "mother·runner·winter 끝의 강세 없는 r 모음입니다. 강한 모음 뒤에 별도 r 음절을 덧붙이지 말고 약한 모음 안에 r색채를 함께 남깁니다.",
           "notation": "mother 끝의 /ɚ/는 이를 풀어 쓴 사전에서 /ər/로도 보입니다. 이 예시에서는 한 음절 안에 약한 모음과 r의 울림이 함께 납니다. bird의 /ɝː/와 강세 위치를 비교해 보세요.",
           "mouth": {
             "tongue": "/ɝː/처럼 혀로 r의 좁아진 통로를 만들되 힘을 덜 줍니다. 혀끝을 말든 혀 몸통을 모으든 가운데 공기길을 닫지 않습니다.",
@@ -627,7 +627,7 @@
       "id": "consonants",
       "title": "자음",
       "label": "CONSONANTS · 18–42",
-      "intro": "입술이나 혀가 닿는 위치, 공기가 지나가는 길, 성대가 울리기 시작하는 때를 살펴보세요. 21번은 미국식 /t/에서 자주 듣는 변이음입니다.",
+      "intro": "성대 울림·조음 위치·조음 방식으로 구별합니다. 기본 자음 24개와 미국식 탄설음 1개를 모았습니다.",
       "items": [
         {
           "number": 18,
@@ -669,7 +669,12 @@
             "url": "https://rachelsenglish.com/english-pronounce-b-p-consonants/",
             "label": "Rachel’s English · 입 모양 영상"
           },
-          "example_reading": "/pen/"
+          "example_reading": "/pen/",
+          "traits": {
+            "voicing": "무성",
+            "place": "양순 · 두 입술",
+            "manner": "파열"
+          }
         },
         {
           "number": 19,
@@ -711,7 +716,12 @@
             "url": "https://rachelsenglish.com/english-pronounce-b-p-consonants/",
             "label": "Rachel’s English · 입 모양 영상"
           },
-          "example_reading": "/bʊk/"
+          "example_reading": "/bʊk/",
+          "traits": {
+            "voicing": "유성",
+            "place": "양순 · 두 입술",
+            "manner": "파열"
+          }
         },
         {
           "number": 20,
@@ -719,7 +729,7 @@
           "example": "town",
           "place": "윗니 뒤 잇몸 융기 · 무성 파열음",
           "how": "혀끝이나 혀 앞부분을 윗니 뒤 볼록한 곳에 대어 막은 뒤 뗍니다.",
-          "check": "혀를 치아 사이로 내밀지 마세요. 단어 끝의 t는 항상 크게 터지는 것은 아닙니다.",
+          "check": "son의 /s/와 ton의 /t/는 비슷한 잇몸 부근에서 납니다. /s/의 틈을 완전히 막았다 풀면 방식이 달라집니다. 단어 끝 t는 항상 크게 터지는 것은 아닙니다.",
           "image": "consonant-t.svg",
           "image_symbol": "t",
           "diagram": {
@@ -753,7 +763,12 @@
             "url": "https://rachelsenglish.com/english-pronounce-t-d-consonants/",
             "label": "Rachel’s English · 입 모양 영상"
           },
-          "example_reading": "/taʊn/"
+          "example_reading": "/taʊn/",
+          "traits": {
+            "voicing": "무성",
+            "place": "치경 · 잇몸 융기",
+            "manner": "파열"
+          }
         },
         {
           "number": 21,
@@ -761,7 +776,7 @@
           "example": "cutting",
           "place": "미국식 탄설음",
           "how": "혀끝으로 잇몸 융기를 아주 짧게 한 번 스치고 곧바로 다음 소리로 넘어갑니다.",
-          "check": "cutting의 가운데 소리입니다. 또렷한 /t/를 길게 막거나 혀를 여러 번 떨지 마세요.",
+          "check": "cutting·water·better의 미국식 /t/에서 짧은 한 번의 접촉을 들어보세요. 모든 t를 이렇게 읽는 것은 아니며, 혀를 여러 번 떠는 전동음과도 구별합니다.",
           "notation": "미국식 영어에서 /t/나 /d/는 강세 있는 모음 뒤에서 약한 모음으로 이어질 때 잇몸을 한 번 스치는 [ɾ]로 날 수 있습니다. Cambridge는 cutting에서 이 t를 /t̬/로 표시합니다.",
           "mouth": {
             "tongue": "혀끝이 윗니 뒤 잇몸 융기를 단 한 번 빠르게 스치게 합니다. 붙인 채 버티거나 여러 번 떨지 않습니다.",
@@ -787,7 +802,12 @@
             "url": "https://rachelsenglish.com/english-pronounce-t-d-consonants/",
             "label": "Rachel’s English · 입 모양 영상"
           },
-          "example_reading": "/ˈkʌt̬.ɪŋ/"
+          "example_reading": "/ˈkʌt̬.ɪŋ/",
+          "traits": {
+            "voicing": "주로 유성",
+            "place": "치경 · 잇몸 융기",
+            "manner": "탄설 · 한 번 접촉"
+          }
         },
         {
           "number": 22,
@@ -829,7 +849,12 @@
             "url": "https://rachelsenglish.com/english-pronounce-t-d-consonants/",
             "label": "Rachel’s English · 입 모양 영상"
           },
-          "example_reading": "/deɪ/"
+          "example_reading": "/deɪ/",
+          "traits": {
+            "voicing": "유성",
+            "place": "치경 · 잇몸 융기",
+            "manner": "파열"
+          }
         },
         {
           "number": 23,
@@ -871,7 +896,12 @@
             "url": "https://rachelsenglish.com/english-pronounce-g-k-consonants/",
             "label": "Rachel’s English · 입 모양 영상"
           },
-          "example_reading": "/kæt/"
+          "example_reading": "/kæt/",
+          "traits": {
+            "voicing": "무성",
+            "place": "연구개 · 혀 뒤",
+            "manner": "파열"
+          }
         },
         {
           "number": 24,
@@ -913,7 +943,12 @@
             "url": "https://rachelsenglish.com/english-pronounce-g-k-consonants/",
             "label": "Rachel’s English · 입 모양 영상"
           },
-          "example_reading": "/ɡɪv/"
+          "example_reading": "/ɡɪv/",
+          "traits": {
+            "voicing": "유성",
+            "place": "연구개 · 혀 뒤",
+            "manner": "파열"
+          }
         },
         {
           "number": 25,
@@ -921,7 +956,7 @@
           "example": "fish",
           "place": "윗니와 아랫입술 · 무성 마찰음",
           "how": "윗니를 아랫입술에 가볍게 대고, 틈으로 공기를 계속 보냅니다.",
-          "check": "두 입술을 닫았다 터뜨리면 /p/에 가까워집니다. 마찰을 이어 보세요.",
+          "check": "입 모양을 유지한 채 /f/ → /v/로 목의 울림을 바꿔보세요. /f/를 /p/처럼 입술로 막았다 터뜨리지 말고 마찰을 이어갑니다.",
           "image": "consonant-f.svg",
           "image_symbol": "f",
           "diagram": {
@@ -955,7 +990,12 @@
             "url": "https://rachelsenglish.com/english-pronounce-f-v-consonants/",
             "label": "Rachel’s English · 입 모양 영상"
           },
-          "example_reading": "/fɪʃ/"
+          "example_reading": "/fɪʃ/",
+          "traits": {
+            "voicing": "무성",
+            "place": "순치 · 윗니와 아랫입술",
+            "manner": "마찰"
+          }
         },
         {
           "number": 26,
@@ -963,7 +1003,7 @@
           "example": "very",
           "place": "윗니와 아랫입술 · 유성 마찰음",
           "how": "/f/의 입 모양을 유지하면서 성대를 울립니다. 좁은 틈으로 공기가 계속 흐릅니다.",
-          "check": "/b/처럼 두 입술을 완전히 닫지 마세요. 목에 손을 대고 울림을 느껴보세요.",
+          "check": "/f/와 같은 윗니·아랫입술의 틈에서 울림을 더해보세요. /b/처럼 두 입술을 완전히 닫지 않습니다.",
           "image": "consonant-v.svg",
           "image_symbol": "v",
           "diagram": {
@@ -997,7 +1037,12 @@
             "url": "https://rachelsenglish.com/english-pronounce-f-v-consonants/",
             "label": "Rachel’s English · 입 모양 영상"
           },
-          "example_reading": "/ˈver.i/"
+          "example_reading": "/ˈver.i/",
+          "traits": {
+            "voicing": "유성",
+            "place": "순치 · 윗니와 아랫입술",
+            "manner": "마찰"
+          }
         },
         {
           "number": 27,
@@ -1039,7 +1084,12 @@
             "url": "https://rachelsenglish.com/english-pronounce-th-consonants/",
             "label": "Rachel’s English · 입 모양 영상"
           },
-          "example_reading": "/θɪŋk/"
+          "example_reading": "/θɪŋk/",
+          "traits": {
+            "voicing": "무성",
+            "place": "치음 · 치아 부근",
+            "manner": "마찰"
+          }
         },
         {
           "number": 28,
@@ -1081,7 +1131,12 @@
             "url": "https://rachelsenglish.com/english-pronounce-th-consonants/",
             "label": "Rachel’s English · 입 모양 영상"
           },
-          "example_reading": "/ðɪs/"
+          "example_reading": "/ðɪs/",
+          "traits": {
+            "voicing": "유성",
+            "place": "치음 · 치아 부근",
+            "manner": "마찰"
+          }
         },
         {
           "number": 29,
@@ -1089,7 +1144,7 @@
           "example": "say",
           "place": "잇몸 융기 부근 · 무성 마찰음",
           "how": "혀 앞부분을 잇몸 융기 가까이 올려 좁은 공기 통로를 만듭니다. 치아 사이로 혀를 내밀지 않습니다.",
-          "check": "공기가 중앙을 따라 흐르는지 확인하세요. 혀로 완전히 막으면 안 됩니다.",
+          "check": "fun → sun → shun의 /f s ʃ/는 모두 무성 마찰음이며 위치가 달라집니다. sun의 /s/에서는 혀 가운데로 공기를 이어 보내고 완전히 막지 않습니다.",
           "image": "consonant-s-apical.svg",
           "image_symbol": "s",
           "diagram": {
@@ -1123,7 +1178,12 @@
             "url": "https://rachelsenglish.com/english-pronounce-s-z-consonants/",
             "label": "Rachel’s English · 입 모양 영상"
           },
-          "example_reading": "/seɪ/"
+          "example_reading": "/seɪ/",
+          "traits": {
+            "voicing": "무성",
+            "place": "치경 · 잇몸 부근",
+            "manner": "마찰"
+          }
         },
         {
           "number": 30,
@@ -1165,7 +1225,12 @@
             "url": "https://rachelsenglish.com/english-pronounce-s-z-consonants/",
             "label": "Rachel’s English · 입 모양 영상"
           },
-          "example_reading": "/zuː/"
+          "example_reading": "/zuː/",
+          "traits": {
+            "voicing": "유성",
+            "place": "치경 · 잇몸 부근",
+            "manner": "마찰"
+          }
         },
         {
           "number": 31,
@@ -1173,7 +1238,7 @@
           "example": "she",
           "place": "잇몸 융기 뒤쪽 · 무성 마찰음",
           "how": "/s/보다 조금 뒤쪽에서 혀의 앞부분을 입천장 가까이 올립니다. 입술을 살짝 모아 공기를 보냅니다.",
-          "check": "혀를 완전히 붙여 막지 마세요. /tʃ/처럼 시작에 파열을 넣지 않습니다.",
+          "check": "sun의 /s/보다 혀의 좁아진 통로가 조금 뒤에 있습니다. /s/ → /ʃ/를 비교하되, cheese의 /tʃ/처럼 처음에 완전히 막는 동작은 넣지 않습니다.",
           "image": "consonant-sh-laminal.svg",
           "image_symbol": "ʃ",
           "diagram": {
@@ -1208,7 +1273,12 @@
             "label": "Rachel’s English · 입 모양 영상"
           },
           "example_reading": "/ʃiː/",
-          "example_note": "she를 따로 또렷하게 읽을 때의 강형입니다. 문장에서 약하게 읽으면 /ʃi/로도 적습니다."
+          "example_note": "she를 따로 또렷하게 읽을 때의 강형입니다. 문장에서 약하게 읽으면 /ʃi/로도 적습니다.",
+          "traits": {
+            "voicing": "무성",
+            "place": "후치경 · 잇몸 뒤",
+            "manner": "마찰"
+          }
         },
         {
           "number": 32,
@@ -1254,7 +1324,12 @@
             "url": "https://rachelsenglish.com/english-pronounce-sh-zh-consonants/",
             "label": "Rachel’s English · 입 모양 영상"
           },
-          "example_reading": "/ˈvɪʒ.ᵊn/"
+          "example_reading": "/ˈvɪʒ.ᵊn/",
+          "traits": {
+            "voicing": "유성",
+            "place": "후치경 · 잇몸 뒤",
+            "manner": "마찰"
+          }
         },
         {
           "number": 33,
@@ -1262,7 +1337,7 @@
           "example": "cheese",
           "place": "잇몸 융기 뒤쪽 · 무성 파찰음",
           "how": "혀로 잠깐 막은 공기를 /ʃ/와 비슷한 마찰로 풀어냅니다.",
-          "check": "막기와 마찰이 한 덩어리입니다. 가운데 별도 모음을 넣지 마세요.",
+          "check": "/tʃ/는 잠깐 막은 뒤 마찰로 푸는 하나의 파찰음입니다. /t/와 /ʃ/ 사이에 별도 모음을 넣지 말고 /ʃ/만 낼 때와 시작 부분을 비교하세요.",
           "mouth": {
             "tongue": "잇몸 융기 뒤쪽에서 혀 앞부분으로 먼저 막고, 같은 부근에서 틈을 열어 마찰로 풀어냅니다.",
             "lips_jaw": "턱을 조금 열고 입술을 가볍게 둥글게 합니다. 혀가 막았다 풀릴 공간을 둡니다.",
@@ -1283,7 +1358,12 @@
             "url": "https://rachelsenglish.com/english-pronounce-ch-jj-sounds/",
             "label": "Rachel’s English · 입 모양 영상"
           },
-          "example_reading": "/tʃiːz/"
+          "example_reading": "/tʃiːz/",
+          "traits": {
+            "voicing": "무성",
+            "place": "후치경 · 잇몸 뒤",
+            "manner": "파찰"
+          }
         },
         {
           "number": 34,
@@ -1291,7 +1371,7 @@
           "example": "jump",
           "place": "잇몸 융기 뒤쪽 · 유성 파찰음",
           "how": "/tʃ/와 비슷하게 막았다가 마찰로 풀면서 유성 소리를 냅니다.",
-          "check": "jump의 첫 소리입니다. 마찰만 내는 /ʒ/와 시작 부분을 비교하세요.",
+          "check": "/dʒ/는 막았다 마찰로 푸는 하나의 파찰음입니다. jump와 vision의 /ʒ/를 비교하면 /dʒ/ 쪽에 먼저 짧은 막음이 있습니다.",
           "mouth": {
             "tongue": "/tʃ/와 비슷한 잇몸 뒤쪽에서 잠깐 막았다가 좁은 틈으로 풉니다. 처음부터 열린 마찰음만 내지 않습니다.",
             "lips_jaw": "턱과 입술을 가볍게 열어 다음 모음으로 이어갑니다. 입술을 다물어 /b/로 시작하지 않습니다.",
@@ -1312,7 +1392,12 @@
             "url": "https://rachelsenglish.com/english-pronounce-ch-jj-sounds/",
             "label": "Rachel’s English · 입 모양 영상"
           },
-          "example_reading": "/dʒʌmp/"
+          "example_reading": "/dʒʌmp/",
+          "traits": {
+            "voicing": "유성",
+            "place": "후치경 · 잇몸 뒤",
+            "manner": "파찰"
+          }
         },
         {
           "number": 35,
@@ -1320,7 +1405,7 @@
           "example": "moon",
           "place": "두 입술 · 유성 비음",
           "how": "두 입술을 닫고 성대를 울립니다. 입 대신 코로 공기가 빠져나가게 합니다.",
-          "check": "입술을 열지 않고도 소리가 이어집니다. 코 주변의 울림을 느껴보세요.",
+          "check": "/m n ŋ/는 모두 코로 울림을 보내지만 막는 위치가 다릅니다. /m/은 입술을 닫고, /n/은 혀 앞, /ŋ/은 혀 뒤로 막는 것을 비교하세요.",
           "image": "consonant-m.svg",
           "image_symbol": "m",
           "diagram": {
@@ -1353,7 +1438,12 @@
             "url": "https://rachelsenglish.com/english-pronounce-m-consonant/",
             "label": "Rachel’s English · 입 모양 영상"
           },
-          "example_reading": "/muːn/"
+          "example_reading": "/muːn/",
+          "traits": {
+            "voicing": "유성",
+            "place": "양순 · 두 입술",
+            "manner": "비음"
+          }
         },
         {
           "number": 36,
@@ -1394,7 +1484,12 @@
             "url": "https://rachelsenglish.com/english-pronounce-n-consonant/",
             "label": "Rachel’s English · 입 모양 영상"
           },
-          "example_reading": "/neɪm/"
+          "example_reading": "/neɪm/",
+          "traits": {
+            "voicing": "유성",
+            "place": "치경 · 잇몸 융기",
+            "manner": "비음"
+          }
         },
         {
           "number": 37,
@@ -1435,7 +1530,12 @@
             "url": "https://rachelsenglish.com/english-pronounce-ng-consonant/",
             "label": "Rachel’s English · 입 모양 영상"
           },
-          "example_reading": "/sɪŋ/"
+          "example_reading": "/sɪŋ/",
+          "traits": {
+            "voicing": "유성",
+            "place": "연구개 · 혀 뒤",
+            "manner": "비음"
+          }
         },
         {
           "number": 38,
@@ -1443,7 +1543,7 @@
           "example": "look",
           "place": "잇몸 융기 · 혀 옆으로 공기가 흐르는 소리",
           "how": "혀끝이나 그 바로 뒤를 잇몸 융기에 가볍게 대세요. 가운데가 닿은 채 공기가 혀의 한쪽 또는 양쪽 옆으로 지나갑니다.",
-          "check": "단어 끝에서는 혀 뒤쪽도 올라가는 어두운 l이 흔합니다. 뒤에 모음을 붙이지 마세요.",
+          "check": "공기가 혀 옆으로 흐르는 설측 접근음입니다. 단어 끝의 어두운 l에는 혀 뒤쪽의 움직임이 더해질 수 있지만 모든 위치·화자에서 같은 정도는 아닙니다. l 뒤에 모음을 붙이지 마세요.",
           "mouth": {
             "tongue": "look의 첫소리에서 혀 앞쪽이 윗니 뒤 잇몸에 닿습니다. 혀 옆으로는 통로를 남깁니다. 단어 끝에 흔한 어두운 l에서는 혀 뒤쪽도 올라갈 수 있습니다.",
             "lips_jaw": "턱은 편히 열고 입술은 뒤의 모음에 맞춥니다. l 자체를 위해 입술을 둥글게 조이지 않습니다.",
@@ -1464,7 +1564,12 @@
             "url": "https://rachelsenglish.com/english-pronounce-l-consonant/",
             "label": "Rachel’s English · 입 모양 영상"
           },
-          "example_reading": "/lʊk/"
+          "example_reading": "/lʊk/",
+          "traits": {
+            "voicing": "유성",
+            "place": "치경 · 잇몸 부근",
+            "manner": "설측 접근"
+          }
         },
         {
           "number": 39,
@@ -1494,15 +1599,20 @@
             "url": "https://rachelsenglish.com/r-consonant/",
             "label": "Rachel’s English · 입 모양 영상"
           },
-          "example_reading": "/rʌn/"
+          "example_reading": "/rʌn/",
+          "traits": {
+            "voicing": "유성",
+            "place": "후치경 부근 · 자세 차이",
+            "manner": "접근"
+          }
         },
         {
           "number": 40,
           "symbol": "w",
           "example": "we",
           "place": "둥근 입술과 높은 혀 뒤쪽 · 접근음",
-          "how": "입술을 둥글게 모으고 혀 뒤쪽을 높인 뒤, 다음 모음으로 빠르게 이동합니다.",
-          "check": "별도의 /uː/ 음절을 먼저 읽지 마세요. 바로 다음 모음과 연결합니다.",
+          "how": "입술을 둥글게 모으면서 동시에 혀 뒤쪽을 높입니다. 두 동작을 함께 준비하고 바로 다음 모음으로 이동합니다.",
+          "check": "입술의 둥글기와 혀 뒤쪽의 높임이 함께 일어납니다. 별도의 /uː/ 음절을 먼저 완성한 뒤 다음 모음으로 넘어가지 마세요.",
           "mouth": {
             "tongue": "혀 뒤쪽을 높이되 완전히 막지 않습니다. 곧바로 다음 모음의 혀 위치로 움직입니다.",
             "lips_jaw": "입술을 둥글게 좁혔다가 다음 모음에 맞춰 빠르게 풉니다. 윗니를 아랫입술에 대지 않습니다.",
@@ -1524,15 +1634,20 @@
             "label": "Rachel’s English · 입 모양 영상"
           },
           "example_reading": "/wiː/",
-          "example_note": "we를 또렷하게 읽을 때의 강형입니다. 문장에서 약하게 읽으면 /wi/로도 적습니다."
+          "example_note": "we를 또렷하게 읽을 때의 강형입니다. 문장에서 약하게 읽으면 /wi/로도 적습니다.",
+          "traits": {
+            "voicing": "유성",
+            "place": "입술+연구개",
+            "manner": "접근"
+          }
         },
         {
           "number": 41,
           "symbol": "j",
           "example": "yes",
-          "place": "높은 혀 앞쪽과 경구개 · 접근음",
+          "place": "혀 앞·중간과 경구개 · 접근음",
           "how": "혀 앞부분을 단단한 입천장 가까이 올렸다가 다음 모음으로 이동합니다.",
-          "check": "알파벳 j의 이름이나 jump의 /dʒ/와 다릅니다. 막음이나 마찰 없이 이어 주세요.",
+          "check": "yes의 /j/는 jam·jump의 /dʒ/와 다릅니다. you의 /juː/는 접근음 /j/+모음 /uː/의 연결이며, day의 /eɪ/ 같은 이중모음과는 구별합니다.",
           "mouth": {
             "tongue": "혀끝을 아래쪽에 두고 혀 앞·중간을 경구개 가까이 올립니다. 입천장을 막거나 마찰이 나도록 좁히지는 않습니다.",
             "lips_jaw": "턱을 작게 열고 곧바로 다음 모음에 맞춰 움직입니다. 입술은 모음에 따라 달라집니다.",
@@ -1553,7 +1668,12 @@
             "url": "https://rachelsenglish.com/english-pronounce-y-consonant/",
             "label": "Rachel’s English · 입 모양 영상"
           },
-          "example_reading": "/jes/"
+          "example_reading": "/jes/",
+          "traits": {
+            "voicing": "유성",
+            "place": "경구개 · 단단한 입천장",
+            "manner": "접근"
+          }
         },
         {
           "number": 42,
@@ -1561,7 +1681,7 @@
           "example": "hand",
           "place": "열린 성문 · 무성 소리",
           "how": "뒤에 올 모음의 입 모양을 준비하면서 목에서 숨을 부드럽게 내보냅니다.",
-          "check": "혀 뒤로 긁는 /x/처럼 강한 마찰을 만들지 마세요.",
+          "check": "/h/는 관례적으로 무성 성문 마찰음에 넣지만 혀에 고정된 마찰 위치를 만드는 연습은 하지 않습니다. 뒤 모음의 입 모양에서 숨을 보내고 /x/처럼 목을 긁지 마세요.",
           "mouth": {
             "tongue": "처음부터 뒤에 올 모음의 혀 모양을 준비합니다. hand에서는 /æ/를 준비하며 혀로 입 안을 막지 않습니다.",
             "lips_jaw": "입술과 턱도 다음 모음에 맞춰 준비합니다. /h/만을 위한 고정된 입 모양을 만들 필요는 없습니다.",
@@ -1582,7 +1702,12 @@
             "url": "https://rachelsenglish.com/english-pronounce-h-consonant/",
             "label": "Rachel’s English · 입 모양 영상"
           },
-          "example_reading": "/hænd/"
+          "example_reading": "/hænd/",
+          "traits": {
+            "voicing": "무성 · 기본형",
+            "place": "성문",
+            "manner": "마찰 · 관례적 분류"
+          }
         }
       ]
     },

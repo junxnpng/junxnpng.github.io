@@ -5,6 +5,7 @@
     {{ $word := .example }}
     {{ $url := printf "https://dictionary.cambridge.org/pronunciation/english/%s" .example }}
     {{ $search := printf "%s %s %s %s %s" $symbol .symbol .example .example_reading (.notation | default "") }}
+    {{ with .traits }}{{ $search = printf "%s %s %s %s" $search .voicing .place .manner }}{{ end }}
     {{ if $.extra }}
       {{ $id = .id }}{{ $word = .name }}{{ $url = (index .listen 0).url }}
       {{ $search = printf "%s %s %s" .symbol .name (.notation | default "") }}

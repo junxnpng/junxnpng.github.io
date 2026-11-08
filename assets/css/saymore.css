@@ -192,3 +192,19 @@
 @media (prefers-reduced-motion: reduce) {
   html:has(.saymore) { scroll-behavior: auto; }
 }
+.sm-principles { margin: 28px 0; }
+.sm-principles h3 { font-size: 21px; margin: 0 0 12px; letter-spacing: -.025em; }
+.sm-principles h4 { font-size: 16px; margin: 20px 0 10px; }
+.sm-principles p, .sm-principles dd { font-size: 14px; line-height: 1.9; margin: 12px 0; }
+.sm-principles a { color: var(--sm-accent); text-decoration: underline; }
+.sm-manner-map { margin: 12px 0; }
+.sm-manner-map > div { border-bottom: 1px solid var(--border); padding: 12px 0; }
+.sm-manner-map dt { font-size: 14px; font-weight: 650; }
+.sm-manner-map dd { margin: 4px 0 0; }
+.sm-sound-traits { display: flex; flex-wrap: wrap; gap: 10px 22px; margin: 12px 0 18px; padding-bottom: 15px; border-bottom: 1px solid var(--border); }
+.sm-sound-traits dt { font-size: 11px; color: var(--secondary); }
+.sm-sound-traits dd { margin: 1px 0 0; font-size: 13px; color: var(--sm-accent); font-weight: 600; }
+@media (max-width: 760px) {
+  .sm-principles p, .sm-principles dd { font-size: 16px; }
+  .sm-sound-traits dd { font-size: 14px; }
+}
