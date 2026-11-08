@@ -192,7 +192,7 @@
 @media (prefers-reduced-motion: reduce) {
   html:has(.saymore) { scroll-behavior: auto; }
 }
-.sm-principles { margin: 28px 0; }
+.sm-principles { margin: 28px 0; scroll-margin-top: 85px; }
 .sm-principles h3 { font-size: 21px; margin: 0 0 12px; letter-spacing: -.025em; }
 .sm-principles h4 { font-size: 16px; margin: 20px 0 10px; }
 .sm-principles p, .sm-principles dd { font-size: 14px; line-height: 1.9; margin: 12px 0; }
