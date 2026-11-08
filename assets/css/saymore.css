@@ -103,6 +103,22 @@
 .sm-notation, .sm-sources { margin-top: 50px; padding-top: 30px; border-top: 1px solid var(--border); scroll-margin-top: 20px; }
 .sm-notation p, .sm-sources p, .sm-sources li { font-size: 14px; line-height: 1.9; margin: 12px 0; }
 .sm-sources ul { padding-left: 20px; }
+.sm-extra-nav { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 24px; }
+.sm-extra-nav a { border: 1px solid var(--border); border-radius: 6px; padding: 7px 12px; font-size: 13px; }
+.sm-extra-nav a:hover { background: var(--sm-wash); border-color: var(--sm-accent); }
+.sm-extra-nav span { font-family: "Charis SIL", "Doulos SIL", "Times New Roman", serif; font-size: 18px; margin-inline-end: 5px; }
+.sm-extra-symbol { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 10px; font-size: 32px; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 6px; }
+.sm-extra-play { font: 12px/1.5 system-ui, sans-serif; }
+.sm-extra-copy { margin-top: 20px; }
+.sm-extra-listening { background: var(--sm-wash); border-radius: 6px; padding: 14px; margin: 18px 0; }
+.sm-extra-listening ul { list-style: none; padding: 0; margin: 0; }
+.sm-extra-listening li { margin-top: 12px; }
+.sm-extra-listening a, .sm-related a, .sm-extra-intro a, .sm-wiki-table a { color: var(--sm-accent); text-decoration: underline; }
+.sm-extra-listening a { font-size: 14px; font-weight: 650; }
+.sm-extra-listening li p { font-size: 13px; margin: 5px 0 0; }
+.sm-table-wrap { overflow-x: auto; }
+.sm-wiki-table { width: 100%; font-size: 14px; border-collapse: collapse; }
+.sm-wiki-table th, .sm-wiki-table td { padding: 10px; text-align: left; border-bottom: 1px solid var(--border); }
 @media (max-width: 900px) {
   .sm-card-comparison .sm-card-body { grid-template-columns: 1fr; }
   .sm-card-comparison .sm-mouth-image { grid-row: 1; }

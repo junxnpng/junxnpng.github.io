@@ -1,0 +1,464 @@
+{
+  "intro": "01–52 뒤에 이어서 보는 추가 연습입니다. 기호를 누르거나 각 카드의 듣기 링크를 열면 원본에서 소리를 확인할 수 있습니다. 링크는 새 탭으로 열리며, 원본의 스피커나 기호를 한 번 더 눌러 재생합니다.",
+  "groups": [
+    {
+      "id": "sound-variants",
+      "title": "실제 발음 변이",
+      "label": "REAL SPEECH",
+      "intro": "같은 사전 기호도 실제 단어에서는 다르게 들릴 수 있습니다. 성문폐쇄음·어두운 l·기식을 비교하세요.",
+      "items": [
+        {
+          "id": "glottal-stop",
+          "symbol": "[ʔ]",
+          "name": "Glottal stop · 성문폐쇄음",
+          "how": "성대 사이의 통로가 아주 잠깐 닫혀 소리가 끊기는 소리입니다. 기호는 물음표에서 아래 점을 뺀 모양입니다. 미국식 button의 /t/에서도 이런 변이가 나타날 수 있습니다.",
+          "mouth": {
+            "tongue": "혀로 입천장을 반드시 막아야 하는 소리는 아닙니다. 뒤에 올 모음이나 자음의 자세를 편하게 준비합니다.",
+            "lips_jaw": "입술과 턱은 앞뒤 소리에 맞춥니다. 목을 세게 조이거나 큰 힘을 주지 않습니다.",
+            "air_voice": "울림과 공기 흐름이 잠깐 멈췄다가 다시 이어집니다. 소리를 긁어 내는 마찰음과 구별하세요."
+          },
+          "practice": "uh-oh를 자연스럽게 말하며 두 모음 사이의 짧은 끊김을 느껴보세요. /t/를 모두 이 소리로 바꾸는 규칙은 아니며, 단어 끝 t를 터뜨리지 않는 경우와도 구별합니다.",
+          "listen": [
+            {
+              "url": "https://seeingspeech.ac.uk/ipa-charts/?chart=1&datatype=1&speaker=1#location=660",
+              "label": "ʔ · 소리와 입 안 움직임",
+              "hint": "기호 전용 영상이 열리면 재생 버튼을 누르세요. MRI 1은 깨끗한 음성을 덧입힌 시범이며, 모음 사이에서 잠깐 막히는 소리를 관찰할 수 있습니다."
+            },
+            {
+              "url": "https://dictionary.cambridge.org/pronunciation/english/uh-oh",
+              "label": "uh-oh · US 음성",
+              "hint": "원본 페이지의 US 스피커를 누르세요."
+            }
+          ],
+          "notation": "새로운 미국식 기본 자음 하나를 반드시 더 외운다는 뜻보다, 실제 대화에서 들리는 발음 변이를 이해하는 항목입니다. 사전의 /t/가 실제 음성에서는 [ʔ]로 날 수 있습니다.",
+          "related": [
+            {
+              "id": "ipa-20",
+              "label": "기본 /t/"
+            },
+            {
+              "id": "ipa-21",
+              "label": "혀를 한 번 스치는 [ɾ]"
+            }
+          ]
+        },
+        {
+          "id": "dark-l",
+          "symbol": "[ɫ]",
+          "name": "Dark L · 어두운 l",
+          "how": "full·feel처럼 모음 뒤의 l에서 자주 듣는 어두운 울림입니다. 사전은 보통 /l/ 하나로 적지만 자세를 더 구체적으로 표시할 때 [ɫ]을 씁니다.",
+          "mouth": {
+            "tongue": "혀 뒤쪽을 높이거나 뒤로 모아 어두운 울림을 만듭니다. 혀끝은 잇몸 융기에 닿을 수 있고 접촉 정도는 화자에 따라 달라집니다.",
+            "lips_jaw": "입술을 /w/처럼 앞으로 모아 대신하지 말고 턱은 편하게 둡니다.",
+            "air_voice": "목의 울림을 유지합니다. 혀끝이 닿는 자세에서는 혀 양옆으로 공기가 지나갈 통로를 남깁니다."
+          },
+          "practice": "영상의 light L과 dark L 시범을 먼저 비교하고 look → full을 말해보세요. full 끝에 별도의 모음을 붙이지 않습니다.",
+          "listen": [
+            {
+              "url": "https://rachelsenglish.com/english-pronounce-l-consonant/",
+              "label": "Light L · Dark L 비교 영상",
+              "hint": "원본 영상에서 두 l의 시범을 비교하세요. 본문의 Dark L 부분도 함께 확인할 수 있습니다."
+            },
+            {
+              "url": "https://dictionary.cambridge.org/pronunciation/english/full",
+              "label": "full · US 음성",
+              "hint": "원본 페이지의 US 스피커를 누르세요."
+            }
+          ],
+          "notation": "38번 /l/의 설명을 실제 변이 기호와 연결한 카드입니다.",
+          "related": [
+            {
+              "id": "ipa-38",
+              "label": "기본 /l/"
+            }
+          ]
+        },
+        {
+          "id": "aspiration",
+          "symbol": "[pʰ tʰ kʰ]",
+          "name": "Aspiration · 숨이 뒤따르는 파열음",
+          "how": "작은 ʰ는 파열음의 막음을 푼 뒤 숨이 동반됨을 뜻합니다. pin·top·cat 같은 강세 음절 첫머리에서 잘 들리며 독립된 /h/ 음절을 붙이는 표시가 아닙니다.",
+          "mouth": {
+            "tongue": "/p/는 입술, /t/는 잇몸 융기, /k/는 연구개에서 잠깐 막았다 풉니다. 숨을 내려고 혀의 막는 위치를 바꾸지 않습니다.",
+            "lips_jaw": "각 자음의 막음을 짧게 풀고 뒤의 모음 자세로 연결합니다. 턱이나 목에 힘을 주지 않습니다.",
+            "air_voice": "막음을 푼 직후 숨이 나오고 모음의 울림이 시작됩니다. spin·stop·skin처럼 /s/ 뒤에서는 이 숨이 대체로 약합니다."
+          },
+          "practice": "손바닥을 입 앞에 두고 pin → spin, top → stop, kin → skin을 비교하세요. 숨을 과장하기보다 울림이 시작되는 시점을 들어봅니다.",
+          "listen": [
+            {
+              "url": "https://dictionary.cambridge.org/pronunciation/english/pin",
+              "label": "pin · US 음성",
+              "hint": "원본 페이지의 US 스피커를 누르세요."
+            },
+            {
+              "url": "https://dictionary.cambridge.org/pronunciation/english/spin",
+              "label": "spin · US 음성",
+              "hint": "원본 페이지의 US 스피커를 누르세요."
+            },
+            {
+              "url": "https://rachelsenglish.com/english-pronounce-t-d-consonants/",
+              "label": "T·D 발음 시범 영상",
+              "hint": "영상의 True T와 실제 단어 시범을 보세요. 모든 파열음에서 성대를 억지로 닫아야 한다는 뜻으로 받아들이지는 마세요."
+            }
+          ],
+          "notation": "기본 /p t k/에 이미 있는 숨 설명을 [ʰ]라는 표기와 연결합니다.",
+          "related": [
+            {
+              "id": "ipa-18",
+              "label": "/p/"
+            },
+            {
+              "id": "ipa-20",
+              "label": "/t/"
+            },
+            {
+              "id": "ipa-23",
+              "label": "/k/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "r-connections",
+      "title": "모음+r 연결 연습",
+      "label": "VOWEL + R",
+      "intro": "새로운 기본 소리를 여러 개 더 외우기보다, 기존 모음과 r이 함께 바뀌는 흐름을 연습합니다. 아래 큰 기호는 Cambridge 미국식 표기를 따릅니다.",
+      "items": [
+        {
+          "id": "r-ear",
+          "symbol": "/ɪr/",
+          "name": "ear /ɪr/",
+          "how": "모음과 r을 실제 단어 안에서 이어 읽는 연습입니다. 혀끝을 뒤로 향하게 하거나 혀 몸통을 모으는 r 자세 중 편한 방법을 사용합니다.",
+          "mouth": {
+            "tongue": "혀 앞부분을 높은 앞쪽 모음 부근에서 시작해 r 자세로 모읍니다. r로 갈 때 혀끝으로 입천장을 치지 않습니다.",
+            "lips_jaw": "모음에 맞춰 턱과 입술을 준비하고 r로 자연스럽게 이동합니다. 이를 악물거나 혀를 말기 위해 턱을 굳히지 않습니다.",
+            "air_voice": "가운데 통로를 막지 않고 울림을 이어갑니다. 모음과 r 사이를 숨이나 별도 음절로 끊지 않습니다."
+          },
+          "practice": "ear를 한 흐름으로 따라 하고, 모음 뒤에 한국어 “르” 음절이 붙지 않는지 녹음해보세요.",
+          "listen": [
+            {
+              "url": "https://dictionary.cambridge.org/pronunciation/english/ear",
+              "label": "ear · US 음성",
+              "hint": "원본 페이지의 US 스피커를 누르세요."
+            }
+          ],
+          "notation": "Wikipedia의 /ɪər/·/ɪr/ 계열과 연결되는 미국식 예시입니다. 사전에 따라 중간 슈와를 다르게 적기도 합니다.",
+          "related": [
+            {
+              "id": "ipa-39",
+              "label": "r의 기본 자세"
+            },
+            {
+              "id": "ipa-10",
+              "label": "bird의 r색채 모음"
+            }
+          ]
+        },
+        {
+          "id": "r-air",
+          "symbol": "/er/",
+          "name": "air /er/",
+          "how": "모음과 r을 실제 단어 안에서 이어 읽는 연습입니다. 혀끝을 뒤로 향하게 하거나 혀 몸통을 모으는 r 자세 중 편한 방법을 사용합니다.",
+          "mouth": {
+            "tongue": "혀 앞부분을 head의 모음 부근에 두고 r색채로 연결합니다. 실제로는 모음부터 r의 영향을 받을 수 있으므로 두 소리를 딱 잘라 내지 않습니다.",
+            "lips_jaw": "모음에 맞춰 턱과 입술을 준비하고 r로 자연스럽게 이동합니다. 이를 악물거나 혀를 말기 위해 턱을 굳히지 않습니다.",
+            "air_voice": "가운데 통로를 막지 않고 울림을 이어갑니다. 모음과 r 사이를 숨이나 별도 음절로 끊지 않습니다."
+          },
+          "practice": "air → hair를 따라 하며 같은 모음+r 흐름을 찾아보세요. day의 /eɪ/를 먼저 끝내고 r을 덧붙이지 않습니다.",
+          "listen": [
+            {
+              "url": "https://dictionary.cambridge.org/pronunciation/english/air",
+              "label": "air · US 음성",
+              "hint": "원본 페이지의 US 스피커를 누르세요."
+            }
+          ],
+          "notation": "이 페이지의 Cambridge /e/는 다른 자료의 /ɛ/에 대응합니다. Wikipedia의 /ɛər/·/ɛr/ 구분은 많은 미국 화자에게 합쳐집니다.",
+          "related": [
+            {
+              "id": "ipa-39",
+              "label": "r의 기본 자세"
+            },
+            {
+              "id": "ipa-10",
+              "label": "bird의 r색채 모음"
+            }
+          ]
+        },
+        {
+          "id": "r-car",
+          "symbol": "/ɑːr/",
+          "name": "car /kɑːr/",
+          "how": "모음과 r을 실제 단어 안에서 이어 읽는 연습입니다. 혀끝을 뒤로 향하게 하거나 혀 몸통을 모으는 r 자세 중 편한 방법을 사용합니다.",
+          "mouth": {
+            "tongue": "혀 몸통을 낮게 둔 열린 모음에서 r의 좁아진 통로로 이동합니다. 혀끝을 한 번 치는 소리로 마무리하지 않습니다.",
+            "lips_jaw": "모음에 맞춰 턱과 입술을 준비하고 r로 자연스럽게 이동합니다. 이를 악물거나 혀를 말기 위해 턱을 굳히지 않습니다.",
+            "air_voice": "가운데 통로를 막지 않고 울림을 이어갑니다. 모음과 r 사이를 숨이나 별도 음절로 끊지 않습니다."
+          },
+          "practice": "car를 천천히 들은 뒤 한 음절로 말하세요. 턱이 열린 시작에서 r로 이어지는 동안 울림이 끊기지 않는지 확인합니다.",
+          "listen": [
+            {
+              "url": "https://dictionary.cambridge.org/pronunciation/english/car",
+              "label": "car · US 음성",
+              "hint": "원본 페이지의 US 스피커를 누르세요."
+            }
+          ],
+          "notation": "길이 표시를 생략해 /ɑr/로 적어도 미국식에서는 r을 발음합니다.",
+          "related": [
+            {
+              "id": "ipa-39",
+              "label": "r의 기본 자세"
+            },
+            {
+              "id": "ipa-10",
+              "label": "bird의 r색채 모음"
+            }
+          ]
+        },
+        {
+          "id": "r-horse",
+          "symbol": "/ɔːr/",
+          "name": "horse /hɔːrs/",
+          "how": "모음과 r을 실제 단어 안에서 이어 읽는 연습입니다. 혀끝을 뒤로 향하게 하거나 혀 몸통을 모으는 r 자세 중 편한 방법을 사용합니다.",
+          "mouth": {
+            "tongue": "혀 몸통을 뒤쪽 모음 부근에 두고 r색채로 잇습니다. 혀끝을 반드시 말아야 하는 것은 아닙니다.",
+            "lips_jaw": "모음에 맞춰 턱과 입술을 준비하고 r로 자연스럽게 이동합니다. 이를 악물거나 혀를 말기 위해 턱을 굳히지 않습니다.",
+            "air_voice": "가운데 통로를 막지 않고 울림을 이어갑니다. 모음과 r 사이를 숨이나 별도 음절로 끊지 않습니다."
+          },
+          "practice": "horse를 말하며 모음+r 다음의 /s/로 바로 넘어가 보세요. r 뒤에 별도의 모음을 넣지 않습니다.",
+          "listen": [
+            {
+              "url": "https://dictionary.cambridge.org/pronunciation/english/horse",
+              "label": "horse · US 음성",
+              "hint": "원본 페이지의 US 스피커를 누르세요."
+            }
+          ],
+          "notation": "06번은 모음 /ɔː/를, 이 카드는 뒤의 r과 이어지는 흐름을 살펴봅니다. 미국 안에서도 모음의 정확한 성질은 달라질 수 있습니다.",
+          "related": [
+            {
+              "id": "ipa-39",
+              "label": "r의 기본 자세"
+            },
+            {
+              "id": "ipa-10",
+              "label": "bird의 r색채 모음"
+            }
+          ]
+        },
+        {
+          "id": "r-tour",
+          "symbol": "/ʊr/",
+          "name": "tour /tʊr/",
+          "how": "모음과 r을 실제 단어 안에서 이어 읽는 연습입니다. 혀끝을 뒤로 향하게 하거나 혀 몸통을 모으는 r 자세 중 편한 방법을 사용합니다.",
+          "mouth": {
+            "tongue": "혀를 높은 모음 부근에서 시작해 r 자세로 모읍니다. foot의 모음과 r을 따로 완성한 두 덩어리로 강제하지 않습니다.",
+            "lips_jaw": "모음에 맞춰 턱과 입술을 준비하고 r로 자연스럽게 이동합니다. 이를 악물거나 혀를 말기 위해 턱을 굳히지 않습니다.",
+            "air_voice": "가운데 통로를 막지 않고 울림을 이어갑니다. 모음과 r 사이를 숨이나 별도 음절로 끊지 않습니다."
+          },
+          "practice": "US 음성을 한 가지 골라 tour를 이어 말하세요. 같은 화자의 음성을 기준으로 입술과 혀의 이동을 비교합니다.",
+          "listen": [
+            {
+              "url": "https://dictionary.cambridge.org/pronunciation/english/tour",
+              "label": "tour · US 음성",
+              "hint": "원본 페이지의 US 스피커를 누르세요."
+            }
+          ],
+          "notation": "여기에는 Cambridge 대표 US /tʊr/를 적었습니다. 화자와 사전에 따라 /ɔːr/ 계열로도 들리므로 원본의 대체 발음도 참고하세요.",
+          "related": [
+            {
+              "id": "ipa-39",
+              "label": "r의 기본 자세"
+            },
+            {
+              "id": "ipa-10",
+              "label": "bird의 r색채 모음"
+            }
+          ]
+        },
+        {
+          "id": "r-fire",
+          "symbol": "/aɪr/",
+          "name": "fire /faɪr/",
+          "how": "모음과 r을 실제 단어 안에서 이어 읽는 연습입니다. 혀끝을 뒤로 향하게 하거나 혀 몸통을 모으는 r 자세 중 편한 방법을 사용합니다.",
+          "mouth": {
+            "tongue": "입을 열어 시작한 모음에서 혀를 앞쪽 위로 움직이고 r색채로 연결합니다. 마지막에 혀를 입천장에 부딪치지 않습니다.",
+            "lips_jaw": "모음에 맞춰 턱과 입술을 준비하고 r로 자연스럽게 이동합니다. 이를 악물거나 혀를 말기 위해 턱을 굳히지 않습니다.",
+            "air_voice": "가운데 통로를 막지 않고 울림을 이어갑니다. 모음과 r 사이를 숨이나 별도 음절로 끊지 않습니다."
+          },
+          "practice": "fire의 US 음성을 듣고 속도와 음절 흐름을 따라 하세요. 모음 이동과 r 사이에 불필요한 멈춤을 넣지 않습니다.",
+          "listen": [
+            {
+              "url": "https://dictionary.cambridge.org/pronunciation/english/fire",
+              "label": "fire · US 음성",
+              "hint": "원본 페이지의 US 스피커를 누르세요."
+            }
+          ],
+          "notation": "Wikipedia는 /aɪər/로 적습니다. Cambridge US 표기는 /aɪr/이며, 모든 화자가 중간 /ə/를 별도 음절로 읽어야 한다는 뜻은 아닙니다.",
+          "related": [
+            {
+              "id": "ipa-39",
+              "label": "r의 기본 자세"
+            },
+            {
+              "id": "ipa-10",
+              "label": "bird의 r색채 모음"
+            }
+          ]
+        },
+        {
+          "id": "r-hour",
+          "symbol": "/aʊr/",
+          "name": "hour /aʊr/",
+          "how": "모음과 r을 실제 단어 안에서 이어 읽는 연습입니다. 혀끝을 뒤로 향하게 하거나 혀 몸통을 모으는 r 자세 중 편한 방법을 사용합니다.",
+          "mouth": {
+            "tongue": "낮은 모음에서 혀를 높이고 입술을 모은 뒤 r색채로 잇습니다. 혀끝을 떠는 소리를 만들지 않습니다.",
+            "lips_jaw": "모음에 맞춰 턱과 입술을 준비하고 r로 자연스럽게 이동합니다. 이를 악물거나 혀를 말기 위해 턱을 굳히지 않습니다.",
+            "air_voice": "가운데 통로를 막지 않고 울림을 이어갑니다. 모음과 r 사이를 숨이나 별도 음절로 끊지 않습니다."
+          },
+          "practice": "hour의 첫 h는 소리 내지 않습니다. US 음성을 듣고 시작 모음에서 r까지 한 흐름으로 이어보세요.",
+          "listen": [
+            {
+              "url": "https://dictionary.cambridge.org/pronunciation/english/hour",
+              "label": "hour · US 음성",
+              "hint": "원본 페이지의 US 스피커를 누르세요."
+            }
+          ],
+          "notation": "Wikipedia의 /aʊər/에 대응합니다. 미국식에서 정확한 음절감과 중간 모음은 화자·말 빠르기에 따라 달라집니다.",
+          "related": [
+            {
+              "id": "ipa-39",
+              "label": "r의 기본 자세"
+            },
+            {
+              "id": "ipa-10",
+              "label": "bird의 r색채 모음"
+            }
+          ]
+        },
+        {
+          "id": "r-coir",
+          "symbol": "/ɔɪr/",
+          "name": "coir /kɔɪr/",
+          "how": "모음과 r을 실제 단어 안에서 이어 읽는 연습입니다. 혀끝을 뒤로 향하게 하거나 혀 몸통을 모으는 r 자세 중 편한 방법을 사용합니다.",
+          "mouth": {
+            "tongue": "혀를 뒤쪽 모음 부근에서 앞쪽 위로 옮긴 뒤 r색채로 잇습니다. 각 단계 사이에 모음을 새로 추가하지 않습니다.",
+            "lips_jaw": "모음에 맞춰 턱과 입술을 준비하고 r로 자연스럽게 이동합니다. 이를 악물거나 혀를 말기 위해 턱을 굳히지 않습니다.",
+            "air_voice": "가운데 통로를 막지 않고 울림을 이어갑니다. 모음과 r 사이를 숨이나 별도 음절로 끊지 않습니다."
+          },
+          "practice": "boy의 모음 이동을 떠올린 뒤 coir의 US 음성을 따라 하세요. 마지막 r을 별도 한국어 음절로 붙이지 않습니다.",
+          "listen": [
+            {
+              "url": "https://dictionary.cambridge.org/pronunciation/english/coir",
+              "label": "coir · US 음성",
+              "hint": "원본 페이지의 US 스피커를 누르세요."
+            }
+          ],
+          "notation": "Wikipedia의 /ɔɪər/ 조합을 확인하는 참고 단어입니다. 자주 쓰는 회화 단어보다 우선해서 외울 필요는 없습니다.",
+          "related": [
+            {
+              "id": "ipa-39",
+              "label": "r의 기본 자세"
+            },
+            {
+              "id": "ipa-10",
+              "label": "bird의 r색채 모음"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dialect-reference",
+      "title": "방언·차용어 참고",
+      "label": "OPTIONAL REFERENCE",
+      "intro": "Wikipedia에는 여러 영어 방언과 차용어가 함께 나옵니다. 아래 소리는 일반적인 미국식 회화 연습의 필수 목록과 구별해 참고하세요. UK라고 표시된 링크에서는 영국식 음성을 듣습니다.",
+      "items": [
+        {
+          "id": "wh-voiceless",
+          "symbol": "[ʍ] · /hw/",
+          "name": "WH · 숨이 섞인 w",
+          "how": "일부 화자는 whine과 wine의 첫소리를 구별합니다. 많은 미국 화자는 둘을 /w/로 같게 발음하므로 선택 참고 항목입니다.",
+          "mouth": {
+            "tongue": "/w/처럼 혀 뒤쪽을 높이되 통로를 완전히 막지 않습니다.",
+            "lips_jaw": "입술을 둥글게 모았다가 다음 모음으로 풉니다. 윗니로 아랫입술을 누르지 않습니다.",
+            "air_voice": "시작에 성대 울림 없는 숨을 섞은 뒤 모음으로 이어갑니다. 별도의 “흐” 한 음절을 먼저 만들지 않습니다."
+          },
+          "practice": "영상에서 두 화자의 WH 발음을 비교해보세요. 모든 wh 단어에서 반드시 구별해야 하는 규칙으로 외우지 않습니다.",
+          "listen": [
+            {
+              "url": "https://seeingspeech.ac.uk/ipa-charts/?chart=3&datatype=1&speaker=1#location=653",
+              "label": "ʍ · IPA 시범",
+              "hint": "ʍ 전용 영상이 열리면 재생 버튼을 누르세요. 영어 단어가 아닌 기호 자체의 소리와 움직임을 보여줍니다."
+            },
+            {
+              "url": "https://rachelsenglish.com/pronounce-wh-words/",
+              "label": "WH 두 가지 발음 비교 영상",
+              "hint": "Rachel과 어머니가 같은 WH 단어를 다르게 발음하는 부분을 들어보세요."
+            }
+          ],
+          "notation": "Wikipedia는 /hw/로 적습니다. 소리 자체를 구체적으로 적을 때 [ʍ]를 만날 수 있습니다."
+        },
+        {
+          "id": "british-lot",
+          "symbol": "/ɒ/",
+          "name": "LOT · 영국식 모음 참고",
+          "how": "Wikipedia의 LOT 모음입니다. 일반적인 미국식 sock에서는 보통 /ɑː/ 계열을 쓰므로 영국식 소리를 알아듣기 위한 참고입니다.",
+          "mouth": {
+            "tongue": "혀 몸통을 낮고 뒤쪽에 둡니다. /uː/처럼 높이 올리지 않습니다.",
+            "lips_jaw": "턱을 열고 입술을 둥글게 만듭니다. 미국식 /ɑː/의 둥글지 않은 입술과 비교합니다.",
+            "air_voice": "입 안을 막지 않고 모음의 울림을 이어갑니다."
+          },
+          "practice": "sock의 UK 스피커와 US 스피커를 번갈아 듣고 입술 모양을 비교하세요. 미국식 연습 때 UK 모음을 필수로 따라 할 필요는 없습니다.",
+          "listen": [
+            {
+              "url": "https://dictionary.cambridge.org/pronunciation/english/sock",
+              "label": "sock · UK 음성",
+              "hint": "원본 페이지의 UK 스피커를 누르세요."
+            }
+          ],
+          "notation": "아래 듣기 링크에서는 이 기호를 확인하기 위해 UK 음성을 선택합니다. 미국식 대표 발음은 /sɑːk/입니다."
+        },
+        {
+          "id": "non-r-nurse",
+          "symbol": "/ɜː/",
+          "name": "NURSE · r 없는 모음 참고",
+          "how": "영국식 bird의 대표 모음입니다. 미국식 bird의 /ɝː/와 달리 r색채를 목표로 하지 않는 모음을 비교합니다.",
+          "mouth": {
+            "tongue": "혀를 중앙 부근에 편하게 두고 혀끝을 치아나 입천장에 세게 대지 않습니다.",
+            "lips_jaw": "턱을 조금 열고 입술을 둥글게 조이지 않습니다.",
+            "air_voice": "모음의 울림을 이어갑니다. 미국식 r 자세를 덧붙이지 않고 UK 시범과 비교합니다."
+          },
+          "practice": "bird의 UK와 US 스피커를 번갈아 들어보세요. 이 비교는 사전의 기호 차이뿐 아니라 실제 r색채 차이를 알아보는 연습입니다.",
+          "listen": [
+            {
+              "url": "https://dictionary.cambridge.org/pronunciation/english/bird",
+              "label": "bird · UK 음성",
+              "hint": "원본 페이지의 UK 스피커를 누르세요."
+            }
+          ],
+          "notation": "Wikipedia에서는 /ɜːr/의 방언별 읽기와 특정 차용 이름의 /ɜː/도 볼 수 있습니다. 미국식 기본 연습은 기존 /ɝː/ 카드에서 합니다."
+        },
+        {
+          "id": "nasal-ae",
+          "symbol": "/æ̃/",
+          "name": "Nasalized vowel · 차용어의 비음화 모음",
+          "how": "혀가 낮은 앞쪽 모음을 내면서 코로도 공기가 흐르는 소리입니다. 위의 물결표는 비음화를 뜻합니다. 일부 프랑스어 차용 표현에서 만납니다.",
+          "mouth": {
+            "tongue": "혀를 /æ/ 계열의 앞쪽 낮은 위치에 둡니다. 끝에 /n/의 혀끝 막음을 따로 만드는 것과 구별합니다.",
+            "lips_jaw": "턱을 열고 입술을 둥글게 조이지 않습니다.",
+            "air_voice": "모음을 내는 동안 코로도 울림이 빠져나갑니다. 모음 뒤에 별도의 n을 붙이는 동작과 다릅니다."
+          },
+          "practice": "Oxford 원본에서 fin de siècle의 US 음성을 듣고 첫 모음의 울림을 확인하세요. 핵심 미국식 자음·모음 연습 뒤에 참고합니다.",
+          "listen": [
+            {
+              "url": "https://www.oxfordlearnersdictionaries.com/definition/american_english/fin-de-siecle",
+              "label": "fin de siècle · Oxford US 음성",
+              "hint": "원본의 미국식 스피커를 누르세요. NAmE 표기 첫 부분 /fæ̃/를 확인합니다."
+            }
+          ],
+          "notation": "차용어는 사전과 화자에 따라 비음화 대신 /n/이 있는 발음도 사용합니다. 이 링크는 비음화를 표시하는 Oxford의 미국식 예시입니다."
+        }
+      ]
+    }
+  ]
+}

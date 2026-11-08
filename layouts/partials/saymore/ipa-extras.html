@@ -1,0 +1,52 @@
+{{ $extras := hugo.Data.saymore.ipa_extras }}
+<section class="sm-extra-intro sm-notation" id="extra-practice" aria-labelledby="extra-practice-title">
+  <p class="sm-eyebrow">BEYOND THE BASIC CHART</p>
+  <h2 id="extra-practice-title">추가 발음 연습</h2>
+  <p>{{ $extras.intro }}</p>
+  <p><a href="https://en.wikipedia.org/wiki/Help:IPA/English#Key" target="_blank" rel="noopener noreferrer">Wikipedia · 영어 IPA 표 ↗</a>와 비교해 실제 발음 변이와 연결 연습을 보충했습니다. Wikipedia는 여러 영어 방언을 함께 나타내므로 모든 기호를 미국식 기본 소리로 추가해야 하는 것은 아닙니다.</p>
+</section>
+{{ range $extras.groups }}
+<section class="sm-group sm-extra-group" id="{{ .id }}" aria-labelledby="{{ .id }}-title">
+  <header class="sm-group-header"><div><p class="sm-eyebrow">{{ .label }}</p><h2 id="{{ .id }}-title">{{ .title }}</h2></div><p>{{ .intro }}</p></header>
+  <nav class="sm-extra-nav" aria-label="{{ .title }} 바로가기">{{ range .items }}<a href="#{{ .id }}"><span lang="en">{{ .symbol }}</span> {{ .name }}</a>{{ end }}</nav>
+  <div class="sm-cards">
+    {{ range .items }}
+    {{ $firstListen := index .listen 0 }}
+    <section class="sm-card sm-extra-card" id="{{ .id }}" aria-labelledby="{{ .id }}-title">
+      <div class="sm-card-heading"><h3 id="{{ .id }}-title"><a class="sm-ipa sm-extra-symbol" href="{{ $firstListen.url }}" target="_blank" rel="noopener noreferrer" aria-label="{{ .symbol }} {{ .name }} 소리 듣기 (새 탭)"><span lang="en">{{ .symbol }}</span><span class="sm-extra-play" aria-hidden="true">▶ ↗</span></a><span class="sm-example">{{ .name }}</span></h3><a class="sm-permalink" href="#{{ .id }}" aria-label="{{ .name }} 설명 링크">#</a></div>
+      <div class="sm-card-copy sm-extra-copy">
+        <p>{{ .how }}</p>
+        {{ with .notation }}<aside class="sm-card-notation" aria-label="표기와 발음 참고"><h4>표기·발음 참고</h4><p>{{ . }}</p></aside>{{ end }}
+        <div class="sm-extra-listening"><h4>원본에서 듣고 따라 하기 · 새 탭</h4>
+          <ul>{{ range .listen }}<li><a href="{{ .url }}" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">▶</span> {{ .label }} ↗</a><p>{{ .hint }}</p></li>{{ end }}</ul>
+        </div>
+        <dl class="sm-mouth-steps">
+          <div><dt>혀</dt><dd>{{ .mouth.tongue }}</dd></div>
+          <div><dt>입술·턱</dt><dd>{{ .mouth.lips_jaw }}</dd></div>
+          <div><dt>공기·울림</dt><dd>{{ .mouth.air_voice }}</dd></div>
+        </dl>
+        <div class="sm-practice"><h4>짧게 연습해요</h4><p>{{ .practice }}</p></div>
+        {{ with .related }}<p class="sm-related">기본 설명: {{ range $index, $link := . }}{{ if $index }} · {{ end }}<a href="#{{ $link.id }}">{{ $link.label }}</a>{{ end }}</p>{{ end }}
+      </div>
+    </section>
+    {{ end }}
+  </div>
+  <a class="sm-back" href="#extra-practice">추가 발음 연습으로 ↑</a>
+</section>
+{{ end }}
+<section class="sm-notation" id="wikipedia-comparison" aria-labelledby="wikipedia-comparison-title">
+  <h2 id="wikipedia-comparison-title">Wikipedia 표기와 연결하기</h2>
+  <p>아래는 같은 단어의 소리를 서로 다른 방식으로 적는 대표적인 경우입니다. 새로운 소리가 빠진 것으로 세지 말고 기존 카드와 연결해서 읽어보세요.</p>
+  <div class="sm-table-wrap"><table class="sm-wiki-table">
+    <thead><tr><th scope="col">Wikipedia</th><th scope="col">이 페이지</th><th scope="col">연결할 예시</th></tr></thead>
+    <tbody>
+      <tr><td>/ɛ/</td><td>/e/</td><td><a href="#ipa-9">head</a></td></tr>
+      <tr><td>/ɜːr/</td><td>/ɝː/</td><td><a href="#ipa-10">bird</a></td></tr>
+      <tr><td>/ər/</td><td>/ɚ/</td><td><a href="#ipa-12">mother</a></td></tr>
+      <tr><td>[ɾ]</td><td>/t̬/의 실제 소리</td><td><a href="#ipa-21">cutting</a></td></tr>
+      <tr><td>[l̩ m̩ n̩]</td><td>약한 모음이 생략된 음절자음</td><td><a href="#ipa-47">label</a> · <a href="#ipa-48">criticism</a> · <a href="#ipa-49">sudden</a></td></tr>
+    </tbody>
+  </table></div>
+  <p>Wikipedia의 /dj tj nj lj sj zj θj/는 자음과 /j/의 조합입니다. /iə uə/도 기존 모음의 연결이며, 방언이나 말 빠르기에 따라 /jə wə/처럼 이어질 수 있습니다. 새로운 기본 소리로 하나씩 외우기보다 실제 단어를 들어보세요. <a href="https://dictionary.cambridge.org/pronunciation/english/menu" target="_blank" rel="noopener noreferrer">menu의 /j/ 연결 듣기 ↗</a> · <a href="https://dictionary.cambridge.org/pronunciation/english/influence" target="_blank" rel="noopener noreferrer">influence의 모음 연결 듣기 ↗</a></p>
+  <p><a href="https://en.wikipedia.org/wiki/Help:IPA/English#Dialect_variation" target="_blank" rel="noopener noreferrer">Wikipedia · 방언별 차이 ↗</a>에서는 어떤 구분이 합쳐지는지 살펴볼 수 있습니다. 미국식에서는 /t d n/ 뒤의 /j/가 빠지는 단어도 있으며, marry·merry·Mary처럼 같은 모음으로 발음하는 단어도 있습니다.</p>
+</section>
