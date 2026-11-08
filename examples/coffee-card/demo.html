@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex">
+  <meta name="color-scheme" content="light">
+  <title>첫 카드 · Say More</title>
+  <style>
+    :root { --ink:#202940; --muted:#637087; --blue:#4157ad; --wash:#edf0fa; --line:#dce2ee; --paper:#fff; --bg:#f5f7fc; --green:#26705c; --red:#ac3247; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.65 -apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif; word-break:keep-all; overflow-wrap:anywhere; }
+    button,input,textarea { font:inherit; }
+    button,a,input,textarea { -webkit-tap-highlight-color:transparent; }
+    button { cursor:pointer; }
+    button:disabled { cursor:wait; opacity:.6; }
+    :focus-visible { outline:3px solid #8195ec; outline-offset:4px; }
+    a { color:var(--blue); text-underline-offset:4px; }
+    [hidden] { display:none !important; }
+    .shell { max-width:1120px; padding:0 32px; margin:auto; }
+    header { display:flex; justify-content:space-between; align-items:center; gap:20px; padding:25px 0; border-bottom:1px solid var(--line); }
+    .brand { font-size:16px; font-weight:750; letter-spacing:.07em; text-decoration:none; color:var(--ink); }
+    .tag { padding:4px 10px; border:1px solid var(--line); border-radius:6px; color:var(--muted); font-size:12px; }
+    .intro { padding:42px 0 28px; }
+    .eyebrow { margin:0 0 8px; color:var(--blue); font-size:12px; letter-spacing:.08em; font-weight:700; }
+    h1 { font-size:clamp(28px,4vw,43px); line-height:1.3; letter-spacing:-.045em; margin:0 0 12px; }
+    .intro p:last-child { margin:0; color:var(--muted); }
+    .workspace { display:grid; grid-template-columns:minmax(0,1.45fr) minmax(260px,1fr); gap:32px; align-items:start; }
+    .card { background:var(--paper); border:1px solid var(--line); border-radius:18px; box-shadow:0 12px 38px #243c6c0b; overflow:hidden; }
+    .card-label { display:flex; justify-content:space-between; padding:17px 24px; font-size:12px; color:var(--muted); }
+    .card-label span:last-child { font:12px/1.65 ui-monospace,monospace; }
+    .photo-wrap { position:relative; background:#e8e8e8; }
+    .photo { display:block; width:100%; aspect-ratio:4/3; object-fit:cover; }
+    .photo-source { position:absolute; bottom:10px; right:12px; font-size:10px; background:#ffffffea; border-radius:3px; padding:2px 6px; color:#394355; }
+    .card-body { padding:24px; text-align:center; }
+    .question { font-size:19px; font-weight:650; margin:0 0 8px; }
+    .small { color:var(--muted); font-size:13px; margin:7px 0; }
+    .primary,.secondary { padding:12px 18px; border:1px solid transparent; border-radius:9px; font-weight:650; line-height:1.4; }
+    .primary { background:var(--blue); color:white; }
+    .primary:hover { background:#34488f; }
+    .secondary { background:white; border-color:var(--line); color:var(--ink); }
+    .secondary:hover { background:var(--wash); }
+    .wide { width:100%; }
+    #reveal { margin-top:15px; }
+    .word { font-family:Georgia,"Times New Roman",serif; font-size:58px; line-height:1.15; font-weight:400; margin:0 0 8px; letter-spacing:-.02em; }
+    .ipa { font-family:Georgia,"Times New Roman",serif; color:var(--blue); font-size:23px; margin:0; }
+    .audio-button { display:inline-flex; align-items:center; gap:8px; margin:12px auto; padding:8px 14px; }
+    .sentence { font-size:17px; margin:5px 0; }
+    .memory { font-size:14px; color:var(--muted); margin:10px 0; }
+    .grades { border-top:1px solid var(--line); margin-top:20px; padding-top:18px; }
+    .grade-buttons { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+    .grade-buttons button { padding:10px 4px; border:1px solid var(--line); border-radius:8px; background:white; color:var(--ink); font-size:13px; }
+    .grade-buttons button:hover { background:var(--wash); border-color:var(--blue); }
+    .grade-buttons small { display:block; color:var(--muted); font-size:11px; margin-top:2px; }
+    .side-panel { padding:22px 24px; border:1px solid var(--line); background:white; border-radius:12px; margin-bottom:16px; }
+    .side-panel h2 { font-size:17px; margin:0 0 14px; letter-spacing:-.02em; }
+    .status-dot { display:inline-block; width:7px; height:7px; background:#939daf; border-radius:50%; margin-right:7px; }
+    .status-dot.connected { background:var(--green); }
+    .status-label { margin:0 0 12px; font-size:14px; font-weight:600; }
+    .side-panel p { font-size:13px; color:var(--muted); }
+    .side-panel .primary,.side-panel .secondary { font-size:14px; margin-top:10px; }
+    .record { margin:0; }
+    .record div { display:flex; justify-content:space-between; gap:16px; margin:10px 0; font-size:13px; }
+    .record dt { color:var(--muted); }
+    .record dd { margin:0; font-weight:600; text-align:right; }
+    .text-button { color:var(--blue); background:none; border:0; padding:4px 0; text-decoration:underline; text-underline-offset:4px; font-size:13px; }
+    .notice { margin:18px 0; border-left:3px solid var(--blue); padding:10px 14px; background:var(--wash); font-size:13px; }
+    .notice.error { color:var(--red); border-color:var(--red); background:#fff1f4; }
+    .bottom { display:flex; justify-content:space-between; gap:20px; padding:17px 2px; font-size:13px; }
+    footer { padding:25px 0 40px; font-size:12px; color:var(--muted); }
+    details summary { cursor:pointer; }
+    details p { max-width:760px; }
+    dialog { width:min(630px,calc(100% - 28px)); max-height:90vh; border:1px solid var(--line); border-radius:16px; padding:28px; color:var(--ink); }
+    dialog::backdrop { background:#17243c66; }
+    dialog h2 { margin:0 0 6px; font-size:23px; }
+    .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:15px; }
+    .field { display:block; font-size:13px; font-weight:650; margin:15px 0; }
+    .field input,.field textarea { width:100%; display:block; border:1px solid #bec8db; border-radius:6px; padding:9px 11px; margin-top:6px; color:var(--ink); background:white; font-size:15px; }
+    input[readonly] { background:var(--bg); color:var(--muted); }
+    input[type=file] { font-size:12px; padding:9px; }
+    .dialog-actions { display:flex; justify-content:flex-end; gap:10px; margin-top:22px; }
+    #editor-error { color:var(--red); font-size:13px; }
+    .complete { padding:14px; background:var(--wash); border-radius:8px; font-size:14px; }
+    @media(max-width:760px) { .shell { padding:0 18px; } .intro { padding:28px 0 22px; } .workspace { grid-template-columns:1fr; gap:18px; } .sidebar { display:grid; grid-template-columns:1fr 1fr; gap:14px; } .side-panel { padding:18px; margin:0; } }
+    @media(max-width:500px) { .sidebar { grid-template-columns:1fr; } .card-body { padding:20px; } .form-grid { grid-template-columns:1fr; gap:0; } .word { font-size:48px; } .bottom { flex-wrap:wrap; } }
+    @media(prefers-reduced-motion:no-preference) { button { transition:background .15s; } #answer { animation:appear .22s ease-out; } @keyframes appear { from { opacity:0; transform:translateY(5px); } to { opacity:1; transform:translateY(0); } } }
+  </style>
+</head>
+<body>
+<div class="shell">
+  <header><a class="brand" href="https://junxnpng.github.io/">SAY MORE</a><span class="tag">첫 100단어 · 카드 한 장 예시</span></header>
+  <main>
+    <section class="intro"><p class="eyebrow">MY FIRST CARD</p><h1>첫 단어를, 내 기억으로.</h1><p>사진을 보고 영어로 말한 뒤, 답과 발음을 확인해 보세요.</p></section>
+    <div class="workspace">
+      <section aria-label="단어 카드">
+        <article class="card">
+          <div class="card-label"><span>그림 → 말하기</span><span>01 / 01</span></div>
+          <div class="photo-wrap"><img id="photo" class="photo" alt="학습할 대상을 보여 주는 사진"><span id="photo-credit" class="photo-source">사진 · Julius Schorzman</span></div>
+          <div class="card-body">
+            <div id="question"><p class="question">영어로 뭐라고 할까요?</p><p class="small">정답을 보기 전에 소리 내어 말해보세요.</p><button id="reveal" class="primary wide">정답 확인</button></div>
+            <div id="answer" hidden>
+              <h2 class="word" id="word" lang="en"></h2><p class="ipa" id="ipa" lang="en"></p>
+              <button id="play" class="secondary audio-button"><span aria-hidden="true">▶</span> 미국식 발음 듣기</button><audio id="audio" preload="auto"></audio>
+              <p class="sentence" id="sentence" lang="en"></p><p class="memory" id="memory"></p>
+              <div id="grades" class="grades"><p class="small">얼마나 잘 떠올렸나요?</p><div class="grade-buttons">
+                <button data-grade="again">다시 연습<small>10분 후</small></button><button data-grade="good">기억했어요<small>1일 후</small></button><button data-grade="easy">쉬웠어요<small>3일 후</small></button>
+              </div></div>
+              <div id="complete" class="complete" hidden><span id="complete-text"></span><br><button id="practice-again" class="text-button">기록 없이 다시 보기</button></div>
+            </div>
+          </div>
+        </article>
+        <div class="bottom"><button id="edit" class="text-button">카드에 내 기억 더하기</button><a href="https://junxnpng.github.io/saymore/ipa/#ipa-03" target="_blank" rel="noopener">/ɑː/ 발음 도움말 ↗</a></div>
+      </section>
+      <aside class="sidebar">
+        <section class="side-panel"><h2>내 맥에 저장하기</h2><div class="status-label"><span id="connection-dot" class="status-dot"></span><span id="connection-label">연습 모드</span></div><p id="storage-copy">지금은 이 탭에서만 연습 중이에요. 옵시디언 안의 예시 폴더를 연결하면 카드와 복습 기록을 파일로 저장해요.</p><button id="connect" class="primary wide">옵시디언 폴더 연결</button><button id="save" class="secondary wide" hidden>변경 내용 저장</button><p id="support" class="small"></p></section>
+        <section class="side-panel"><h2>이 카드의 복습</h2><dl class="record"><div><dt>기록한 복습</dt><dd id="review-count">0회</dd></div><div><dt>다음 복습</dt><dd id="next-review">아직 학습 전</dd></div><div><dt>파일 저장</dt><dd id="saved-at">폴더 연결 전</dd></div></dl><p>예시에서는 10분·1일·3일 간격을 사용해요. 정식 학습 알고리즘을 넣기 전, 저장 흐름을 체험하는 카드예요.</p></section>
+      </aside>
+    </div>
+    <p id="notice" class="notice" role="status" hidden></p>
+  </main>
+  <footer><details><summary>예시 카드의 발음·사진 출처</summary><p>미국식 녹음은 Wiktionary에서 /ˈkɑfi/로 분류한 발음입니다. 화면에는 기존 IPA 안내와 맞춰 /ˈkɑː.fi/로 표시했습니다. 미국식 /ˈkɔfi/도 쓰입니다. <a href="https://en.wiktionary.org/wiki/coffee#Pronunciation" target="_blank" rel="noopener">발음 자료</a></p><p>사진: <a href="https://commons.wikimedia.org/wiki/File:A_small_cup_of_coffee.JPG" target="_blank" rel="noopener">Julius Schorzman</a> · <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC BY-SA 2.0</a> · 원본 그대로. 음성: <a href="https://commons.wikimedia.org/wiki/File:En-us-coffee.ogg" target="_blank" rel="noopener">Dvortygirl</a> · <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a> · Wikimedia의 MP3 변환본. 예문과 기억 단서는 사용법을 보여 주기 위한 예시입니다. 직접 고른 사진·음성은 해당 파일의 출처를 따라요.</p></details></footer>
+</div>
+<dialog id="editor" aria-labelledby="editor-title"><form id="edit-form">
+  <h2 id="editor-title">내 기억과 연결하기</h2><p class="small">내가 마셨던 한 잔, 내가 아는 장소를 떠올려 보세요.</p>
+  <div class="form-grid"><label class="field">단어<input id="edit-word" value="coffee" readonly></label><label class="field">미국식 발음<input value="/ˈkɑː.fi/" readonly></label></div>
+  <label class="field">내 예문<input id="edit-sentence" maxlength="240" lang="en" placeholder="I drink coffee every morning."></label>
+  <label class="field">내 기억을 떠올릴 단서<textarea id="edit-memory" rows="2" maxlength="500" placeholder="예: Sunday morning · my favorite café"></textarea></label>
+  <div class="form-grid"><label class="field">내 사진으로 바꾸기<input id="edit-image" type="file" accept="image/jpeg,image/png,image/webp"></label><label class="field">내 음성 파일로 바꾸기<input id="edit-audio" type="file" accept="audio/mpeg,.mp3"></label></div>
+  <p class="small">사진은 JPG·PNG·WebP, 음성은 MP3를 사용할 수 있어요. 파일 하나당 최대 10MB.</p>
+  <p id="editor-error" role="alert" hidden></p><div class="dialog-actions"><button id="cancel-edit" class="secondary" type="button">취소</button><button class="primary" type="submit">카드에 적용</button></div>
+</form></dialog>
+<script id="seed" type="application/json">__SAYMORE_SEED__</script>
+<script>__SAYMORE_SCRIPT__</script>
+</body>
+</html>
