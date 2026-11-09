@@ -1,7 +1,7 @@
-import {newCard, editCard, rateCard, reviewOptions, dueCards, dateLabel, intervalLabel, ratings} from './model.mjs';
-import {FolderStore, rememberedFolder, friendlyError} from './storage.mjs';
-import {el, showCard} from './view.mjs';
-import {DropboxStore} from './dropbox-store.mjs?v=3';
+import {newCard, editCard, rateCard, reviewOptions, dueCards, dateLabel, intervalLabel, ratings} from './model.mjs?v=2';
+import {FolderStore, rememberedFolder, friendlyError} from './storage.mjs?v=2';
+import {el, showCard} from './view.mjs?v=2';
+import {DropboxStore} from './dropbox-store.mjs?v=4';
 import {parseBundle} from './bundle.mjs?v=1';
 import {openDropbox} from '../shared/dropbox.mjs?v=2';
 
@@ -9,7 +9,7 @@ const $=id=>document.getElementById(id);
 let store=null, cachedFolder=null, view='library', busy=false, dirty=false, editedId=null, previewBack=false;
 let draftMedia={image:null,audio:null}, activeCard=null, revealed=false, sessionCount=0, detailCard=null, detailBack=false;
 let connectionEpoch=0, lastSaved='', mediaCache=new Map(), draftURLs=new Set();
-const inputs=['front','answer','ipa','sentence','memory','tags'];
+const inputs=['front','answer','ipa','speech','sentence','memory','tags'];
 const supported=typeof window.showDirectoryPicker==='function';
 let cloud=null,refreshing=false;
 
@@ -28,7 +28,7 @@ function controls(){
   $('import-folder').disabled=busy;
   $('bundle-panel').hidden=!online;
   $('bundle-data').disabled=busy;
-  $('import-bundle').disabled=busy||!online;
+  $('import-bundle').disabled=$('append-bundle').disabled=busy||!online;
   $('save-help').textContent=store ? `저장하면 카드와 복습 일정이 ${online?'Dropbox':'선택한 폴더'}에 남아요.` : '먼저 위의 Dropbox 연결을 눌러주세요. 입력한 내용은 그대로 남아요.';
   $('reload').hidden=!store;
   $('connection').textContent=online ? 'Dropbox 연결됨' : store ? `${store.folder.name} 폴더 연결됨` : '저장소 연결 전';
@@ -246,7 +246,7 @@ async function openEdit(id){
   setBusy(true);
   resetEditor();editedId=id;$('editor-title').textContent='카드 수정';
   $('card-type').value=card.type;$('deck').value=card.deck;
-  for(const key of inputs)$(key).value=key==='tags'?card.tags.join(' '):card[key];
+  for(const key of inputs)$(key).value=key==='tags'?card.tags.join(' '):(card[key]??'');
   for(const type of ['image','audio'])if(card[type]){
     draftMedia[type]={...card[type],name:'저장된 '+(type==='image'?'사진':'음성')};
     $(`${type}-credit`).value=card[type].credit;
@@ -313,20 +313,24 @@ $('import-folder').addEventListener('change',async event=>{
     if(view==='review')await showNextReview();
   }catch(e){notice(friendlyError(e),true);}finally{event.target.value='';setBusy(false);}
 });
-$('import-bundle').addEventListener('click',async()=>{
+async function importBundle(append=false){
   if(busy||store?.kind!=='dropbox')return;
   if(dirty){notice('먼저 입력 중인 카드를 저장하거나 입력을 취소해 주세요.',true);return;}
   setBusy(true);
   try{
     notice('백업 파일의 내용을 확인하고 있어요.');
     const files=await parseBundle($('bundle-data').value);
-    const result=await store.importEntries(files,(done,total)=>notice(`Dropbox로 옮기고 검증 중… ${done} / ${total}개 파일`));
+    const progress=(done,total)=>notice(`Dropbox에 저장하고 확인 중… ${done} / ${total}`);
+    const result=append ? await store.appendEntries(files,progress) : await store.importEntries(files,progress);
     $('bundle-data').value='';$('bundle-panel').open=false;
     clearMediaCache();updateDecks();renderLibrary();
-    notice(`카드 ${result.cards}장, 파일 ${result.files}개를 Dropbox에 옮겨 검증했어요. 원본은 그대로 유지합니다.`);
+    if(append)saved(result,`새 카드 ${result.added}장을 추가했어요. 중복 ${result.skipped}장은 건너뛰었고 기존 카드와 복습 기록은 유지했어요.`);
+    else notice(`카드 ${result.cards}장, 파일 ${result.files}개를 Dropbox에 옮겨 검증했어요. 원본은 그대로 유지합니다.`);
     if(view==='review')await showNextReview();
   }catch(e){notice(friendlyError(e),true);}finally{setBusy(false);}
-});
+}
+$('import-bundle').addEventListener('click',()=>importBundle(false));
+$('append-bundle').addEventListener('click',()=>importBundle(true));
 for(const b of document.querySelectorAll('[data-view]'))b.addEventListener('click',()=>{if(b.dataset.view==='add'&&view!=='add')resetEditor();switchView(b.dataset.view);});
 for(const b of document.querySelectorAll('[data-open-add]'))b.addEventListener('click',()=>switchView('add'));
 $('search').addEventListener('input',renderLibrary);$('deck-filter').addEventListener('change',renderLibrary);

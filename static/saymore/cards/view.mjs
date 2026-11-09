@@ -1,6 +1,9 @@
 export const el=(tag,text,className)=>{const node=document.createElement(tag);if(text!==undefined)node.textContent=text;if(className)node.className=className;return node;};
 
+import {speakUS,stopSpeech} from './speech.mjs';
+
 export function showCard(container, card, sources = {}, answer = false) {
+  stopSpeech();
   const article=el('article',undefined,'study-card');
   const label=el('div',undefined,'study-card-label');
   label.append(el('span',card.type==='picture'?'그림 → 단어':'앞면 → 뒷면'),el('span',answer?'뒷면':'앞면'));
@@ -17,6 +20,11 @@ export function showCard(container, card, sources = {}, answer = false) {
       const button=el('button','▶ 발음 듣기','secondary');button.type='button';
       button.addEventListener('click',async()=>{try{audio.currentTime=0;await audio.play();}catch{button.textContent='재생할 수 없는 음성이에요';}});
       body.append(button,audio);
+    }
+    if(!sources.audio&&card.speech){
+      const button=el('button','▶ 미국식 기기 합성 음성','secondary');button.type='button';
+      button.addEventListener('click',()=>speakUS(card.speech,message=>{button.textContent=message;}));
+      body.append(button,el('p','녹음이 아닌 기기 합성 음성이에요.','study-credit'));
     }
     if(card.sentence)body.append(el('p',card.sentence,'study-sentence'));
     if(card.memory)body.append(el('p',card.memory,'study-memory'));

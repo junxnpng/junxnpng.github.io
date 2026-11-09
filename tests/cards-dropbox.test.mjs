@@ -79,6 +79,44 @@ test('folder migration refuses to replace an existing different cloud library',a
   assert.equal(JSON.parse(await cloud.files.get('/cards/library.json').text()).cards[0].answer,'keep me');
 });
 
+test('adding a deck preserves existing reviews and skips the same IDs on re-import',async()=>{
+  const now=new Date('2026-11-09T00:00:00Z');
+  const original=rateCard(newCard(fields('keep'),now),3,now);
+  const existing={...newLibrary(now),cards:[original]};
+  const incoming={...newLibrary(now),cards:[newCard({...fields('new'),deck:'New deck'},now)]};
+  const cloud=memoryCloud(existing),store=await api.DropboxStore.open(cloud);
+  const files=[{path:'library.json',blob:new Blob([JSON.stringify(incoming)])}];
+  const result=await store.appendEntries(files);
+  assert.equal(result.added,1);assert.equal(store.library.cards.length,2);
+  assert.deepEqual(store.library.cards[0],original);
+  const edited=editCard(store.library.cards[1],{...store.library.cards[1],answer:'my correction'},now);
+  await store.commit({...store.library,cards:[original,edited]});
+  const second=await store.appendEntries(files);
+  assert.equal(second.added,0);assert.equal(second.skipped,1);
+  assert.equal(store.library.cards[1].answer,'my correction');
+  assert.deepEqual(store.library.cards[0],original);
+});
+
+test('incomplete deck attachments are rejected before uploading any file',async()=>{
+  const original=newLibrary(),cloud=memoryCloud(original),store=await api.DropboxStore.open(cloud);
+  const incoming=newLibrary();incoming.cards=[newCard({...fields('new'),image:{path:'media/00000000-0000-0000-0000-000000000001.png',credit:'mine'}})];
+  await assert.rejects(store.appendEntries([{path:'library.json',blob:new Blob([JSON.stringify(incoming)])}]),/첨부파일/);
+  assert.equal(cloud.files.size,1);
+  assert.deepEqual(JSON.parse(await cloud.files.get('/cards/library.json').text()),original);
+});
+
+test('adding a deck merges another device review made during import',async()=>{
+  const now=new Date('2026-11-09T00:00:00Z'),base=newLibrary(now);
+  base.cards=[newCard(fields('original'),now)];
+  const cloud=memoryCloud(base),store=await api.DropboxStore.open(cloud);
+  const remote={...copy(base),cards:[rateCard(base.cards[0],4,now)],revision:1};
+  await cloud.upload('/cards/library.json',JSON.stringify(remote),{rev:'1'});
+  const incoming=newLibrary(now);incoming.cards=[newCard(fields('added'),now)];
+  await store.appendEntries([{path:'library.json',blob:new Blob([JSON.stringify(incoming)])}]);
+  assert.deepEqual(store.library.cards[0],remote.cards[0]);
+  assert.equal(store.library.cards.length,2);
+});
+
 function memoryCloud(library){
   const files=new Map([['/cards/library.json',new Blob([JSON.stringify(library)])]]),revs=new Map([['/cards/library.json','1']]);
   return {files,rejectCanonical:false,mkdir:async()=>{},

@@ -40,7 +40,8 @@ function normalize(fields) {
   if (tags.length > 30 || tags.some(t=>typeof t !== 'string' || t.length > 60)) fail('태그는 30개 이하, 각각 60자 이하로 입력해주세요.');
   return {type:fields.type, deck:text(fields.deck,'덱',120) || '첫 100단어', front, answer,
     ipa:text(fields.ipa,'IPA',300), sentence:text(fields.sentence,'예문'), memory:text(fields.memory,'나의 기억'),
-    tags:[...new Set(tags.map(t=>t.trim()).filter(Boolean))], image, audio};
+    tags:[...new Set(tags.map(t=>t.trim()).filter(Boolean))], image, audio,
+    ...(fields.speech===undefined?{}:{speech:text(fields.speech,'합성 음성 문장',300)})};
 }
 
 export function newCard(fields, now = new Date()) {
@@ -116,6 +117,7 @@ export function renderNote(card, previous = '') {
   if (card.image) lines.push(`![학습 사진](../${card.image.path})`,'',escapeMD(card.image.credit),'');
   lines.push('## 뒷면',escapeMD(card.answer),'',escapeMD(card.ipa),'');
   if (card.audio) lines.push(`![[${card.audio.path.slice(6)}]]`,'',escapeMD(card.audio.credit),'');
+  if (card.speech) lines.push(`미국식 기기 합성 음성: ${escapeMD(card.speech)}`,'');
   if (card.sentence) lines.push('## 예문',escapeMD(card.sentence),'');
   if (card.memory) lines.push('## 나의 기억',escapeMD(card.memory),'');
   if (card.tags.length) lines.push(`태그: ${card.tags.map(escapeMD).join(' · ')}`,'');

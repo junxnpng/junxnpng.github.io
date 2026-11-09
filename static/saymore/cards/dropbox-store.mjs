@@ -1,7 +1,13 @@
-import {copy,newLibrary,parseLibrary,renderNote} from './model.mjs';
+import {copy,newLibrary,parseLibrary,renderNote} from './model.mjs?v=2';
 const prefix='/cards';
 const mediaPattern=/^media\/[0-9a-f-]{36}\.(jpg|png|webp|mp3)$/;
 const same=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
+async function eachLimited(items,action){
+  let index=0,failed=null;
+  const worker=async()=>{while(!failed&&index<items.length){const item=items[index++];try{await action(item);}catch(error){failed=error;}}};
+  await Promise.all([worker(),worker(),worker()]);
+  if(failed)throw failed;
+}
 const collision=()=>Error('같은 카드가 다른 기기에서도 바뀌었어요. 입력은 그대로 남겼습니다. 저장된 내용 다시 읽기 전에 필요한 입력을 복사해 주세요.');
 
 export function mergeLibraries(base,local,remote){
@@ -48,7 +54,7 @@ export class DropboxStore{
     if(!file||!file.blob.size||file.blob.size>10*1024*1024)throw Error('첨부파일이 없거나 10MB보다 큽니다.');
     return file.blob;
   }
-  async commit(next,uploads={},changedIds=[]){
+  async commit(next,uploads={},changedIds=[],onProgress=()=>{}){
     if(this.writing)throw Error('이 창에서 저장 중입니다. 잠시 기다려 주세요.');
     if(next.id!==this.library.id||next.revision!==this.library.revision)throw collision();
     this.writing=true;
@@ -57,7 +63,9 @@ export class DropboxStore{
       const refs=new Set(next.cards.flatMap(c=>[c.image?.path,c.audio?.path].filter(Boolean)));
       for(const [path,blob]of Object.entries(uploads))if(!refs.has(path)||!mediaPattern.test(path)||!(blob instanceof Blob)||!blob.size||blob.size>10*1024*1024)throw Error('저장할 첨부파일을 확인해 주세요.');
       await this.directories();
-      for(const [path,blob]of Object.entries(uploads))await this.immutable(path,blob);
+      let done=0;
+      const total=Object.keys(uploads).length+new Set(changedIds).size;
+      await eachLimited(Object.entries(uploads),async([path,blob])=>{await this.immutable(path,blob);onProgress(++done,total);});
       const oldRefs=new Set(this.library.cards.flatMap(c=>[c.image?.path,c.audio?.path].filter(Boolean)));
       for(const path of refs)if(!oldRefs.has(path)&&!uploads[path])await this.readMedia(path);
       for(let attempt=0;attempt<3;attempt++){
@@ -73,24 +81,47 @@ export class DropboxStore{
         try{saved=await this.cloud.upload(`${prefix}/library.json`,newRaw,{rev:current?.metadata.rev||null});}
         catch(error){if(error.conflict&&attempt<2)continue;throw error;}
         this.library=snapshot;this.raw=newRaw;this.rev=saved.rev;
-        return this._export(changedIds);
+        return await this._export(changedIds,()=>onProgress(++done,total));
       }
     }finally{this.writing=false;}
   }
-  async _export(ids){
+  async _export(ids,onProgress=()=>{}){
     const warnings=[];
-    for(const id of new Set(ids)){
-      const card=this.library.cards.find(c=>c.id===id);if(!card)continue;
+    await eachLimited([...new Set(ids)],async id=>{
+      const card=this.library.cards.find(c=>c.id===id);if(!card)return;
       try{
         const path=`${prefix}/notes/${id}.md`;
         const previous=await this.cloud.download(path);
         const note=renderNote(card,previous?await previous.text():'');
         await this.cloud.upload(path,note,{rev:previous?.metadata.rev||null});
       }catch(error){warnings.push({id,message:error.message});}
-    }
+      onProgress();
+    });
     return {warnings};
   }
   async exportNotes(){return this._export(this.library.cards.map(c=>c.id));}
+
+  async appendEntries(files,onProgress=()=>{}){
+    if(this.writing)throw Error('저장 중입니다. 잠시 기다려 주세요.');
+    const entries=new Map();
+    for(const {path,blob}of files){
+      if(typeof path!=='string'||!(blob instanceof Blob)||!blob.size||blob.size>50*1024*1024||entries.has(path)||(path!=='library.json'&&!mediaPattern.test(path)))throw Error('새 덱의 파일이나 경로를 확인해 주세요.');
+      entries.set(path,blob);
+    }
+    if(!entries.has('library.json'))throw Error('새 덱에 library.json이 없습니다.');
+    const incoming=parseLibrary(await entries.get('library.json').text());
+    const existing=new Set(this.library.cards.map(c=>c.id));
+    const added=incoming.cards.filter(c=>!existing.has(c.id));
+    const refs=new Set(added.flatMap(c=>[c.image?.path,c.audio?.path].filter(Boolean)));
+    for(const path of refs)if(!entries.has(path)||entries.get(path).size>10*1024*1024)throw Error('새 덱의 첨부파일이 없거나 너무 큽니다. 기존 카드는 그대로 유지합니다.');
+    if(!added.length)return {added:0,skipped:incoming.cards.length,warnings:[]};
+    const uploads=Object.fromEntries([...refs].map(path=>[path,entries.get(path)]));
+    const result=await this.commit({...copy(this.library),cards:[...copy(this.library.cards),...added]},uploads,added.map(c=>c.id),onProgress);
+    const verified=await this.cloud.download(`${prefix}/library.json`);
+    const readBack=verified&&parseLibrary(await verified.text());
+    if(!readBack||added.some(c=>!readBack.cards.some(saved=>saved.id===c.id)))throw Error('새 덱 저장 후 확인하지 못했습니다. 저장된 내용 다시 읽기로 확인해 주세요.');
+    return {...result,added:added.length,skipped:incoming.cards.length-added.length};
+  }
 
   async importFiles(files,onProgress=()=>{}){
     return this.importEntries(files.map(file=>({path:file.webkitRelativePath?file.webkitRelativePath.split('/').slice(1).join('/'):file.name,blob:file})),onProgress);
