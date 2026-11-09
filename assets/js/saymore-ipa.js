@@ -17,6 +17,7 @@
       close: element.querySelector("[data-ipa-close]"),
       status: element.querySelector(".sm-selection-status"),
       choices: [...element.querySelectorAll(".sm-choice")],
+      clusters: [...element.querySelectorAll("[data-ipa-cluster]")],
       items: []
     };
     for (const choice of group.choices) {
@@ -98,6 +99,9 @@
         const match = words.every(word => record.search.includes(word)) && (!pendingOnly || !globalThis.SayMoreIPAState?.isMastered(record.card.id));
         record.choice.hidden = !match;
         if (match) matches++;
+      }
+      for (const cluster of group.clusters) {
+        cluster.hidden = ![...cluster.querySelectorAll(".sm-choice")].some(choice => !choice.hidden);
       }
       group.element.hidden = matches === 0;
       count += matches;

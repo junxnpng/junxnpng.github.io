@@ -55,7 +55,7 @@
   {{ $groupItems := .items }}
   <section class="sm-group" id="{{ .id }}" aria-labelledby="{{ .id }}-title">
     <header class="sm-group-header"><div><p class="sm-eyebrow">{{ .label }}</p><h2 id="{{ .id }}-title">{{ .title }}</h2></div><p>{{ .intro }}</p></header>
-    {{ partial "saymore/ipa-picker.html" (dict "items" .items "title" .title "extra" false) }}
+    {{ partial "saymore/ipa-picker.html" (dict "items" .items "title" .title "extra" false "clusters" .picker_groups) }}
     <div class="sm-cards">
     {{ range .items }}
       {{ $item := . }}

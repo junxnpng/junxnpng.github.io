@@ -5,6 +5,16 @@
       "title": "모음",
       "label": "VOWELS · 01–17",
       "intro": "혀의 높이·앞뒤 위치·입술의 둥글기를 확인하세요. 이중모음은 한 음절 안에서 움직입니다.",
+      "picker_groups": [
+        { "title": "혀 앞쪽 · 높이 비교", "numbers": [1, 2] },
+        { "title": "혀 앞쪽 · 입 벌림 비교", "numbers": [9, 4] },
+        { "title": "입술·혀 위치 비교", "numbers": [7, 8] },
+        { "title": "입 벌림·둥글기 비교", "numbers": [3, 6] },
+        { "title": "강세 있는 모음 ↔ 약한 모음", "numbers": [5, 11] },
+        { "title": "r 모음 · 강세 비교", "numbers": [10, 12] },
+        { "title": "/ɪ/ 쪽으로 향하는 이중모음", "numbers": [13, 14, 15], "glide": true },
+        { "title": "/ʊ/ 쪽으로 향하는 이중모음", "numbers": [16, 17], "glide": true }
+      ],
       "items": [
         {
           "number": 1,

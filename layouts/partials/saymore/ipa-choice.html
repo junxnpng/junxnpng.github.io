@@ -1,0 +1,20 @@
+{{ $item := .item }}
+{{ $id := printf "ipa-%v" $item.number }}
+{{ $symbol := $item.display_symbol | default $item.symbol }}
+{{ $word := $item.example }}
+{{ $url := printf "https://dictionary.cambridge.org/pronunciation/english/%s" $item.example }}
+{{ $search := printf "%s %s %s %s %s" $symbol $item.symbol $item.example $item.example_reading ($item.notation | default "") }}
+{{ with $item.traits }}{{ $search = printf "%s %s %s %s" $search .voicing .place .manner }}{{ end }}
+{{ if .extra }}
+  {{ $id = $item.id }}{{ $word = $item.name }}{{ $url = (index $item.listen 0).url }}
+  {{ $search = printf "%s %s %s" $item.symbol $item.name ($item.notation | default "") }}
+{{ end }}
+<div class="sm-choice" data-search="{{ $search }}">
+  <a class="sm-choice-select" data-ipa-select="{{ $id }}" href="#{{ $id }}" aria-controls="{{ $id }}" aria-expanded="true" aria-label="{{ $symbol }} {{ $word }} 설명 보기">
+    {{ if not .extra }}<small>{{ printf "%02d" (int $item.number) }}</small>{{ end }}
+    <span class="sm-choice-symbol" lang="en">{{ $symbol }}</span>
+    <span class="sm-choice-word" title="{{ $word }}">{{ $word }}</span>
+  </a>
+  <a class="sm-choice-listen" href="{{ $url }}" target="_blank" rel="noopener noreferrer" aria-label="{{ $symbol }} {{ $word }} 원본에서 듣기 (새 탭)" title="원본에서 듣기 · 새 탭"><span aria-hidden="true">▶</span></a>
+  <label class="sm-choice-progress" hidden><input type="checkbox" data-ipa-mastered="{{ $id }}" aria-label="{{ $symbol }} {{ $word }} 외웠어요"><span>외웠어요</span></label>
+</div>

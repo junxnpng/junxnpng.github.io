@@ -1,24 +1,22 @@
-<nav class="sm-symbols sm-picker{{ if .extra }} sm-picker-extra{{ end }}" aria-label="{{ .title }} 기호 선택">
-  {{ range .items }}
-    {{ $id := printf "ipa-%v" .number }}
-    {{ $symbol := .display_symbol | default .symbol }}
-    {{ $word := .example }}
-    {{ $url := printf "https://dictionary.cambridge.org/pronunciation/english/%s" .example }}
-    {{ $search := printf "%s %s %s %s %s" $symbol .symbol .example .example_reading (.notation | default "") }}
-    {{ with .traits }}{{ $search = printf "%s %s %s %s" $search .voicing .place .manner }}{{ end }}
-    {{ if $.extra }}
-      {{ $id = .id }}{{ $word = .name }}{{ $url = (index .listen 0).url }}
-      {{ $search = printf "%s %s %s" .symbol .name (.notation | default "") }}
+{{ with .clusters }}<p class="sm-picker-hint">같은 박스 안의 소리를 번갈아 들어보세요. 비슷한 소리나 움직임을 비교하기 위한 묶음입니다.</p>{{ end }}
+<nav class="sm-symbols sm-picker{{ if .extra }} sm-picker-extra{{ end }}{{ if .clusters }} sm-picker-grouped{{ end }}" aria-label="{{ .title }} 기호 선택">
+  {{ if .clusters }}
+    {{ range .clusters }}
+      <div class="sm-contrast-group{{ if gt (len .numbers) 2 }} sm-contrast-group-wide{{ end }}{{ if .glide }} sm-contrast-group-glide{{ end }}" data-ipa-cluster role="group" aria-label="{{ .title }}">
+        <p class="sm-contrast-title">{{ .title }}</p>
+        <div class="sm-contrast-choices">
+          {{ range .numbers }}
+            {{ range where $.items "number" . }}
+              {{ partial "saymore/ipa-choice.html" (dict "item" . "extra" false) }}
+            {{ end }}
+          {{ end }}
+        </div>
+      </div>
     {{ end }}
-    <div class="sm-choice" data-search="{{ $search }}">
-      <a class="sm-choice-select" data-ipa-select="{{ $id }}" href="#{{ $id }}" aria-controls="{{ $id }}" aria-expanded="true" aria-label="{{ $symbol }} {{ $word }} 설명 보기">
-        {{ if not $.extra }}<small>{{ printf "%02d" (int .number) }}</small>{{ end }}
-        <span class="sm-choice-symbol" lang="en">{{ $symbol }}</span>
-        <span class="sm-choice-word" title="{{ $word }}">{{ $word }}</span>
-      </a>
-      <a class="sm-choice-listen" href="{{ $url }}" target="_blank" rel="noopener noreferrer" aria-label="{{ $symbol }} {{ $word }} 원본에서 듣기 (새 탭)" title="원본에서 듣기 · 새 탭"><span aria-hidden="true">▶</span></a>
-      <label class="sm-choice-progress" hidden><input type="checkbox" data-ipa-mastered="{{ $id }}" aria-label="{{ $symbol }} {{ $word }} 외웠어요"><span>외웠어요</span></label>
-    </div>
+  {{ else }}
+    {{ range .items }}
+      {{ partial "saymore/ipa-choice.html" (dict "item" . "extra" $.extra) }}
+    {{ end }}
   {{ end }}
 </nav>
 <div class="sm-group-tools" hidden>

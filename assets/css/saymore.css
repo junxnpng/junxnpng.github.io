@@ -51,6 +51,27 @@
 .sm-group-header { display: flex; justify-content: space-between; gap: 32px; align-items: flex-end; }
 .sm-group-header > p { max-width: 400px; font-size: 14px; color: var(--secondary); margin: 0 0 14px; }
 .sm-symbols { display: grid; grid-template-columns: repeat(auto-fill, minmax(82px, 1fr)); gap: 8px; margin: 20px 0 14px; }
+.sm-picker-hint { color: var(--secondary); font-size: 13px; margin: 10px 0 0; }
+.sm-symbols.sm-picker-grouped { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 12px; }
+.sm-contrast-group { flex: 2 1 198px; min-width: 0; padding: 12px; border: 1px solid color-mix(in srgb, var(--sm-accent) 18%, var(--theme)); border-radius: 12px; background: color-mix(in srgb, var(--sm-accent) 7%, var(--theme)); }
+.sm-contrast-group-wide { flex: 3 1 288px; }
+.sm-contrast-title { margin: 0 0 10px; font-size: 12px; line-height: 1.5; font-weight: 600; }
+.sm-contrast-choices { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 8px; }
+.sm-picker-grouped .sm-choice-progress { gap: 3px; padding-inline: 0; }
+.sm-picker-grouped .sm-choice-progress input { margin: 0; }
+.sm-picker-grouped .sm-choice-progress span { white-space: nowrap; }
+@media (max-width: 520px) {
+  .sm-symbols.sm-picker-grouped { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .sm-contrast-group { padding: 8px; }
+  .sm-contrast-title { min-height: 3em; margin-bottom: 8px; }
+  .sm-contrast-choices { gap: 6px; }
+  .sm-contrast-group-glide { grid-column: 1 / -1; }
+  .sm-contrast-group-glide .sm-contrast-title { min-height: 0; }
+}
+@media (max-width: 374px) {
+  .sm-symbols.sm-picker-grouped { grid-template-columns: minmax(0, 1fr); }
+  .sm-contrast-title { min-height: 0; }
+}
 .sm-choice { position: relative; min-width: 0; border: 1px solid var(--border); border-radius: 8px; background: var(--entry); }
 .sm-choice-select { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 88px; padding: 12px 5px 9px; border-radius: 7px; }
 .sm-choice-select small { position: absolute; top: 6px; left: 7px; font: 10px/1.4 ui-monospace, monospace; color: var(--secondary); }
