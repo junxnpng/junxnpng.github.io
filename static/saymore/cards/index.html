@@ -6,8 +6,8 @@
   <meta name="color-scheme" content="light">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' blob: data:; media-src 'self' blob:; connect-src 'self' https://api.dropboxapi.com https://content.dropboxapi.com; object-src 'none'; base-uri 'self'; form-action 'none'">
   <title>내 단어 카드 · Say More</title>
-  <link rel="icon" href="/saymore/icons/speech.svg"><link rel="stylesheet" href="./app.css?v=decks-4">
-  <script type="module" src="./app.mjs?v=review-speed-1"></script>
+  <link rel="icon" href="/saymore/icons/speech.svg"><link rel="stylesheet" href="./app.css?v=daily-1">
+  <script type="module" src="./app.mjs?v=daily-1"></script>
 </head>
 <body>
 <div class="shell">
@@ -43,7 +43,8 @@
 
     <section id="review-view" aria-labelledby="review-title" hidden>
       <div class="section-heading"><div><h2 id="review-title">오늘 복습</h2><p id="review-progress" class="small"></p></div><span id="review-deck" class="deck-label"></span></div>
-      <div id="review-active" class="review-workspace" hidden><div id="review-card"></div><button id="reveal" class="primary wide">정답 확인</button><div id="rating-area" hidden><p class="small">얼마나 잘 떠올렸나요?</p><div class="rating-buttons"><button data-rating="1">다시<small></small></button><button data-rating="2">어려움<small></small></button><button data-rating="3">알맞음<small></small></button><button data-rating="4">쉬움<small></small></button></div><p class="small">답변을 누르면 다음 복습 날짜와 기록이 저장소에 저장돼요.</p></div></div>
+      <div class="review-actions"><button id="review-unknown" class="secondary" hidden>모름 다시 보기</button><button id="review-normal" class="text-button" hidden>오늘 복습으로</button><p id="unknown-help" class="small" hidden>모름 카드는 원할 때 다시 꺼내보세요. 24시간 뒤에는 오늘 복습에도 포함돼요.</p></div>
+      <div id="review-active" class="review-workspace" hidden><div id="review-card"></div><button id="reveal" class="primary wide">정답 확인</button><div id="rating-area" hidden><p class="small">얼마나 잘 떠올렸나요?</p><div class="rating-buttons"><button data-rating="1">모름<small></small></button><button data-rating="2">어려움<small></small></button><button data-rating="3">알맞음<small></small></button><button data-rating="4">쉬움<small></small></button></div><p class="small">모름은 1일 내에 원할 때 다시 볼 수 있어요. 나머지는 일 단위로 다음 복습을 예약해요.</p></div></div>
       <div id="review-empty" class="empty"><p class="empty-symbol" aria-hidden="true">✓</p><h3 id="review-empty-title">지금 복습할 카드가 없어요.</h3><p id="next-due"></p><button id="check-due" class="secondary">다시 확인</button></div>
     </section>
   </main>

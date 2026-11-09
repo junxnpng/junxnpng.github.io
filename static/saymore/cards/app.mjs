@@ -1,14 +1,14 @@
-import {newCard, editCard, rateCard, reviewOptions, dueCards, dateLabel, intervalLabel, ratings} from './model.mjs?v=2';
-import {FolderStore, rememberedFolder, friendlyError} from './storage.mjs?v=2';
+import {newCard, editCard, rateCard, reviewOptions, dueCards, unknownCards, dateLabel, intervalLabel, ratings} from './model.mjs?v=3';
+import {FolderStore, rememberedFolder, friendlyError} from './storage.mjs?v=3';
 import {el, showCard} from './view.mjs?v=2';
-import {DropboxStore} from './dropbox-store.mjs?v=5';
+import {DropboxStore} from './dropbox-store.mjs?v=6';
 import {MediaCache} from './media-cache.mjs?v=1';
 import {parseBundle} from './bundle.mjs?v=1';
 import {openDropbox} from '../shared/dropbox.mjs?v=2';
 
 const $=id=>document.getElementById(id);
 let store=null, cachedFolder=null, view='library', busy=false, dirty=false, editedId=null, previewBack=false;
-let draftMedia={image:null,audio:null}, activeCard=null, revealed=false, sessionCount=0, detailCard=null, detailBack=false;
+let draftMedia={image:null,audio:null}, activeCard=null, revealed=false, sessionCount=0, unknownSession=null, detailCard=null, detailBack=false;
 let connectionEpoch=0, reviewRequest=0, noticeVersion=0, lastSaved='', draftURLs=new Set();
 const mediaCache=new MediaCache(path=>store.readMedia(path));
 const inputs=['front','answer','ipa','speech','sentence','memory','tags'];
@@ -37,6 +37,15 @@ function controls(){
   $('connection').classList.toggle('connected',Boolean(store));
   $('connect').textContent=store ? '다른 폴더 연결':'폴더 연결';
   $('storage-copy').textContent=store ? `카드·복습 날짜·전체 기록을 ${online?'Dropbox 전용 폴더':'선택한 폴더'}에 저장해요.${lastSaved ? ' 마지막 저장 '+lastSaved : ''}` : '같은 Dropbox 계정을 연결하면 아이폰과 맥에서 이어서 공부할 수 있어요.';
+  retryControls();
+}
+function retryControls(){
+  const count=store?unknownCards(store.library,$('deck-filter').value).length:0;
+  $('review-unknown').hidden=!count||Boolean(unknownSession&&activeCard);
+  $('review-unknown').textContent=`모름 다시 보기 · ${count}장`;
+  $('review-normal').hidden=unknownSession===null;
+  $('unknown-help').hidden=!count;
+  $('review-title').textContent=unknownSession?'모름 다시 보기':'오늘 복습';
 }
 function setBusy(value){busy=value;controls();}
 function updateStats(){
@@ -114,14 +123,19 @@ function switchView(next,force=false){
   history.replaceState(null,'',view==='add'?'#add':view==='review'?'#review':location.pathname);
   if(view==='library'){updateDecks();renderLibrary();}
   if(view==='add'){updateDecks();renderPreview();controls();}
-  if(view==='review'){sessionCount=0;activeCard=null;showNextReview();}
+  if(view==='review')startReview();
   return true;
+}
+function startReview(unknown=false){
+  if(busy)return;
+  unknownSession=unknown&&store?new Set(unknownCards(store.library,$('deck-filter').value).map(c=>c.id)):null;
+  sessionCount=0;activeCard=null;void showNextReview();
 }
 async function loadFolder(folder,epoch){
   await store?.flushNotes?.();
   const loaded=await FolderStore.open(folder);
   if(epoch!==connectionEpoch)return;
-  store=loaded;clearMediaCache();lastSaved='';activeCard=null;
+  store=loaded;clearMediaCache();lastSaved='';activeCard=null;unknownSession=null;
   cachedFolder=loaded.folder;
   try{await rememberedFolder(loaded.folder);}catch{/* Permission handles are optional; folder files remain authoritative. */}
   $('reconnect').hidden=true;
@@ -165,7 +179,7 @@ async function loadCloud(epoch){
   await store?.flushNotes?.();
   const loaded=await DropboxStore.open(cloud);
   if(epoch!==connectionEpoch)return;
-  store=loaded;clearMediaCache();lastSaved='';activeCard=null;
+  store=loaded;clearMediaCache();lastSaved='';activeCard=null;unknownSession=null;
   $('reconnect').hidden=true;updateDecks();renderLibrary();
   notice(`${cards().length}장의 카드와 복습 기록을 Dropbox에서 불러왔어요.`);
   if(view==='review')await showNextReview();
@@ -278,12 +292,20 @@ async function openDetail(id){
 }
 async function showNextReview(){
   const request=++reviewRequest,owner=store;
-  const queue=store?dueCards(store.library,new Date(),$('deck-filter').value):[];
+  const queue=!store?[]:unknownSession?
+    unknownCards(store.library,$('deck-filter').value).filter(c=>unknownSession.has(c.id)):
+    dueCards(store.library,new Date(),$('deck-filter').value);
   activeCard=queue[0]||null;revealed=false;
+  retryControls();$('check-due').hidden=unknownSession!==null;
   $('reveal').hidden=true;$('rating-area').hidden=true;
   $('review-active').hidden=!activeCard;$('review-empty').hidden=Boolean(activeCard);
   $('review-progress').textContent=`이번에 복습한 카드 ${sessionCount}장`;$('review-deck').textContent=activeCard?.deck || '';
   if(!activeCard){
+    if(unknownSession){
+      const remaining=unknownCards(store.library,$('deck-filter').value).length;
+      $('review-empty-title').textContent=remaining?'모아둔 모름 카드를 한 번씩 모두 봤어요.':'모름 카드가 남아 있지 않아요.';
+      $('next-due').textContent=remaining?'아직 모르는 카드는 원할 때 다시 꺼내보세요. 24시간이 지나면 오늘 복습에도 포함돼요.':'다음 복습 날짜를 예약했어요. “오늘 복습으로”에서 다른 카드도 공부할 수 있어요.';return;
+    }
     $('review-empty-title').textContent=store?'지금 복습할 카드가 없어요.':'먼저 폴더를 연결해주세요.';
     const future=cards().filter(c=>(!$('deck-filter').value||c.deck===$('deck-filter').value)&&Date.parse(c.schedule.due)>Date.now()).sort((a,b)=>Date.parse(a.schedule.due)-Date.parse(b.schedule.due))[0];
     $('next-due').textContent=future?`다음 복습은 ${dateLabel(future.schedule.due)}예요.`:store?'카드를 추가하거나 모든 덱을 선택해보세요.':'폴더에 저장된 카드와 날짜를 읽고 이어서 학습해요.';return;
@@ -302,7 +324,7 @@ async function reveal(){
   setBusy(true);
   try{
     showCard($('review-card'),activeCard,await sources(activeCard),true);revealed=true;
-    const options=reviewOptions(activeCard);for(const b of document.querySelectorAll('[data-rating]'))b.querySelector('small').textContent=intervalLabel(options[b.dataset.rating].due);
+    const options=reviewOptions(activeCard);for(const b of document.querySelectorAll('[data-rating]'))b.querySelector('small').textContent=b.dataset.rating==='1'?'1일 내 언제든':intervalLabel(options[b.dataset.rating].due);
     $('reveal').hidden=true;$('rating-area').hidden=false;
   }catch(e){notice(friendlyError(e),true);}finally{setBusy(false);}
 }
@@ -311,10 +333,12 @@ async function grade(rating){
   notice('복습 기록을 저장하고 있어요…');
   try{
     const owner=store;
-    const updated=rateCard(activeCard,rating);
+    const updated=rateCard(activeCard,rating,new Date(),{retryUnknown:unknownSession!==null});
     const next=cards().map(c=>c.id===updated.id?updated:c);
     const result=await store.commit({...store.library,cards:next},{},[updated.id],undefined,{deferNotes:true});
-    sessionCount++;saved(result,`복습 기록을 저장했어요. 다음 복습: ${dateLabel(updated.schedule.due)}`,{review:true});
+    unknownSession?.delete(updated.id);
+    const message=rating===1?'모름 카드로 모아뒀어요. 원할 때 다시 볼 수 있고, 24시간 뒤에는 오늘 복습에도 포함돼요.':`복습 기록을 저장했어요. 다음 복습: ${dateLabel(updated.schedule.due)}`;
+    sessionCount++;saved(result,message,{review:true});
     const savedNotice=noticeVersion;
     const reportNotes=notes=>{if(store===owner)noteWarnings(notes,noticeVersion===savedNotice);};
     if(result.notes)void result.notes.then(reportNotes,error=>reportNotes({warnings:[{message:error.message}]}));
@@ -328,7 +352,7 @@ $('disconnect-dropbox').addEventListener('click',async()=>{
   if(busy)return;setBusy(true);
   try{
     await store?.flushNotes?.();cloud?.disconnect();connectionEpoch++;
-    if(store?.kind==='dropbox'){store=null;clearMediaCache();activeCard=null;renderLibrary();if(view==='review')showNextReview();}
+    if(store?.kind==='dropbox'){store=null;clearMediaCache();activeCard=null;unknownSession=null;renderLibrary();if(view==='review')showNextReview();}
     notice('이 브라우저의 연결을 해제했어요. Dropbox에 저장된 카드와 기록은 그대로 있어요.');
   }catch(e){notice(friendlyError(e),true);}finally{setBusy(false);}
 });
@@ -376,6 +400,7 @@ $('fill-sample').addEventListener('click',fillSample);
 $('close-detail').addEventListener('click',()=>$('detail-dialog').close());
 $('detail-flip').addEventListener('click',async()=>{if(!detailCard)return;try{detailBack=!detailBack;showCard($('detail-card'),detailCard,await sources(detailCard),detailBack);$('detail-flip').textContent=detailBack?'앞면 보기':'뒷면 보기';}catch(e){notice(friendlyError(e),true);}});
 $('reveal').addEventListener('click',reveal);$('check-due').addEventListener('click',showNextReview);
+$('review-unknown').addEventListener('click',()=>startReview(true));$('review-normal').addEventListener('click',()=>startReview());
 for(const b of document.querySelectorAll('[data-rating]'))b.addEventListener('click',()=>grade(Number(b.dataset.rating)));
 $('repair-notes').addEventListener('click',async()=>{if(!store||busy)return;setBusy(true);try{const result=await store.exportNotes();$('repair-notes').hidden=result.warnings.length===0;saved(result,'읽기용 노트를 다시 저장했어요.');}catch(e){notice(friendlyError(e),true);}finally{setBusy(false);}});
 window.addEventListener('beforeunload',e=>{if(dirty||busy){e.preventDefault();e.returnValue='';}});

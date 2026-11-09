@@ -1,12 +1,16 @@
 import {createEmptyCard, fsrs, generatorParameters} from './vendor/ts-fsrs.mjs';
 
 export const copy = value => JSON.parse(JSON.stringify(value));
-export const ratings = {1:'다시', 2:'어려움', 3:'알맞음', 4:'쉬움'};
-const params = generatorParameters({request_retention:0.9, enable_fuzz:false});
+export const ratings = {1:'모름', 2:'어려움', 3:'알맞음', 4:'쉬움'};
+const legacyParams = generatorParameters({request_retention:0.9, enable_fuzz:false});
+const params = generatorParameters({request_retention:0.9, enable_fuzz:false, enable_short_term:false, learning_steps:[], relearning_steps:[]});
 const scheduler = fsrs(params);
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 const mediaPath = /^media\/[0-9a-f-]{36}\.(jpg|png|webp|mp3)$/;
-const metadata = {name:'FSRS-6', implementation:'ts-fsrs', version:'5.4.2', params};
+const legacyMetadata = {name:'FSRS-6', implementation:'ts-fsrs', version:'5.4.2', params:legacyParams};
+const metadata = {name:'FSRS-6', implementation:'ts-fsrs', version:'5.4.2', params,
+  policy:{name:'saymore-daily',version:1,unknownRetry:'on-demand',unknownDeadlineHours:24}};
+const day = 86400000;
 const validDate = x => typeof x === 'string' && Number.isFinite(Date.parse(x));
 const fail = message => { throw Error(message); };
 
@@ -55,15 +59,27 @@ export function editCard(card, fields, now = new Date()) {
 
 export function reviewOptions(card, now = new Date()) {
   const options = scheduler.repeat(copy(card.schedule), now);
-  return Object.fromEntries([1,2,3,4].map(rating => [rating,{due:options[rating].card.due.toISOString()}]));
+  return Object.fromEntries([1,2,3,4].map(rating => [rating,{due:withUnknownDeadline(options[rating],rating,now).card.due.toISOString()}]));
 }
 
-export function rateCard(card, rating, now = new Date()) {
+function withUnknownDeadline(result,rating,now){
+  if(rating===1){result.card.due=new Date(now.getTime()+day);result.card.scheduled_days=1;}
+  return result;
+}
+
+export function rateCard(card, rating, now = new Date(), {retryUnknown=false}={}) {
   if (![1,2,3,4].includes(rating)) fail('답변을 선택해주세요.');
-  if (Date.parse(card.schedule.due) > now.getTime()) fail('아직 복습 시간이 아니에요. 미리 보기로 연습할 수 있어요.');
-  const result = scheduler.next(copy(card.schedule), now, rating);
+  const previous=card.reviews.at(-1);
+  const earlyUnknown=retryUnknown&&previous?.rating===1&&Date.parse(previous.at)<=now.getTime();
+  if (Date.parse(card.schedule.due) > now.getTime()&&!earlyUnknown) fail('아직 복습 시간이 아니에요. 미리 보기로 연습할 수 있어요.');
+  const result = withUnknownDeadline(scheduler.next(copy(card.schedule), now, rating),rating,now);
   return {...copy(card), updatedAt:now.toISOString(), schedule:copy(result.card),
     reviews:[...copy(card.reviews), {at:now.toISOString(), rating, due:result.card.due.toISOString(), log:copy(result.log)}]};
+}
+
+export function unknownCards(library,deck=''){
+  return library.cards.filter(c=>(!deck||c.deck===deck)&&c.reviews.at(-1)?.rating===1)
+    .sort((a,b)=>Date.parse(a.reviews.at(-1).at)-Date.parse(b.reviews.at(-1).at));
 }
 
 export function dueCards(library, now = new Date(), deck = '') {
@@ -76,7 +92,9 @@ export function parseLibrary(raw) {
   let lib;
   try { lib = JSON.parse(raw); } catch { fail('library.json을 읽지 못했어요. 원본 파일과 library.backup.json을 확인해주세요.'); }
   if (!lib || lib.format !== 'saymore-library' || lib.version !== 1 || !uuid.test(lib.id) || !Number.isInteger(lib.revision) || lib.revision < 0 || !validDate(lib.updatedAt) || !Array.isArray(lib.cards) || lib.cards.length > 10000) fail('지원하지 않는 카드 보관함 형식입니다. 기존 파일을 변경하지 않았어요.');
-  if (JSON.stringify(lib.scheduler) !== JSON.stringify(metadata)) fail('이 보관함의 복습 설정은 현재 버전에서 지원하지 않습니다.');
+  const settings=JSON.stringify(lib.scheduler);
+  const legacy=settings===JSON.stringify(legacyMetadata);
+  if (!legacy&&settings!==JSON.stringify(metadata)) fail('이 보관함의 복습 설정은 현재 버전에서 지원하지 않습니다.');
   const ids = new Set();
   for (const card of lib.cards) {
     if (!card || !uuid.test(card.id) || ids.has(card.id) || !validDate(card.createdAt) || !validDate(card.updatedAt)) fail('카드 식별자 또는 날짜를 확인해주세요.');
@@ -95,6 +113,8 @@ export function parseLibrary(raw) {
       if (!r || !validDate(r.at) || !validDate(r.due) || ![1,2,3,4].includes(r.rating)) fail('복습 기록의 날짜 또는 답변을 확인해주세요.');
     }
   }
+  // Upgrade known settings on read; keep IDs, existing due dates, and historical logs intact.
+  if(legacy)lib.scheduler=copy(metadata);
   return lib;
 }
 

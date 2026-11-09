@@ -2,6 +2,7 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {existsSync} from 'node:fs';
 import {newLibrary,newCard,editCard,rateCard,copy} from '../static/saymore/cards/model.mjs';
+import {fsrs,generatorParameters} from '../static/saymore/cards/vendor/ts-fsrs.mjs';
 let api;
 if(existsSync('static/saymore/cards/dropbox-store.mjs'))api=await import('../static/saymore/cards/dropbox-store.mjs');
 const fields=answer=>({type:'basic',front:'question',answer});
@@ -172,7 +173,7 @@ test('background note writes stay ordered and a failed note does not prevent lat
     ]);
     assert.ok(firstResult.notes,'review must return its background note completion');
     await started;
-    const later=copy(store.library);later.cards[0]=rateCard(later.cards[0],3,new Date('2026-11-09T00:10:00Z'));
+    const later=copy(store.library);later.cards[0]=rateCard(later.cards[0],3,new Date(later.cards[0].schedule.due));
     const secondResult=await store.commit(later,{},[later.cards[0].id],undefined,{deferNotes:true});
     release();
     assert.equal((await firstResult.notes).warnings.length,1);
@@ -214,4 +215,25 @@ test('failed backup preparation can be retried and never acknowledges a review e
   await store.commit(next);
   assert.equal(store.library.cards[0].reviews.length,1);
   assert.equal(JSON.parse(await cloud.files.get('/cards/backups/library-1.json').text()).cards[0].reviews.length,0);
+});
+
+test('an old Dropbox library upgrades on save while its original snapshot and reviews survive',async()=>{
+  const now=new Date('2026-11-09T00:00:00Z'),library=newLibrary(now);
+  const params=generatorParameters({request_retention:0.9,enable_fuzz:false});
+  library.scheduler={name:'FSRS-6',implementation:'ts-fsrs',version:'5.4.2',params};
+  const card=newCard(fields('legacy'),now),result=fsrs(params).next(card.schedule,now,3);
+  card.schedule=copy(result.card);card.reviews=[{at:now.toISOString(),rating:3,due:result.card.due.toISOString(),log:copy(result.log)}];
+  library.cards=[card];
+  const cloud=memoryCloud(library),original=await cloud.files.get('/cards/library.json').text();
+  const store=await api.DropboxStore.open(cloud);
+  assert.equal(await cloud.files.get('/cards/library.json').text(),original);
+  const next=copy(store.library);next.cards[0]=rateCard(next.cards[0],1,new Date(card.schedule.due));
+  await store.commit(next,{},[card.id]);
+  const saved=JSON.parse(await cloud.files.get('/cards/library.json').text());
+  assert.equal(saved.scheduler.params.enable_short_term,false);
+  assert.equal(saved.scheduler.policy.unknownRetry,'on-demand');
+  assert.equal(saved.cards[0].id,card.id);assert.equal(saved.cards[0].reviews.length,2);
+  assert.deepEqual(saved.cards[0].reviews[0],card.reviews[0]);
+  assert.equal(saved.cards[0].schedule.due,'2026-11-10T00:10:00.000Z');
+  assert.equal(await cloud.files.get('/cards/backups/library-1.json').text(),original);
 });

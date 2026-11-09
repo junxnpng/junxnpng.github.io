@@ -1,6 +1,6 @@
 // Manual browser regression fixture. Copy beside a built cards/index.html and replace
 // that HTML's app.mjs script with this module. Serve only on loopback; no real Dropbox calls.
-import {newLibrary,newCard} from './model.mjs?v=2';
+import {newLibrary,newCard} from './model.mjs?v=3';
 if(!['localhost','127.0.0.1'].includes(location.hostname))throw Error('Local test fixture only');
 const nativeFetch=globalThis.fetch.bind(globalThis),key='saymore.review-speed-test.library';
 const panel=document.createElement('aside');
@@ -60,6 +60,10 @@ globalThis.fetch=async(url,options={})=>{
   void status();return json({rev});
 };
 document.addEventListener('click',event=>{if(event.target.closest('[data-rating]')&&!event.target.closest('button').disabled)started=performance.now();},true);
-new MutationObserver(()=>{if(started&&$('review-card').querySelector('.study-prompt')){elapsed=Math.round(performance.now()-started);started=0;}void status();}).observe($('review-card'),{childList:true,subtree:true});
+new MutationObserver(()=>{
+  const finished=$('review-active').hidden?!$('review-empty').hidden:Boolean($('review-card').querySelector('.study-prompt'));
+  if(started&&finished){elapsed=Math.round(performance.now()-started);started=0;}
+  void status();
+}).observe($('review-view'),{childList:true,subtree:true,attributes:true,attributeFilter:['hidden']});
 new MutationObserver(()=>{listChanges++;void status();}).observe($('card-list'),{childList:true});
-await import('./app.mjs?v=review-speed-1');
+await import('./app.mjs?v=daily-1');
