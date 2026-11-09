@@ -1,4 +1,5 @@
-import {newCard, editCard, rateCard, reviewOptions, dueCards, unknownCards, dateLabel, intervalLabel, ratings} from './model.mjs?v=3';
+import {newCard, editCard, rateCard, reviewOptions, dueCards, dateLabel, intervalLabel, ratings} from './model.mjs?v=3';
+import {studyGroups,cardsInGroup,studyQueue} from './study-groups.mjs?v=1';
 import {FolderStore, rememberedFolder, friendlyError} from './storage.mjs?v=3';
 import {el, showCard} from './view.mjs?v=2';
 import {DropboxStore} from './dropbox-store.mjs?v=6';
@@ -14,6 +15,8 @@ const mediaCache=new MediaCache(path=>store.readMedia(path));
 const inputs=['front','answer','ipa','speech','sentence','memory','tags'];
 const supported=typeof window.showDirectoryPicker==='function';
 let cloud=null,refreshing=false;
+let selectedGroup='all',practiceIndex=0;
+try{selectedGroup=localStorage.getItem('saymore.cards.group.v1')||'all';}catch{/* Selection is optional when browser storage is unavailable. */}
 
 function notice(message,error=false){noticeVersion++;$('notice').textContent=message;$('notice').hidden=!message;$('notice').classList.toggle('error',error);}
 function cards(){return store?.library.cards || [];}
@@ -31,6 +34,9 @@ function controls(){
   $('bundle-panel').hidden=!online;
   $('bundle-data').disabled=busy;
   $('import-bundle').disabled=$('append-bundle').disabled=busy||!online;
+  for(const id of ['deck-filter','review-group','review-mode'])$(id).disabled=busy;
+  $('practice-previous').disabled=busy||practiceIndex===0;
+  $('practice-next').disabled=busy||!activeCard;
   $('save-help').textContent=store ? `저장하면 카드와 복습 일정이 ${online?'Dropbox':'선택한 폴더'}에 남아요.` : '먼저 위의 Dropbox 연결을 눌러주세요. 입력한 내용은 그대로 남아요.';
   $('reload').hidden=!store;
   $('connection').textContent=online ? 'Dropbox 연결됨' : store ? `${store.folder.name} 폴더 연결됨` : '저장소 연결 전';
@@ -40,13 +46,17 @@ function controls(){
   retryControls();
 }
 function retryControls(){
-  const count=store?unknownCards(store.library,$('deck-filter').value).length:0;
-  $('review-unknown').hidden=!count||Boolean(unknownSession&&activeCard);
+  const count=store?studyQueue(cards(),selectedGroup,'unknown').length:0,practice=isPractice();
+  $('review-unknown').hidden=practice||!count||Boolean(unknownSession&&activeCard);
   $('review-unknown').textContent=`모름 다시 보기 · ${count}장`;
-  $('review-normal').hidden=unknownSession===null;
-  $('unknown-help').hidden=!count;
-  $('review-title').textContent=unknownSession?'모름 다시 보기':'오늘 복습';
+  $('review-normal').hidden=practice||unknownSession===null;
+  $('unknown-help').hidden=practice||!count;
+  $('review-title').textContent=practice?'자유 연습':unknownSession?'모름 다시 보기':'오늘 복습';
+  const group=studyGroups(cards()).find(g=>g.key===selectedGroup);
+  $('review-group-help').textContent=store?`${group?.label||'선택한 묶음'} · ${group?.cards.length||0}장 · 지금 복습할 카드 ${studyQueue(cards(),selectedGroup).length}장`:'Dropbox를 연결하면 IPA와 100장씩 나눈 단어 묶음을 고를 수 있어요.';
+  $('review-mode-help').textContent=practice?'선택한 묶음 전체를 순서대로 연습해요. 복습 기록과 다음 날짜는 바뀌지 않아요.':'새 카드와 복습 날짜가 된 카드를 보여줘요. 정답 확인 후 평가하면 기록과 다음 날짜가 저장돼요.';
 }
+function isPractice(){return $('review-mode').value==='practice';}
 function setBusy(value){busy=value;controls();}
 function updateStats(){
   $('total-count').textContent=cards().length;
@@ -54,16 +64,31 @@ function updateStats(){
   $('due-count').textContent=store ? dueCards(store.library).filter(c=>c.schedule.state!==0).length : 0;
 }
 function updateDecks(){
-  const selected=$('deck-filter').value;
   const decks=[...new Set(cards().map(c=>c.deck))].sort((a,b)=>a.localeCompare(b));
-  $('deck-filter').replaceChildren(new Option('모든 덱',''),...decks.map(d=>new Option(d,d)));
-  $('deck-filter').value=decks.includes(selected)?selected:'';
+  const groups=studyGroups(cards());
+  if(!groups.some(g=>g.key===selectedGroup))selectedGroup='all';
+  for(const id of ['deck-filter','review-group']){
+    const select=$(id);select.replaceChildren();
+    for(const section of [...new Set(groups.map(g=>g.section))]){
+      const optgroup=el('optgroup');optgroup.label=section;
+      for(const group of groups.filter(g=>g.section===section))optgroup.append(new Option(`${group.label} · ${group.cards.length}장`,group.key));
+      select.append(optgroup);
+    }
+    select.value=selectedGroup;
+  }
   $('known-decks').replaceChildren(...decks.map(d=>new Option(d,d)));
+}
+function chooseGroup(key){
+  if(busy)return;
+  selectedGroup=key;
+  try{localStorage.setItem('saymore.cards.group.v1',key);}catch{/* The selected group still works for this visit. */}
+  $('deck-filter').value=$('review-group').value=key;
+  if(view==='review')startReview(unknownSession!==null);else renderLibrary();
 }
 function renderLibrary(){
   updateStats();
-  const q=$('search').value.trim().toLocaleLowerCase(), deck=$('deck-filter').value;
-  const list=cards().filter(c=>(!deck||c.deck===deck)&&(!q||[c.answer,c.front,c.sentence,c.memory,c.deck,...c.tags].join(' ').toLocaleLowerCase().includes(q)));
+  const q=$('search').value.trim().toLocaleLowerCase();
+  const list=cardsInGroup(cards(),selectedGroup).filter(c=>!q||[c.answer,c.front,c.sentence,c.memory,c.deck,...c.tags].join(' ').toLocaleLowerCase().includes(q));
   $('card-list').replaceChildren();
   for(const c of list){
     const row=el('article',undefined,'card-row'), title=el('div');
@@ -89,7 +114,7 @@ async function sources(card,withAudio=true){
   return urls;
 }
 function prepareReview(queue){
-  if(store?.prepare)void store.prepare().catch(()=>{/* Saving retries preparation and reports any failure. */});
+  if(!isPractice()&&store?.prepare)void store.prepare().catch(()=>{/* Saving retries preparation and reports any failure. */});
   for(const card of queue.slice(0,2))void sources(card).catch(()=>{/* Opening the card retries a failed prefetch. */});
 }
 function fields(){
@@ -128,14 +153,15 @@ function switchView(next,force=false){
 }
 function startReview(unknown=false){
   if(busy)return;
-  unknownSession=unknown&&store?new Set(unknownCards(store.library,$('deck-filter').value).map(c=>c.id)):null;
-  sessionCount=0;activeCard=null;void showNextReview();
+  if(unknown)$('review-mode').value='due';
+  unknownSession=unknown&&store?new Set(studyQueue(cards(),selectedGroup,'unknown').map(c=>c.id)):null;
+  sessionCount=0;practiceIndex=0;activeCard=null;void showNextReview();
 }
 async function loadFolder(folder,epoch){
   await store?.flushNotes?.();
   const loaded=await FolderStore.open(folder);
   if(epoch!==connectionEpoch)return;
-  store=loaded;clearMediaCache();lastSaved='';activeCard=null;unknownSession=null;
+  store=loaded;clearMediaCache();lastSaved='';activeCard=null;unknownSession=null;practiceIndex=0;
   cachedFolder=loaded.folder;
   try{await rememberedFolder(loaded.folder);}catch{/* Permission handles are optional; folder files remain authoritative. */}
   $('reconnect').hidden=true;
@@ -179,7 +205,7 @@ async function loadCloud(epoch){
   await store?.flushNotes?.();
   const loaded=await DropboxStore.open(cloud);
   if(epoch!==connectionEpoch)return;
-  store=loaded;clearMediaCache();lastSaved='';activeCard=null;unknownSession=null;
+  store=loaded;clearMediaCache();lastSaved='';activeCard=null;unknownSession=null;practiceIndex=0;
   $('reconnect').hidden=true;updateDecks();renderLibrary();
   notice(`${cards().length}장의 카드와 복습 기록을 Dropbox에서 불러왔어요.`);
   if(view==='review')await showNextReview();
@@ -291,28 +317,38 @@ async function openDetail(id){
   history.append(el('p','미리 보기는 복습 기록을 바꾸지 않아요.'));$('detail-history').replaceChildren(history);$('detail-dialog').showModal();
 }
 async function showNextReview(){
-  const request=++reviewRequest,owner=store;
+  const request=++reviewRequest,owner=store,practice=isPractice();
   const queue=!store?[]:unknownSession?
-    unknownCards(store.library,$('deck-filter').value).filter(c=>unknownSession.has(c.id)):
-    dueCards(store.library,new Date(),$('deck-filter').value);
-  activeCard=queue[0]||null;revealed=false;
+    studyQueue(cards(),selectedGroup,'unknown').filter(c=>unknownSession.has(c.id)):
+    studyQueue(cards(),selectedGroup,practice?'practice':'due');
+  const remaining=practice?queue.slice(practiceIndex):queue;
+  activeCard=remaining[0]||null;revealed=false;
   retryControls();$('check-due').hidden=unknownSession!==null;
+  $('check-due').textContent=practice?'처음부터 다시 연습':'다시 확인';
   $('reveal').hidden=true;$('rating-area').hidden=true;
+  $('reveal').textContent='정답 확인';$('practice-actions').hidden=!practice;
   $('review-active').hidden=!activeCard;$('review-empty').hidden=Boolean(activeCard);
-  $('review-progress').textContent=`이번에 복습한 카드 ${sessionCount}장`;$('review-deck').textContent=activeCard?.deck || '';
+  $('practice-previous').disabled=busy||practiceIndex===0;
+  $('practice-next').disabled=busy||!activeCard;
+  $('review-progress').textContent=practice?`연습 ${Math.min(practiceIndex+1,queue.length)} / ${queue.length}장`:`이번에 복습한 카드 ${sessionCount}장`;
+  $('review-deck').textContent=studyGroups(cards()).find(g=>g.key===selectedGroup)?.label||'';
   if(!activeCard){
+    if(practice&&store){
+      $('review-empty-title').textContent=queue.length?'선택한 묶음 연습을 마쳤어요.':'선택한 묶음에 카드가 없어요.';
+      $('next-due').textContent=queue.length?`${queue.length}장을 모두 봤어요. 다시 연습하거나 다른 묶음을 골라보세요. 복습 기록과 일정은 그대로예요.`:'다른 묶음을 선택하거나 카드를 추가해보세요.';return;
+    }
     if(unknownSession){
-      const remaining=unknownCards(store.library,$('deck-filter').value).length;
+      const remaining=studyQueue(cards(),selectedGroup,'unknown').length;
       $('review-empty-title').textContent=remaining?'모아둔 모름 카드를 한 번씩 모두 봤어요.':'모름 카드가 남아 있지 않아요.';
       $('next-due').textContent=remaining?'아직 모르는 카드는 원할 때 다시 꺼내보세요. 24시간이 지나면 오늘 복습에도 포함돼요.':'다음 복습 날짜를 예약했어요. “오늘 복습으로”에서 다른 카드도 공부할 수 있어요.';return;
     }
-    $('review-empty-title').textContent=store?'지금 복습할 카드가 없어요.':'먼저 폴더를 연결해주세요.';
-    const future=cards().filter(c=>(!$('deck-filter').value||c.deck===$('deck-filter').value)&&Date.parse(c.schedule.due)>Date.now()).sort((a,b)=>Date.parse(a.schedule.due)-Date.parse(b.schedule.due))[0];
-    $('next-due').textContent=future?`다음 복습은 ${dateLabel(future.schedule.due)}예요.`:store?'카드를 추가하거나 모든 덱을 선택해보세요.':'폴더에 저장된 카드와 날짜를 읽고 이어서 학습해요.';return;
+    $('review-empty-title').textContent=store?'지금 복습할 카드가 없어요.':'먼저 Dropbox를 연결해주세요.';
+    const future=cardsInGroup(cards(),selectedGroup).filter(c=>Date.parse(c.schedule.due)>Date.now()).sort((a,b)=>Date.parse(a.schedule.due)-Date.parse(b.schedule.due))[0];
+    $('next-due').textContent=future?`다음 복습은 ${dateLabel(future.schedule.due)}예요. 지금 보고 싶다면 위에서 “자유 연습”을 선택하세요.`:store?'다른 묶음을 선택하거나 카드를 추가해보세요.':'연결하면 저장된 카드와 복습 날짜를 불러와요.';return;
   }
   const card=activeCard,front=sources(card,false);
   $('review-card').textContent='카드를 불러오는 중…';
-  prepareReview(queue);
+  prepareReview(remaining);
   const current=()=>request===reviewRequest&&owner===store&&view==='review';
   try{
     const urls=await front;if(!current())return;
@@ -323,13 +359,17 @@ async function reveal(){
   if(busy||!activeCard)return;
   setBusy(true);
   try{
-    showCard($('review-card'),activeCard,await sources(activeCard),true);revealed=true;
+    const back=!isPractice()||!revealed;
+    showCard($('review-card'),activeCard,await sources(activeCard),back);revealed=back;
+    if(isPractice()){
+      $('reveal').textContent=back?'앞면 보기':'정답 확인';$('rating-area').hidden=true;return;
+    }
     const options=reviewOptions(activeCard);for(const b of document.querySelectorAll('[data-rating]'))b.querySelector('small').textContent=b.dataset.rating==='1'?'1일 내 언제든':intervalLabel(options[b.dataset.rating].due);
     $('reveal').hidden=true;$('rating-area').hidden=false;
   }catch(e){notice(friendlyError(e),true);}finally{setBusy(false);}
 }
 async function grade(rating){
-  if(busy||!store||!activeCard||!revealed)return;setBusy(true);
+  if(busy||isPractice()||!store||!activeCard||!revealed)return;setBusy(true);
   notice('복습 기록을 저장하고 있어요…');
   try{
     const owner=store;
@@ -344,6 +384,11 @@ async function grade(rating){
     if(result.notes)void result.notes.then(reportNotes,error=>reportNotes({warnings:[{message:error.message}]}));
     await showNextReview();
   }catch(e){notice(friendlyError(e),true);}finally{setBusy(false);}
+}
+function movePractice(step){
+  if(busy||!store||!isPractice())return;
+  practiceIndex=Math.max(0,Math.min(practiceIndex+step,cardsInGroup(cards(),selectedGroup).length));
+  void showNextReview();
 }
 
 $('connect').addEventListener('click',()=>connect());$('reconnect').addEventListener('click',()=>connect(true));$('reload').addEventListener('click',reload);
@@ -387,7 +432,9 @@ $('import-bundle').addEventListener('click',()=>importBundle(false));
 $('append-bundle').addEventListener('click',()=>importBundle(true));
 for(const b of document.querySelectorAll('[data-view]'))b.addEventListener('click',()=>{if(b.dataset.view==='add'&&view!=='add')resetEditor();switchView(b.dataset.view);});
 for(const b of document.querySelectorAll('[data-open-add]'))b.addEventListener('click',()=>switchView('add'));
-$('search').addEventListener('input',renderLibrary);$('deck-filter').addEventListener('change',renderLibrary);
+$('search').addEventListener('input',renderLibrary);
+for(const id of ['deck-filter','review-group'])$(id).addEventListener('change',()=>chooseGroup($(id).value));
+$('review-mode').addEventListener('change',()=>startReview());
 $('card-form').addEventListener('input',()=>{dirty=true;renderPreview();});$('card-form').addEventListener('submit',saveCard);
 $('card-form').addEventListener('keydown',e=>{if((e.metaKey||e.ctrlKey)&&e.key==='Enter'){e.preventDefault();if(!busy&&store)$('card-form').requestSubmit(editedId?$('save-list'):$('save-next'));}});
 $('preview-front').addEventListener('click',()=>{previewBack=false;renderPreview();});$('preview-back').addEventListener('click',()=>{previewBack=true;renderPreview();});
@@ -399,12 +446,13 @@ for(const type of ['image','audio']){
 $('fill-sample').addEventListener('click',fillSample);
 $('close-detail').addEventListener('click',()=>$('detail-dialog').close());
 $('detail-flip').addEventListener('click',async()=>{if(!detailCard)return;try{detailBack=!detailBack;showCard($('detail-card'),detailCard,await sources(detailCard),detailBack);$('detail-flip').textContent=detailBack?'앞면 보기':'뒷면 보기';}catch(e){notice(friendlyError(e),true);}});
-$('reveal').addEventListener('click',reveal);$('check-due').addEventListener('click',showNextReview);
+$('reveal').addEventListener('click',reveal);$('check-due').addEventListener('click',()=>isPractice()?startReview():showNextReview());
+$('practice-previous').addEventListener('click',()=>movePractice(-1));$('practice-next').addEventListener('click',()=>movePractice(1));
 $('review-unknown').addEventListener('click',()=>startReview(true));$('review-normal').addEventListener('click',()=>startReview());
 for(const b of document.querySelectorAll('[data-rating]'))b.addEventListener('click',()=>grade(Number(b.dataset.rating)));
 $('repair-notes').addEventListener('click',async()=>{if(!store||busy)return;setBusy(true);try{const result=await store.exportNotes();$('repair-notes').hidden=result.warnings.length===0;saved(result,'읽기용 노트를 다시 저장했어요.');}catch(e){notice(friendlyError(e),true);}finally{setBusy(false);}});
 window.addEventListener('beforeunload',e=>{if(dirty||busy){e.preventDefault();e.returnValue='';}});
-document.addEventListener('keydown',e=>{if(view!=='review'||busy||$('detail-dialog').open||/INPUT|TEXTAREA|SELECT/.test(e.target.tagName))return;if(e.code==='Space'){if(e.target.closest('button,a,summary'))return;e.preventDefault();if(!revealed)reveal();}else if(revealed&&/^[1-4]$/.test(e.key))grade(Number(e.key));});
+document.addEventListener('keydown',e=>{if(view!=='review'||busy||$('detail-dialog').open||/INPUT|TEXTAREA|SELECT/.test(e.target.tagName))return;if(e.code==='Space'){if(e.target.closest('button,a,summary'))return;e.preventDefault();if(!revealed||isPractice())reveal();}else if(!isPractice()&&revealed&&/^[1-4]$/.test(e.key))grade(Number(e.key));});
 setInterval(()=>{if(store&&!busy)updateStats();void refreshCloud();},30000);
 window.addEventListener('pageshow',()=>void refreshCloud());
 window.addEventListener('online',()=>void refreshCloud());

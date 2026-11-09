@@ -6,8 +6,8 @@
   <meta name="color-scheme" content="light">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' blob: data:; media-src 'self' blob:; connect-src 'self' https://api.dropboxapi.com https://content.dropboxapi.com; object-src 'none'; base-uri 'self'; form-action 'none'">
   <title>내 단어 카드 · Say More</title>
-  <link rel="icon" href="/saymore/icons/speech.svg"><link rel="stylesheet" href="./app.css?v=daily-1">
-  <script type="module" src="./app.mjs?v=daily-1"></script>
+  <link rel="icon" href="/saymore/icons/speech.svg"><link rel="stylesheet" href="./app.css?v=groups-1">
+  <script type="module" src="./app.mjs?v=groups-1"></script>
 </head>
 <body>
 <div class="shell">
@@ -17,11 +17,11 @@
     <section class="storage-bar" aria-label="학습 기록 저장"><div><strong id="connection">저장소 연결 전</strong><p id="storage-copy">같은 Dropbox 계정을 연결하면 아이폰과 맥에서 이어서 공부할 수 있어요.</p><p id="browser-support" class="small">카드·첨부파일·복습 기록은 내 Dropbox에 저장해요.</p></div><div class="storage-actions"><button id="connect-dropbox" class="primary">Dropbox 연결</button><button id="reload" class="text-button" hidden>저장된 내용 다시 읽기</button><details><summary>저장 설정</summary><button id="connect" class="secondary">로컬 폴더 연결</button><button id="reconnect" class="secondary" hidden>이전 폴더 연결</button><label class="import-folder-label" id="import-folder-label" hidden>기존 카드 폴더에서 가져오기<input id="import-folder" type="file" webkitdirectory multiple></label><button id="disconnect-dropbox" class="text-button" hidden>이 브라우저 연결 해제</button></details></div></section>
     <details id="bundle-panel" class="bundle-panel" hidden><summary>카드 묶음 가져오기</summary><p class="small">카드와 첨부파일이 함께 들어 있는 내용을 붙여넣으세요. ‘새 덱 추가’는 기존 카드와 복습 기록을 유지하고 새로운 카드만 더해요. 같은 카드 번호는 건너뜁니다. ‘백업 복원’은 비어 있는 보관함으로 옮길 때 사용하세요.</p><label>카드 백업 내용<textarea id="bundle-data" rows="4" spellcheck="false" autocomplete="off" maxlength="52428800"></textarea></label><button id="append-bundle" class="primary">새 덱 추가</button> <button id="import-bundle" class="secondary">백업 복원</button></details>
     <p id="notice" role="status" class="notice" hidden></p><button id="repair-notes" class="text-button" hidden>노트 다시 저장</button>
-    <nav class="workspace-nav" aria-label="카드 작업"><button data-view="library" aria-current="page">카드 목록</button><button data-view="add">카드 추가</button><button data-view="review">오늘 복습</button></nav>
+    <nav class="workspace-nav" aria-label="카드 작업"><button data-view="library" aria-current="page">카드 목록</button><button data-view="add">카드 추가</button><button data-view="review">복습하기</button></nav>
 
     <section id="library-view" aria-labelledby="library-title">
       <div class="section-heading"><h2 id="library-title">모아둔 카드</h2><span id="list-count" class="small"></span></div>
-      <div class="filters"><label class="search">단어·태그 찾기<input id="search" type="search" placeholder="단어, 예문, 태그로 검색"></label><label>덱<select id="deck-filter"><option value="">모든 덱</option></select></label></div>
+      <div class="filters study-filters"><label class="search">단어·태그 찾기<input id="search" type="search" placeholder="단어, 예문, 태그로 검색"></label><label>학습할 묶음<select id="deck-filter"><option value="all">전체 카드</option></select></label></div>
       <div id="card-list" class="card-list"></div>
       <div id="empty-library" class="empty"><p class="empty-symbol" aria-hidden="true">Aa</p><h3>첫 카드를 만들어보세요.</h3><p>사진이나 질문을 앞면에, 떠올릴 단어를 뒷면에 담아요.</p><button class="primary" data-open-add>새 카드 만들기</button><a href="/saymore/card-demo/">coffee 예시 먼저 보기 ↗</a></div>
     </section>
@@ -43,8 +43,13 @@
 
     <section id="review-view" aria-labelledby="review-title" hidden>
       <div class="section-heading"><div><h2 id="review-title">오늘 복습</h2><p id="review-progress" class="small"></p></div><span id="review-deck" class="deck-label"></span></div>
+      <div class="review-controls">
+        <label>복습할 묶음<select id="review-group" aria-describedby="review-group-help"><option value="all">전체 카드</option></select></label>
+        <label>학습 방식<select id="review-mode" aria-describedby="review-mode-help"><option value="due">예정된 복습</option><option value="practice">자유 연습 · 전체 카드</option></select></label>
+        <p id="review-group-help" class="small"></p><p id="review-mode-help" class="small"></p>
+      </div>
       <div class="review-actions"><button id="review-unknown" class="secondary" hidden>모름 다시 보기</button><button id="review-normal" class="text-button" hidden>오늘 복습으로</button><p id="unknown-help" class="small" hidden>모름 카드는 원할 때 다시 꺼내보세요. 24시간 뒤에는 오늘 복습에도 포함돼요.</p></div>
-      <div id="review-active" class="review-workspace" hidden><div id="review-card"></div><button id="reveal" class="primary wide">정답 확인</button><div id="rating-area" hidden><p class="small">얼마나 잘 떠올렸나요?</p><div class="rating-buttons"><button data-rating="1">모름<small></small></button><button data-rating="2">어려움<small></small></button><button data-rating="3">알맞음<small></small></button><button data-rating="4">쉬움<small></small></button></div><p class="small">모름은 1일 내에 원할 때 다시 볼 수 있어요. 나머지는 일 단위로 다음 복습을 예약해요.</p></div></div>
+      <div id="review-active" class="review-workspace" hidden><div id="review-card"></div><button id="reveal" class="primary wide">정답 확인</button><div id="practice-actions" class="practice-actions" hidden><button id="practice-previous" class="secondary">← 이전 카드</button><button id="practice-next" class="secondary">다음 카드 →</button></div><div id="rating-area" hidden><p class="small">얼마나 잘 떠올렸나요?</p><div class="rating-buttons"><button data-rating="1">모름<small></small></button><button data-rating="2">어려움<small></small></button><button data-rating="3">알맞음<small></small></button><button data-rating="4">쉬움<small></small></button></div><p class="small">모름은 1일 내에 원할 때 다시 볼 수 있어요. 나머지는 일 단위로 다음 복습을 예약해요.</p></div></div>
       <div id="review-empty" class="empty"><p class="empty-symbol" aria-hidden="true">✓</p><h3 id="review-empty-title">지금 복습할 카드가 없어요.</h3><p id="next-due"></p><button id="check-due" class="secondary">다시 확인</button></div>
     </section>
   </main>

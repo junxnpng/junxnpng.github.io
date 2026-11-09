@@ -1,24 +1,26 @@
 // Manual browser regression fixture. Copy beside a built cards/index.html and replace
 // that HTML's app.mjs script with this module. Serve only on loopback; no real Dropbox calls.
-import {newLibrary,newCard} from './model.mjs?v=3';
+import {newLibrary,newCard,rateCard} from './model.mjs?v=3';
 if(!['localhost','127.0.0.1'].includes(location.hostname))throw Error('Local test fixture only');
-const nativeFetch=globalThis.fetch.bind(globalThis),key='saymore.review-speed-test.library';
+const groupedFixture=new URLSearchParams(location.search).has('groups');
+const nativeFetch=globalThis.fetch.bind(globalThis),key=groupedFixture?'saymore.review-groups-test.library':'saymore.review-speed-test.library';
 const panel=document.createElement('aside');
 panel.style.cssText='padding:16px;background:#fff6cd;color:#222;position:relative;z-index:2';
-panel.innerHTML='<strong>LOCAL TEST · 500 synthetic cards · 80ms/request</strong><p><label><input id="qa-audio" type="checkbox" checked> Hold audio</label> <label><input id="qa-notes" type="checkbox" checked> Hold reading notes</label> <label><input id="qa-fail-save" type="checkbox"> Fail next record save</label> <label><input id="qa-fail-note" type="checkbox"> Fail next note save</label></p><output id="qa-status"></output><pre id="qa-errors"></pre>';
+panel.innerHTML=`<strong>LOCAL TEST · ${groupedFixture?'67 IPA + 629 words + 2 personal cards':'500 synthetic cards'} · 80ms/request</strong><p><label><input id="qa-audio" type="checkbox" ${groupedFixture?'':'checked'}> Hold audio</label> <label><input id="qa-notes" type="checkbox" ${groupedFixture?'':'checked'}> Hold reading notes</label> <label><input id="qa-fail-save" type="checkbox"> Fail next record save</label> <label><input id="qa-fail-note" type="checkbox"> Fail next note save</label></p><output id="qa-status"></output><pre id="qa-errors"></pre>`;
 document.body.prepend(panel);
 const $=id=>document.getElementById(id),imagePath='media/00000000-0000-0000-0000-000000000001.jpg',audioPath='media/00000000-0000-0000-0000-000000000002.mp3';
 const now=new Date(),seed=newLibrary(now);
-seed.cards=Array.from({length:500},(_,i)=>newCard({type:'basic',deck:'속도 검증',front:`테스트 카드 ${i+1}`,answer:`answer ${i+1}`,image:i<3?{path:imagePath,credit:'fixture'}:null,audio:i<3?{path:audioPath,credit:'fixture'}:null},now));
+seed.cards=Array.from({length:groupedFixture?698:500},(_,i)=>newCard({type:'basic',deck:groupedFixture?(i<67?'IPA 01 · 모음':i<696?'Fluent Forever · First 625':'내 단어'): '속도 검증',tags:groupedFixture?(i<67?['IPA']:i<696?['FF625']:[]):[],front:`테스트 카드 ${i+1}`,answer:groupedFixture?(i<67?`IPA ${i+1}`:i<696?`word ${i-66}`:`personal ${i-695}`):`answer ${i+1}`,image:i<3?{path:imagePath,credit:'fixture'}:null,audio:i<3?{path:audioPath,credit:'fixture'}:null},now));
+if(groupedFixture){for(const [index,rating]of [[0,1],[167,4],[168,1]])seed.cards[index]=rateCard(seed.cards[index],rating,now);}
 const files=new Map([['/cards/library.json',{blob:new Blob([localStorage.getItem(key)||JSON.stringify(seed)]),rev:'1'}]]);
-let revision=1,pendingNotes=0,pendingAudio=0,started=0,elapsed=null,listChanges=0,requests=0;
+let revision=1,pendingNotes=0,pendingAudio=0,started=0,elapsed=null,listChanges=0,requests=0,canonicalWrites=0;
 const errors=[];
 const delay=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 const json=(value,status=200)=>new Response(JSON.stringify(value),{status,headers:{'Content-Type':'application/json'}});
 const conflict=()=>json({error_summary:'path/conflict'},409);
 async function status(){
   const library=JSON.parse(await files.get('/cards/library.json').blob.text());
-  $('qa-status').textContent=`Transition: ${elapsed??'—'} ms | Saved reviews: ${library.cards.reduce((n,c)=>n+c.reviews.length,0)} | Pending notes: ${pendingNotes} | Pending audio: ${pendingAudio} | Library rebuilds: ${listChanges} | Requests: ${requests}`;
+  $('qa-status').textContent=`Transition: ${elapsed??'—'} ms | Saved reviews: ${library.cards.reduce((n,c)=>n+c.reviews.length,0)} | Canonical writes: ${canonicalWrites} | Pending notes: ${pendingNotes} | Pending audio: ${pendingAudio} | Library rebuilds: ${listChanges} | Requests: ${requests}`;
 }
 function failure(error){errors.push(String(error));$('qa-errors').textContent=errors.join('\n');}
 window.addEventListener('error',e=>failure(e.message));
@@ -56,7 +58,7 @@ globalThis.fetch=async(url,options={})=>{
   if((previous?.rev||null)!==expected)return conflict();
   const blob=options.body instanceof Blob?options.body:new Blob([options.body]),rev=String(++revision);
   files.set(path,{blob,rev});
-  if(path==='/cards/library.json')localStorage.setItem(key,await blob.text());
+  if(path==='/cards/library.json'){canonicalWrites++;localStorage.setItem(key,await blob.text());}
   void status();return json({rev});
 };
 document.addEventListener('click',event=>{if(event.target.closest('[data-rating]')&&!event.target.closest('button').disabled)started=performance.now();},true);
@@ -66,4 +68,4 @@ new MutationObserver(()=>{
   void status();
 }).observe($('review-view'),{childList:true,subtree:true,attributes:true,attributeFilter:['hidden']});
 new MutationObserver(()=>{listChanges++;void status();}).observe($('card-list'),{childList:true});
-await import('./app.mjs?v=daily-1');
+await import('./app.mjs?v=groups-1');

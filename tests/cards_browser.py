@@ -45,7 +45,7 @@ with sync_playwright() as p:
     row.get_by_role('button',name='수정',exact=True).click()
     page.get_by_label('예문',exact=True).fill('I drink coffee.')
     page.get_by_role('button',name='저장하고 목록 보기',exact=True).click()
-    page.get_by_role('button',name='오늘 복습',exact=True).click()
+    page.get_by_role('button',name='복습하기',exact=True).click()
     page.get_by_role('button',name='정답 확인',exact=True).click()
     expect(page.locator('#review-card')).to_contain_text('coffee')
     page.evaluate('''() => {
