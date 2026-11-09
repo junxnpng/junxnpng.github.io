@@ -1,22 +1,24 @@
 import {newCard, editCard, rateCard, reviewOptions, dueCards, dateLabel, intervalLabel, ratings} from './model.mjs?v=2';
 import {FolderStore, rememberedFolder, friendlyError} from './storage.mjs?v=2';
 import {el, showCard} from './view.mjs?v=2';
-import {DropboxStore} from './dropbox-store.mjs?v=4';
+import {DropboxStore} from './dropbox-store.mjs?v=5';
+import {MediaCache} from './media-cache.mjs?v=1';
 import {parseBundle} from './bundle.mjs?v=1';
 import {openDropbox} from '../shared/dropbox.mjs?v=2';
 
 const $=id=>document.getElementById(id);
 let store=null, cachedFolder=null, view='library', busy=false, dirty=false, editedId=null, previewBack=false;
 let draftMedia={image:null,audio:null}, activeCard=null, revealed=false, sessionCount=0, detailCard=null, detailBack=false;
-let connectionEpoch=0, lastSaved='', mediaCache=new Map(), draftURLs=new Set();
+let connectionEpoch=0, reviewRequest=0, noticeVersion=0, lastSaved='', draftURLs=new Set();
+const mediaCache=new MediaCache(path=>store.readMedia(path));
 const inputs=['front','answer','ipa','speech','sentence','memory','tags'];
 const supported=typeof window.showDirectoryPicker==='function';
 let cloud=null,refreshing=false;
 
-function notice(message,error=false){$('notice').textContent=message;$('notice').hidden=!message;$('notice').classList.toggle('error',error);}
+function notice(message,error=false){noticeVersion++;$('notice').textContent=message;$('notice').hidden=!message;$('notice').classList.toggle('error',error);}
 function cards(){return store?.library.cards || [];}
 function controls(){
-  for(const button of document.querySelectorAll('button'))button.disabled=busy;
+  for(const button of document.querySelectorAll(view==='library'?'button':'button:not(#card-list button)'))button.disabled=busy;
   for(const input of $('card-form').querySelectorAll('input,textarea,select'))input.disabled=busy;
   $('connect').disabled=busy||!supported;
   $('save-next').disabled=$('save-list').disabled=busy||!store;
@@ -69,14 +71,17 @@ function renderLibrary(){
   $('empty-library').querySelector('h3').textContent=cards().length?'검색에 맞는 카드가 없어요.':'첫 카드를 만들어보세요.';
   controls();
 }
-function clearMediaCache(){for(const url of mediaCache.values())URL.revokeObjectURL(url);mediaCache.clear();}
+function clearMediaCache(){mediaCache.clear();}
 function clearDraft(){for(const url of draftURLs)URL.revokeObjectURL(url);draftURLs.clear();draftMedia={image:null,audio:null};}
-async function source(path){
-  if(!mediaCache.has(path))mediaCache.set(path,URL.createObjectURL(await store.readMedia(path)));
-  return mediaCache.get(path);
+function source(path){return mediaCache.source(path);}
+async function sources(card,withAudio=true){
+  const urls={};
+  await Promise.all((withAudio?['image','audio']:['image']).map(async type=>{if(card[type])urls[type]=await source(card[type].path);}));
+  return urls;
 }
-async function sources(card){
-  const urls={};for(const type of ['image','audio'])if(card[type])urls[type]=await source(card[type].path);return urls;
+function prepareReview(queue){
+  if(store?.prepare)void store.prepare().catch(()=>{/* Saving retries preparation and reports any failure. */});
+  for(const card of queue.slice(0,2))void sources(card).catch(()=>{/* Opening the card retries a failed prefetch. */});
 }
 function fields(){
   const result={type:$('card-type').value,deck:$('deck').value};
@@ -107,12 +112,13 @@ function switchView(next,force=false){
   for(const name of ['library','add','review'])$(`${name}-view`).hidden=name!==view;
   for(const b of document.querySelectorAll('[data-view]')){if(b.dataset.view===view)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');}
   history.replaceState(null,'',view==='add'?'#add':view==='review'?'#review':location.pathname);
-  if(view==='library'){renderLibrary();}
-  if(view==='add'){renderPreview();controls();}
+  if(view==='library'){updateDecks();renderLibrary();}
+  if(view==='add'){updateDecks();renderPreview();controls();}
   if(view==='review'){sessionCount=0;activeCard=null;showNextReview();}
   return true;
 }
 async function loadFolder(folder,epoch){
+  await store?.flushNotes?.();
   const loaded=await FolderStore.open(folder);
   if(epoch!==connectionEpoch)return;
   store=loaded;clearMediaCache();lastSaved='';activeCard=null;
@@ -144,12 +150,19 @@ async function reload(){
   try{if(store.kind==='dropbox')await loadCloud(epoch);else await loadFolder(store.folder,epoch);if(dirty)notice('최신 카드와 기록을 불러왔어요. 입력 중인 내용은 그대로 있어요. 검토한 뒤 저장해주세요.');}
   catch(e){notice(friendlyError(e),true);}finally{setBusy(false);}
 }
-function saved(result,message){
-  lastSaved=dateLabel(new Date().toISOString());updateDecks();renderLibrary();
-  $('repair-notes').hidden=result.warnings.length===0;
-  notice(result.warnings.length ? '카드와 복습 기록은 저장했어요. 읽기용 노트 일부는 갱신하지 못했어요. “노트 다시 저장”으로 다시 시도해주세요.' : message, result.warnings.length>0);
+function noteWarnings(result,announce=true){
+  if(!result.warnings.length)return false;
+  $('repair-notes').hidden=false;
+  if(announce)notice('카드와 복습 기록은 저장했어요. 읽기용 노트 일부는 갱신하지 못했어요. “노트 다시 저장”으로 다시 시도해주세요.',true);
+  return true;
+}
+function saved(result,message,{review=false}={}){
+  lastSaved=dateLabel(new Date().toISOString());
+  if(review)updateStats();else{updateDecks();renderLibrary();}
+  if(!noteWarnings(result))notice(message);
 }
 async function loadCloud(epoch){
+  await store?.flushNotes?.();
   const loaded=await DropboxStore.open(cloud);
   if(epoch!==connectionEpoch)return;
   store=loaded;clearMediaCache();lastSaved='';activeCard=null;
@@ -172,13 +185,13 @@ async function connectCloud(){
   }catch(e){notice(friendlyError(e),true);}finally{setBusy(false);}
 }
 async function refreshCloud(){
-  if(refreshing||busy||dirty||(view==='review'&&revealed)||document.hidden||store?.kind!=='dropbox'||!cloud?.connected)return;
+  if(refreshing||busy||dirty||store?.pendingNotes||(view==='review'&&revealed)||document.hidden||store?.kind!=='dropbox'||!cloud?.connected)return;
   refreshing=true;
   const previous=store,epoch=connectionEpoch;
   let applied=false;
   try{
     const next=await DropboxStore.open(cloud);
-    if(busy||dirty||(view==='review'&&revealed)||store!==previous||epoch!==connectionEpoch||next.rev===previous.rev)return;
+    if(busy||dirty||store?.pendingNotes||(view==='review'&&revealed)||store!==previous||epoch!==connectionEpoch||next.rev===previous.rev)return;
     applied=true;setBusy(true);
     store=next;clearMediaCache();updateDecks();renderLibrary();
     if(view==='review')await showNextReview();
@@ -264,7 +277,10 @@ async function openDetail(id){
   history.append(el('p','미리 보기는 복습 기록을 바꾸지 않아요.'));$('detail-history').replaceChildren(history);$('detail-dialog').showModal();
 }
 async function showNextReview(){
-  activeCard=store ? dueCards(store.library,new Date(),$('deck-filter').value)[0] : null;revealed=false;
+  const request=++reviewRequest,owner=store;
+  const queue=store?dueCards(store.library,new Date(),$('deck-filter').value):[];
+  activeCard=queue[0]||null;revealed=false;
+  $('reveal').hidden=true;$('rating-area').hidden=true;
   $('review-active').hidden=!activeCard;$('review-empty').hidden=Boolean(activeCard);
   $('review-progress').textContent=`이번에 복습한 카드 ${sessionCount}장`;$('review-deck').textContent=activeCard?.deck || '';
   if(!activeCard){
@@ -272,8 +288,14 @@ async function showNextReview(){
     const future=cards().filter(c=>(!$('deck-filter').value||c.deck===$('deck-filter').value)&&Date.parse(c.schedule.due)>Date.now()).sort((a,b)=>Date.parse(a.schedule.due)-Date.parse(b.schedule.due))[0];
     $('next-due').textContent=future?`다음 복습은 ${dateLabel(future.schedule.due)}예요.`:store?'카드를 추가하거나 모든 덱을 선택해보세요.':'폴더에 저장된 카드와 날짜를 읽고 이어서 학습해요.';return;
   }
-  try{showCard($('review-card'),activeCard,await sources(activeCard),false);$('reveal').hidden=false;$('rating-area').hidden=true;}
-  catch(e){notice(friendlyError(e),true);activeCard=null;$('review-active').hidden=true;$('review-empty').hidden=false;$('review-empty-title').textContent='첨부파일을 확인해주세요.';$('next-due').textContent='카드 목록에서 해당 카드의 사진·음성을 다시 선택해주세요.';}
+  const card=activeCard,front=sources(card,false);
+  $('review-card').textContent='카드를 불러오는 중…';
+  prepareReview(queue);
+  const current=()=>request===reviewRequest&&owner===store&&view==='review';
+  try{
+    const urls=await front;if(!current())return;
+    showCard($('review-card'),card,urls,false);$('reveal').hidden=false;
+  }catch(e){if(!current())return;notice(friendlyError(e),true);activeCard=null;$('review-active').hidden=true;$('review-empty').hidden=false;$('review-empty-title').textContent='첨부파일을 확인해주세요.';$('next-due').textContent='카드 목록에서 해당 카드의 사진·음성을 다시 선택해주세요.';}
 }
 async function reveal(){
   if(busy||!activeCard)return;
@@ -286,21 +308,29 @@ async function reveal(){
 }
 async function grade(rating){
   if(busy||!store||!activeCard||!revealed)return;setBusy(true);
+  notice('복습 기록을 저장하고 있어요…');
   try{
+    const owner=store;
     const updated=rateCard(activeCard,rating);
     const next=cards().map(c=>c.id===updated.id?updated:c);
-    const result=await store.commit({...store.library,cards:next},{},[updated.id]);
-    sessionCount++;saved(result,`복습 기록을 저장했어요. 다음 복습: ${dateLabel(updated.schedule.due)}`);
+    const result=await store.commit({...store.library,cards:next},{},[updated.id],undefined,{deferNotes:true});
+    sessionCount++;saved(result,`복습 기록을 저장했어요. 다음 복습: ${dateLabel(updated.schedule.due)}`,{review:true});
+    const savedNotice=noticeVersion;
+    const reportNotes=notes=>{if(store===owner)noteWarnings(notes,noticeVersion===savedNotice);};
+    if(result.notes)void result.notes.then(reportNotes,error=>reportNotes({warnings:[{message:error.message}]}));
     await showNextReview();
   }catch(e){notice(friendlyError(e),true);}finally{setBusy(false);}
 }
 
 $('connect').addEventListener('click',()=>connect());$('reconnect').addEventListener('click',()=>connect(true));$('reload').addEventListener('click',reload);
 $('connect-dropbox').addEventListener('click',connectCloud);
-$('disconnect-dropbox').addEventListener('click',()=>{
-  if(busy)return;cloud?.disconnect();connectionEpoch++;
-  if(store?.kind==='dropbox'){store=null;clearMediaCache();activeCard=null;renderLibrary();if(view==='review')showNextReview();}
-  controls();notice('이 브라우저의 연결을 해제했어요. Dropbox에 저장된 카드와 기록은 그대로 있어요.');
+$('disconnect-dropbox').addEventListener('click',async()=>{
+  if(busy)return;setBusy(true);
+  try{
+    await store?.flushNotes?.();cloud?.disconnect();connectionEpoch++;
+    if(store?.kind==='dropbox'){store=null;clearMediaCache();activeCard=null;renderLibrary();if(view==='review')showNextReview();}
+    notice('이 브라우저의 연결을 해제했어요. Dropbox에 저장된 카드와 기록은 그대로 있어요.');
+  }catch(e){notice(friendlyError(e),true);}finally{setBusy(false);}
 });
 $('import-folder').addEventListener('change',async event=>{
   const files=[...event.target.files];if(!files.length||busy||store?.kind!=='dropbox')return;
@@ -347,7 +377,7 @@ $('close-detail').addEventListener('click',()=>$('detail-dialog').close());
 $('detail-flip').addEventListener('click',async()=>{if(!detailCard)return;try{detailBack=!detailBack;showCard($('detail-card'),detailCard,await sources(detailCard),detailBack);$('detail-flip').textContent=detailBack?'앞면 보기':'뒷면 보기';}catch(e){notice(friendlyError(e),true);}});
 $('reveal').addEventListener('click',reveal);$('check-due').addEventListener('click',showNextReview);
 for(const b of document.querySelectorAll('[data-rating]'))b.addEventListener('click',()=>grade(Number(b.dataset.rating)));
-$('repair-notes').addEventListener('click',async()=>{if(!store||busy)return;setBusy(true);try{const result=await store.exportNotes();saved(result,'읽기용 노트를 다시 저장했어요.');}catch(e){notice(friendlyError(e),true);}finally{setBusy(false);}});
+$('repair-notes').addEventListener('click',async()=>{if(!store||busy)return;setBusy(true);try{const result=await store.exportNotes();$('repair-notes').hidden=result.warnings.length===0;saved(result,'읽기용 노트를 다시 저장했어요.');}catch(e){notice(friendlyError(e),true);}finally{setBusy(false);}});
 window.addEventListener('beforeunload',e=>{if(dirty||busy){e.preventDefault();e.returnValue='';}});
 document.addEventListener('keydown',e=>{if(view!=='review'||busy||$('detail-dialog').open||/INPUT|TEXTAREA|SELECT/.test(e.target.tagName))return;if(e.code==='Space'){if(e.target.closest('button,a,summary'))return;e.preventDefault();if(!revealed)reveal();}else if(revealed&&/^[1-4]$/.test(e.key))grade(Number(e.key));});
 setInterval(()=>{if(store&&!busy)updateStats();void refreshCloud();},30000);

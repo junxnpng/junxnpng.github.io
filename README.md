@@ -75,6 +75,10 @@ IPA의 외운 상태와 단어장 카드·첨부파일·FSRS 전체 복습 기�
 
 웹페이지는 다시 열기·화면 복귀·30초 간격으로 변경을 확인한다. 단어장 저장은 온라인에서 수행하며 저장 실패 시 입력을 유지한다. IPA 체크는 먼저 브라우저에 저장하고 연결이 복구되면 합친다. ‘외웠어요’ 표시와 FSRS 복습 상태는 별개다.
 
+카드 복습 화면은 현재 정본의 백업과 다음 카드의 첨부파일을 미리 준비한다. 평가는 Dropbox revision을 검사해 정본 저장이 성공한 뒤에만 다음 카드로 넘어가며, 충돌하면 최신 내용을 읽어 합친다. 읽기용 Markdown 노트는 순서대로 뒤에서 갱신한다. 노트 갱신 실패는 복습 기록 저장과 구분해 알리고 ‘노트 다시 저장’으로 복구한다. 복습 중에는 숨겨진 전체 카드 목록을 다시 그리지 않는다.
+
+지연·실패 상황의 브라우저 검증에는 `tests/cards-review-harness.mjs`를 사용한다. 임시 Hugo 빌드의 `saymore/cards/`에 이 파일을 복사하고, 그 빌드의 `index.html`에서 `app.mjs` 스크립트를 이 파일로 교체한 뒤 localhost에서 연다. 실제 Dropbox 대신 500장의 테스트 카드와 요청당 80ms 지연을 사용한다. 음원/노트를 보류한 상태의 화면 전환, 연속 평가, 저장 실패 후 재시도, 중복 클릭, 새로고침 후 기록 보존을 확인할 수 있다. 이 파일은 공개 사이트에 포함되지 않는다.
+
 IPA 기록의 Obsidian 자동 반영은 맥에서 `scripts/ipa-obsidian-sync.py`를 사용한다. `--authorize /path/to/vault`로 읽기 전용 Dropbox 연결을 완료한 뒤 `--install`로 로그인 후 1분 간격 실행을 등록한다. `--sync`는 한 번 실행한다. 연결 정보는 macOS 키체인, 보관함 경로는 사용자 Application Support에 저장하며 공개 저장소와 보관함에 인증 정보를 넣지 않는다. `SayMore/IPA 학습기록.md`의 생성 영역만 갱신하고 추가 메모는 유지한다. 맥이 꺼진 동안에도 웹의 Dropbox 저장은 계속 가능하며 노트는 맥이 켜지면 갱신된다.
 
 검사: `node --test tests/cards-model.test.mjs tests/cards-dropbox.test.mjs tests/dropbox.test.mjs tests/ipa_progress.test.cjs`, `python3 -m unittest discover -s tests -p test_ipa_obsidian.py`, `sh scripts/check`.

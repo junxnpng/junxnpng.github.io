@@ -28,13 +28,32 @@ const bytesEqual=async(a,b)=>{
 };
 
 export class DropboxStore{
-  constructor(cloud,library,raw,rev){this.cloud=cloud;this.library=library;this.raw=raw;this.rev=rev;this.kind='dropbox';this.folder={name:'Dropbox'};this.writing=false;}
+  constructor(cloud,library,raw,rev){
+    this.cloud=cloud;this.library=library;this.raw=raw;this.rev=rev;this.kind='dropbox';this.folder={name:'Dropbox'};this.writing=false;
+    this.directoriesReady=null;this.preparedBackups=new Map();this.noteQueue=Promise.resolve();this.pendingNotes=0;
+  }
   static async open(cloud){
     const file=await cloud.download(`${prefix}/library.json`);
     const raw=file?await file.text():null;
     return new DropboxStore(cloud,raw===null?newLibrary():parseLibrary(raw),raw,file?.metadata.rev||null);
   }
-  async directories(){for(const path of [prefix,`${prefix}/media`,`${prefix}/notes`,`${prefix}/backups`])await this.cloud.mkdir(path);}
+  directories(){
+    if(!this.directoriesReady)this.directoriesReady=(async()=>{
+      await this.cloud.mkdir(prefix);
+      await Promise.all(['media','notes','backups'].map(name=>this.cloud.mkdir(`${prefix}/${name}`)));
+    })().catch(error=>{this.directoriesReady=null;throw error;});
+    return this.directoriesReady;
+  }
+  prepare(){return this._prepare(this.raw,this.rev);}
+  async _prepare(raw,rev){
+    await this.directories();
+    if(raw===null)return;
+    if(!this.preparedBackups.has(rev)){
+      const ready=this.immutable(`backups/library-${rev}.json`,new Blob([raw])).catch(error=>{this.preparedBackups.delete(rev);throw error;});
+      this.preparedBackups.set(rev,ready);
+    }
+    await this.preparedBackups.get(rev);
+  }
   async immutable(path,blob){
     let metadata;
     try{metadata=await this.cloud.upload(`${prefix}/${path}`,blob);}
@@ -54,7 +73,7 @@ export class DropboxStore{
     if(!file||!file.blob.size||file.blob.size>10*1024*1024)throw Error('첨부파일이 없거나 10MB보다 큽니다.');
     return file.blob;
   }
-  async commit(next,uploads={},changedIds=[],onProgress=()=>{}){
+  async commit(next,uploads={},changedIds=[],onProgress=()=>{},{deferNotes=false}={}){
     if(this.writing)throw Error('이 창에서 저장 중입니다. 잠시 기다려 주세요.');
     if(next.id!==this.library.id||next.revision!==this.library.revision)throw collision();
     this.writing=true;
@@ -68,20 +87,27 @@ export class DropboxStore{
       await eachLimited(Object.entries(uploads),async([path,blob])=>{await this.immutable(path,blob);onProgress(++done,total);});
       const oldRefs=new Set(this.library.cards.flatMap(c=>[c.image?.path,c.audio?.path].filter(Boolean)));
       for(const path of refs)if(!oldRefs.has(path)&&!uploads[path])await this.readMedia(path);
+      let raw=this.raw,rev=this.rev;
       for(let attempt=0;attempt<3;attempt++){
-        const current=await this.cloud.download(`${prefix}/library.json`);
-        const raw=current?await current.text():null;
-        if(raw===null&&this.raw!==null)throw Error('Dropbox의 보관함 파일이 없어졌습니다. 기존 기록을 새 파일로 덮어쓰지 않았습니다.');
         const remote=raw===null?copy(this.library):parseLibrary(raw);
         const merged=mergeLibraries(this.library,next,remote);
         const snapshot=parseLibrary(JSON.stringify({...merged,revision:remote.revision+1,updatedAt:new Date().toISOString()}));
-        if(current)await this.immutable(`backups/library-${current.metadata.rev}.json`,new Blob([raw]));
+        await this._prepare(raw,rev);
         const newRaw=JSON.stringify(snapshot,null,2)+'\n';
         let saved;
-        try{saved=await this.cloud.upload(`${prefix}/library.json`,newRaw,{rev:current?.metadata.rev||null});}
-        catch(error){if(error.conflict&&attempt<2)continue;throw error;}
+        // Dropbox's revision check makes a separate read unnecessary unless another device wrote first.
+        try{saved=await this.cloud.upload(`${prefix}/library.json`,newRaw,{rev});}
+        catch(error){
+          if(!error.conflict||attempt===2)throw error;
+          const current=await this.cloud.download(`${prefix}/library.json`);
+          raw=current?await current.text():null;rev=current?.metadata.rev||null;
+          if(raw===null&&this.raw!==null)throw Error('Dropbox의 보관함 파일이 없어졌습니다. 기존 기록을 새 파일로 덮어쓰지 않았습니다.');
+          continue;
+        }
         this.library=snapshot;this.raw=newRaw;this.rev=saved.rev;
-        return await this._export(changedIds,()=>onProgress(++done,total));
+        this.preparedBackups.clear();
+        const notes=this.queueNotes(changedIds,()=>onProgress(++done,total));
+        return deferNotes?{warnings:[],notes}:await notes;
       }
     }finally{this.writing=false;}
   }
@@ -99,7 +125,14 @@ export class DropboxStore{
     });
     return {warnings};
   }
-  async exportNotes(){return this._export(this.library.cards.map(c=>c.id));}
+  queueNotes(ids,onProgress){
+    this.pendingNotes++;
+    const run=()=>this._export(ids,onProgress);
+    this.noteQueue=this.noteQueue.then(run,run).finally(()=>{this.pendingNotes--;});
+    return this.noteQueue;
+  }
+  async flushNotes(){await this.noteQueue;}
+  async exportNotes(){return this.queueNotes(this.library.cards.map(c=>c.id));}
 
   async appendEntries(files,onProgress=()=>{}){
     if(this.writing)throw Error('저장 중입니다. 잠시 기다려 주세요.');
@@ -145,6 +178,7 @@ export class DropboxStore{
     if(remote){const existing=parseLibrary(await remote.text());if(existing.cards.length&&(!same(existing,library)))throw Error('Dropbox에 다른 카드 기록이 이미 있습니다. 가져오기로 덮어쓰지 않았습니다.');}
     this.writing=true;
     try{
+      await this.flushNotes();
       await this.directories();
       let done=0;
       const rest=[...entries].filter(([path])=>path!=='library.json');

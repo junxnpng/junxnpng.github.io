@@ -128,3 +128,90 @@ function memoryCloud(library){
     }
   };
 }
+
+test('a prepared review saves its canonical record without waiting for the reading note',async()=>{
+  const library=newLibrary();library.cards=[newCard(fields('one'))];
+  const cloud=memoryCloud(library),store=await api.DropboxStore.open(cloud);
+  await store.prepare();
+  const calls=[],download=cloud.download.bind(cloud),upload=cloud.upload.bind(cloud);
+  let release;
+  const held=new Promise(resolve=>{release=resolve;});
+  cloud.download=async path=>{calls.push(path);if(path.includes('/notes/'))await held;return download(path);};
+  cloud.upload=async(path,...args)=>{calls.push(path);return upload(path,...args);};
+  const next=copy(store.library);next.cards[0]=rateCard(next.cards[0],3);
+  try{
+    const result=await Promise.race([
+      store.commit(next,{},[next.cards[0].id],undefined,{deferNotes:true}),
+      new Promise((_,reject)=>setTimeout(()=>reject(Error('review waited for its reading note')),200))
+    ]);
+    assert.deepEqual(calls.filter(path=>!path.includes('/notes/')),['/cards/library.json']);
+    assert.equal(JSON.parse(await cloud.files.get('/cards/library.json').text()).cards[0].reviews.length,1);
+    assert.equal(store.writing,false);
+    release();
+    assert.deepEqual(await result.notes,{warnings:[]});
+    assert.match(await cloud.files.get(`/cards/notes/${next.cards[0].id}.md`).text(),/기록한 복습: 1회/);
+  }finally{release();}
+});
+
+test('background note writes stay ordered and a failed note does not prevent later exports',async()=>{
+  const now=new Date('2026-11-09T00:00:00Z'),library=newLibrary(now);
+  library.cards=[newCard(fields('one'),now)];
+  const cloud=memoryCloud(library),store=await api.DropboxStore.open(cloud);
+  const upload=cloud.upload.bind(cloud);let release,entered;
+  const held=new Promise(resolve=>{release=resolve;}),started=new Promise(resolve=>{entered=resolve;});
+  let first=true;
+  cloud.upload=async(path,...args)=>{
+    if(path.includes('/notes/')&&first){first=false;entered();await held;throw Error('note offline');}
+    return upload(path,...args);
+  };
+  const next=copy(store.library);next.cards[0]=rateCard(next.cards[0],3,now);
+  try{
+    const firstResult=await Promise.race([
+      store.commit(next,{},[next.cards[0].id],undefined,{deferNotes:true}),
+      new Promise((_,reject)=>setTimeout(()=>reject(Error('review waited for its reading note')),200))
+    ]);
+    assert.ok(firstResult.notes,'review must return its background note completion');
+    await started;
+    const later=copy(store.library);later.cards[0]=rateCard(later.cards[0],3,new Date('2026-11-09T00:10:00Z'));
+    const secondResult=await store.commit(later,{},[later.cards[0].id],undefined,{deferNotes:true});
+    release();
+    assert.equal((await firstResult.notes).warnings.length,1);
+    assert.deepEqual(await secondResult.notes,{warnings:[]});
+    assert.match(await cloud.files.get(`/cards/notes/${later.cards[0].id}.md`).text(),/기록한 복습: 2회/);
+    assert.equal(store.pendingNotes,0);
+  }finally{release();}
+});
+
+test('a prewarmed backup cannot hide another device review or recreate a deleted library',async()=>{
+  const now=new Date('2026-11-09T00:00:00Z'),library=newLibrary(now);
+  library.cards=[newCard(fields('one'),now),newCard(fields('two'),now)];
+  const cloud=memoryCloud(library),one=await api.DropboxStore.open(cloud),two=await api.DropboxStore.open(cloud);
+  await Promise.all([one.prepare(),two.prepare()]);
+  const first=copy(one.library);first.cards[0]=rateCard(first.cards[0],3,now);
+  await one.commit(first,{},[first.cards[0].id]);
+  const second=copy(two.library);second.cards[1]=rateCard(second.cards[1],4,now);
+  await two.commit(second,{},[second.cards[1].id]);
+  assert.deepEqual(two.library.cards.map(c=>c.reviews.length),[1,1]);
+  assert.deepEqual(JSON.parse(await cloud.files.get('/cards/backups/library-2.json').text()).cards.map(c=>c.reviews.length),[1,0]);
+  const stale=copy(one.library);stale.cards[1]=rateCard(stale.cards[1],3,now);
+  await assert.rejects(one.commit(stale,{},[stale.cards[1].id]),/같은 카드/);
+  await two.prepare();
+  cloud.download=async path=>path==='/cards/library.json'?null:{blob:cloud.files.get(path),metadata:{rev:'1'},text:()=>cloud.files.get(path).text()};
+  cloud.upload=async()=>{throw Object.assign(Error('deleted'),{conflict:true});};
+  const missing=copy(two.library);missing.cards[0]=editCard(missing.cards[0],{...missing.cards[0],answer:'edited'});
+  await assert.rejects(two.commit(missing),/없어졌습니다/);
+});
+
+test('failed backup preparation can be retried and never acknowledges a review early',async()=>{
+  const library=newLibrary();library.cards=[newCard(fields('one'))];
+  const cloud=memoryCloud(library),store=await api.DropboxStore.open(cloud),upload=cloud.upload.bind(cloud);
+  cloud.upload=async(path,...args)=>{if(path.includes('/backups/'))throw Error('backup offline');return upload(path,...args);};
+  await assert.rejects(store.prepare(),/backup offline/);
+  const next=copy(store.library);next.cards[0]=rateCard(next.cards[0],3);
+  await assert.rejects(store.commit(next),/backup offline/);
+  assert.equal(store.library.cards[0].reviews.length,0);
+  cloud.upload=upload;
+  await store.commit(next);
+  assert.equal(store.library.cards[0].reviews.length,1);
+  assert.equal(JSON.parse(await cloud.files.get('/cards/backups/library-1.json').text()).cards[0].reviews.length,0);
+});
