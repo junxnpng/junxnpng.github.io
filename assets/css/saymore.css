@@ -226,7 +226,29 @@
 .sm-sound-traits { display: flex; flex-wrap: wrap; gap: 10px 22px; margin: 12px 0 18px; padding-bottom: 15px; border-bottom: 1px solid var(--border); }
 .sm-sound-traits dt { font-size: 11px; color: var(--secondary); }
 .sm-sound-traits dd { margin: 1px 0 0; font-size: 13px; color: var(--sm-accent); font-weight: 600; }
+.sm-vowel-chart { margin: 32px 0; padding: 28px 0; border-block: 1px solid var(--border); scroll-margin-top: 85px; }
+.sm-vowel-chart h2 { font-size: 26px; letter-spacing: -.035em; margin: 0 0 12px; }
+.sm-vowel-chart h3 { font-size: 18px; margin: 0 0 12px; }
+.sm-vowel-chart p, .sm-chart-directions { font-size: 15px; margin: 12px 0; }
+.sm-vowel-chart a:not(.sm-chart-image) { color: var(--sm-accent); text-decoration: underline; }
+.sm-chart-directions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; padding: 18px; background: var(--sm-wash); border-radius: 8px; }
+.sm-chart-directions dt { font-weight: 650; }
+.sm-chart-directions dd { margin: 5px 0 0; font-size: 13px; }
+.sm-chart-figures { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; margin: 24px 0; }
+.sm-chart-figures figure { min-width: 0; margin: 0; }
+.sm-chart-image { display: block; padding: 12px; border: 1px solid var(--border); border-radius: 8px; background: #fff; color: #4157ad; }
+.sm-chart-image img { width: 100%; height: auto; margin: 0; }
+.sm-chart-image span { display: block; text-align: right; font-size: 12px; margin-top: 8px; }
+.sm-chart-practice { padding-left: 16px; border-left: 3px solid var(--sm-accent); }
+.sm-chart-notation { border-block: 1px solid var(--border); padding: 14px 0; margin: 20px 0; scroll-margin-top: 85px; }
+.sm-chart-notation summary { cursor: pointer; color: var(--sm-accent); font-size: 15px; font-weight: 600; }
+.sm-chart-notation summary:focus-visible { outline: 3px solid var(--sm-accent); outline-offset: 4px; }
+.sm-chart-notation caption { text-align: left; color: var(--secondary); font-size: 12px; padding: 14px 0 4px; }
+.sm-chart-notation td a { display: inline-block; white-space: nowrap; }
+.sm-vowel-chart .sm-chart-source { font-size: 13px; color: var(--secondary); }
 @media (max-width: 760px) {
   .sm-principles p, .sm-principles dd { font-size: 16px; }
   .sm-sound-traits dd { font-size: 14px; }
+  .sm-chart-directions, .sm-chart-figures { grid-template-columns: minmax(0, 1fr); }
+  .sm-chart-figures { gap: 28px; }
 }

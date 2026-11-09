@@ -358,5 +358,43 @@
     "source": "https://commons.wikimedia.org/wiki/File:Places_of_articulation.svg",
     "note": "Use unchanged with credit and license link. Numbered anatomy includes places beyond English.",
     "file": "places-of-articulation.svg"
+  },
+  {
+    "file": "american-vowel-monophthongs.png",
+    "kind": "vowel-chart",
+    "authors": [
+      "Mr KEBAB",
+      "Moxfyre",
+      "Angr",
+      "Abbey Elder"
+    ],
+    "license": "CC BY-SA 4.0",
+    "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "source": "https://iastate.pressbooks.pub/oralcommunication2e/chapter/vowels/",
+    "upstreamSource": "https://commons.wikimedia.org/wiki/File:General_American_monophthong_chart.svg",
+    "upstreamRawURL": "https://iastate.pressbooks.pub/app/uploads/sites/119/2020/06/General_American_monophthong_chart_adapted-768x567.png",
+    "modifications": "Iowa State textbook adaptation: directional labels added by Abbey Elder. No further edits by Say More.",
+    "note": "Pedagogical General American reference chart; positions vary across speakers. Map chart symbols to the Cambridge notation used by this site.",
+    "sha256": "62be7fae4ebcd1d83e892e39346855df36d20b46fa7bd13f6ececa5b33838fd9",
+    "checked": "2026-11-09"
+  },
+  {
+    "file": "american-vowel-diphthongs.png",
+    "kind": "vowel-chart",
+    "authors": [
+      "Mr KEBAB",
+      "Moxfyre",
+      "Angr",
+      "Iowa State textbook adaptation"
+    ],
+    "license": "CC BY-SA 4.0",
+    "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "source": "https://iastate.pressbooks.pub/oralcommunication2e/chapter/vowels/",
+    "upstreamSource": "https://commons.wikimedia.org/wiki/File:General_American_diphthong_chart.svg",
+    "upstreamRawURL": "https://iastate.pressbooks.pub/app/uploads/sites/119/2020/06/image2-1.png",
+    "modifications": "Iowa State textbook adaptation: example-word labels added. No further edits by Say More.",
+    "note": "Pedagogical General American reference chart; positions vary across speakers. Map chart symbols to the Cambridge notation used by this site.",
+    "sha256": "a95811d08ee4b7a2b5298a73b117e5580a3f70f65afb28274e89ca4cb24afda7",
+    "checked": "2026-11-09"
   }
 ]

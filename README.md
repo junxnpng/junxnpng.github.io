@@ -42,6 +42,8 @@ GitHub Pages(사용자 사이트). main 푸시 → `.github/workflows/hugo.yml` 
 
 모음 비교에는 Wright·McCloy의 원본 혀 윤곽(CC0)을 같은 방향과 축척으로 나란히 배치한다. 그림에 붙인 부위 번호는 입 안 구조도의 범례를 따른다. 자음 그림은 Tavin·Nardog의 단면도(CC BY-SA 4.0)를 사용한다. 그림을 수정할 때 원본 출처·변경 사항·라이선스를 유지한다. 카드의 기호와 개인 음원 번호를 보존하고, 위첨자 등 화면용 표기가 필요하면 `display_symbol`에 별도로 적는다.
 
+`#vowel-chart`에는 Iowa State University의 공개 교재에 실린 General American 단모음·이중모음 차트(CC BY-SA 4.0)를 싣는다. 원도는 Mr KEBAB·Moxfyre·Angr, 단모음 방향 이름은 Abbey Elder의 편집이다. 교재의 이미지를 추가 수정 없이 보관하며 출처와 해시는 `static/saymore/images/sources.json`에 기록한다. 차트의 ɛ/e와 이 페이지의 /e/eɪ/를 혼동하지 않도록 대응표를 제공하고, 링크는 기존 발음 항목을 연다. 차트는 대표 위치의 참고도이며 실제 혀의 해부학적 좌표나 모든 미국 화자의 발음을 뜻하지 않는다.
+
 `/study/basic-verbs/`는 하루 20–21개 뜻을 카드로 보여준다. 예문 펼치기, 티어·검색 필터, 미완료 복습과 날짜별 진행률을 제공한다. 완료 기록은 브라우저 `localStorage`에 항목별로 저장되며 기기 간 동기화하지 않는다. 같은 브라우저의 다른 탭과 뒤로가기로 복원된 페이지는 최신 기록을 다시 읽는다. 이전 버전의 완료 기록도 유지한다. 사이트와 저장소의 학습 자료는 공개된다.
 
 원본 Markdown을 수정한 뒤 저장소 루트에서 실행한다. 생성된 `content/study/`와 `data/study/`는 직접 수정하지 않는다.

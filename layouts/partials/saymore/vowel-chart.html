@@ -1,0 +1,46 @@
+<section class="sm-vowel-chart" id="vowel-chart" aria-labelledby="vowel-chart-title">
+  <p class="sm-eyebrow" lang="en">GENERAL AMERICAN · VOWEL CHART</p>
+  <h2 id="vowel-chart-title">미국 영어 모음 차트</h2>
+  <p>모음들이 어떻게 가까워지고 멀어지는지 한눈에 보세요. 아이오와주립대 공개 교재에 실린 General American 차트입니다.</p>
+  <dl class="sm-chart-directions">
+    <div><dt>← 앞쪽 · 가운데 · 뒤쪽 →</dt><dd><span lang="en">Front · Central · Back</span>은 혀 몸통의 앞뒤 위치를 나타냅니다. 혀끝의 위치를 찍은 그림은 아닙니다.</dd></div>
+    <div><dt>위쪽 = 높은 혀 · 아래쪽 = 낮은 혀</dt><dd><span lang="en">High · Mid · Low</span>는 혀의 높이입니다. 목소리의 음높이가 아니며, 사다리꼴은 소리의 관계를 비교하는 지도입니다.</dd></div>
+  </dl>
+  <div class="sm-chart-figures">
+    <figure>
+      <h3>단모음의 위치</h3>
+      {{ $monoPath := "saymore/images/american-vowel-monophthongs.png" }}
+      {{ $monoURL := printf "%s?v=%s" ($monoPath | relURL) (substr (sha256 (readFile (printf "static/%s" $monoPath))) 0 12) }}
+      <a class="sm-chart-image" href="{{ $monoURL }}" target="_blank" rel="noopener noreferrer" aria-label="미국 영어 단모음 차트 크게 보기 (새 탭)"><img src="{{ $monoURL }}" width="768" height="567" loading="lazy" alt="General American 단모음 차트. 위는 높은 혀, 아래는 낮은 혀, 왼쪽은 앞쪽, 오른쪽은 뒤쪽입니다. i, ɪ, e, ɛ, æ가 앞쪽 계열에, u, ʊ, o, ɔ가 뒤쪽 계열에 놓입니다."><span>크게 보기 ↗</span></a>
+      <figcaption><a href="https://commons.wikimedia.org/wiki/File:General_American_monophthong_chart.svg">Mr KEBAB · Moxfyre · Angr 원도</a> · Abbey Elder가 방향 이름 추가 · <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a></figcaption>
+    </figure>
+    <figure>
+      <h3>이중모음의 이동</h3>
+      {{ $diphPath := "saymore/images/american-vowel-diphthongs.png" }}
+      {{ $diphURL := printf "%s?v=%s" ($diphPath | relURL) (substr (sha256 (readFile (printf "static/%s" $diphPath))) 0 12) }}
+      <a class="sm-chart-image" href="{{ $diphURL }}" target="_blank" rel="noopener noreferrer" aria-label="미국 영어 이중모음 차트 크게 보기 (새 탭)"><img src="{{ $diphURL }}" width="761" height="573" loading="lazy" alt="General American 이중모음 차트. eɪ play, aɪ light, aʊ town, oʊ slow, ɔɪ toy의 시작점을 검은 점으로, 한 음절 안에서 변하는 방향을 화살표로 표시합니다."><span>크게 보기 ↗</span></a>
+      <figcaption><a href="https://commons.wikimedia.org/wiki/File:General_American_diphthong_chart.svg">Mr KEBAB · Moxfyre · Angr 원도</a> · 아이오와주립대 교재의 예시 단어 추가본 · <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a></figcaption>
+    </figure>
+  </div>
+  <p class="sm-chart-practice"><strong>이렇게 따라가 보세요.</strong> 단모음 그림의 <a href="#ipa-1">i /iː/ · sheep</a> → <a href="#ipa-9">ɛ /e/ · head</a> → <a href="#ipa-4">æ /æ/ · hat</a>은 혀가 낮아지는 방향입니다. 이중모음 그림은 <strong>점에서 화살표 끝으로</strong> 한 음절 안에서 이어집니다. <a href="#ipa-13">/eɪ/ · day</a>를 두 음절로 끊지 않고 연습해 보세요.</p>
+  <p><strong>차트의 ɛ는 이 페이지의 /e/입니다.</strong> 반면 차트의 e는 <a href="#ipa-13">day /eɪ/</a> 쪽입니다. 두 기호를 구별해서 보세요.</p>
+  <details class="sm-chart-notation" id="vowel-chart-notation">
+    <summary>차트 기호 ↔ 이 페이지 기호 · 다르게 보이는 이유</summary>
+    <div class="sm-table-wrap"><table class="sm-wiki-table">
+      <caption>아래 링크를 누르면 기존 발음 설명이 열립니다.</caption>
+      <thead><tr><th scope="col">차트</th><th scope="col">이 페이지</th><th scope="col">예시</th></tr></thead>
+      <tbody>
+        <tr><th scope="row" class="sm-inline-ipa">i · u</th><td><a href="#ipa-1">/iː/</a> · <a href="#ipa-7">/uː/</a></td><td lang="en">sheep · blue</td></tr>
+        <tr><th scope="row" class="sm-inline-ipa">ɑ · ɔ</th><td><a href="#ipa-3">/ɑː/</a> · <a href="#ipa-6">/ɔː/</a></td><td lang="en">father · horse</td></tr>
+        <tr><th scope="row" class="sm-inline-ipa">ɛ</th><td><a href="#ipa-9">/e/</a></td><td lang="en">head</td></tr>
+        <tr><th scope="row" class="sm-inline-ipa">ɝ</th><td><a href="#ipa-10">/ɝː/</a></td><td lang="en">bird</td></tr>
+        <tr><th scope="row" class="sm-inline-ipa">e · o</th><td><a href="#ipa-13">/eɪ/</a> · <a href="#ipa-16">/oʊ/</a></td><td lang="en">day · nose</td></tr>
+        <tr><th scope="row" class="sm-inline-ipa">ɪ · ʊ · æ · ʌ</th><td>같은 기호 사용</td><td><a href="#ipa-2">ship</a> · <a href="#ipa-8">foot</a> · <a href="#ipa-4">hat</a> · <a href="#ipa-5">cup</a></td></tr>
+      </tbody>
+    </table></div>
+    <p>이 표는 예시 단어를 기준으로 두 자료의 표기를 연결합니다. 차트의 e·o는 단모음으로 나는 경우를 보여주며, 이 페이지는 Cambridge의 /eɪ oʊ/ 표기로 움직임을 함께 익힙니다. 길이 표시 ː의 유무만 보고 다른 모음이라고 생각하거나 무조건 길게 늘이지 마세요. <a href="#notation">사전별 표기 설명 →</a></p>
+    <p>차트에 따로 없는 약한 모음 <a href="#ipa-11">/ə/ · above</a>, <a href="#ipa-12">/ɚ/ · mother</a>도 함께 익히세요. 그림 속 /ɝ/와 /ɚ/는 강세 차이도 중요합니다.</p>
+  </details>
+  <p class="sm-chart-source">대표적인 위치를 간단히 나타낸 참고도입니다. 실제 미국식 /uː/는 더 앞쪽에서 나기도 하고, /ʌ/의 위치도 달라질 수 있습니다. <span lang="en">cot–caught</span>의 모음을 구별하는 화자와 합치는 화자도 있습니다. 점 하나를 정확한 혀 좌표로 외우기보다 같은 화자의 음성을 비교하세요.</p>
+  <p class="sm-chart-source">출처: <a href="https://iastate.pressbooks.pub/oralcommunication2e/chapter/vowels/" target="_blank" rel="noopener noreferrer">Iowa State University · Vowels ↗</a>. 교재의 두 이미지를 추가 수정 없이 사용했습니다. <a href="#vowel-principles">모음의 원리 더 읽기 →</a></p>
+</section>

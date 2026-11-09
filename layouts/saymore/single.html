@@ -22,6 +22,7 @@
     <p id="ipa-search-status" role="status" aria-live="polite">모음·자음 표에서 기호를 선택하세요. 두 소리를 나란히 비교할 수도 있습니다.</p>
   </div>
   <nav class="sm-section-nav" aria-label="발음 설명 목차">
+    <a href="#vowel-chart">모음 차트</a>
     {{ range $ipa.groups }}<a href="#{{ .id }}">{{ .title }}</a>{{ end }}<a href="#sound-variants">발음 변이</a><a href="#r-connections">모음+r</a><a href="#dialect-reference">방언 참고</a><a href="#mouth">구강 구조</a><a href="#wikipedia-comparison">표기 비교</a>
   </nav>
   <p class="sm-no-results" hidden>일치하는 소리가 없습니다. 예시 단어나 영어 이름으로 다시 찾아보세요.</p>
@@ -49,6 +50,7 @@
     <figure><a href="{{ "saymore/images/places-of-articulation.svg" | relURL }}" aria-label="구강 구조 그림 크게 보기"><img src="{{ "saymore/images/places-of-articulation.svg" | relURL }}" width="800" height="1000" alt="왼쪽이 입술인 옆면 단면도. 혀 윗면에는 앞에서부터 17 혀끝, 16 혀끝 바로 뒤, 15 혀몸통 앞쪽, 14 혀몸통 뒤쪽이 표시됩니다. 7은 단단한 입천장, 8은 부드러운 입천장입니다."></a><figcaption>구조도의 숫자는 부위 번호입니다. <a href="https://commons.wikimedia.org/wiki/File:Places_of_articulation.svg#Summary">전체 번호 설명 · ish shwar, Rohieb</a> · <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a></figcaption></figure>
   </section>
   </div></details>
+  {{ partial "saymore/vowel-chart.html" . }}
   {{ range $ipa.groups }}
   {{ $groupItems := .items }}
   <section class="sm-group" id="{{ .id }}" aria-labelledby="{{ .id }}-title">
