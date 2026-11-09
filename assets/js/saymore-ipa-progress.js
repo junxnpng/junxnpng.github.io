@@ -157,7 +157,9 @@
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `saymore-ipa-${new Date().toISOString().slice(0, 10)}.json`;
+    const today = new Date();
+    const date = [today.getFullYear(), String(today.getMonth()+1).padStart(2,"0"), String(today.getDate()).padStart(2,"0")].join("-");
+    link.download = `saymore-ipa-${date}.json`;
     link.click();
     setTimeout(() => URL.revokeObjectURL(url), 30000);
   });

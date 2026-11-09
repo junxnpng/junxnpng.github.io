@@ -93,10 +93,13 @@ export class DropboxStore{
   async exportNotes(){return this._export(this.library.cards.map(c=>c.id));}
 
   async importFiles(files,onProgress=()=>{}){
+    return this.importEntries(files.map(file=>({path:file.webkitRelativePath?file.webkitRelativePath.split('/').slice(1).join('/'):file.name,blob:file})),onProgress);
+  }
+  async importEntries(files,onProgress=()=>{}){
     if(this.writing)throw Error('저장 중입니다. 잠시 기다려 주세요.');
     const entries=new Map();
-    for(const file of files){
-      const path=file.webkitRelativePath?file.webkitRelativePath.split('/').slice(1).join('/'):file.name;
+    for(const {path,blob:file} of files){
+      if(typeof path!=='string'||!(file instanceof Blob))throw Error('가져올 파일을 확인해 주세요.');
       if(path.split('/').some(p=>p.startsWith('.')))continue;
       if(!/^(library(?:\.backup)?\.json|notes\/[0-9a-f-]{36}\.md|media\/[0-9a-f-]{36}\.(mp3|jpg|png|webp)|IPA-학습-안내\.md|IPA-음원-출처\.(md|json))$/.test(path)||entries.has(path)||!file.size||file.size>50*1024*1024)throw Error('SayMore의 카드 폴더를 선택해 주세요. 지원하지 않는 파일이 있습니다.');
       entries.set(path,file);

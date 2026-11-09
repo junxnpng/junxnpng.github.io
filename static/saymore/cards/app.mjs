@@ -1,7 +1,8 @@
 import {newCard, editCard, rateCard, reviewOptions, dueCards, dateLabel, intervalLabel, ratings} from './model.mjs';
 import {FolderStore, rememberedFolder, friendlyError} from './storage.mjs';
 import {el, showCard} from './view.mjs';
-import {DropboxStore} from './dropbox-store.mjs';
+import {DropboxStore} from './dropbox-store.mjs?v=3';
+import {parseBundle} from './bundle.mjs?v=1';
 import {openDropbox} from '../shared/dropbox.mjs?v=2';
 
 const $=id=>document.getElementById(id);
@@ -25,6 +26,9 @@ function controls(){
   $('disconnect-dropbox').hidden=!cloud?.connected;
   $('import-folder-label').hidden=!online;
   $('import-folder').disabled=busy;
+  $('bundle-panel').hidden=!online;
+  $('bundle-data').disabled=busy;
+  $('import-bundle').disabled=busy||!online;
   $('save-help').textContent=store ? `저장하면 카드와 복습 일정이 ${online?'Dropbox':'선택한 폴더'}에 남아요.` : '먼저 위의 Dropbox 연결을 눌러주세요. 입력한 내용은 그대로 남아요.';
   $('reload').hidden=!store;
   $('connection').textContent=online ? 'Dropbox 연결됨' : store ? `${store.folder.name} 폴더 연결됨` : '저장소 연결 전';
@@ -308,6 +312,20 @@ $('import-folder').addEventListener('change',async event=>{
     notice(`카드 ${result.cards}장, 파일 ${result.files}개를 Dropbox에 옮겨 검증했어요. 원본 폴더는 그대로 남겨두었습니다.`);
     if(view==='review')await showNextReview();
   }catch(e){notice(friendlyError(e),true);}finally{event.target.value='';setBusy(false);}
+});
+$('import-bundle').addEventListener('click',async()=>{
+  if(busy||store?.kind!=='dropbox')return;
+  if(dirty){notice('먼저 입력 중인 카드를 저장하거나 입력을 취소해 주세요.',true);return;}
+  setBusy(true);
+  try{
+    notice('백업 파일의 내용을 확인하고 있어요.');
+    const files=await parseBundle($('bundle-data').value);
+    const result=await store.importEntries(files,(done,total)=>notice(`Dropbox로 옮기고 검증 중… ${done} / ${total}개 파일`));
+    $('bundle-data').value='';$('bundle-panel').open=false;
+    clearMediaCache();updateDecks();renderLibrary();
+    notice(`카드 ${result.cards}장, 파일 ${result.files}개를 Dropbox에 옮겨 검증했어요. 원본은 그대로 유지합니다.`);
+    if(view==='review')await showNextReview();
+  }catch(e){notice(friendlyError(e),true);}finally{setBusy(false);}
 });
 for(const b of document.querySelectorAll('[data-view]'))b.addEventListener('click',()=>{if(b.dataset.view==='add'&&view!=='add')resetEditor();switchView(b.dataset.view);});
 for(const b of document.querySelectorAll('[data-open-add]'))b.addEventListener('click',()=>switchView('add'));

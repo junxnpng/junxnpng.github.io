@@ -5,3 +5,5 @@
 @media(prefers-reduced-motion:no-preference){button{transition:background .12s,border-color .12s}}
 
 .storage-actions details{font-size:12px}.storage-actions summary{cursor:pointer;color:var(--blue)}.storage-actions details>button,.import-folder-label{display:block;margin-top:10px}.import-folder-label{position:relative;overflow:hidden;padding:9px 12px;border:1px solid var(--line);border-radius:6px;color:var(--blue);cursor:pointer;font-size:12px;font-weight:400}.import-folder-label input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;margin:0}.import-folder-label:focus-within{outline:3px solid var(--blue);outline-offset:3px}
+
+.bundle-panel{margin:14px 0;padding:14px 17px;border:1px solid var(--line);border-radius:7px;font-size:13px}.bundle-panel summary{cursor:pointer;color:var(--blue)}.bundle-panel textarea{font:12px/1.5 ui-monospace,monospace;overflow-wrap:anywhere}.bundle-panel button{margin-top:10px}

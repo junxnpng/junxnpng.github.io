@@ -78,3 +78,5 @@ IPA의 외운 상태와 단어장 카드·첨부파일·FSRS 전체 복습 기�
 IPA 기록의 Obsidian 자동 반영은 맥에서 `scripts/ipa-obsidian-sync.py`를 사용한다. `--authorize /path/to/vault`로 읽기 전용 Dropbox 연결을 완료한 뒤 `--install`로 로그인 후 1분 간격 실행을 등록한다. `--sync`는 한 번 실행한다. 연결 정보는 macOS 키체인, 보관함 경로는 사용자 Application Support에 저장하며 공개 저장소와 보관함에 인증 정보를 넣지 않는다. `SayMore/IPA 학습기록.md`의 생성 영역만 갱신하고 추가 메모는 유지한다. 맥이 꺼진 동안에도 웹의 Dropbox 저장은 계속 가능하며 노트는 맥이 켜지면 갱신된다.
 
 검사: `node --test tests/cards-model.test.mjs tests/cards-dropbox.test.mjs tests/dropbox.test.mjs tests/ipa_progress.test.cjs`, `python3 -m unittest discover -s tests -p test_ipa_obsidian.py`, `sh scripts/check`.
+
+폴더 선택을 사용할 수 없는 환경에서는 단어장의 ‘카드 백업으로 가져오기’를 사용한다. `saymore-card-bundle` version 1은 상대 경로·파일 종류·base64 내용·SHA-256을 묶으며, 모든 파일의 내용을 검증한 뒤 기존 폴더 가져오기와 같은 절차로 이전한다. 인증 정보는 이 묶음에 포함하지 않는다.

@@ -6,8 +6,8 @@
   <meta name="color-scheme" content="light">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' blob: data:; media-src 'self' blob:; connect-src 'self' https://api.dropboxapi.com https://content.dropboxapi.com; object-src 'none'; base-uri 'self'; form-action 'none'">
   <title>내 단어 카드 · Say More</title>
-  <link rel="icon" href="/saymore/icons/speech.svg"><link rel="stylesheet" href="./app.css?v=dropbox-1">
-  <script type="module" src="./app.mjs?v=dropbox-2"></script>
+  <link rel="icon" href="/saymore/icons/speech.svg"><link rel="stylesheet" href="./app.css?v=dropbox-3">
+  <script type="module" src="./app.mjs?v=dropbox-3"></script>
 </head>
 <body>
 <div class="shell">
@@ -15,6 +15,7 @@
   <main>
     <div class="intro"><div><p class="eyebrow">MY WORDS, MY MEMORIES</p><h1>내 단어 카드</h1><p>내가 고른 단어, 내 기억이 담긴 카드.</p></div><div class="counts"><span><b id="total-count">0</b> 전체</span><span><b id="new-count">0</b> 새 카드</span><span><b id="due-count">0</b> 복습할 카드</span></div></div>
     <section class="storage-bar" aria-label="학습 기록 저장"><div><strong id="connection">저장소 연결 전</strong><p id="storage-copy">같은 Dropbox 계정을 연결하면 아이폰과 맥에서 이어서 공부할 수 있어요.</p><p id="browser-support" class="small">카드·첨부파일·복습 기록은 내 Dropbox에 저장해요.</p></div><div class="storage-actions"><button id="connect-dropbox" class="primary">Dropbox 연결</button><button id="reload" class="text-button" hidden>저장된 내용 다시 읽기</button><details><summary>저장 설정</summary><button id="connect" class="secondary">로컬 폴더 연결</button><button id="reconnect" class="secondary" hidden>이전 폴더 연결</button><label class="import-folder-label" id="import-folder-label" hidden>기존 카드 폴더에서 가져오기<input id="import-folder" type="file" webkitdirectory multiple></label><button id="disconnect-dropbox" class="text-button" hidden>이 브라우저 연결 해제</button></details></div></section>
+    <details id="bundle-panel" class="bundle-panel" hidden><summary>카드 백업으로 가져오기</summary><p class="small">카드와 첨부파일이 함께 들어 있는 백업 내용을 붙여넣으세요. 파일 내용을 확인한 뒤 Dropbox로 옮깁니다. 기존 보관함에 다른 기록이 있으면 덮어쓰지 않습니다.</p><label>카드 백업 내용<textarea id="bundle-data" rows="4" spellcheck="false" autocomplete="off" maxlength="52428800"></textarea></label><button id="import-bundle" class="secondary">백업 가져오기</button></details>
     <p id="notice" role="status" class="notice" hidden></p><button id="repair-notes" class="text-button" hidden>노트 다시 저장</button>
     <nav class="workspace-nav" aria-label="카드 작업"><button data-view="library" aria-current="page">카드 목록</button><button data-view="add">카드 추가</button><button data-view="review">오늘 복습</button></nav>
 
