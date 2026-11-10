@@ -1,0 +1,10 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {newLibrary,newCard,rateCard} from '../static/saymore/cards/model.mjs';
+import {prepareImagePatch} from '../static/saymore/cards/image-patch.mjs';
+const path='media/00000000-0000-4000-8000-000000000001.png';
+function fixture(){const library=newLibrary();const card=rateCard(newCard({type:'basic',front:'A ___',answer:'boat'}),3);library.cards=[card];const item={id:card.id,answer:'boat',path,credit:'Creator · CC0'};return {library,item};}
+const files=items=>[{path:'images.json',blob:new Blob([JSON.stringify({format:'saymore-image-patch',version:1,images:items})])},{path,blob:new Blob(['image'],{type:'image/png'})}];
+test('adds only image metadata and preserves schedule, full history and content',async()=>{const {library,item}=fixture();const before=structuredClone(library);const result=await prepareImagePatch(library,files([item]));const card=result.next.cards[0];assert.deepEqual(card.schedule,before.cards[0].schedule);assert.deepEqual(card.reviews,before.cards[0].reviews);for(const key of ['id','front','answer','type','createdAt'])assert.deepEqual(card[key],before.cards[0][key]);assert.equal(card.image.path,path);assert.deepEqual(library,before);assert.equal(result.ids.length,1);});
+test('reapplying skips existing images',async()=>{const {library,item}=fixture();const first=await prepareImagePatch(library,files([item]));const next=await prepareImagePatch(first.next,files([item]));assert.equal(next.skipped,1);assert.equal(next.ids.length,0);assert.deepEqual(next.next,first.next);assert.deepEqual(next.uploads,{});});
+test('rejects mismatched card, duplicate records and missing media before saving',async()=>{const {library,item}=fixture();await assert.rejects(prepareImagePatch(library,files([{...item,answer:'car'}])));await assert.rejects(prepareImagePatch(library,files([item,item])));await assert.rejects(prepareImagePatch(library,files([item]).slice(0,1)));assert.equal(library.cards[0].image,null);});

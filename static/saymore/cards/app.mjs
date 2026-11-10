@@ -5,6 +5,7 @@ import {el, showCard} from './view.mjs?v=2';
 import {DropboxStore} from './dropbox-store.mjs?v=6';
 import {MediaCache} from './media-cache.mjs?v=1';
 import {parseBundle} from './bundle.mjs?v=1';
+import {prepareImagePatch} from './image-patch.mjs?v=1';
 import {openDropbox} from '../shared/dropbox.mjs?v=2';
 
 const $=id=>document.getElementById(id);
@@ -428,6 +429,21 @@ async function importBundle(append=false){
     if(view==='review')await showNextReview();
   }catch(e){notice(friendlyError(e),true);}finally{setBusy(false);}
 }
+$('fill-image-bundle').addEventListener('click',async()=>{
+  if(busy||store?.kind!=='dropbox')return;
+  if(dirty){notice('먼저 입력 중인 카드를 저장하거나 입력을 취소해 주세요.',true);return;}
+  setBusy(true);
+  try{
+    const files=await parseBundle($('bundle-data').value);
+    const patch=await prepareImagePatch(store.library,files);
+    for(const blob of Object.values(patch.uploads)){const image=await createImageBitmap(blob);image.close();}
+    const result=patch.ids.length?await store.commit(patch.next,patch.uploads,patch.ids,(done,total)=>notice(`이미지를 저장하고 확인 중… ${done} / ${total}`)):{warnings:[]};
+    $('bundle-data').value='';$('bundle-panel').open=false;
+    clearMediaCache();renderLibrary();
+    saved(result,`카드 ${patch.ids.length}장에 이미지를 채웠어요. 이미 그림이 있는 ${patch.skipped}장은 유지했어요.`);
+    if(view==='review')await showNextReview();
+  }catch(e){notice(friendlyError(e),true);}finally{setBusy(false);}
+});
 $('import-bundle').addEventListener('click',()=>importBundle(false));
 $('append-bundle').addEventListener('click',()=>importBundle(true));
 for(const b of document.querySelectorAll('[data-view]'))b.addEventListener('click',()=>{if(b.dataset.view==='add'&&view!=='add')resetEditor();switchView(b.dataset.view);});
