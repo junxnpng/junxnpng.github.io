@@ -273,3 +273,50 @@
   .sm-chart-directions, .sm-chart-figures { grid-template-columns: minmax(0, 1fr); }
   .sm-chart-figures { gap: 28px; }
 }
+.sm-listen-setup { display: grid; grid-template-columns: 1fr auto; gap: 10px 14px; align-items: end; padding: 20px; border: 1px solid var(--border); border-radius: 10px; background: var(--entry); margin: 22px 0; }
+.sm-listen-setup label { grid-column: 1 / -1; font-size: 13px; font-weight: 600; }
+.sm-listen-setup select { font: inherit; font-size: 15px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--theme); color: var(--primary); min-width: 0; }
+.sm-listen-status { grid-column: 1 / -1; font-size: 12px; color: var(--secondary); margin: 0; }
+.saymore [data-listen-trial] button, .sm-listen-summary button, .sm-listen-setup button { font: inherit; cursor: pointer; border-radius: 8px; border: 1px solid var(--border); background: var(--entry); color: var(--primary); padding: 11px 16px; }
+.saymore button.sm-listen-primary { background: var(--sm-accent); border-color: var(--sm-accent); color: var(--theme); font-weight: 600; }
+.saymore button.sm-listen-primary:disabled { opacity: .55; cursor: wait; }
+.sm-listen-trial, .sm-listen-summary { padding: 24px; border: 1px solid var(--sm-accent); border-radius: 12px; background: var(--entry); margin: 22px 0; }
+.sm-listen-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.sm-listen-top h2 { font-size: 17px; margin: 0; }
+.sm-listen-top span { font-size: 13px; color: var(--secondary); }
+.sm-listen-contrast, .sm-listen-ipa { font-family: "Charis SIL", "Doulos SIL", Georgia, "Times New Roman", serif; }
+.sm-listen-contrast { color: var(--sm-accent); font-size: 22px; margin: 6px 0 14px; }
+.saymore button.sm-listen-play { width: 100%; font-size: 18px; padding: 18px; background: var(--sm-wash); border-color: transparent; color: var(--sm-accent); font-weight: 600; }
+.sm-listen-question { font-size: 14px; margin: 18px 0 10px; }
+.sm-listen-choices { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.sm-listen-choices button { position: relative; display: flex; flex-direction: column; align-items: center; gap: 2px; min-height: 104px; justify-content: center; }
+.sm-listen-word { font-size: 26px; font-weight: 600; }
+.sm-listen-choices .sm-listen-ipa { font-size: 17px; color: var(--secondary); }
+.sm-listen-choices kbd { position: absolute; top: 8px; left: 10px; font-size: 11px; color: var(--secondary); }
+.sm-listen-choices button:disabled { cursor: default; opacity: 1; }
+.sm-listen-choices button.is-correct { border-color: #2c7a4b; background: color-mix(in srgb, #2c7a4b 14%, var(--entry)); }
+.sm-listen-choices button.is-wrong { border-color: #ae3333; background: color-mix(in srgb, #ae3333 12%, var(--entry)); }
+.sm-listen-choices button.is-speaking { outline: 3px solid var(--sm-accent); outline-offset: 2px; }
+.sm-listen-feedback { margin-top: 18px; }
+.sm-listen-feedback [data-listen-result] { font-size: 17px; font-weight: 600; margin: 0 0 6px; }
+.sm-listen-feedback .is-correct { color: #2c7a4b; }
+.sm-listen-feedback .is-wrong { color: #ae3333; }
+:root[data-theme="dark"] .sm-listen-feedback .is-correct { color: #8fd6a8; }
+:root[data-theme="dark"] .sm-listen-feedback .is-wrong { color: #ffa6a6; }
+.sm-listen-tip { font-size: 14px; color: var(--secondary); margin: 0 0 14px; }
+.sm-listen-after { display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; }
+.sm-listen-summary h2 { font-size: 22px; margin: 0 0 8px; }
+.sm-listen-stats { margin-top: 44px; }
+.sm-listen-stats h2 { font-size: 18px; }
+.sm-listen-stats table { width: 100%; border-collapse: collapse; font-size: 14px; display: table; }
+.sm-listen-stats th, .sm-listen-stats td { text-align: left; padding: 9px 8px; border-bottom: 1px solid var(--border); font-weight: 400; }
+.sm-listen-stats thead th { font-size: 12px; color: var(--secondary); }
+.sm-listen-stats tbody th { font-size: 17px; color: var(--sm-accent); white-space: nowrap; }
+.sm-listen-stats tr.is-weak [data-listen-accuracy] { color: #ae3333; font-weight: 600; }
+:root[data-theme="dark"] .sm-listen-stats tr.is-weak [data-listen-accuracy] { color: #ffa6a6; }
+@media (max-width: 560px) {
+  .sm-listen-setup { grid-template-columns: 1fr; }
+  .sm-listen-trial, .sm-listen-summary { padding: 16px; }
+  .sm-listen-word { font-size: 22px; }
+  .sm-listen-stats th:nth-child(2), .sm-listen-stats td:nth-child(2) { display: none; }
+}

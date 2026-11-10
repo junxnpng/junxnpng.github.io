@@ -27,6 +27,7 @@ menu:
   main:
     - {name: 학습 메뉴, url: "/#learning-menu", weight: 5}
     - {name: IPA, url: /saymore/ipa/, weight: 10}
+    - {name: 듣기, url: /saymore/listen/, weight: 15}
 
 params:
   env: production

@@ -1,0 +1,726 @@
+{
+ "intro": "소리 하나만 다른 두 단어를 듣고 어느 쪽인지 고릅니다. 고르면 바로 정답을 알려 줍니다.",
+ "sets": [
+  {
+   "id": "i-ih",
+   "kind": "vowel",
+   "sounds": [
+    {
+     "symbol": "iː",
+     "guide": 1
+    },
+    {
+     "symbol": "ɪ",
+     "guide": 2
+    }
+   ],
+   "tip": "혀를 높이 두는 긴장된 /iː/와, 혀와 턱을 조금 내린 /ɪ/. 길이가 아니라 소리의 성질이 다릅니다.",
+   "pairs": [
+    [
+     {
+      "word": "sheep",
+      "ipa": "/ʃiːp/"
+     },
+     {
+      "word": "ship",
+      "ipa": "/ʃɪp/"
+     }
+    ],
+    [
+     {
+      "word": "beat",
+      "ipa": "/biːt/"
+     },
+     {
+      "word": "bit",
+      "ipa": "/bɪt/"
+     }
+    ],
+    [
+     {
+      "word": "feel",
+      "ipa": "/fiːl/"
+     },
+     {
+      "word": "fill",
+      "ipa": "/fɪl/"
+     }
+    ],
+    [
+     {
+      "word": "seat",
+      "ipa": "/siːt/"
+     },
+     {
+      "word": "sit",
+      "ipa": "/sɪt/"
+     }
+    ]
+   ]
+  },
+  {
+   "id": "e-ae",
+   "kind": "vowel",
+   "sounds": [
+    {
+     "symbol": "e",
+     "guide": 9
+    },
+    {
+     "symbol": "æ",
+     "guide": 4
+    }
+   ],
+   "tip": "/æ/는 /e/보다 턱을 더 열고 혀를 낮춥니다. 한국어 ‘에·애’로는 구별되지 않습니다.",
+   "pairs": [
+    [
+     {
+      "word": "bed",
+      "ipa": "/bed/"
+     },
+     {
+      "word": "bad",
+      "ipa": "/bæd/"
+     }
+    ],
+    [
+     {
+      "word": "men",
+      "ipa": "/men/"
+     },
+     {
+      "word": "man",
+      "ipa": "/mæn/"
+     }
+    ],
+    [
+     {
+      "word": "pen",
+      "ipa": "/pen/"
+     },
+     {
+      "word": "pan",
+      "ipa": "/pæn/"
+     }
+    ],
+    [
+     {
+      "word": "said",
+      "ipa": "/sed/"
+     },
+     {
+      "word": "sad",
+      "ipa": "/sæd/"
+     }
+    ]
+   ]
+  },
+  {
+   "id": "uh-ah",
+   "kind": "vowel",
+   "sounds": [
+    {
+     "symbol": "ʌ",
+     "guide": 5
+    },
+    {
+     "symbol": "ɑː",
+     "guide": 3
+    }
+   ],
+   "tip": "/ʌ/는 입을 조금만 열고 짧게, /ɑː/는 턱을 크게 열고 혀를 낮춥니다.",
+   "pairs": [
+    [
+     {
+      "word": "cup",
+      "ipa": "/kʌp/"
+     },
+     {
+      "word": "cop",
+      "ipa": "/kɑːp/"
+     }
+    ],
+    [
+     {
+      "word": "luck",
+      "ipa": "/lʌk/"
+     },
+     {
+      "word": "lock",
+      "ipa": "/lɑːk/"
+     }
+    ],
+    [
+     {
+      "word": "nut",
+      "ipa": "/nʌt/"
+     },
+     {
+      "word": "not",
+      "ipa": "/nɑːt/"
+     }
+    ],
+    [
+     {
+      "word": "hut",
+      "ipa": "/hʌt/"
+     },
+     {
+      "word": "hot",
+      "ipa": "/hɑːt/"
+     }
+    ]
+   ]
+  },
+  {
+   "id": "u-uh",
+   "kind": "vowel",
+   "sounds": [
+    {
+     "symbol": "uː",
+     "guide": 7
+    },
+    {
+     "symbol": "ʊ",
+     "guide": 8
+    }
+   ],
+   "tip": "/uː/는 입술을 더 모으고 혀를 높이, /ʊ/는 입술과 혀의 힘을 조금 풉니다.",
+   "pairs": [
+    [
+     {
+      "word": "pool",
+      "ipa": "/puːl/"
+     },
+     {
+      "word": "pull",
+      "ipa": "/pʊl/"
+     }
+    ],
+    [
+     {
+      "word": "fool",
+      "ipa": "/fuːl/"
+     },
+     {
+      "word": "full",
+      "ipa": "/fʊl/"
+     }
+    ],
+    [
+     {
+      "word": "Luke",
+      "ipa": "/luːk/"
+     },
+     {
+      "word": "look",
+      "ipa": "/lʊk/"
+     }
+    ]
+   ]
+  },
+  {
+   "id": "ah-oh",
+   "kind": "vowel",
+   "sounds": [
+    {
+     "symbol": "ɑː",
+     "guide": 3
+    },
+    {
+     "symbol": "oʊ",
+     "guide": 16
+    }
+   ],
+   "tip": "/ɑː/는 한 자세로 끝나고, /oʊ/는 입술이 둥글게 모이며 움직입니다.",
+   "pairs": [
+    [
+     {
+      "word": "got",
+      "ipa": "/ɡɑːt/"
+     },
+     {
+      "word": "goat",
+      "ipa": "/ɡoʊt/"
+     }
+    ],
+    [
+     {
+      "word": "cot",
+      "ipa": "/kɑːt/"
+     },
+     {
+      "word": "coat",
+      "ipa": "/koʊt/"
+     }
+    ],
+    [
+     {
+      "word": "hop",
+      "ipa": "/hɑːp/"
+     },
+     {
+      "word": "hope",
+      "ipa": "/hoʊp/"
+     }
+    ]
+   ]
+  },
+  {
+   "id": "r-l",
+   "kind": "consonant",
+   "sounds": [
+    {
+     "symbol": "r",
+     "guide": 39
+    },
+    {
+     "symbol": "l",
+     "guide": 38
+    }
+   ],
+   "tip": "/l/은 혀끝이 윗잇몸에 닿고, /r/은 혀끝이 어디에도 닿지 않습니다.",
+   "pairs": [
+    [
+     {
+      "word": "rock",
+      "ipa": "/rɑːk/"
+     },
+     {
+      "word": "lock",
+      "ipa": "/lɑːk/"
+     }
+    ],
+    [
+     {
+      "word": "right",
+      "ipa": "/raɪt/"
+     },
+     {
+      "word": "light",
+      "ipa": "/laɪt/"
+     }
+    ],
+    [
+     {
+      "word": "pray",
+      "ipa": "/preɪ/"
+     },
+     {
+      "word": "play",
+      "ipa": "/pleɪ/"
+     }
+    ],
+    [
+     {
+      "word": "grass",
+      "ipa": "/ɡræs/"
+     },
+     {
+      "word": "glass",
+      "ipa": "/ɡlæs/"
+     }
+    ],
+    [
+     {
+      "word": "correct",
+      "ipa": "/kəˈrekt/"
+     },
+     {
+      "word": "collect",
+      "ipa": "/kəˈlekt/"
+     }
+    ]
+   ]
+  },
+  {
+   "id": "f-p",
+   "kind": "consonant",
+   "sounds": [
+    {
+     "symbol": "f",
+     "guide": 25
+    },
+    {
+     "symbol": "p",
+     "guide": 18
+    }
+   ],
+   "tip": "/f/는 윗니와 아랫입술 사이로 공기가 새고, /p/는 두 입술을 닫았다가 터뜨립니다.",
+   "pairs": [
+    [
+     {
+      "word": "fan",
+      "ipa": "/fæn/"
+     },
+     {
+      "word": "pan",
+      "ipa": "/pæn/"
+     }
+    ],
+    [
+     {
+      "word": "fine",
+      "ipa": "/faɪn/"
+     },
+     {
+      "word": "pine",
+      "ipa": "/paɪn/"
+     }
+    ],
+    [
+     {
+      "word": "coffee",
+      "ipa": "/ˈkɑː.fi/"
+     },
+     {
+      "word": "copy",
+      "ipa": "/ˈkɑː.pi/"
+     }
+    ],
+    [
+     {
+      "word": "fool",
+      "ipa": "/fuːl/"
+     },
+     {
+      "word": "pool",
+      "ipa": "/puːl/"
+     }
+    ]
+   ]
+  },
+  {
+   "id": "v-b",
+   "kind": "consonant",
+   "sounds": [
+    {
+     "symbol": "v",
+     "guide": 26
+    },
+    {
+     "symbol": "b",
+     "guide": 19
+    }
+   ],
+   "tip": "/v/는 윗니와 아랫입술 사이에서 계속 울리고, /b/는 두 입술을 닫았다가 엽니다.",
+   "pairs": [
+    [
+     {
+      "word": "very",
+      "ipa": "/ˈver.i/"
+     },
+     {
+      "word": "berry",
+      "ipa": "/ˈber.i/"
+     }
+    ],
+    [
+     {
+      "word": "vest",
+      "ipa": "/vest/"
+     },
+     {
+      "word": "best",
+      "ipa": "/best/"
+     }
+    ],
+    [
+     {
+      "word": "van",
+      "ipa": "/væn/"
+     },
+     {
+      "word": "ban",
+      "ipa": "/bæn/"
+     }
+    ],
+    [
+     {
+      "word": "vote",
+      "ipa": "/voʊt/"
+     },
+     {
+      "word": "boat",
+      "ipa": "/boʊt/"
+     }
+    ]
+   ]
+  },
+  {
+   "id": "th-s",
+   "kind": "consonant",
+   "sounds": [
+    {
+     "symbol": "θ",
+     "guide": 27
+    },
+    {
+     "symbol": "s",
+     "guide": 29
+    }
+   ],
+   "tip": "/θ/는 혀끝이 윗니에 닿아 부드럽게 새고, /s/는 혀끝이 잇몸 가까이에서 날카롭게 샙니다.",
+   "pairs": [
+    [
+     {
+      "word": "think",
+      "ipa": "/θɪŋk/"
+     },
+     {
+      "word": "sink",
+      "ipa": "/sɪŋk/"
+     }
+    ],
+    [
+     {
+      "word": "thick",
+      "ipa": "/θɪk/"
+     },
+     {
+      "word": "sick",
+      "ipa": "/sɪk/"
+     }
+    ],
+    [
+     {
+      "word": "mouth",
+      "ipa": "/maʊθ/"
+     },
+     {
+      "word": "mouse",
+      "ipa": "/maʊs/"
+     }
+    ],
+    [
+     {
+      "word": "path",
+      "ipa": "/pæθ/"
+     },
+     {
+      "word": "pass",
+      "ipa": "/pæs/"
+     }
+    ]
+   ]
+  },
+  {
+   "id": "dh-d",
+   "kind": "consonant",
+   "sounds": [
+    {
+     "symbol": "ð",
+     "guide": 28
+    },
+    {
+     "symbol": "d",
+     "guide": 22
+    }
+   ],
+   "tip": "/ð/는 혀끝을 윗니에 대고 계속 울리고, /d/는 잇몸을 막았다가 터뜨립니다.",
+   "pairs": [
+    [
+     {
+      "word": "then",
+      "ipa": "/ðen/"
+     },
+     {
+      "word": "den",
+      "ipa": "/den/"
+     }
+    ],
+    [
+     {
+      "word": "they",
+      "ipa": "/ðeɪ/"
+     },
+     {
+      "word": "day",
+      "ipa": "/deɪ/"
+     }
+    ],
+    [
+     {
+      "word": "breathe",
+      "ipa": "/briːð/"
+     },
+     {
+      "word": "breed",
+      "ipa": "/briːd/"
+     }
+    ]
+   ]
+  },
+  {
+   "id": "z-s",
+   "kind": "consonant",
+   "sounds": [
+    {
+     "symbol": "z",
+     "guide": 30
+    },
+    {
+     "symbol": "s",
+     "guide": 29
+    }
+   ],
+   "tip": "입 모양은 같고 성대의 울림만 다릅니다. /z/는 목이 울립니다.",
+   "pairs": [
+    [
+     {
+      "word": "zip",
+      "ipa": "/zɪp/"
+     },
+     {
+      "word": "sip",
+      "ipa": "/sɪp/"
+     }
+    ],
+    [
+     {
+      "word": "rise",
+      "ipa": "/raɪz/"
+     },
+     {
+      "word": "rice",
+      "ipa": "/raɪs/"
+     }
+    ],
+    [
+     {
+      "word": "eyes",
+      "ipa": "/aɪz/"
+     },
+     {
+      "word": "ice",
+      "ipa": "/aɪs/"
+     }
+    ],
+    [
+     {
+      "word": "buzz",
+      "ipa": "/bʌz/"
+     },
+     {
+      "word": "bus",
+      "ipa": "/bʌs/"
+     }
+    ]
+   ]
+  },
+  {
+   "id": "sh-s",
+   "kind": "consonant",
+   "sounds": [
+    {
+     "symbol": "ʃ",
+     "guide": 31
+    },
+    {
+     "symbol": "s",
+     "guide": 29
+    }
+   ],
+   "tip": "/ʃ/는 입술을 조금 내밀고 혀를 뒤로 당깁니다. 한국어 ‘시’는 /ʃiː/에 가깝게 들립니다.",
+   "pairs": [
+    [
+     {
+      "word": "she",
+      "ipa": "/ʃiː/"
+     },
+     {
+      "word": "sea",
+      "ipa": "/siː/"
+     }
+    ],
+    [
+     {
+      "word": "sheet",
+      "ipa": "/ʃiːt/"
+     },
+     {
+      "word": "seat",
+      "ipa": "/siːt/"
+     }
+    ],
+    [
+     {
+      "word": "shoe",
+      "ipa": "/ʃuː/"
+     },
+     {
+      "word": "Sue",
+      "ipa": "/suː/"
+     }
+    ],
+    [
+     {
+      "word": "ship",
+      "ipa": "/ʃɪp/"
+     },
+     {
+      "word": "sip",
+      "ipa": "/sɪp/"
+     }
+    ]
+   ]
+  },
+  {
+   "id": "n-ng",
+   "kind": "consonant",
+   "sounds": [
+    {
+     "symbol": "n",
+     "guide": 36
+    },
+    {
+     "symbol": "ŋ",
+     "guide": 37
+    }
+   ],
+   "tip": "/n/은 혀끝이 잇몸에, /ŋ/은 혀 뒤쪽이 여린입천장에 닿습니다.",
+   "pairs": [
+    [
+     {
+      "word": "sin",
+      "ipa": "/sɪn/"
+     },
+     {
+      "word": "sing",
+      "ipa": "/sɪŋ/"
+     }
+    ],
+    [
+     {
+      "word": "thin",
+      "ipa": "/θɪn/"
+     },
+     {
+      "word": "thing",
+      "ipa": "/θɪŋ/"
+     }
+    ],
+    [
+     {
+      "word": "ran",
+      "ipa": "/ræn/"
+     },
+     {
+      "word": "rang",
+      "ipa": "/ræŋ/"
+     }
+    ],
+    [
+     {
+      "word": "win",
+      "ipa": "/wɪn/"
+     },
+     {
+      "word": "wing",
+      "ipa": "/wɪŋ/"
+     }
+    ]
+   ]
+  }
+ ]
+}

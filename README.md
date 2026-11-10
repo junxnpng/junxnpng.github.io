@@ -6,6 +6,7 @@ Say More — Fluent Forever의 발음 우선 학습에서 영감을 받은 개�
 
 - `/` — Say More 메인. 학습 메뉴에서 IPA와 단어 카드로 진입한다. 화면은 `layouts/home.html`.
 - `/saymore/ipa/` — 미국식 IPA 발음 가이드. 기존 주소를 유지한다.
+- `/saymore/listen/` — 최소 대립쌍 듣기 테스트. 문항은 `data/saymore/minimal_pairs.json`, 화면은 `layouts/saymore/listen.html`, 로직은 `assets/js/saymore-listen-core.js`(순수 함수)와 `saymore-listen.js`. 기기의 미국식 합성 음성으로 들려주고 소리별 정답률을 브라우저 `localStorage`에 저장한다. 정답률이 낮은 소리를 더 자주 낸다.
 - `/saymore/card-demo/` — 사진·발음·예문으로 연습하고 옵시디언 폴더에 저장하는 coffee 카드 예시. 소스와 사용법은 `examples/coffee-card/`.
 - `/saymore/cards/` — 여러 카드 추가·수정·미리 보기·FSRS 복습. 카드와 일정은 선택한 옵시디언 보관함의 `SayMore/카드`에 저장한다. 사용법·저장 형식·검증은 `static/saymore/cards/README.md`.
 - `/saymore/` — 메인 `/`으로 연결하는 이전 주소.
@@ -85,6 +86,6 @@ IPA의 외운 상태와 단어장 카드·첨부파일·FSRS 전체 복습 기�
 
 IPA 기록의 Obsidian 자동 반영은 맥에서 `scripts/ipa-obsidian-sync.py`를 사용한다. `--authorize /path/to/vault`로 읽기 전용 Dropbox 연결을 완료한 뒤 `--install`로 로그인 후 1분 간격 실행을 등록한다. `--sync`는 한 번 실행한다. 연결 정보는 macOS 키체인, 보관함 경로는 사용자 Application Support에 저장하며 공개 저장소와 보관함에 인증 정보를 넣지 않는다. `SayMore/IPA 학습기록.md`의 생성 영역만 갱신하고 추가 메모는 유지한다. 맥이 꺼진 동안에도 웹의 Dropbox 저장은 계속 가능하며 노트는 맥이 켜지면 갱신된다.
 
-검사: `node --test tests/cards-model.test.mjs tests/cards-dropbox.test.mjs tests/dropbox.test.mjs tests/ipa_progress.test.cjs`, `python3 -m unittest discover -s tests -p test_ipa_obsidian.py`, `sh scripts/check`.
+검사: `node --test tests/cards-model.test.mjs tests/cards-dropbox.test.mjs tests/dropbox.test.mjs tests/ipa_progress.test.cjs tests/listen.test.cjs`, `python3 -m unittest discover -s tests -p test_ipa_obsidian.py`, `sh scripts/check`.
 
 폴더 선택을 사용할 수 없는 환경에서는 단어장의 ‘카드 백업으로 가져오기’를 사용한다. `saymore-card-bundle` version 1은 상대 경로·파일 종류·base64 내용·SHA-256을 묶으며, 모든 파일의 내용을 검증한 뒤 기존 폴더 가져오기와 같은 절차로 이전한다. 인증 정보는 이 묶음에 포함하지 않는다.
