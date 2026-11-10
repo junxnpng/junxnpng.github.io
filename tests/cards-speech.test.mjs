@@ -9,6 +9,15 @@ test('only an available US voice is selected, with local voices preferred',()=>{
   assert.equal(speech.usVoice([british,us,local]),local);
   assert.equal(speech.usVoice([british]),null);
 });
+test('natural US voices are chosen over novelty and legacy voices listed first',()=>{
+  const v=(name,localService=true,lang='en-US')=>({name,lang,localService});
+  const mac=[v('Albert'),v('Bad News'),v('Eddy (영어(미국))'),v('Fred'),v('Samantha'),v('Zarvox'),v('Daniel',true,'en-GB')];
+  assert.equal(speech.usVoice(mac).name,'Samantha');
+  assert.equal(speech.usVoice([v('Samantha'),v('Ava (Premium)')]).name,'Ava (Premium)');
+  assert.equal(speech.usVoice([v('Albert'),v('Some New Voice')]).name,'Some New Voice');
+  assert.equal(speech.usVoice([v('Albert'),v('Fred')]).name,'Albert');
+  assert.equal(speech.usVoice([v('Google US English',false),v('Bahh')]).name,'Google US English');
+});
 test('optional speech text is validated and preserved when editing without the speech field',()=>{
   const card=newCard({type:'basic',front:'moving air',answer:'wind',speech:'the wind'});
   assert.equal(card.speech,'the wind');

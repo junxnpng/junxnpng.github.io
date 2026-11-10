@@ -1,7 +1,7 @@
 import {newCard, editCard, rateCard, reviewOptions, dueCards, dateLabel, intervalLabel, ratings} from './model.mjs?v=3';
 import {studyGroups,cardsInGroup,studyQueue,studyProgress} from './study-groups.mjs?v=2';
 import {FolderStore, rememberedFolder, friendlyError} from './storage.mjs?v=3';
-import {el, showCard} from './view.mjs?v=2';
+import {el, showCard} from './view.mjs?v=3';
 import {DropboxStore} from './dropbox-store.mjs?v=6';
 import {MediaCache} from './media-cache.mjs?v=1';
 import {parseBundle} from './bundle.mjs?v=1';

@@ -1,5 +1,18 @@
+// macOS lists novelty and legacy robot voices (Albert, Bad News, Fred…) before the natural ones,
+// so "first en-US voice" picks a voice that distorts pronunciation. Rank by name instead.
+const natural=['Samantha','Ava','Allison','Evan','Nicky','Joelle','Noelle','Susan','Tom','Zoe','Alex','Google US English','Microsoft Aria','Microsoft Jenny','Microsoft Guy','Microsoft Ava','Microsoft Andrew','Microsoft Emma'];
+const distorted=/^(Albert|Bad News|Bahh|Bells|Boing|Bubbles|Cellos|Good News|Jester|Organ|Superstar|Trinoids|Whisper|Wobble|Zarvox|Fred|Junior|Kathy|Ralph|Eddy|Flo|Grandma|Grandpa|Reed|Rocko|Sandy|Shelley)\b/;
+function voiceRank(voice){
+  const name=voice.name||'';
+  const index=natural.findIndex(n=>name.startsWith(n));
+  const tier=index>=0?0:distorted.test(name)?2:1;
+  const quality=/Premium|Enhanced|Natural|고품질|프리미엄/i.test(name)?0:1;
+  return [tier,quality,voice.localService?0:1,index<0?natural.length:index];
+}
 export function usVoice(voices){
-  return voices.filter(v=>/^en[-_]US$/i.test(v.lang)).sort((a,b)=>Number(b.localService)-Number(a.localService))[0]||null;
+  return voices.filter(v=>/^en[-_]US$/i.test(v.lang))
+    .map((voice,order)=>({voice,rank:[...voiceRank(voice),order]}))
+    .sort((a,b)=>{for(let i=0;i<a.rank.length;i++)if(a.rank[i]!==b.rank[i])return a.rank[i]-b.rank[i];return 0;})[0]?.voice||null;
 }
 export function stopSpeech(){if(typeof window!=='undefined'&&window.speechSynthesis)window.speechSynthesis.cancel();}
 export async function speakUS(text,status){
