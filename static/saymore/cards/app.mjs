@@ -1,5 +1,5 @@
 import {newCard, editCard, rateCard, reviewOptions, dueCards, dateLabel, intervalLabel, ratings} from './model.mjs?v=3';
-import {studyGroups,cardsInGroup,studyQueue} from './study-groups.mjs?v=1';
+import {studyGroups,cardsInGroup,studyQueue,studyProgress} from './study-groups.mjs?v=2';
 import {FolderStore, rememberedFolder, friendlyError} from './storage.mjs?v=3';
 import {el, showCard} from './view.mjs?v=2';
 import {DropboxStore} from './dropbox-store.mjs?v=6';
@@ -54,8 +54,12 @@ function retryControls(){
   $('review-normal').hidden=practice||unknownSession===null;
   $('unknown-help').hidden=practice||!count;
   $('review-title').textContent=practice?'자유 연습':unknownSession?'모름 다시 보기':'오늘 복습';
-  const group=studyGroups(cards()).find(g=>g.key===selectedGroup);
-  $('review-group-help').textContent=store?`${group?.label||'선택한 묶음'} · ${group?.cards.length||0}장 · 지금 복습할 카드 ${studyQueue(cards(),selectedGroup).length}장`:'Dropbox를 연결하면 IPA와 100장씩 나눈 단어 묶음을 고를 수 있어요.';
+  const groups=studyGroups(cards()),now=new Date();
+  for(const id of ['deck-filter','review-group'])for(const option of $(id).options){
+    const group=groups.find(g=>g.key===option.value);if(group)option.textContent=groupLabel(group,now);
+  }
+  const group=groups.find(g=>g.key===selectedGroup),progress=studyProgress(group?.cards||[],now);
+  $('review-group-help').textContent=store?`${group?.label||'선택한 묶음'} · 전체 ${progress.total}장 · 오늘 완료 ${progress.completedToday}장 · 지금 남음 ${progress.remaining}장 · 다음 복습 대기 ${progress.waiting}장. 오늘 완료는 오늘 평가한 뒤 정기 복습에서 빠진 카드예요. ‘모름’은 원할 때 따로 다시 볼 수 있어요.`:'Dropbox를 연결하면 IPA와 100장씩 나눈 단어 묶음을 고를 수 있어요.';
   $('review-mode-help').textContent=practice?'선택한 묶음 전체를 순서대로 연습해요. 복습 기록과 다음 날짜는 바뀌지 않아요.':'새 카드와 복습 날짜가 된 카드를 보여줘요. 정답 확인 후 평가하면 기록과 다음 날짜가 저장돼요.';
 }
 function isPractice(){return $('review-mode').value==='practice';}
@@ -65,6 +69,10 @@ function updateStats(){
   $('new-count').textContent=cards().filter(c=>c.schedule.state===0).length;
   $('due-count').textContent=store ? dueCards(store.library).filter(c=>c.schedule.state!==0).length : 0;
 }
+function groupLabel(group,now=new Date()){
+  const p=studyProgress(group.cards,now);
+  return `${group.label} · ${p.total}장 · 오늘 완료 ${p.completedToday} · 남음 ${p.remaining}`;
+}
 function updateDecks(){
   const decks=[...new Set(cards().map(c=>c.deck))].sort((a,b)=>a.localeCompare(b));
   const groups=studyGroups(cards());
@@ -73,7 +81,7 @@ function updateDecks(){
     const select=$(id);select.replaceChildren();
     for(const section of [...new Set(groups.map(g=>g.section))]){
       const optgroup=el('optgroup');optgroup.label=section;
-      for(const group of groups.filter(g=>g.section===section))optgroup.append(new Option(`${group.label} · ${group.cards.length}장`,group.key));
+      for(const group of groups.filter(g=>g.section===section))optgroup.append(new Option(groupLabel(group),group.key));
       select.append(optgroup);
     }
     select.value=selectedGroup;

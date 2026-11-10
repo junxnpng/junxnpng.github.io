@@ -29,3 +29,14 @@ export function studyQueue(cards,key,mode='due',now=new Date()){
   if(mode==='unknown')return unknownCards({cards:selected});
   return dueCards({cards:selected},now);
 }
+
+export function studyProgress(cards,now=new Date()){
+  const start=new Date(now);start.setHours(0,0,0,0);
+  let remaining=0,completedToday=0;
+  for(const card of cards){
+    if(Date.parse(card.schedule.due)<=now.getTime()){remaining++;continue;}
+    const reviewed=Date.parse(card.reviews.at(-1)?.at);
+    if(reviewed>=start.getTime()&&reviewed<=now.getTime())completedToday++;
+  }
+  return {total:cards.length,remaining,completedToday,waiting:cards.length-remaining-completedToday};
+}

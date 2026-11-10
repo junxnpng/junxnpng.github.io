@@ -56,3 +56,25 @@ test('IPA sections and personal decks are selectable and an unknown group cannot
   assert.deepEqual(groups.cardsInGroup(cards,own.key).map(c=>c.answer),['custom']);
   assert.deepEqual(groups.studyQueue(cards,'words:99','due',now),[]);
 });
+
+test('progress partitions cards into due, reviewed today, and future without double counting repeats',()=>{
+  assert.equal(typeof groups.studyProgress,'function');
+  const localNow=new Date(2026,10,10,12),yesterday=new Date(2026,10,9,12);
+  const fresh=newCard({type:'basic',front:'?',answer:'new'},yesterday);
+  const done=rateCard(newCard({type:'basic',front:'?',answer:'done'},localNow),4,localNow);
+  const unknown=rateCard(newCard({type:'basic',front:'?',answer:'unknown'},localNow),1,localNow);
+  const repeated=rateCard(unknown,4,localNow,{retryUnknown:true});
+  const waiting=rateCard(newCard({type:'basic',front:'?',answer:'waiting'},yesterday),4,yesterday);
+  const input=[fresh,done,repeated,waiting],before=copy(input);
+  assert.deepEqual(groups.studyProgress(input,localNow),{total:4,remaining:1,completedToday:2,waiting:1});
+  assert.deepEqual(input,before);
+});
+
+test('progress uses the local calendar day and returns a card to remaining when it becomes due',()=>{
+  assert.equal(typeof groups.studyProgress,'function');
+  const beforeMidnight=new Date(2026,10,9,23,55),afterMidnight=new Date(2026,10,10,0,5);
+  const c=rateCard(newCard({type:'basic',front:'?',answer:'forgotten'},beforeMidnight),1,beforeMidnight);
+  assert.deepEqual(groups.studyProgress([c],afterMidnight),{total:1,remaining:0,completedToday:0,waiting:1});
+  assert.deepEqual(groups.studyProgress([c],new Date(c.schedule.due)),{total:1,remaining:1,completedToday:0,waiting:0});
+  assert.deepEqual(groups.studyProgress([],afterMidnight),{total:0,remaining:0,completedToday:0,waiting:0});
+});
