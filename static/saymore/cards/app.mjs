@@ -2,11 +2,11 @@ import {newCard, editCard, rateCard, correctLastReview, reviewOptions, dueCards,
 import {studyGroups,cardsInGroup,studyQueue,studyProgress,sortCards,sortOrders,resumeIndex} from './study-groups.mjs?v=4';
 import {FolderStore, rememberedFolder, friendlyError} from './storage.mjs?v=4';
 import {el, showCard} from './view.mjs?v=3';
-import {DropboxStore} from './dropbox-store.mjs?v=7';
+import {DropboxStore} from './dropbox-store.mjs?v=8';
 import {MediaCache} from './media-cache.mjs?v=1';
 import {parseBundle} from './bundle.mjs?v=1';
 import {prepareImagePatch} from './image-patch.mjs?v=2';
-import {openDropbox} from '../shared/dropbox.mjs?v=2';
+import {openDropbox} from '../shared/dropbox.mjs?v=3';
 
 const $=id=>document.getElementById(id);
 let store=null, cachedFolder=null, view='library', busy=false, dirty=false, editedId=null, previewBack=false;
@@ -22,7 +22,9 @@ try{const saved=localStorage.getItem('saymore.cards.sort.v1');if(Object.hasOwn(s
 try{selectedGroup=localStorage.getItem('saymore.cards.group.v1')||'all';}catch{/* Selection is optional when browser storage is unavailable. */}
 
 function notice(message,error=false){noticeVersion++;$('notice').textContent=message;$('notice').hidden=!message;$('notice').classList.toggle('error',error);}
-function cards(){return store?.library.cards || [];}
+// While an answer is being saved the review continues on the cards as they will be once it is stored.
+let saving=false, pendingCards=null;
+function cards(){return pendingCards || store?.library.cards || [];}
 function controls(){
   for(const button of document.querySelectorAll(view==='library'?'button':'button:not(#card-list button)'))button.disabled=busy;
   for(const input of $('card-form').querySelectorAll('input,textarea,select'))input.disabled=busy;
@@ -42,6 +44,7 @@ function controls(){
   $('practice-previous').disabled=busy||practiceIndex===0;
   $('practice-next').disabled=busy||!activeCard;
   $('save-help').textContent=store ? `저장하면 카드와 복습 일정이 ${online?'Dropbox':'선택한 폴더'}에 남아요.` : '먼저 위의 Dropbox 연결을 눌러주세요. 입력한 내용은 그대로 남아요.';
+  for(const button of document.querySelectorAll('[data-rating]'))button.disabled=busy||saving;
   $('reload').hidden=!store;
   $('connection').textContent=online ? 'Dropbox 연결됨' : store ? `${store.folder.name} 폴더 연결됨` : '저장소 연결 전';
   $('connection').classList.toggle('connected',Boolean(store));
@@ -191,7 +194,7 @@ async function loadFolder(folder,epoch){
   if(view==='review')await showNextReview();
 }
 async function connect(previous=false){
-  if(busy||!supported)return;
+  if(busy||saving||!supported)return;
   if(store&&dirty&&!confirm('폴더를 바꾸면 저장하지 않은 입력을 지워요. 다른 폴더를 연결할까요?'))return;
   const epoch=++connectionEpoch;setBusy(true);
   try{
@@ -206,7 +209,7 @@ async function connect(previous=false){
   }catch(e){notice(friendlyError(e),true);}finally{setBusy(false);}
 }
 async function reload(){
-  if(!store||busy)return;
+  if(!store||busy||saving)return;
   const epoch=++connectionEpoch;setBusy(true);
   try{if(store.kind==='dropbox')await loadCloud(epoch);else await loadFolder(store.folder,epoch);if(dirty)notice('최신 카드와 기록을 불러왔어요. 입력 중인 내용은 그대로 있어요. 검토한 뒤 저장해주세요.');}
   catch(e){notice(friendlyError(e),true);}finally{setBusy(false);}
@@ -232,7 +235,7 @@ async function loadCloud(epoch){
   if(view==='review')await showNextReview();
 }
 async function connectCloud(){
-  if(busy)return;
+  if(busy||saving)return;
   if(dirty&&!confirm('아직 저장하지 않은 입력이 있어요. 입력을 지우고 Dropbox에 연결할까요?'))return;
   if(dirty)resetEditor();
   const epoch=++connectionEpoch;setBusy(true);
@@ -246,13 +249,13 @@ async function connectCloud(){
   }catch(e){notice(friendlyError(e),true);}finally{setBusy(false);}
 }
 async function refreshCloud(){
-  if(refreshing||busy||dirty||store?.pendingNotes||(view==='review'&&revealed)||document.hidden||store?.kind!=='dropbox'||!cloud?.connected)return;
+  if(refreshing||busy||saving||dirty||store?.pendingNotes||(view==='review'&&revealed)||document.hidden||store?.kind!=='dropbox'||!cloud?.connected)return;
   refreshing=true;
   const previous=store,epoch=connectionEpoch;
   let applied=false;
   try{
     const next=await DropboxStore.open(cloud);
-    if(busy||dirty||store?.pendingNotes||(view==='review'&&revealed)||store!==previous||epoch!==connectionEpoch||next.rev===previous.rev)return;
+    if(busy||saving||dirty||store?.pendingNotes||(view==='review'&&revealed)||store!==previous||epoch!==connectionEpoch||next.rev===previous.rev)return;
     applied=true;setBusy(true);
     store=next;clearMediaCache();updateDecks();renderLibrary();
     if(view==='review')await showNextReview();
@@ -260,7 +263,7 @@ async function refreshCloud(){
   }catch(e){notice(friendlyError(e),true);}finally{refreshing=false;if(applied)setBusy(false);}
 }
 async function saveCard(event){
-  event.preventDefault();if(busy||!store)return;
+  event.preventDefault();if(busy||saving||!store)return;
   const destination=event.submitter?.value || 'next';setBusy(true);$('editor-error').hidden=true;
   try{
     const previous=editedId ? cards().find(c=>c.id===editedId) : null;
@@ -344,7 +347,7 @@ function renderHistory(){
     box.append(el('p',`마지막 평가(${dateLabel(last.at)})를 잘못 눌렀다면 고칠 수 있어요.`));
     for(const rating of [1,2,3,4]){
       const button=el('button',ratings[rating]);button.type='button';button.setAttribute('aria-pressed',String(last.rating===rating));
-      button.disabled=last.rating===rating||busy;button.addEventListener('click',()=>fixRating(rating));buttons.append(button);
+      button.disabled=last.rating===rating||busy||saving;button.addEventListener('click',()=>fixRating(rating));buttons.append(button);
     }
     box.append(buttons);history.append(box);
   }
@@ -352,7 +355,7 @@ function renderHistory(){
   history.append(el('p','미리 보기는 복습 기록을 바꾸지 않아요.'));$('detail-history').replaceChildren(history);
 }
 async function fixRating(rating){
-  if(busy||!store||!detailCard)return;
+  if(busy||saving||!store||!detailCard)return;
   const current=cards().find(c=>c.id===detailCard.id);if(!current)return;
   setBusy(true);renderHistory();
   try{
@@ -417,22 +420,38 @@ async function reveal(){
   }catch(e){notice(friendlyError(e),true);}finally{setBusy(false);}
 }
 async function grade(rating){
-  if(busy||isPractice()||!store||!activeCard||!revealed)return;setBusy(true);
+  if(busy||saving||isPractice()||!store||!activeCard||!revealed)return;
+  const owner=store,previousGraded=lastGraded,retry=unknownSession!==null;
+  let updated;
+  try{updated=rateCard(activeCard,rating,new Date(),{retryUnknown:retry});}catch(e){notice(friendlyError(e),true);return;}
+  const next=cards().map(c=>c.id===updated.id?updated:c);
+  // Saving a megabyte to Dropbox takes a second or more. Move on to the next card at once; the next
+  // answer waits until this one is stored, and a failed save brings this card back.
+  saving=true;pendingCards=next;
+  const commit=store.commit({...store.library,cards:next},{},[updated.id],undefined,{deferNotes:true});
+  const wasUnknown=unknownSession?.delete(updated.id);
+  lastGraded={id:updated.id,answer:updated.answer,rating};sessionCount++;
   notice('복습 기록을 저장하고 있어요…');
+  controls();void showNextReview();
   try{
-    const owner=store;
-    const updated=rateCard(activeCard,rating,new Date(),{retryUnknown:unknownSession!==null});
-    const next=cards().map(c=>c.id===updated.id?updated:c);
-    const result=await store.commit({...store.library,cards:next},{},[updated.id],undefined,{deferNotes:true});
-    unknownSession?.delete(updated.id);
+    const result=await commit;
     const message=rating===1?'모름 카드로 모아뒀어요. 원할 때 다시 볼 수 있고, 24시간 뒤에는 오늘 복습에도 포함돼요.':`복습 기록을 저장했어요. 다음 복습: ${dateLabel(updated.schedule.due)}`;
-    lastGraded={id:updated.id,answer:updated.answer,rating};
-    sessionCount++;saved(result,message,{review:true});
-    const savedNotice=noticeVersion;
-    const reportNotes=notes=>{if(store===owner)noteWarnings(notes,noticeVersion===savedNotice);};
-    if(result.notes)void result.notes.then(reportNotes,error=>reportNotes({warnings:[{message:error.message}]}));
-    await showNextReview();
-  }catch(e){notice(friendlyError(e),true);}finally{setBusy(false);}
+    pendingCards=null;saving=false;
+    if(store===owner){
+      saved(result,message,{review:true});
+      const savedNotice=noticeVersion;
+      const reportNotes=notes=>{if(store===owner)noteWarnings(notes,noticeVersion===savedNotice);};
+      if(result.notes)void result.notes.then(reportNotes,error=>reportNotes({warnings:[{message:error.message}]}));
+      if(store.prepare)void store.prepare().catch(()=>{/* The next save retries preparation. */});
+    }
+  }catch(e){
+    pendingCards=null;saving=false;
+    if(store===owner){
+      lastGraded=previousGraded;sessionCount--;if(wasUnknown)unknownSession.add(updated.id);
+      notice(`${friendlyError(e)} 방금 평가한 ‘${updated.answer.slice(0,40)}’ 카드는 저장되지 않아 다시 보여드려요.`,true);
+      await showNextReview();
+    }
+  }finally{controls();}
 }
 function movePractice(step){
   if(busy||!store||!isPractice())return;
@@ -445,7 +464,7 @@ function movePractice(step){
 $('connect').addEventListener('click',()=>connect());$('reconnect').addEventListener('click',()=>connect(true));$('reload').addEventListener('click',reload);
 $('connect-dropbox').addEventListener('click',connectCloud);
 $('disconnect-dropbox').addEventListener('click',async()=>{
-  if(busy)return;setBusy(true);
+  if(busy||saving)return;setBusy(true);
   try{
     await store?.flushNotes?.();cloud?.disconnect();connectionEpoch++;
     if(store?.kind==='dropbox'){store=null;clearMediaCache();activeCard=null;unknownSession=null;renderLibrary();if(view==='review')showNextReview();}
@@ -464,7 +483,7 @@ $('import-folder').addEventListener('change',async event=>{
   }catch(e){notice(friendlyError(e),true);}finally{event.target.value='';setBusy(false);}
 });
 async function importBundle(append=false){
-  if(busy||store?.kind!=='dropbox')return;
+  if(busy||saving||store?.kind!=='dropbox')return;
   if(dirty){notice('먼저 입력 중인 카드를 저장하거나 입력을 취소해 주세요.',true);return;}
   setBusy(true);
   try{
@@ -533,7 +552,7 @@ window.addEventListener('online',()=>void refreshCloud());
 // GitHub Pages lets the browser reuse this page for ten minutes, so a new release can lag behind.
 // Ask for the page without the cache and reload once when it names a newer app module.
 async function checkForUpdate(){
-  if(busy||dirty||store?.pendingNotes||(view==='review'&&revealed)||$('detail-dialog').open)return;
+  if(busy||saving||dirty||store?.pendingNotes||(view==='review'&&revealed)||$('detail-dialog').open)return;
   try{
     const current=new URL(import.meta.url).searchParams.get('v');
     const response=await fetch(location.pathname,{cache:'no-store'});if(!current||!response.ok)return;

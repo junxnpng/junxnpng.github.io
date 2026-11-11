@@ -28,14 +28,14 @@ const bytesEqual=async(a,b)=>{
 };
 
 export class DropboxStore{
-  constructor(cloud,library,raw,rev){
-    this.cloud=cloud;this.library=library;this.raw=raw;this.rev=rev;this.kind='dropbox';this.folder={name:'Dropbox'};this.writing=false;
+  constructor(cloud,library,raw,rev,hash=null){
+    this.cloud=cloud;this.library=library;this.raw=raw;this.rev=rev;this.hash=hash;this.kind='dropbox';this.folder={name:'Dropbox'};this.writing=false;
     this.directoriesReady=null;this.preparedBackups=new Map();this.noteQueue=Promise.resolve();this.pendingNotes=0;
   }
   static async open(cloud){
     const file=await cloud.download(`${prefix}/library.json`);
     const raw=file?await file.text():null;
-    return new DropboxStore(cloud,raw===null?newLibrary():parseLibrary(raw),raw,file?.metadata.rev||null);
+    return new DropboxStore(cloud,raw===null?newLibrary():parseLibrary(raw),raw,file?.metadata.rev||null,file?.metadata.content_hash||null);
   }
   directories(){
     if(!this.directoriesReady)this.directoriesReady=(async()=>{
@@ -44,12 +44,12 @@ export class DropboxStore{
     })().catch(error=>{this.directoriesReady=null;throw error;});
     return this.directoriesReady;
   }
-  prepare(){return this._prepare(this.raw,this.rev);}
-  async _prepare(raw,rev){
+  prepare(){return this._prepare(this.raw,this.rev,this.hash);}
+  async _prepare(raw,rev,hash=null){
     await this.directories();
     if(raw===null)return;
     if(!this.preparedBackups.has(rev)){
-      const ready=this.immutable(`backups/library-${rev}.json`,new Blob([raw])).catch(error=>{this.preparedBackups.delete(rev);throw error;});
+      const ready=this.backup(raw,rev,hash).catch(error=>{this.preparedBackups.delete(rev);throw error;});
       this.preparedBackups.set(rev,ready);
     }
     await this.preparedBackups.get(rev);
@@ -73,6 +73,22 @@ export class DropboxStore{
     if(!file||!file.blob.size||file.blob.size>10*1024*1024)throw Error('첨부파일이 없거나 10MB보다 큽니다.');
     return file.blob;
   }
+  // The backup of the file we are about to replace. Dropbox copies it on its side when it can, so a
+  // megabyte-sized library is not uploaded and downloaded again for every answer.
+  async backup(raw,rev,hash){
+    const name=`backups/library-${rev}.json`;
+    if(hash&&this.cloud.copy){
+      try{
+        // If another device saved in between, this copies its newer file; the canonical upload then
+        // conflicts on the revision and retries with that file, which gets a backup of its own.
+        await this.cloud.copy(`${prefix}/library.json`,`${prefix}/${name}`);return;
+      }catch(error){
+        if(!error.conflict)throw error;
+        if((await this.cloud.metadata(`${prefix}/${name}`))?.content_hash===hash)return;
+      }
+    }
+    await this.immutable(name,new Blob([raw]));
+  }
   async commit(next,uploads={},changedIds=[],onProgress=()=>{},{deferNotes=false}={}){
     if(this.writing)throw Error('이 창에서 저장 중입니다. 잠시 기다려 주세요.');
     if(next.id!==this.library.id||next.revision!==this.library.revision)throw collision();
@@ -87,24 +103,24 @@ export class DropboxStore{
       await eachLimited(Object.entries(uploads),async([path,blob])=>{await this.immutable(path,blob);onProgress(++done,total);});
       const oldRefs=new Set(this.library.cards.flatMap(c=>[c.image?.path,c.audio?.path].filter(Boolean)));
       for(const path of refs)if(!oldRefs.has(path)&&!uploads[path])await this.readMedia(path);
-      let raw=this.raw,rev=this.rev;
+      let raw=this.raw,rev=this.rev,hash=this.hash;
       for(let attempt=0;attempt<3;attempt++){
         const remote=raw===null?copy(this.library):parseLibrary(raw);
         const merged=mergeLibraries(this.library,next,remote);
         const snapshot=parseLibrary(JSON.stringify({...merged,revision:remote.revision+1,updatedAt:new Date().toISOString()}));
-        await this._prepare(raw,rev);
-        const newRaw=JSON.stringify(snapshot,null,2)+'\n';
+        await this._prepare(raw,rev,hash);
+        const newRaw=JSON.stringify(snapshot)+'\n'; // compact: a quarter smaller to upload on every answer
         let saved;
         // Dropbox's revision check makes a separate read unnecessary unless another device wrote first.
         try{saved=await this.cloud.upload(`${prefix}/library.json`,newRaw,{rev});}
         catch(error){
           if(!error.conflict||attempt===2)throw error;
           const current=await this.cloud.download(`${prefix}/library.json`);
-          raw=current?await current.text():null;rev=current?.metadata.rev||null;
+          raw=current?await current.text():null;rev=current?.metadata.rev||null;hash=current?.metadata.content_hash||null;
           if(raw===null&&this.raw!==null)throw Error('Dropbox의 보관함 파일이 없어졌습니다. 기존 기록을 새 파일로 덮어쓰지 않았습니다.');
           continue;
         }
-        this.library=snapshot;this.raw=newRaw;this.rev=saved.rev;
+        this.library=snapshot;this.raw=newRaw;this.rev=saved.rev;this.hash=saved.content_hash||null;
         this.preparedBackups.clear();
         const notes=this.queueNotes(changedIds,()=>onProgress(++done,total));
         return deferNotes?{warnings:[],notes}:await notes;

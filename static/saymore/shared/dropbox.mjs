@@ -102,6 +102,19 @@ export class DropboxClient {
     if(!response.ok)throw await this.error(response);
     return response.json();
   }
+  // Server-side copy: makes a backup without sending the file through the browser.
+  async copy(from, to) {
+    this.path(from);this.path(to);
+    const response=await this.request('https://api.dropboxapi.com/2/files/copy_v2',{method:'POST',headers:{Authorization:`Bearer ${await this.accessToken()}`,'Content-Type':'application/json'},body:JSON.stringify({from_path:from,to_path:to,autorename:false})});
+    if(!response.ok)throw await this.error(response);
+    return (await response.json()).metadata;
+  }
+  async metadata(path) {
+    this.path(path);
+    const response=await this.request('https://api.dropboxapi.com/2/files/get_metadata',{method:'POST',headers:{Authorization:`Bearer ${await this.accessToken()}`,'Content-Type':'application/json'},body:JSON.stringify({path})});
+    if(!response.ok){const error=await this.error(response);if(error.missing)return null;throw error;}
+    return response.json();
+  }
   async mkdir(path) {
     this.path(path);
     const response=await this.request('https://api.dropboxapi.com/2/files/create_folder_v2',{method:'POST',headers:{Authorization:`Bearer ${await this.accessToken()}`,'Content-Type':'application/json'},body:JSON.stringify({path,autorename:false})});

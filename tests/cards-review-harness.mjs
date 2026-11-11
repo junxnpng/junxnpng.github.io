@@ -38,8 +38,15 @@ globalThis.fetch=async(url,options={})=>{
   if(String(url)==='/saymore/sync-config.json')return json({dropbox_app_key:appKey});
   if(!String(url).includes('dropboxapi.com'))return nativeFetch(url,options);
   const action=String(url).split('/').at(-1);
-  if(!['download','upload','create_folder_v2'].includes(action))throw Error('Unexpected test API');
+  if(!['download','upload','create_folder_v2','copy_v2','get_metadata'].includes(action))throw Error('Unexpected test API');
   const args=JSON.parse(options.headers['Dropbox-API-Arg']||options.body),path=args.path;
+  if(action==='copy_v2'){
+    requests++;void status();await delay(80);
+    if(files.has(args.to_path))return json({error_summary:'to/conflict/file/'},409);
+    const source=files.get(args.from_path);files.set(args.to_path,{blob:source.blob,rev:String(++revision)});
+    return json({metadata:{content_hash:'hash-'+source.rev}});
+  }
+  if(action==='get_metadata'){requests++;await delay(80);const file=files.get(path);return file?json({content_hash:'hash-'+file.rev}):json({error_summary:'path/not_found',error:{path:{'.tag':'not_found'}}},409);}
   requests++;void status();await delay(80);
   if(action==='create_folder_v2')return json({});
   if(action==='download'){
@@ -49,7 +56,7 @@ globalThis.fetch=async(url,options={})=>{
       if(!files.has(path)){const response=await nativeFetch(path.endsWith('.mp3')?'./sample/coffee.mp3':'./sample/coffee.jpg');files.set(path,{blob:await response.blob(),rev:'fixture'});}
     }
     const file=files.get(path);void status();
-    return file?new Response(file.blob,{headers:{'Dropbox-API-Result':JSON.stringify({rev:file.rev})}}):json({error_summary:'path/not_found',error:{path:{'.tag':'not_found'}}},409);
+    return file?new Response(file.blob,{headers:{'Dropbox-API-Result':JSON.stringify({rev:file.rev,content_hash:'hash-'+file.rev})}}):json({error_summary:'path/not_found',error:{path:{'.tag':'not_found'}}},409);
   }
   for(const [id,match]of [['qa-fail-save',path==='/cards/library.json'],['qa-fail-note',path.includes('/notes/')]]){
     if(match&&$(id).checked){$(id).checked=false;void status();return json({error_summary:'test/offline'},503);}
@@ -59,7 +66,7 @@ globalThis.fetch=async(url,options={})=>{
   const blob=options.body instanceof Blob?options.body:new Blob([options.body]),rev=String(++revision);
   files.set(path,{blob,rev});
   if(path==='/cards/library.json'){canonicalWrites++;localStorage.setItem(key,await blob.text());}
-  void status();return json({rev});
+  void status();return json({rev,content_hash:'hash-'+rev});
 };
 document.addEventListener('click',event=>{if(event.target.closest('[data-rating]')&&!event.target.closest('button').disabled)started=performance.now();},true);
 new MutationObserver(()=>{
@@ -68,4 +75,4 @@ new MutationObserver(()=>{
   void status();
 }).observe($('review-view'),{childList:true,subtree:true,attributes:true,attributeFilter:['hidden']});
 new MutationObserver(()=>{listChanges++;void status();}).observe($('card-list'),{childList:true});
-await import('./app.mjs?v=resume-1');
+await import('./app.mjs?v=fast-save-1');

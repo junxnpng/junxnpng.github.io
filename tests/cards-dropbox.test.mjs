@@ -237,3 +237,51 @@ test('an old Dropbox library upgrades on save while its original snapshot and re
   assert.equal(saved.cards[0].schedule.due,'2026-11-10T00:10:00.000Z');
   assert.equal(await cloud.files.get('/cards/backups/library-1.json').text(),original);
 });
+
+function hashingCloud(library){
+  const cloud=memoryCloud(library),hashes=new Map(),calls=[];
+  const hashOf=async blob=>'h'+(await blob.text()).length+':'+(await blob.text()).slice(-24);
+  const download=cloud.download.bind(cloud),upload=cloud.upload.bind(cloud);
+  cloud.calls=calls;
+  cloud.download=async path=>{calls.push('download '+path);const file=await download(path);if(file)file.metadata.content_hash=await hashOf(file.blob);return file;};
+  cloud.upload=async(path,data,options)=>{calls.push('upload '+path.replace(/library-\d+/,'library-N'));const saved=await upload.call(cloud,path,data,options);return {...saved,content_hash:await hashOf(cloud.files.get(path))};};
+  cloud.copy=async(from,to)=>{calls.push('copy '+to.replace(/library-\d+/,'library-N'));if(cloud.files.has(to))throw Object.assign(Error('conflict'),{conflict:true});cloud.files.set(to,cloud.files.get(from));return {content_hash:await hashOf(cloud.files.get(to))};};
+  cloud.metadata=async path=>{calls.push('metadata');const blob=cloud.files.get(path);return blob?{content_hash:await hashOf(blob)}:null;};
+  return cloud;
+}
+
+test('an answer is saved with one upload: the backup is copied on the server and holds the previous file',async()=>{
+  assert.ok(api);
+  const now=new Date('2026-11-09T00:00:00Z');
+  const library=newLibrary(now);library.cards=[newCard(fields('one'),now),newCard(fields('two'),now)];
+  const cloud=hashingCloud(library),original=await cloud.files.get('/cards/library.json').text();
+  const store=await api.DropboxStore.open(cloud);
+  await store.prepare();await store.prepare();
+  cloud.calls.length=0;
+  const next=copy(store.library);next.cards[0]=rateCard(next.cards[0],3,now);
+  await store.commit(next,{},[next.cards[0].id],undefined,{deferNotes:true});
+  assert.deepEqual(cloud.calls.filter(c=>!c.includes('/notes/')),['upload /cards/library.json']);
+  assert.equal(await cloud.files.get('/cards/backups/library-1.json').text(),original);
+  assert.ok(!(await cloud.files.get('/cards/library.json').text()).includes('\n  '),'stored compactly');
+  // The next answer backs up the new file by copy as well, and a repeated backup of the same file is accepted.
+  cloud.calls.length=0;
+  const again=copy(store.library);again.cards[1]=rateCard(again.cards[1],4,now);
+  await store.commit(again,{},[again.cards[1].id],undefined,{deferNotes:true});
+  assert.deepEqual(cloud.calls.filter(c=>!c.includes('/notes/')),['copy /cards/backups/library-N.json','upload /cards/library.json']);
+  assert.equal(store.library.cards[0].reviews.length+store.library.cards[1].reviews.length,2);
+  await new api.DropboxStore(cloud,store.library,store.raw,store.rev,store.hash).backup(store.raw,store.rev,store.hash);
+});
+
+test('a save still succeeds when another device wrote between the backup copy and the upload',async()=>{
+  assert.ok(api);
+  const now=new Date('2026-11-09T00:00:00Z');
+  const library=newLibrary(now);library.cards=[newCard(fields('one'),now),newCard(fields('two'),now)];
+  const cloud=hashingCloud(library);
+  const mine=await api.DropboxStore.open(cloud),theirs=await api.DropboxStore.open(cloud);
+  const remote=copy(theirs.library);remote.cards[1]=rateCard(remote.cards[1],4,now);
+  await theirs.commit(remote,{},[],undefined,{deferNotes:true});
+  const local=copy(mine.library);local.cards[0]=rateCard(local.cards[0],3,now);
+  await mine.commit(local,{},[],undefined,{deferNotes:true});
+  assert.deepEqual(mine.library.cards.map(c=>c.reviews.length),[1,1]);
+  assert.equal(JSON.parse(await cloud.files.get('/cards/library.json').text()).cards[1].reviews[0].rating,4);
+});
