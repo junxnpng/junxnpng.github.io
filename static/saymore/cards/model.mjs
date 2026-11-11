@@ -67,11 +67,12 @@ function withUnknownDeadline(result,rating,now){
   return result;
 }
 
-export function rateCard(card, rating, now = new Date(), {retryUnknown=false}={}) {
+// `early` records an answer before the card is due; practice modes use it so every mode can be answered.
+export function rateCard(card, rating, now = new Date(), {retryUnknown=false, early=false}={}) {
   if (![1,2,3,4].includes(rating)) fail('답변을 선택해주세요.');
   const previous=card.reviews.at(-1);
   const earlyUnknown=retryUnknown&&previous?.rating===1&&Date.parse(previous.at)<=now.getTime();
-  if (Date.parse(card.schedule.due) > now.getTime()&&!earlyUnknown) fail('아직 복습 시간이 아니에요. 미리 보기로 연습할 수 있어요.');
+  if (Date.parse(card.schedule.due) > now.getTime()&&!earlyUnknown&&!early) fail('아직 복습 시간이 아니에요. 미리 보기로 연습할 수 있어요.');
   const result = withUnknownDeadline(scheduler.next(copy(card.schedule), now, rating),rating,now);
   return {...copy(card), updatedAt:now.toISOString(), schedule:copy(result.card),
     reviews:[...copy(card.reviews), {at:now.toISOString(), rating, due:result.card.due.toISOString(), log:copy(result.log)}]};

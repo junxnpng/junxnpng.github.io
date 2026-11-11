@@ -215,3 +215,17 @@ test('how long a studied card waited past its date is derived from the history, 
   const onTime=rateCard(first,3,new Date(first.schedule.due));
   assert.equal(model.reviewLateMs(onTime,1),0);
 });
+
+test('practice can record an answer before the due date, and it schedules from that moment',()=>{
+  const first=rateCard(newCard(fields,now),4,now);                       // due in 8 days
+  const early=new Date(now.getTime()+2*86400000);
+  assert.throws(()=>rateCard(first,3,early),/아직 복습 시간이 아니에요/);
+  const answered=rateCard(first,3,early,{early:true});
+  assert.equal(answered.reviews.length,2);
+  assert.equal(answered.reviews[1].at,early.toISOString());
+  assert.ok(Date.parse(answered.schedule.due)>early.getTime());
+  assert.equal(model.reviewLateMs(answered,1),0);
+  parseLibrary(JSON.stringify({...newLibrary(now),cards:[answered]}));
+  // A mis-pressed early answer can be corrected like any other.
+  assert.equal(model.correctLastReview(answered,1).reviews[1].rating,1);
+});

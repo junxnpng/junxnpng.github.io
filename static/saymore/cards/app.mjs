@@ -68,7 +68,7 @@ function retryControls(){
   const group=groups.find(g=>g.key===selectedGroup),progress=studyProgress(group?.cards||[],now);
   $('review-group-help').textContent=store?`${group?.label||'선택한 묶음'} · 전체 ${progress.total}장 · 오늘 완료 ${progress.completedToday}장 · 지금 남음 ${progress.remaining}장 · 다음 복습 대기 ${progress.waiting}장. 오늘 완료는 오늘 평가한 뒤 정기 복습에서 빠진 카드예요. ‘모름’은 원할 때 따로 다시 볼 수 있어요.`:'Dropbox를 연결하면 IPA와 100장씩 나눈 단어 묶음을 고를 수 있어요.';
   const remembered=store&&cardsInGroup(cards(),selectedGroup).some(c=>c.id===practicePositions()[selectedGroup]);
-  $('review-mode-help').textContent=$('review-mode').value==='resume'?(remembered?'지난번에 ‘다음 카드’로 넘기다 멈춘 카드부터 이어서 연습해요.':'이 묶음에서 기억해 둔 위치가 아직 없어서, 한 번도 복습하지 않은 첫 카드부터 시작해요. ‘다음 카드’로 넘기면 그 위치를 기억해요.')+' 복습 기록과 다음 날짜는 바뀌지 않아요.':practice?'선택한 묶음 전체를 처음부터 순서대로 연습해요. 복습 기록과 다음 날짜는 바뀌지 않아요.':'한 번도 안 한 카드를 먼저, 그다음 복습 날짜가 된 카드를 오래 기다린 것부터 보여줘요. 정답 확인 후 평가하면 기록과 다음 날짜가 저장돼요.';
+  $('review-mode-help').textContent=$('review-mode').value==='resume'?(remembered?'지난번에 멈춘 카드부터 순서대로 이어서 봐요.':'이 묶음에서 기억해 둔 위치가 아직 없어서, 한 번도 복습하지 않은 첫 카드부터 시작해요.')+' 평가하면 기록과 다음 날짜가 저장되고, 평가 없이 넘겨도 돼요.':practice?'복습 날짜와 상관없이 묶음 전체를 처음부터 순서대로 봐요. 평가하면 기록과 다음 날짜가 저장되고, 평가 없이 넘겨도 돼요.':'한 번도 안 한 카드를 먼저, 그다음 복습 날짜가 된 카드를 오래 기다린 것부터 보여줘요. 정답 확인 후 평가하면 기록과 다음 날짜가 저장돼요.';
 }
 function isPractice(){return ['practice','resume'].includes($('review-mode').value);}
 // Free practice remembers the card last shown in each group so "이어서 연습" can continue from it.
@@ -139,7 +139,7 @@ async function sources(card,withAudio=true){
   return urls;
 }
 function prepareReview(queue){
-  if(!isPractice()&&store?.prepare)void store.prepare().catch(()=>{/* Saving retries preparation and reports any failure. */});
+  if(store?.prepare)void store.prepare().catch(()=>{/* Saving retries preparation and reports any failure. */});
   for(const card of queue.slice(0,2))void sources(card).catch(()=>{/* Opening the card retries a failed prefetch. */});
 }
 function fields(){
@@ -390,7 +390,7 @@ async function showNextReview(){
   if(!activeCard){
     if(practice&&store){
       $('review-empty-title').textContent=queue.length?'선택한 묶음 연습을 마쳤어요.':'선택한 묶음에 카드가 없어요.';
-      $('next-due').textContent=queue.length?`${queue.length}장을 모두 봤어요. 다시 연습하거나 다른 묶음을 골라보세요. 복습 기록과 일정은 그대로예요.`:'다른 묶음을 선택하거나 카드를 추가해보세요.';return;
+      $('next-due').textContent=queue.length?`${queue.length}장을 모두 봤어요. 다시 연습하거나 다른 묶음을 골라보세요.`:'다른 묶음을 선택하거나 카드를 추가해보세요.';return;
     }
     if(unknownSession){
       const remaining=studyQueue(cards(),selectedGroup,'unknown').length;
@@ -417,21 +417,23 @@ async function reveal(){
     const back=!isPractice()||!revealed;
     showCard($('review-card'),activeCard,await sources(activeCard),back);revealed=back;
     if(isPractice()){
-      $('reveal').textContent=back?'앞면 보기':'정답 확인';$('rating-area').hidden=true;return;
+      $('reveal').textContent=back?'앞면 보기':'정답 확인';
+      if(!back){$('rating-area').hidden=true;return;}
     }
     const options=reviewOptions(activeCard);for(const b of document.querySelectorAll('[data-rating]'))b.querySelector('small').textContent=b.dataset.rating==='1'?'1일 내 언제든':intervalLabel(options[b.dataset.rating].due);
-    $('reveal').hidden=true;$('rating-area').hidden=false;
+    $('reveal').hidden=!isPractice();$('rating-area').hidden=false;
   }catch(e){notice(friendlyError(e),true);}finally{setBusy(false);}
 }
 async function grade(rating){
-  if(busy||saving||isPractice()||!store||!activeCard||!revealed)return;
-  const owner=store,previousGraded=lastGraded,retry=unknownSession!==null;
+  if(busy||saving||!store||!activeCard||!revealed)return;
+  const owner=store,previousGraded=lastGraded,retry=unknownSession!==null,practice=isPractice(),previousIndex=practiceIndex;
   let updated;
-  try{updated=rateCard(activeCard,rating,new Date(),{retryUnknown:retry});}catch(e){notice(friendlyError(e),true);return;}
+  try{updated=rateCard(activeCard,rating,new Date(),{retryUnknown:retry,early:practice});}catch(e){notice(friendlyError(e),true);return;}
   const next=cards().map(c=>c.id===updated.id?updated:c);
   // Saving a megabyte to Dropbox takes a second or more. Move on to the next card at once; the next
   // answer waits until this one is stored, and a failed save brings this card back.
   saving=true;pendingCards=next;
+  if(practice){const group=cardsInGroup(next,selectedGroup);practiceIndex=Math.min(practiceIndex+1,group.length);rememberPractice(group[practiceIndex]?.id||null);}
   const commit=store.commit({...store.library,cards:next},{},[updated.id],undefined,{deferNotes:true});
   const wasUnknown=unknownSession?.delete(updated.id);
   lastGraded={id:updated.id,answer:updated.answer,rating};sessionCount++;
@@ -452,6 +454,7 @@ async function grade(rating){
     pendingCards=null;saving=false;
     if(store===owner){
       lastGraded=previousGraded;sessionCount--;if(wasUnknown)unknownSession.add(updated.id);
+      if(practice){practiceIndex=previousIndex;rememberPractice(updated.id);}
       notice(`${friendlyError(e)} 방금 평가한 ‘${updated.answer.slice(0,40)}’ 카드는 저장되지 않아 다시 보여드려요.`,true);
       await showNextReview();
     }
@@ -535,7 +538,7 @@ for(const id of ['deck-filter','review-group'])$(id).addEventListener('change',(
 try{localStorage.removeItem('saymore.cards.review-mode.v1');}catch{/* Nothing to clear. */}
 $('review-mode').value='due';
 $('review-mode').addEventListener('change',()=>startReview());
-$('to-due').addEventListener('click',()=>{$('review-mode').value='due';startReview();});
+
 $('card-form').addEventListener('input',()=>{dirty=true;renderPreview();});$('card-form').addEventListener('submit',saveCard);
 $('card-form').addEventListener('keydown',e=>{if((e.metaKey||e.ctrlKey)&&e.key==='Enter'){e.preventDefault();if(!busy&&store)$('card-form').requestSubmit(editedId?$('save-list'):$('save-next'));}});
 $('preview-front').addEventListener('click',()=>{previewBack=false;renderPreview();});$('preview-back').addEventListener('click',()=>{previewBack=true;renderPreview();});
@@ -553,7 +556,7 @@ $('review-unknown').addEventListener('click',()=>startReview(true));$('review-no
 for(const b of document.querySelectorAll('[data-rating]'))b.addEventListener('click',()=>grade(Number(b.dataset.rating)));
 $('repair-notes').addEventListener('click',async()=>{if(!store||busy)return;setBusy(true);try{const result=await store.exportNotes();$('repair-notes').hidden=result.warnings.length===0;saved(result,'읽기용 노트를 다시 저장했어요.');}catch(e){notice(friendlyError(e),true);}finally{setBusy(false);}});
 window.addEventListener('beforeunload',e=>{if(dirty||busy){e.preventDefault();e.returnValue='';}});
-document.addEventListener('keydown',e=>{if(view!=='review'||busy||$('detail-dialog').open||/INPUT|TEXTAREA|SELECT/.test(e.target.tagName))return;if(e.code==='Space'){if(e.target.closest('button,a,summary'))return;e.preventDefault();if(!revealed||isPractice())reveal();}else if(!isPractice()&&revealed&&/^[1-4]$/.test(e.key))grade(Number(e.key));});
+document.addEventListener('keydown',e=>{if(view!=='review'||busy||$('detail-dialog').open||/INPUT|TEXTAREA|SELECT/.test(e.target.tagName))return;if(e.code==='Space'){if(e.target.closest('button,a,summary'))return;e.preventDefault();if(!revealed||isPractice())reveal();}else if(revealed&&/^[1-4]$/.test(e.key))grade(Number(e.key));});
 setInterval(()=>{if(store&&!busy)updateStats();void refreshCloud();},30000);
 window.addEventListener('pageshow',()=>void refreshCloud());
 window.addEventListener('online',()=>void refreshCloud());
