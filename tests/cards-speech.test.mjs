@@ -29,3 +29,18 @@ test('optional speech text is validated and preserved when editing without the s
   const old=newCard({type:'basic',front:'old',answer:'old'});
   assert.equal(Object.hasOwn(old,'speech'),false);
 });
+
+test('plain English answers link to the Cambridge US entry; IPA and long answers do not',async()=>{
+  globalThis.document??={createElement:()=>({})};
+  const {dictionaryLinks}=await import('../static/saymore/cards/view.mjs');
+  assert.deepEqual(dictionaryLinks('dog').map(l=>l.url),['https://dictionary.cambridge.org/us/search/english/direct/?q=dog']);
+  assert.deepEqual(dictionaryLinks('street / road').map(l=>l.term),['street','road']);
+  assert.equal(dictionaryLinks('cell phone')[0].url,'https://dictionary.cambridge.org/us/search/english/direct/?q=cell%20phone');
+  assert.equal(dictionaryLinks('August')[0].url.endsWith('q=august'),true);
+  assert.equal(dictionaryLinks('t-shirt').length,1);
+  assert.deepEqual(dictionaryLinks('one hundred one').map(l=>l.term),['one','hundred']);
+  assert.deepEqual(dictionaryLinks('twenty-two').map(l=>l.term),['twenty','two']);
+  assert.deepEqual(dictionaryLinks('wake up').map(l=>l.term),['wake','up']);
+  assert.deepEqual(dictionaryLinks('train station').map(l=>l.term),['train station']);
+  for(const answer of ['/iː/ · sheep','Glottal stop · 성문폐쇄음','','a sentence that is far too long to be one entry','one / two / three / four'])assert.deepEqual(dictionaryLinks(answer),[]);
+});
