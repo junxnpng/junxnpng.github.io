@@ -15,17 +15,21 @@ export function showCard(container, card, sources = {}, answer = false) {
   if (answer) {
     body.append(el('p',card.answer||'단어 또는 정답','study-answer'));
     if(card.ipa)body.append(el('p',card.ipa,'study-ipa'));
+    // A card with a recording offers both: the human recording and the device voice reading the same word.
+    const listen=el('div',undefined,'study-listen');let audio=null;
     if(sources.audio){
-      const audio=el('audio');audio.src=sources.audio;audio.preload='metadata';
-      const button=el('button','▶ 발음 듣기','secondary');button.type='button';
-      button.addEventListener('click',async()=>{try{audio.currentTime=0;await audio.play();}catch{button.textContent='재생할 수 없는 음성이에요';}});
-      body.append(button,audio);
+      audio=el('audio');audio.src=sources.audio;audio.preload='metadata';
+      const button=el('button',card.speech?'▶ 사람 녹음':'▶ 발음 듣기','secondary');button.type='button';
+      button.addEventListener('click',async()=>{stopSpeech();try{audio.currentTime=0;await audio.play();}catch{button.textContent='재생할 수 없는 음성이에요';}});
+      listen.append(button,audio);
     }
-    if(!sources.audio&&card.speech){
+    if(card.speech){
       const button=el('button','▶ 미국식 기기 합성 음성','secondary');button.type='button';
-      button.addEventListener('click',()=>speakUS(card.speech,message=>{button.textContent=message;}));
-      body.append(button,el('p','녹음이 아닌 기기 합성 음성이에요.','study-credit'));
+      button.addEventListener('click',()=>{audio?.pause();speakUS(card.speech,message=>{button.textContent=message;});});
+      listen.append(button);
     }
+    if(listen.childElementCount)body.append(listen);
+    if(card.speech)body.append(el('p',sources.audio?'왼쪽은 사람이 녹음한 소리, 오른쪽은 기기가 읽는 합성 음성이에요.':'녹음이 아닌 기기 합성 음성이에요.','study-credit'));
     if(card.sentence)body.append(el('p',card.sentence,'study-sentence'));
     if(card.memory)body.append(el('p',card.memory,'study-memory'));
     if(card.audio?.credit)body.append(el('p',card.audio.credit,'study-credit'));
