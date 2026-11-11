@@ -49,3 +49,6 @@ export function sortCards(cards,order='default'){
   const compare={newest:by(created,-1),oldest:by(created,1),reviewedNewest:by(reviewed,-1),reviewedOldest:by(reviewed,1),dueSoonest:by(due,1)}[order];
   return compare?[...cards].sort(compare):cards;
 }
+
+// Where free practice continues from: the card last shown in this group, or the start when it is gone or unknown.
+export function resumeIndex(cards,savedId){const index=savedId?cards.findIndex(c=>c.id===savedId):-1;return index<0?0:index;}

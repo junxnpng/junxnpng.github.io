@@ -1,5 +1,5 @@
 import {newCard, editCard, rateCard, correctLastReview, reviewOptions, dueCards, dateLabel, intervalLabel, ratings} from './model.mjs?v=4';
-import {studyGroups,cardsInGroup,studyQueue,studyProgress,sortCards,sortOrders} from './study-groups.mjs?v=3';
+import {studyGroups,cardsInGroup,studyQueue,studyProgress,sortCards,sortOrders,resumeIndex} from './study-groups.mjs?v=4';
 import {FolderStore, rememberedFolder, friendlyError} from './storage.mjs?v=4';
 import {el, showCard} from './view.mjs?v=3';
 import {DropboxStore} from './dropbox-store.mjs?v=7';
@@ -64,9 +64,12 @@ function retryControls(){
   }
   const group=groups.find(g=>g.key===selectedGroup),progress=studyProgress(group?.cards||[],now);
   $('review-group-help').textContent=store?`${group?.label||'선택한 묶음'} · 전체 ${progress.total}장 · 오늘 완료 ${progress.completedToday}장 · 지금 남음 ${progress.remaining}장 · 다음 복습 대기 ${progress.waiting}장. 오늘 완료는 오늘 평가한 뒤 정기 복습에서 빠진 카드예요. ‘모름’은 원할 때 따로 다시 볼 수 있어요.`:'Dropbox를 연결하면 IPA와 100장씩 나눈 단어 묶음을 고를 수 있어요.';
-  $('review-mode-help').textContent=practice?'선택한 묶음 전체를 순서대로 연습해요. 복습 기록과 다음 날짜는 바뀌지 않아요.':'새 카드와 복습 날짜가 된 카드를 보여줘요. 정답 확인 후 평가하면 기록과 다음 날짜가 저장돼요.';
+  $('review-mode-help').textContent=$('review-mode').value==='resume'?'자유 연습에서 마지막으로 본 카드부터 이어서 연습해요. 복습 기록과 다음 날짜는 바뀌지 않아요.':practice?'선택한 묶음 전체를 처음부터 순서대로 연습해요. 복습 기록과 다음 날짜는 바뀌지 않아요.':'새 카드와 복습 날짜가 된 카드를 보여줘요. 정답 확인 후 평가하면 기록과 다음 날짜가 저장돼요.';
 }
-function isPractice(){return $('review-mode').value==='practice';}
+function isPractice(){return ['practice','resume'].includes($('review-mode').value);}
+// Free practice remembers the card last shown in each group so "이어서 연습" can continue from it.
+function practicePositions(){try{const value=JSON.parse(localStorage.getItem('saymore.cards.practice-position.v1'));return value&&typeof value==='object'?value:{};}catch{return {};}}
+function rememberPractice(cardId){try{const all=practicePositions();if(cardId)all[selectedGroup]=cardId;else delete all[selectedGroup];localStorage.setItem('saymore.cards.practice-position.v1',JSON.stringify(all));}catch{/* The position still holds for this visit. */}}
 function setBusy(value){busy=value;controls();}
 function updateStats(){
   $('total-count').textContent=cards().length;
@@ -167,11 +170,13 @@ function switchView(next,force=false){
   if(view==='review')startReview();
   return true;
 }
-function startReview(unknown=false){
+function startReview(unknown=false,restart=false){
   if(busy)return;
   if(unknown)$('review-mode').value='due';
   unknownSession=unknown&&store?new Set(studyQueue(cards(),selectedGroup,'unknown').map(c=>c.id)):null;
-  sessionCount=0;practiceIndex=0;activeCard=null;void showNextReview();
+  sessionCount=0;activeCard=null;
+  practiceIndex=!restart&&store&&$('review-mode').value==='resume'?resumeIndex(cardsInGroup(cards(),selectedGroup),practicePositions()[selectedGroup]):0;
+  void showNextReview();
 }
 async function loadFolder(folder,epoch){
   await store?.flushNotes?.();
@@ -431,7 +436,9 @@ async function grade(rating){
 }
 function movePractice(step){
   if(busy||!store||!isPractice())return;
-  practiceIndex=Math.max(0,Math.min(practiceIndex+step,cardsInGroup(cards(),selectedGroup).length));
+  const group=cardsInGroup(cards(),selectedGroup);
+  practiceIndex=Math.max(0,Math.min(practiceIndex+step,group.length));
+  rememberPractice(group[practiceIndex]?.id||null); // only moving through cards updates the position, not opening the mode
   void showNextReview();
 }
 
@@ -513,7 +520,7 @@ for(const type of ['image','audio']){
 $('fill-sample').addEventListener('click',fillSample);
 $('close-detail').addEventListener('click',()=>$('detail-dialog').close());
 $('detail-flip').addEventListener('click',async()=>{if(!detailCard)return;try{detailBack=!detailBack;showCard($('detail-card'),detailCard,await sources(detailCard),detailBack);$('detail-flip').textContent=detailBack?'앞면 보기':'뒷면 보기';}catch(e){notice(friendlyError(e),true);}});
-$('reveal').addEventListener('click',reveal);$('check-due').addEventListener('click',()=>isPractice()?startReview():showNextReview());
+$('reveal').addEventListener('click',reveal);$('check-due').addEventListener('click',()=>isPractice()?startReview(false,true):showNextReview());
 $('practice-previous').addEventListener('click',()=>movePractice(-1));$('practice-next').addEventListener('click',()=>movePractice(1));
 $('review-unknown').addEventListener('click',()=>startReview(true));$('review-normal').addEventListener('click',()=>startReview());
 for(const b of document.querySelectorAll('[data-rating]'))b.addEventListener('click',()=>grade(Number(b.dataset.rating)));

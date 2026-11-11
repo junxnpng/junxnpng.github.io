@@ -7,7 +7,7 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' blob: data:; media-src 'self' blob:; connect-src 'self' https://api.dropboxapi.com https://content.dropboxapi.com; object-src 'none'; base-uri 'self'; form-action 'none'">
   <title>내 단어 카드 · Say More</title>
   <link rel="icon" href="/saymore/icons/speech.svg"><link rel="stylesheet" href="./app.css?v=sort-fix-1">
-  <script type="module" src="./app.mjs?v=update-1"></script>
+  <script type="module" src="./app.mjs?v=resume-1"></script>
 </head>
 <body>
 <div class="shell">
@@ -45,7 +45,7 @@
       <div class="section-heading"><div><h2 id="review-title">오늘 복습</h2><p id="review-progress" class="small"></p></div><span id="review-deck" class="deck-label"></span></div>
       <div class="review-controls">
         <label>복습할 묶음<select id="review-group" aria-describedby="review-group-help"><option value="all">전체 카드</option></select></label>
-        <label>학습 방식<select id="review-mode" aria-describedby="review-mode-help"><option value="due">예정된 복습</option><option value="practice">자유 연습 · 전체 카드</option></select></label>
+        <label>학습 방식<select id="review-mode" aria-describedby="review-mode-help"><option value="due">예정된 복습</option><option value="practice">자유 연습 · 전체 카드</option><option value="resume">이어서 연습 · 지난번 위치부터</option></select></label>
         <p id="review-group-help" class="small"></p><p id="review-mode-help" class="small"></p>
       </div>
       <div class="review-actions"><button id="review-unknown" class="secondary" hidden>모름 다시 보기</button><button id="review-normal" class="text-button" hidden>오늘 복습으로</button><button id="fix-last" class="text-button" hidden></button><p id="unknown-help" class="small" hidden>모름 카드는 원할 때 다시 꺼내보세요. 24시간 뒤에는 오늘 복습에도 포함돼요.</p></div>

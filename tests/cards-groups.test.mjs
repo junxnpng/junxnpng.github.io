@@ -96,3 +96,12 @@ test('the card list can be ordered by creation or review time without changing t
   assert.deepEqual(input,before);
   assert.deepEqual(Object.keys(groups.sortOrders),['default','newest','oldest','reviewedNewest','reviewedOldest','dueSoonest']);
 });
+
+test('practice resumes at the remembered card and falls back to the start',()=>{
+  const list=['a','b','c'].map(x=>card(x,'내 덱'));
+  assert.equal(groups.resumeIndex(list,list[2].id),2);
+  assert.equal(groups.resumeIndex(list,list[0].id),0);
+  assert.equal(groups.resumeIndex(list,'00000000-0000-4000-8000-000000000000'),0);
+  assert.equal(groups.resumeIndex(list,undefined),0);
+  assert.equal(groups.resumeIndex([],list[1].id),0);
+});
