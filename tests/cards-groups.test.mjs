@@ -97,11 +97,15 @@ test('the card list can be ordered by creation or review time without changing t
   assert.deepEqual(Object.keys(groups.sortOrders),['default','newest','oldest','reviewedNewest','reviewedOldest','dueSoonest']);
 });
 
-test('practice resumes at the remembered card and falls back to the start',()=>{
-  const list=['a','b','c'].map(x=>card(x,'내 덱'));
+test('practice resumes at the remembered card, otherwise after what has already been studied',()=>{
+  const list=['a','b','c','d'].map(x=>card(x,'내 덱'));
   assert.equal(groups.resumeIndex(list,list[2].id),2);
   assert.equal(groups.resumeIndex(list,list[0].id),0);
-  assert.equal(groups.resumeIndex(list,'00000000-0000-4000-8000-000000000000'),0);
   assert.equal(groups.resumeIndex(list,undefined),0);
+  const studied=[rateCard(list[0],3,now),rateCard(list[1],4,now),list[2],list[3]];
+  assert.equal(groups.resumeIndex(studied,undefined),2);
+  assert.equal(groups.resumeIndex(studied,'00000000-0000-4000-8000-000000000000'),2);
+  assert.equal(groups.resumeIndex(studied,studied[3].id),3);
+  assert.equal(groups.resumeIndex(studied.map(c=>c.reviews.length?c:rateCard(c,3,now)),undefined),0);
   assert.equal(groups.resumeIndex([],list[1].id),0);
 });

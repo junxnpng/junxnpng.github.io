@@ -1,5 +1,5 @@
 import {newCard, editCard, rateCard, correctLastReview, reviewOptions, dueCards, dateLabel, intervalLabel, ratings} from './model.mjs?v=4';
-import {studyGroups,cardsInGroup,studyQueue,studyProgress,sortCards,sortOrders,resumeIndex} from './study-groups.mjs?v=4';
+import {studyGroups,cardsInGroup,studyQueue,studyProgress,sortCards,sortOrders,resumeIndex} from './study-groups.mjs?v=5';
 import {FolderStore, rememberedFolder, friendlyError} from './storage.mjs?v=4';
 import {el, showCard} from './view.mjs?v=3';
 import {DropboxStore} from './dropbox-store.mjs?v=8';
@@ -67,11 +67,13 @@ function retryControls(){
   }
   const group=groups.find(g=>g.key===selectedGroup),progress=studyProgress(group?.cards||[],now);
   $('review-group-help').textContent=store?`${group?.label||'선택한 묶음'} · 전체 ${progress.total}장 · 오늘 완료 ${progress.completedToday}장 · 지금 남음 ${progress.remaining}장 · 다음 복습 대기 ${progress.waiting}장. 오늘 완료는 오늘 평가한 뒤 정기 복습에서 빠진 카드예요. ‘모름’은 원할 때 따로 다시 볼 수 있어요.`:'Dropbox를 연결하면 IPA와 100장씩 나눈 단어 묶음을 고를 수 있어요.';
-  $('review-mode-help').textContent=$('review-mode').value==='resume'?'자유 연습에서 마지막으로 본 카드부터 이어서 연습해요. 복습 기록과 다음 날짜는 바뀌지 않아요.':practice?'선택한 묶음 전체를 처음부터 순서대로 연습해요. 복습 기록과 다음 날짜는 바뀌지 않아요.':'새 카드와 복습 날짜가 된 카드를 보여줘요. 정답 확인 후 평가하면 기록과 다음 날짜가 저장돼요.';
+  const remembered=store&&cardsInGroup(cards(),selectedGroup).some(c=>c.id===practicePositions()[selectedGroup]);
+  $('review-mode-help').textContent=$('review-mode').value==='resume'?(remembered?'지난번에 ‘다음 카드’로 넘기다 멈춘 카드부터 이어서 연습해요.':'이 묶음에서 기억해 둔 위치가 아직 없어서, 한 번도 복습하지 않은 첫 카드부터 시작해요. ‘다음 카드’로 넘기면 그 위치를 기억해요.')+' 복습 기록과 다음 날짜는 바뀌지 않아요.':practice?'선택한 묶음 전체를 처음부터 순서대로 연습해요. 복습 기록과 다음 날짜는 바뀌지 않아요.':'새 카드와 복습 날짜가 된 카드를 보여줘요. 정답 확인 후 평가하면 기록과 다음 날짜가 저장돼요.';
 }
 function isPractice(){return ['practice','resume'].includes($('review-mode').value);}
 // Free practice remembers the card last shown in each group so "이어서 연습" can continue from it.
 function practicePositions(){try{const value=JSON.parse(localStorage.getItem('saymore.cards.practice-position.v1'));return value&&typeof value==='object'?value:{};}catch{return {};}}
+function practiceStart(){return store&&$('review-mode').value==='resume'?resumeIndex(cardsInGroup(cards(),selectedGroup),practicePositions()[selectedGroup]):0;}
 function rememberPractice(cardId){try{const all=practicePositions();if(cardId)all[selectedGroup]=cardId;else delete all[selectedGroup];localStorage.setItem('saymore.cards.practice-position.v1',JSON.stringify(all));}catch{/* The position still holds for this visit. */}}
 function setBusy(value){busy=value;controls();}
 function updateStats(){
@@ -178,14 +180,14 @@ function startReview(unknown=false,restart=false){
   if(unknown)$('review-mode').value='due';
   unknownSession=unknown&&store?new Set(studyQueue(cards(),selectedGroup,'unknown').map(c=>c.id)):null;
   sessionCount=0;activeCard=null;
-  practiceIndex=!restart&&store&&$('review-mode').value==='resume'?resumeIndex(cardsInGroup(cards(),selectedGroup),practicePositions()[selectedGroup]):0;
+  practiceIndex=restart?0:practiceStart();
   void showNextReview();
 }
 async function loadFolder(folder,epoch){
   await store?.flushNotes?.();
   const loaded=await FolderStore.open(folder);
   if(epoch!==connectionEpoch)return;
-  store=loaded;clearMediaCache();lastSaved='';activeCard=null;unknownSession=null;practiceIndex=0;
+  store=loaded;clearMediaCache();lastSaved='';activeCard=null;unknownSession=null;practiceIndex=practiceStart();
   cachedFolder=loaded.folder;
   try{await rememberedFolder(loaded.folder);}catch{/* Permission handles are optional; folder files remain authoritative. */}
   $('reconnect').hidden=true;
@@ -229,7 +231,7 @@ async function loadCloud(epoch){
   await store?.flushNotes?.();
   const loaded=await DropboxStore.open(cloud);
   if(epoch!==connectionEpoch)return;
-  store=loaded;clearMediaCache();lastSaved='';activeCard=null;unknownSession=null;practiceIndex=0;
+  store=loaded;clearMediaCache();lastSaved='';activeCard=null;unknownSession=null;practiceIndex=practiceStart();
   $('reconnect').hidden=true;updateDecks();renderLibrary();
   notice(`${cards().length}장의 카드와 복습 기록을 Dropbox에서 불러왔어요.`);
   if(view==='review')await showNextReview();
@@ -527,7 +529,8 @@ $('sort-order').value=sortOrder;
 $('sort-order').addEventListener('change',()=>{sortOrder=$('sort-order').value;try{localStorage.setItem('saymore.cards.sort.v1',sortOrder);}catch{/* The order still applies for this visit. */}renderLibrary();});
 $('fix-last').addEventListener('click',()=>lastGraded&&openDetail(lastGraded.id,true));
 for(const id of ['deck-filter','review-group'])$(id).addEventListener('change',()=>chooseGroup($(id).value));
-$('review-mode').addEventListener('change',()=>startReview());
+try{const mode=localStorage.getItem('saymore.cards.review-mode.v1');if(['due','practice','resume'].includes(mode))$('review-mode').value=mode;}catch{/* The default mode applies. */}
+$('review-mode').addEventListener('change',()=>{try{localStorage.setItem('saymore.cards.review-mode.v1',$('review-mode').value);}catch{/* The choice still applies for this visit. */}startReview();});
 $('card-form').addEventListener('input',()=>{dirty=true;renderPreview();});$('card-form').addEventListener('submit',saveCard);
 $('card-form').addEventListener('keydown',e=>{if((e.metaKey||e.ctrlKey)&&e.key==='Enter'){e.preventDefault();if(!busy&&store)$('card-form').requestSubmit(editedId?$('save-list'):$('save-next'));}});
 $('preview-front').addEventListener('click',()=>{previewBack=false;renderPreview();});$('preview-back').addEventListener('click',()=>{previewBack=true;renderPreview();});

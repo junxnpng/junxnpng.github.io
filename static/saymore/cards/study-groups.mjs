@@ -50,5 +50,12 @@ export function sortCards(cards,order='default'){
   return compare?[...cards].sort(compare):cards;
 }
 
-// Where free practice continues from: the card last shown in this group, or the start when it is gone or unknown.
-export function resumeIndex(cards,savedId){const index=savedId?cards.findIndex(c=>c.id===savedId):-1;return index<0?0:index;}
+// Where "이어서 연습" starts: the card last shown in this group. With no remembered card (first use,
+// another device, or the card is gone) it continues after what has been studied: the first card
+// that has never been reviewed, or the start when every card has been.
+export function resumeIndex(cards,savedId){
+  const saved=savedId?cards.findIndex(c=>c.id===savedId):-1;
+  if(saved>=0)return saved;
+  const fresh=cards.findIndex(c=>!c.reviews.length);
+  return fresh<0?0:fresh;
+}
