@@ -112,7 +112,9 @@ function renderLibrary(){
     schedule.append(el('span',state,'status'),el('span',c.schedule.state===0?'바로 학습할 수 있어요':dateLabel(c.schedule.due)),el('p',`복습 ${c.reviews.length}회`));
     const actions=el('div',undefined,'row-actions'), preview=el('button','미리 보기','text-button'), edit=el('button','수정','text-button');
     preview.addEventListener('click',()=>openDetail(c.id));edit.addEventListener('click',()=>openEdit(c.id));
-    actions.append(preview,edit);row.append(title,schedule,actions);$('card-list').append(row);
+    actions.append(preview,edit);
+    if(c.reviews.at(-1)?.log){const fix=el('button','평가 고치기','text-button');fix.addEventListener('click',()=>openDetail(c.id,true));actions.append(fix);}
+    row.append(title,schedule,actions);$('card-list').append(row);
   }
   $('list-count').textContent=store ? `${list.length}장` : '';
   $('empty-library').hidden=list.length>0;
@@ -321,12 +323,13 @@ async function openEdit(id){
   }
   dirty=false;setBusy(false);switchView('add',true);$('answer').focus();
 }
-async function openDetail(id){
+async function openDetail(id,toFix=false){
   if(busy)return;detailCard=cards().find(c=>c.id===id);if(!detailCard)return;
   detailBack=false;
   try{showCard($('detail-card'),detailCard,await sources(detailCard),false);}catch(e){notice(friendlyError(e),true);return;}
   $('detail-flip').textContent='뒷면 보기';
   renderHistory();$('detail-dialog').showModal();
+  if(toFix)$('detail-history').querySelector('.fix-rating')?.scrollIntoView({block:'center'});
 }
 function renderHistory(){
   const history=el('div');history.append(el('p',`다음 복습: ${dateLabel(detailCard.schedule.due)} · 복습 ${detailCard.reviews.length}회`));
@@ -496,7 +499,7 @@ $('search').addEventListener('input',renderLibrary);
 for(const [value,label] of Object.entries(sortOrders)){const option=el('option',label);option.value=value;$('sort-order').append(option);}
 $('sort-order').value=sortOrder;
 $('sort-order').addEventListener('change',()=>{sortOrder=$('sort-order').value;try{localStorage.setItem('saymore.cards.sort.v1',sortOrder);}catch{/* The order still applies for this visit. */}renderLibrary();});
-$('fix-last').addEventListener('click',()=>lastGraded&&openDetail(lastGraded.id));
+$('fix-last').addEventListener('click',()=>lastGraded&&openDetail(lastGraded.id,true));
 for(const id of ['deck-filter','review-group'])$(id).addEventListener('change',()=>chooseGroup($(id).value));
 $('review-mode').addEventListener('change',()=>startReview());
 $('card-form').addEventListener('input',()=>{dirty=true;renderPreview();});$('card-form').addEventListener('submit',saveCard);
