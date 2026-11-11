@@ -78,3 +78,21 @@ test('progress uses the local calendar day and returns a card to remaining when 
   assert.deepEqual(groups.studyProgress([c],new Date(c.schedule.due)),{total:1,remaining:1,completedToday:0,waiting:0});
   assert.deepEqual(groups.studyProgress([],afterMidnight),{total:0,remaining:0,completedToday:0,waiting:0});
 });
+
+test('the card list can be ordered by creation or review time without changing the library',()=>{
+  const at=d=>new Date(`2026-11-${d}T01:00:00Z`);
+  const make=(answer,created)=>newCard({type:'basic',front:'Recall the word.',answer,deck:'내 덱'},at(created));
+  const a=make('a','03'),b=make('b','01'),c=make('c','05'),d=make('d','01');
+  const reviewedB=rateCard(b,3,at('06')),reviewedC=rateCard(c,4,at('07'));
+  const input=[a,reviewedB,reviewedC,d],before=copy(input);
+  const order=key=>groups.sortCards(input,key).map(x=>x.answer).join('');
+  assert.equal(order('default'),'abcd');
+  assert.equal(order('newest'),'cabd');
+  assert.equal(order('oldest'),'bdac');
+  assert.equal(order('reviewedNewest'),'cbad');
+  assert.equal(order('reviewedOldest'),'bcad');
+  assert.equal(order('dueSoonest'),'bcad');
+  assert.equal(order('unknown-order'),'abcd');
+  assert.deepEqual(input,before);
+  assert.deepEqual(Object.keys(groups.sortOrders),['default','newest','oldest','reviewedNewest','reviewedOldest','dueSoonest']);
+});

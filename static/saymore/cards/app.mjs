@@ -1,11 +1,11 @@
-import {newCard, editCard, rateCard, reviewOptions, dueCards, dateLabel, intervalLabel, ratings} from './model.mjs?v=3';
-import {studyGroups,cardsInGroup,studyQueue,studyProgress} from './study-groups.mjs?v=2';
-import {FolderStore, rememberedFolder, friendlyError} from './storage.mjs?v=3';
+import {newCard, editCard, rateCard, correctLastReview, reviewOptions, dueCards, dateLabel, intervalLabel, ratings} from './model.mjs?v=4';
+import {studyGroups,cardsInGroup,studyQueue,studyProgress,sortCards,sortOrders} from './study-groups.mjs?v=3';
+import {FolderStore, rememberedFolder, friendlyError} from './storage.mjs?v=4';
 import {el, showCard} from './view.mjs?v=3';
-import {DropboxStore} from './dropbox-store.mjs?v=6';
+import {DropboxStore} from './dropbox-store.mjs?v=7';
 import {MediaCache} from './media-cache.mjs?v=1';
 import {parseBundle} from './bundle.mjs?v=1';
-import {prepareImagePatch} from './image-patch.mjs?v=1';
+import {prepareImagePatch} from './image-patch.mjs?v=2';
 import {openDropbox} from '../shared/dropbox.mjs?v=2';
 
 const $=id=>document.getElementById(id);
@@ -17,6 +17,8 @@ const inputs=['front','answer','ipa','speech','sentence','memory','tags'];
 const supported=typeof window.showDirectoryPicker==='function';
 let cloud=null,refreshing=false;
 let selectedGroup='all',practiceIndex=0;
+let sortOrder='default', lastGraded=null;
+try{const saved=localStorage.getItem('saymore.cards.sort.v1');if(Object.hasOwn(sortOrders,saved||''))sortOrder=saved;}catch{/* Sorting still works for this visit. */}
 try{selectedGroup=localStorage.getItem('saymore.cards.group.v1')||'all';}catch{/* Selection is optional when browser storage is unavailable. */}
 
 function notice(message,error=false){noticeVersion++;$('notice').textContent=message;$('notice').hidden=!message;$('notice').classList.toggle('error',error);}
@@ -52,6 +54,8 @@ function retryControls(){
   $('review-unknown').hidden=practice||!count||Boolean(unknownSession&&activeCard);
   $('review-unknown').textContent=`모름 다시 보기 · ${count}장`;
   $('review-normal').hidden=practice||unknownSession===null;
+  $('fix-last').hidden=practice||!lastGraded||!cards().some(c=>c.id===lastGraded.id);
+  if(lastGraded)$('fix-last').textContent=`방금 평가 고치기 · ${lastGraded.answer.slice(0,24)} (${ratings[lastGraded.rating]})`;
   $('unknown-help').hidden=practice||!count;
   $('review-title').textContent=practice?'자유 연습':unknownSession?'모름 다시 보기':'오늘 복습';
   const groups=studyGroups(cards()),now=new Date();
@@ -98,7 +102,7 @@ function chooseGroup(key){
 function renderLibrary(){
   updateStats();
   const q=$('search').value.trim().toLocaleLowerCase();
-  const list=cardsInGroup(cards(),selectedGroup).filter(c=>!q||[c.answer,c.front,c.sentence,c.memory,c.deck,...c.tags].join(' ').toLocaleLowerCase().includes(q));
+  const list=sortCards(cardsInGroup(cards(),selectedGroup),sortOrder).filter(c=>!q||[c.answer,c.front,c.sentence,c.memory,c.deck,...c.tags].join(' ').toLocaleLowerCase().includes(q));
   $('card-list').replaceChildren();
   for(const c of list){
     const row=el('article',undefined,'card-row'), title=el('div');
@@ -322,9 +326,35 @@ async function openDetail(id){
   detailBack=false;
   try{showCard($('detail-card'),detailCard,await sources(detailCard),false);}catch(e){notice(friendlyError(e),true);return;}
   $('detail-flip').textContent='뒷면 보기';
+  renderHistory();$('detail-dialog').showModal();
+}
+function renderHistory(){
   const history=el('div');history.append(el('p',`다음 복습: ${dateLabel(detailCard.schedule.due)} · 복습 ${detailCard.reviews.length}회`));
-  if(detailCard.reviews.length){const ul=el('ul');for(const r of detailCard.reviews.slice(-10).reverse())ul.append(el('li',`${dateLabel(r.at)} · ${ratings[r.rating]} → ${dateLabel(r.due)}`));history.append(ul);}
-  history.append(el('p','미리 보기는 복습 기록을 바꾸지 않아요.'));$('detail-history').replaceChildren(history);$('detail-dialog').showModal();
+  const last=detailCard.reviews.at(-1);
+  if(last?.log){
+    const box=el('div',undefined,'fix-rating'),buttons=el('div');
+    box.append(el('p',`마지막 평가(${dateLabel(last.at)})를 잘못 눌렀다면 고칠 수 있어요.`));
+    for(const rating of [1,2,3,4]){
+      const button=el('button',ratings[rating]);button.type='button';button.setAttribute('aria-pressed',String(last.rating===rating));
+      button.disabled=last.rating===rating||busy;button.addEventListener('click',()=>fixRating(rating));buttons.append(button);
+    }
+    box.append(buttons);history.append(box);
+  }
+  if(detailCard.reviews.length){const ul=el('ul');for(const r of detailCard.reviews.slice(-10).reverse())ul.append(el('li',`${dateLabel(r.at)} · ${ratings[r.rating]}${r.correctedFrom?` (${ratings[r.correctedFrom]}에서 고침)`:''} → ${dateLabel(r.due)}`));history.append(ul);}
+  history.append(el('p','미리 보기는 복습 기록을 바꾸지 않아요.'));$('detail-history').replaceChildren(history);
+}
+async function fixRating(rating){
+  if(busy||!store||!detailCard)return;
+  const current=cards().find(c=>c.id===detailCard.id);if(!current)return;
+  setBusy(true);renderHistory();
+  try{
+    const updated=correctLastReview(current,rating);
+    const result=await store.commit({...store.library,cards:cards().map(c=>c.id===updated.id?updated:c)},{},[updated.id]);
+    detailCard=cards().find(c=>c.id===updated.id)||updated;
+    if(lastGraded?.id===updated.id)lastGraded={id:updated.id,answer:updated.answer,rating};
+    saved(result,`평가를 ${ratings[rating]}(으)로 고쳤어요. 다음 복습: ${dateLabel(updated.schedule.due)}`,{review:view==='review'});
+    if(view==='review'&&!activeCard)await showNextReview();
+  }catch(e){notice(friendlyError(e),true);}finally{setBusy(false);renderHistory();}
 }
 async function showNextReview(){
   const request=++reviewRequest,owner=store,practice=isPractice();
@@ -388,6 +418,7 @@ async function grade(rating){
     const result=await store.commit({...store.library,cards:next},{},[updated.id],undefined,{deferNotes:true});
     unknownSession?.delete(updated.id);
     const message=rating===1?'모름 카드로 모아뒀어요. 원할 때 다시 볼 수 있고, 24시간 뒤에는 오늘 복습에도 포함돼요.':`복습 기록을 저장했어요. 다음 복습: ${dateLabel(updated.schedule.due)}`;
+    lastGraded={id:updated.id,answer:updated.answer,rating};
     sessionCount++;saved(result,message,{review:true});
     const savedNotice=noticeVersion;
     const reportNotes=notes=>{if(store===owner)noteWarnings(notes,noticeVersion===savedNotice);};
@@ -462,6 +493,10 @@ $('append-bundle').addEventListener('click',()=>importBundle(true));
 for(const b of document.querySelectorAll('[data-view]'))b.addEventListener('click',()=>{if(b.dataset.view==='add'&&view!=='add')resetEditor();switchView(b.dataset.view);});
 for(const b of document.querySelectorAll('[data-open-add]'))b.addEventListener('click',()=>switchView('add'));
 $('search').addEventListener('input',renderLibrary);
+for(const [value,label] of Object.entries(sortOrders)){const option=el('option',label);option.value=value;$('sort-order').append(option);}
+$('sort-order').value=sortOrder;
+$('sort-order').addEventListener('change',()=>{sortOrder=$('sort-order').value;try{localStorage.setItem('saymore.cards.sort.v1',sortOrder);}catch{/* The order still applies for this visit. */}renderLibrary();});
+$('fix-last').addEventListener('click',()=>lastGraded&&openDetail(lastGraded.id));
 for(const id of ['deck-filter','review-group'])$(id).addEventListener('change',()=>chooseGroup($(id).value));
 $('review-mode').addEventListener('change',()=>startReview());
 $('card-form').addEventListener('input',()=>{dirty=true;renderPreview();});$('card-form').addEventListener('submit',saveCard);

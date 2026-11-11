@@ -1,4 +1,4 @@
-import {dueCards,unknownCards} from './model.mjs?v=3';
+import {dueCards,unknownCards} from './model.mjs?v=4';
 
 const isWord=card=>card.tags.includes('FF625')||card.deck==='Fluent Forever · First 625';
 const isIpa=card=>!isWord(card)&&(card.tags.includes('IPA')||/^IPA(?:\s|$)/i.test(card.deck));
@@ -39,4 +39,13 @@ export function studyProgress(cards,now=new Date()){
     if(reviewed>=start.getTime()&&reviewed<=now.getTime())completedToday++;
   }
   return {total:cards.length,remaining,completedToday,waiting:cards.length-remaining-completedToday};
+}
+
+export const sortOrders={default:'기본 순서',newest:'최근에 만든 순',oldest:'오래전에 만든 순',reviewedNewest:'최근에 복습한 순',reviewedOldest:'오래전에 복습한 순',dueSoonest:'복습 예정일 빠른 순'};
+// Stable: ties keep the library order. Cards never reviewed go last in the review-based orders.
+export function sortCards(cards,order='default'){
+  const created=c=>Date.parse(c.createdAt),reviewed=c=>c.reviews.length?Date.parse(c.reviews.at(-1).at):null,due=c=>c.reviews.length?Date.parse(c.schedule.due):null;
+  const by=(key,direction)=>(a,b)=>{const x=key(a),y=key(b);return x===null?(y===null?0:1):y===null?-1:direction*(x-y);};
+  const compare={newest:by(created,-1),oldest:by(created,1),reviewedNewest:by(reviewed,-1),reviewedOldest:by(reviewed,1),dueSoonest:by(due,1)}[order];
+  return compare?[...cards].sort(compare):cards;
 }

@@ -77,6 +77,22 @@ export function rateCard(card, rating, now = new Date(), {retryUnknown=false}={}
     reviews:[...copy(card.reviews), {at:now.toISOString(), rating, due:result.card.due.toISOString(), log:copy(result.log)}]};
 }
 
+// A mis-pressed answer is fixed by undoing the last review with its stored log and applying the
+// intended rating at the original review time, so the result equals having pressed it correctly.
+export function correctLastReview(card, rating, now = new Date()) {
+  if (![1,2,3,4].includes(rating)) fail('답변을 선택해주세요.');
+  const last = card.reviews.at(-1);
+  if (!last) fail('아직 복습 기록이 없는 카드예요.');
+  if (!last.log) fail('이 복습 기록은 고칠 수 없어요.');
+  if (last.rating === rating) return copy(card);
+  const at = new Date(last.at);
+  const before = scheduler.rollback(copy(card.schedule), copy(last.log));
+  const result = withUnknownDeadline(scheduler.next(before, at, rating), rating, at);
+  return {...copy(card), updatedAt:now.toISOString(), schedule:copy(result.card),
+    reviews:[...copy(card.reviews.slice(0,-1)), {at:last.at, rating, due:result.card.due.toISOString(), log:copy(result.log),
+      correctedFrom:last.correctedFrom ?? last.rating, correctedAt:now.toISOString()}]};
+}
+
 export function unknownCards(library,deck=''){
   return library.cards.filter(c=>(!deck||c.deck===deck)&&c.reviews.at(-1)?.rating===1)
     .sort((a,b)=>Date.parse(a.reviews.at(-1).at)-Date.parse(b.reviews.at(-1).at));

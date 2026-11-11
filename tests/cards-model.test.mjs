@@ -147,3 +147,40 @@ test('Markdown export shows dates and preserves personal notes outside its gener
   assert.ok(updated.endsWith('My extra note'));
   assert.throws(()=>renderNote(a,'An unrelated existing note'));
 });
+
+test('correcting a mis-pressed answer equals having pressed the intended one',()=>{
+  const fresh=newCard(fields,now);
+  for(const [wrong,right] of [[4,2],[1,3],[3,1],[2,4]]){
+    const fixed=model.correctLastReview(rateCard(fresh,wrong,now),right,new Date('2026-11-08T12:05:00Z'));
+    const intended=rateCard(fresh,right,now);
+    assert.deepEqual(fixed.schedule,intended.schedule);
+    assert.equal(fixed.reviews.length,1);
+    assert.equal(fixed.reviews[0].rating,right);
+    assert.equal(fixed.reviews[0].at,intended.reviews[0].at);
+    assert.equal(fixed.reviews[0].due,intended.reviews[0].due);
+    assert.equal(fixed.reviews[0].correctedFrom,wrong);
+    parseLibrary(JSON.stringify({...newLibrary(now),cards:[fixed]}));
+  }
+});
+
+test('only the last review changes when a later answer is corrected, and earlier history is kept',()=>{
+  const first=rateCard(newCard(fields,now),3,now);
+  const second=new Date(first.schedule.due);
+  const wrong=rateCard(first,4,second), intended=rateCard(first,1,second);
+  const fixed=model.correctLastReview(wrong,1);
+  assert.deepEqual(fixed.schedule,intended.schedule);
+  assert.deepEqual(fixed.reviews[0],first.reviews[0]);
+  assert.equal(fixed.reviews[1].rating,1);
+  assert.equal(Date.parse(fixed.schedule.due)-second.getTime(),86400000);
+  assert.deepEqual(unknownCards({cards:[fixed]}).map(c=>c.id),[fixed.id]);
+  // Correcting twice keeps the originally pressed answer for the record.
+  assert.equal(model.correctLastReview(fixed,2).reviews[1].correctedFrom,4);
+  parseLibrary(JSON.stringify({...newLibrary(now),cards:[fixed]}));
+});
+
+test('choosing the same answer changes nothing and cards without reviews cannot be corrected',()=>{
+  const rated=rateCard(newCard(fields,now),3,now);
+  assert.deepEqual(model.correctLastReview(rated,3),rated);
+  assert.throws(()=>model.correctLastReview(newCard(fields,now),2));
+  assert.throws(()=>model.correctLastReview(rated,5));
+});

@@ -1,4 +1,4 @@
-import {copy,newLibrary,parseLibrary,renderNote} from './model.mjs?v=3';
+import {copy,newLibrary,parseLibrary,renderNote} from './model.mjs?v=4';
 const prefix='/cards';
 const mediaPattern=/^media\/[0-9a-f-]{36}\.(jpg|png|webp|mp3)$/;
 const same=(a,b)=>JSON.stringify(a)===JSON.stringify(b);

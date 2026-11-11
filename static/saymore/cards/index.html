@@ -6,8 +6,8 @@
   <meta name="color-scheme" content="light">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' blob: data:; media-src 'self' blob:; connect-src 'self' https://api.dropboxapi.com https://content.dropboxapi.com; object-src 'none'; base-uri 'self'; form-action 'none'">
   <title>내 단어 카드 · Say More</title>
-  <link rel="icon" href="/saymore/icons/speech.svg"><link rel="stylesheet" href="./app.css?v=groups-1">
-  <script type="module" src="./app.mjs?v=voice-1"></script>
+  <link rel="icon" href="/saymore/icons/speech.svg"><link rel="stylesheet" href="./app.css?v=sort-fix-1">
+  <script type="module" src="./app.mjs?v=sort-fix-1"></script>
 </head>
 <body>
 <div class="shell">
@@ -21,7 +21,7 @@
 
     <section id="library-view" aria-labelledby="library-title">
       <div class="section-heading"><h2 id="library-title">모아둔 카드</h2><span id="list-count" class="small"></span></div>
-      <div class="filters study-filters"><label class="search">단어·태그 찾기<input id="search" type="search" placeholder="단어, 예문, 태그로 검색"></label><label>학습할 묶음<select id="deck-filter"><option value="all">전체 카드</option></select></label></div>
+      <div class="filters study-filters"><label class="search">단어·태그 찾기<input id="search" type="search" placeholder="단어, 예문, 태그로 검색"></label><label>학습할 묶음<select id="deck-filter"><option value="all">전체 카드</option></select></label><label>목록 순서<select id="sort-order"></select></label></div>
       <div id="card-list" class="card-list"></div>
       <div id="empty-library" class="empty"><p class="empty-symbol" aria-hidden="true">Aa</p><h3>첫 카드를 만들어보세요.</h3><p>사진이나 질문을 앞면에, 떠올릴 단어를 뒷면에 담아요.</p><button class="primary" data-open-add>새 카드 만들기</button><a href="/saymore/card-demo/">coffee 예시 먼저 보기 ↗</a></div>
     </section>
@@ -48,8 +48,8 @@
         <label>학습 방식<select id="review-mode" aria-describedby="review-mode-help"><option value="due">예정된 복습</option><option value="practice">자유 연습 · 전체 카드</option></select></label>
         <p id="review-group-help" class="small"></p><p id="review-mode-help" class="small"></p>
       </div>
-      <div class="review-actions"><button id="review-unknown" class="secondary" hidden>모름 다시 보기</button><button id="review-normal" class="text-button" hidden>오늘 복습으로</button><p id="unknown-help" class="small" hidden>모름 카드는 원할 때 다시 꺼내보세요. 24시간 뒤에는 오늘 복습에도 포함돼요.</p></div>
-      <div id="review-active" class="review-workspace" hidden><div id="review-card"></div><button id="reveal" class="primary wide">정답 확인</button><div id="practice-actions" class="practice-actions" hidden><button id="practice-previous" class="secondary">← 이전 카드</button><button id="practice-next" class="secondary">다음 카드 →</button></div><div id="rating-area" hidden><p class="small">얼마나 잘 떠올렸나요?</p><div class="rating-buttons"><button data-rating="1">모름<small></small></button><button data-rating="2">어려움<small></small></button><button data-rating="3">알맞음<small></small></button><button data-rating="4">쉬움<small></small></button></div><p class="small">모름은 1일 내에 원할 때 다시 볼 수 있어요. 나머지는 일 단위로 다음 복습을 예약해요.</p></div></div>
+      <div class="review-actions"><button id="review-unknown" class="secondary" hidden>모름 다시 보기</button><button id="review-normal" class="text-button" hidden>오늘 복습으로</button><button id="fix-last" class="text-button" hidden></button><p id="unknown-help" class="small" hidden>모름 카드는 원할 때 다시 꺼내보세요. 24시간 뒤에는 오늘 복습에도 포함돼요.</p></div>
+      <div id="review-active" class="review-workspace" hidden><div id="review-card"></div><button id="reveal" class="primary wide">정답 확인</button><div id="practice-actions" class="practice-actions" hidden><button id="practice-previous" class="secondary">← 이전 카드</button><button id="practice-next" class="secondary">다음 카드 →</button></div><div id="rating-area" hidden><p class="small">얼마나 잘 떠올렸나요?</p><div class="rating-buttons"><button data-rating="1">모름<small></small></button><button data-rating="2">어려움<small></small></button><button data-rating="3">알맞음<small></small></button><button data-rating="4">쉬움<small></small></button></div><p class="small">모름은 1일 내에 원할 때 다시 볼 수 있어요. 나머지는 일 단위로 다음 복습을 예약해요. 잘못 눌렀다면 다음 카드에서 ‘방금 평가 고치기’를 누르세요.</p></div></div>
       <div id="review-empty" class="empty"><p class="empty-symbol" aria-hidden="true">✓</p><h3 id="review-empty-title">지금 복습할 카드가 없어요.</h3><p id="next-due"></p><button id="check-due" class="secondary">다시 확인</button></div>
     </section>
   </main>
