@@ -75,4 +75,4 @@ new MutationObserver(()=>{
   void status();
 }).observe($('review-view'),{childList:true,subtree:true,attributes:true,attributeFilter:['hidden']});
 new MutationObserver(()=>{listChanges++;void status();}).observe($('card-list'),{childList:true});
-await import('./app.mjs?v=order-1');
+await import('./app.mjs?v=practice-note-1');

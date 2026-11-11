@@ -531,8 +531,11 @@ $('sort-order').value=sortOrder;
 $('sort-order').addEventListener('change',()=>{sortOrder=$('sort-order').value;try{localStorage.setItem('saymore.cards.sort.v1',sortOrder);}catch{/* The order still applies for this visit. */}renderLibrary();});
 $('fix-last').addEventListener('click',()=>lastGraded&&openDetail(lastGraded.id,true));
 for(const id of ['deck-filter','review-group'])$(id).addEventListener('change',()=>chooseGroup($(id).value));
-try{const mode=localStorage.getItem('saymore.cards.review-mode.v1');if(['due','practice','resume'].includes(mode))$('review-mode').value=mode;}catch{/* The default mode applies. */}
-$('review-mode').addEventListener('change',()=>{try{localStorage.setItem('saymore.cards.review-mode.v1',$('review-mode').value);}catch{/* The choice still applies for this visit. */}startReview();});
+// The page always opens in rated review: a remembered practice mode hid the answer buttons.
+try{localStorage.removeItem('saymore.cards.review-mode.v1');}catch{/* Nothing to clear. */}
+$('review-mode').value='due';
+$('review-mode').addEventListener('change',()=>startReview());
+$('to-due').addEventListener('click',()=>{$('review-mode').value='due';startReview();});
 $('card-form').addEventListener('input',()=>{dirty=true;renderPreview();});$('card-form').addEventListener('submit',saveCard);
 $('card-form').addEventListener('keydown',e=>{if((e.metaKey||e.ctrlKey)&&e.key==='Enter'){e.preventDefault();if(!busy&&store)$('card-form').requestSubmit(editedId?$('save-list'):$('save-next'));}});
 $('preview-front').addEventListener('click',()=>{previewBack=false;renderPreview();});$('preview-back').addEventListener('click',()=>{previewBack=true;renderPreview();});
