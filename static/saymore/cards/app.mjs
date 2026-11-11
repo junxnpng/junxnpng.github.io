@@ -523,7 +523,22 @@ document.addEventListener('keydown',e=>{if(view!=='review'||busy||$('detail-dial
 setInterval(()=>{if(store&&!busy)updateStats();void refreshCloud();},30000);
 window.addEventListener('pageshow',()=>void refreshCloud());
 window.addEventListener('online',()=>void refreshCloud());
-document.addEventListener('visibilitychange',()=>{if(!document.hidden)void refreshCloud();});
+// GitHub Pages lets the browser reuse this page for ten minutes, so a new release can lag behind.
+// Ask for the page without the cache and reload once when it names a newer app module.
+async function checkForUpdate(){
+  if(busy||dirty||store?.pendingNotes||(view==='review'&&revealed)||$('detail-dialog').open)return;
+  try{
+    const current=new URL(import.meta.url).searchParams.get('v');
+    const response=await fetch(location.pathname,{cache:'no-store'});if(!current||!response.ok)return;
+    const latest=(await response.text()).match(/app\.mjs\?v=([\w-]+)/)?.[1];
+    if(!latest||latest===current||sessionStorage.getItem('saymore.cards.updated-to')===latest)return;
+    sessionStorage.setItem('saymore.cards.updated-to',latest);
+    await fetch(location.pathname,{cache:'reload'});
+    location.reload();
+  }catch{/* Offline or blocked storage: keep using the loaded version. */}
+}
+document.addEventListener('visibilitychange',()=>{if(!document.hidden){void refreshCloud();void checkForUpdate();}});
+void checkForUpdate();
 window.addEventListener('storage',async event=>{
   if(event.key!=='saymore.dropbox.auth.v1'||!cloud)return;
   controls();
