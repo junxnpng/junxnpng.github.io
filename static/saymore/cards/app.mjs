@@ -1,11 +1,11 @@
-import {newCard, editCard, rateCard, correctLastReview, reviewOptions, dueCards, dateLabel, intervalLabel, ratings} from './model.mjs?v=4';
-import {studyGroups,cardsInGroup,studyQueue,studyProgress,sortCards,sortOrders,resumeIndex} from './study-groups.mjs?v=5';
-import {FolderStore, rememberedFolder, friendlyError} from './storage.mjs?v=4';
+import {newCard, editCard, rateCard, correctLastReview, reviewOptions, dueCards, dateLabel, intervalLabel, ratings, overdueMs, reviewLateMs, waitLabel} from './model.mjs?v=5';
+import {studyGroups,cardsInGroup,studyQueue,studyProgress,sortCards,sortOrders,resumeIndex} from './study-groups.mjs?v=6';
+import {FolderStore, rememberedFolder, friendlyError} from './storage.mjs?v=5';
 import {el, showCard} from './view.mjs?v=3';
-import {DropboxStore} from './dropbox-store.mjs?v=8';
+import {DropboxStore} from './dropbox-store.mjs?v=9';
 import {MediaCache} from './media-cache.mjs?v=1';
 import {parseBundle} from './bundle.mjs?v=1';
-import {prepareImagePatch} from './image-patch.mjs?v=2';
+import {prepareImagePatch} from './image-patch.mjs?v=3';
 import {openDropbox} from '../shared/dropbox.mjs?v=3';
 
 const $=id=>document.getElementById(id);
@@ -68,7 +68,7 @@ function retryControls(){
   const group=groups.find(g=>g.key===selectedGroup),progress=studyProgress(group?.cards||[],now);
   $('review-group-help').textContent=store?`${group?.label||'선택한 묶음'} · 전체 ${progress.total}장 · 오늘 완료 ${progress.completedToday}장 · 지금 남음 ${progress.remaining}장 · 다음 복습 대기 ${progress.waiting}장. 오늘 완료는 오늘 평가한 뒤 정기 복습에서 빠진 카드예요. ‘모름’은 원할 때 따로 다시 볼 수 있어요.`:'Dropbox를 연결하면 IPA와 100장씩 나눈 단어 묶음을 고를 수 있어요.';
   const remembered=store&&cardsInGroup(cards(),selectedGroup).some(c=>c.id===practicePositions()[selectedGroup]);
-  $('review-mode-help').textContent=$('review-mode').value==='resume'?(remembered?'지난번에 ‘다음 카드’로 넘기다 멈춘 카드부터 이어서 연습해요.':'이 묶음에서 기억해 둔 위치가 아직 없어서, 한 번도 복습하지 않은 첫 카드부터 시작해요. ‘다음 카드’로 넘기면 그 위치를 기억해요.')+' 복습 기록과 다음 날짜는 바뀌지 않아요.':practice?'선택한 묶음 전체를 처음부터 순서대로 연습해요. 복습 기록과 다음 날짜는 바뀌지 않아요.':'새 카드와 복습 날짜가 된 카드를 보여줘요. 정답 확인 후 평가하면 기록과 다음 날짜가 저장돼요.';
+  $('review-mode-help').textContent=$('review-mode').value==='resume'?(remembered?'지난번에 ‘다음 카드’로 넘기다 멈춘 카드부터 이어서 연습해요.':'이 묶음에서 기억해 둔 위치가 아직 없어서, 한 번도 복습하지 않은 첫 카드부터 시작해요. ‘다음 카드’로 넘기면 그 위치를 기억해요.')+' 복습 기록과 다음 날짜는 바뀌지 않아요.':practice?'선택한 묶음 전체를 처음부터 순서대로 연습해요. 복습 기록과 다음 날짜는 바뀌지 않아요.':'한 번도 안 한 카드를 먼저, 그다음 복습 날짜가 된 카드를 오래 기다린 것부터 보여줘요. 정답 확인 후 평가하면 기록과 다음 날짜가 저장돼요.';
 }
 function isPractice(){return ['practice','resume'].includes($('review-mode').value);}
 // Free practice remembers the card last shown in each group so "이어서 연습" can continue from it.
@@ -117,7 +117,8 @@ function renderLibrary(){
     title.append(el('h3',c.answer),el('p',[c.ipa,c.deck,c.tags.map(t=>'#'+t).join(' ')].filter(Boolean).join(' · ')));
     const schedule=el('div',undefined,'row-schedule');
     const state=c.schedule.state===0?'새 카드':Date.parse(c.schedule.due)<=Date.now()?'복습할 시간':'다음 복습';
-    schedule.append(el('span',state,'status'),el('span',c.schedule.state===0?'바로 학습할 수 있어요':dateLabel(c.schedule.due)),el('p',`복습 ${c.reviews.length}회`));
+    const waited=waitLabel(overdueMs(c));
+    schedule.append(el('span',state,'status'),el('span',c.schedule.state===0?'바로 학습할 수 있어요':dateLabel(c.schedule.due)),el('p',`복습 ${c.reviews.length}회${waited?` · 예정일에서 ${waited} 지남`:''}`));
     const actions=el('div',undefined,'row-actions'), preview=el('button','미리 보기','text-button'), edit=el('button','수정','text-button');
     preview.addEventListener('click',()=>openDetail(c.id));edit.addEventListener('click',()=>openEdit(c.id));
     actions.append(preview,edit);
@@ -342,7 +343,7 @@ async function openDetail(id,toFix=false){
   if(toFix)$('detail-history').querySelector('.fix-rating')?.scrollIntoView({block:'center'});
 }
 function renderHistory(){
-  const history=el('div');history.append(el('p',`다음 복습: ${dateLabel(detailCard.schedule.due)} · 복습 ${detailCard.reviews.length}회`));
+  const history=el('div'),overdue=waitLabel(overdueMs(detailCard));history.append(el('p',`다음 복습: ${dateLabel(detailCard.schedule.due)}${overdue?` (${overdue} 지남)`:''} · 복습 ${detailCard.reviews.length}회`));
   const last=detailCard.reviews.at(-1);
   if(last?.log){
     const box=el('div',undefined,'fix-rating'),buttons=el('div');
@@ -353,7 +354,7 @@ function renderHistory(){
     }
     box.append(buttons);history.append(box);
   }
-  if(detailCard.reviews.length){const ul=el('ul');for(const r of detailCard.reviews.slice(-10).reverse())ul.append(el('li',`${dateLabel(r.at)} · ${ratings[r.rating]}${r.correctedFrom?` (${ratings[r.correctedFrom]}에서 고침)`:''} → ${dateLabel(r.due)}`));history.append(ul);}
+  if(detailCard.reviews.length){const ul=el('ul');const shown=detailCard.reviews.map((r,i)=>({r,late:waitLabel(reviewLateMs(detailCard,i))})).slice(-10).reverse();for(const {r,late} of shown)ul.append(el('li',`${dateLabel(r.at)} · ${ratings[r.rating]}${r.correctedFrom?` (${ratings[r.correctedFrom]}에서 고침)`:''}${late?` · 예정일보다 ${late} 늦게 복습`:''} → ${dateLabel(r.due)}`));history.append(ul);}
   history.append(el('p','미리 보기는 복습 기록을 바꾸지 않아요.'));$('detail-history').replaceChildren(history);
 }
 async function fixRating(rating){
@@ -383,7 +384,8 @@ async function showNextReview(){
   $('review-active').hidden=!activeCard;$('review-empty').hidden=Boolean(activeCard);
   $('practice-previous').disabled=busy||practiceIndex===0;
   $('practice-next').disabled=busy||!activeCard;
-  $('review-progress').textContent=practice?`연습 ${Math.min(practiceIndex+1,queue.length)} / ${queue.length}장`:`이번에 복습한 카드 ${sessionCount}장`;
+  const waiting=activeCard?waitLabel(overdueMs(activeCard)):'';
+  $('review-progress').textContent=(practice?`연습 ${Math.min(practiceIndex+1,queue.length)} / ${queue.length}장`:`이번에 복습한 카드 ${sessionCount}장`)+(activeCard?(activeCard.reviews.length?` · 이 카드: 지난 복습 ${dateLabel(activeCard.reviews.at(-1).at)}${waiting?`, 예정일에서 ${waiting} 지남`:''}`:' · 이 카드: 처음 보는 카드'):'');
   $('review-deck').textContent=studyGroups(cards()).find(g=>g.key===selectedGroup)?.label||'';
   if(!activeCard){
     if(practice&&store){

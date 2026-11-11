@@ -184,3 +184,34 @@ test('choosing the same answer changes nothing and cards without reviews cannot 
   assert.throws(()=>model.correctLastReview(newCard(fields,now),2));
   assert.throws(()=>model.correctLastReview(rated,5));
 });
+
+test('due review shows never-studied cards first, then the longest-waiting answers before recent ones',()=>{
+  const at=d=>new Date(`2026-11-${d}T12:00:00Z`);
+  const make=answer=>newCard({...fields,answer},at('01'));
+  const fresh1=make('fresh1'),fresh2=make('fresh2');
+  const oldest=rateCard(make('oldest'),4,at('02'));     // answered 2 Nov, due 10 Nov
+  const middle=rateCard(make('middle'),3,at('07'));     // answered 7 Nov, due 10 Nov
+  const recent=rateCard(make('recent'),2,at('08'));     // answered 8 Nov, due 10 Nov
+  const notYet=rateCard(make('notYet'),4,at('09'));     // due 17 Nov
+  const library={...newLibrary(at('01')),cards:[recent,fresh1,notYet,oldest,fresh2,middle]};
+  const before=JSON.stringify(library);
+  assert.deepEqual(dueCards(library,at('11')).map(c=>c.answer),['fresh1','fresh2','oldest','middle','recent']);
+  assert.equal(JSON.stringify(library),before);
+});
+
+test('how long a studied card waited past its date is derived from the history, not stored',()=>{
+  const at=(d,h='12')=>new Date(`2026-11-${d}T${h}:00:00Z`);
+  const first=rateCard(newCard(fields,at('01')),3,at('01'));          // due 4 Nov
+  assert.equal(model.overdueMs(newCard(fields,at('01')),at('20')),0);  // never studied: nothing is overdue
+  assert.equal(model.overdueMs(first,at('03')),0);
+  assert.equal(model.waitLabel(model.overdueMs(first,at('04','17'))),'5시간');
+  assert.equal(model.waitLabel(model.overdueMs(first,at('09'))),'5일');
+  assert.equal(model.waitLabel(30*60000),'');
+  const late=rateCard(first,3,at('09'));
+  assert.equal(model.waitLabel(model.reviewLateMs(late,1)),'5일');
+  assert.equal(model.reviewLateMs(late,0),0);
+  assert.deepEqual(Object.keys(late.reviews[1]).sort(),['at','due','log','rating']);
+  assert.match(renderNote(late),/예정일보다 5일 늦게/);
+  const onTime=rateCard(first,3,new Date(first.schedule.due));
+  assert.equal(model.reviewLateMs(onTime,1),0);
+});

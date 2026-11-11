@@ -1,4 +1,4 @@
-import {editCard} from './model.mjs?v=4';
+import {editCard} from './model.mjs?v=5';
 
 export async function prepareImagePatch(library, files) {
   const entries=new Map(files.map(file=>[file.path,file.blob]));

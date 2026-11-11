@@ -98,9 +98,12 @@ export function unknownCards(library,deck=''){
     .sort((a,b)=>Date.parse(a.reviews.at(-1).at)-Date.parse(b.reviews.at(-1).at));
 }
 
+// Review order: cards never studied come first, in library order. Then the due cards, starting with
+// the one whose last answer is furthest back (the longest wait) and ending with the most recent.
 export function dueCards(library, now = new Date(), deck = '') {
+  const last = c => Date.parse(c.reviews.at(-1)?.at ?? c.schedule.last_review ?? c.schedule.due);
   return library.cards.filter(c => (!deck || c.deck === deck) && Date.parse(c.schedule.due) <= now.getTime())
-    .sort((a,b) => Number(a.schedule.state === 0)-Number(b.schedule.state === 0) || Date.parse(a.schedule.due)-Date.parse(b.schedule.due));
+    .sort((a,b) => Number(a.schedule.state !== 0)-Number(b.schedule.state !== 0) || (a.schedule.state === 0 ? 0 : last(a)-last(b)));
 }
 
 export function parseLibrary(raw) {
@@ -134,6 +137,20 @@ export function parseLibrary(raw) {
   return lib;
 }
 
+// How long a studied card has been waiting past its review date. Nothing extra is stored: the
+// history already holds each answer's time and the date it had been due.
+export function overdueMs(card, now = new Date()) {
+  return card.reviews.length ? Math.max(0, now.getTime()-Date.parse(card.schedule.due)) : 0;
+}
+export function reviewLateMs(card, index) {
+  return index > 0 ? Math.max(0, Date.parse(card.reviews[index].at)-Date.parse(card.reviews[index-1].due)) : 0;
+}
+export function waitLabel(ms) {
+  const hours = Math.floor(ms/3600000);
+  if (hours < 1) return '';
+  return hours < 24 ? `${hours}시간` : `${Math.floor(hours/24)}일`;
+}
+
 export function dateLabel(value) {
   return new Intl.DateTimeFormat('ko-KR',{year:'numeric',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}).format(new Date(value));
 }
@@ -160,7 +177,8 @@ export function renderNote(card, previous = '') {
   lines.push('## 복습',`- 다음 복습: ${dateLabel(card.schedule.due)} (${card.schedule.due})`,`- 기록한 복습: ${card.reviews.length}회`,'');
   if (card.reviews.length) {
     lines.push('최근 복습 기록:');
-    for (const r of card.reviews.slice(-20).reverse()) lines.push(`- ${dateLabel(r.at)} · ${ratings[r.rating]} · 다음 ${dateLabel(r.due)}`);
+    const recent = card.reviews.map((r,i) => ({r, late:waitLabel(reviewLateMs(card,i))})).slice(-20).reverse();
+    for (const {r,late} of recent) lines.push(`- ${dateLabel(r.at)} · ${ratings[r.rating]}${late ? ` · 예정일보다 ${late} 늦게` : ''} · 다음 ${dateLabel(r.due)}`);
     lines.push('');
   }
   lines.push('카드 내용과 일정은 Say More에서 수정합니다. 아래 추가 메모는 자유롭게 적어도 됩니다.',end);

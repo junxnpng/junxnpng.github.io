@@ -1,4 +1,4 @@
-import {dueCards,unknownCards} from './model.mjs?v=4';
+import {dueCards,unknownCards} from './model.mjs?v=5';
 
 const isWord=card=>card.tags.includes('FF625')||card.deck==='Fluent Forever · First 625';
 const isIpa=card=>!isWord(card)&&(card.tags.includes('IPA')||/^IPA(?:\s|$)/i.test(card.deck));
