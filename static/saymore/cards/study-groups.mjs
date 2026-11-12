@@ -1,6 +1,8 @@
 import {dueCards,unknownCards} from './model.mjs?v=5';
+import {levels,cardLevel} from './levels.mjs?v=1';
 
-const isWord=card=>card.tags.includes('FF625')||card.deck==='Fluent Forever · First 625';
+const isWord=card=>card.tags.includes('FF625')||card.tags.includes('OX3000')||card.deck==='Fluent Forever · First 625';
+const unlevelled='등급 밖';
 const isIpa=card=>!isWord(card)&&(card.tags.includes('IPA')||/^IPA(?:\s|$)/i.test(card.deck));
 
 export function studyGroups(cards){
@@ -11,10 +13,16 @@ export function studyGroups(cards){
     for(const deck of [...new Set(ipa.map(c=>c.deck))].sort())groups.push({key:`ipa-deck:${deck}`,label:deck,section:'IPA',cards:ipa.filter(c=>c.deck===deck)});
   }
   if(words.length){
-    groups.push({key:'words',label:'기초 단어 전체',section:'단어 · 100장씩',cards:words});
-    // Slice the canonical library order before sorting by due date. Ratings and edits
-    // preserve that order, so the same card stays in the same batch on every device.
-    for(let start=0;start<words.length;start+=100)groups.push({key:`words:${start/100+1}`,label:`단어 ${start+1}–${Math.min(start+100,words.length)}`,section:'단어 · 100장씩',cards:words.slice(start,start+100)});
+    groups.push({key:'words',label:'단어 전체',section:'단어',cards:words});
+    // One section per CEFR level, then 100-card batches inside it. Batches are cut from the library
+    // order, which ratings and edits keep, so a card stays in the same batch on every device.
+    for(const level of [...levels,unlevelled]){
+      const list=words.filter(c=>(cardLevel(c)||unlevelled)===level);
+      if(!list.length)continue;
+      const section=level===unlevelled?'단어 · 등급 밖 (숫자·문법 용어 등)':`단어 · ${level}`;
+      groups.push({key:`level:${level}`,label:`${level} 전체`,section,cards:list});
+      if(list.length>100)for(let start=0;start<list.length;start+=100)groups.push({key:`level:${level}:${start/100+1}`,label:`${level} ${start+1}–${Math.min(start+100,list.length)}`,section,cards:list.slice(start,start+100)});
+    }
   }
   const own=cards.filter(c=>!isIpa(c)&&!isWord(c));
   for(const deck of [...new Set(own.map(c=>c.deck))].sort())groups.push({key:`deck:${deck}`,label:deck,section:'내 덱',cards:own.filter(c=>c.deck===deck)});

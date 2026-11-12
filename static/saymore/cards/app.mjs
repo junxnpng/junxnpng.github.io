@@ -1,5 +1,5 @@
 import {newCard, editCard, rateCard, correctLastReview, reviewOptions, dueCards, dateLabel, intervalLabel, ratings, overdueMs, reviewLateMs, waitLabel} from './model.mjs?v=5';
-import {studyGroups,cardsInGroup,studyQueue,studyProgress,sortCards,sortOrders,resumeIndex} from './study-groups.mjs?v=6';
+import {studyGroups,cardsInGroup,studyQueue,studyProgress,sortCards,sortOrders,resumeIndex} from './study-groups.mjs?v=7';
 import {FolderStore, rememberedFolder, friendlyError} from './storage.mjs?v=5';
 import {el, showCard} from './view.mjs?v=5';
 import {DropboxStore} from './dropbox-store.mjs?v=9';
@@ -544,10 +544,12 @@ async function importBundle(append=false){
   setBusy(true);
   try{
     notice('백업 파일의 내용을 확인하고 있어요.');
-    const files=await parseBundle($('bundle-data').value);
+    const file=$('image-bundle-file').files[0];
+    if(file&&file.size>50*1024*1024)throw Error('50MB 이하의 카드 묶음을 사용해 주세요.');
+    const files=await parseBundle(file?await file.text():$('bundle-data').value);
     const progress=(done,total)=>notice(`Dropbox에 저장하고 확인 중… ${done} / ${total}`);
     const result=append ? await store.appendEntries(files,progress) : await store.importEntries(files,progress);
-    $('bundle-data').value='';$('bundle-panel').open=false;
+    $('bundle-data').value='';$('image-bundle-file').value='';$('bundle-panel').open=false;
     clearMediaCache();updateDecks();renderLibrary();
     if(append)saved(result,`새 카드 ${result.added}장을 추가했어요. 중복 ${result.skipped}장은 건너뛰었고 기존 카드와 복습 기록은 유지했어요.`);
     else notice(`카드 ${result.cards}장, 파일 ${result.files}개를 Dropbox에 옮겨 검증했어요. 원본은 그대로 유지합니다.`);

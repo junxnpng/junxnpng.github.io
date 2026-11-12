@@ -7,27 +7,47 @@ if(existsSync('static/saymore/cards/study-groups.mjs'))groups=await import('../s
 const now=new Date('2026-11-10T01:00:00Z');
 const card=(answer,deck,tags=[])=>newCard({type:'basic',front:'Recall the word.',answer,deck,tags},now);
 
-test('word batches cover all 629 cards once and never include IPA cards',()=>{
+const dogId='01cac855-1800-58b9-94e8-4be5e45d7d62'; // "dog" in the first 625 deck: listed as A1 in levels.mjs
+
+test('word cards are grouped by CEFR level, in 100-card batches, and never include IPA cards',()=>{
   assert.ok(groups,'study group selection is not implemented');
-  const words=Array.from({length:629},(_,i)=>card(`word ${i+1}`,'Fluent Forever · First 625',['FF625']));
+  const a1=Array.from({length:230},(_,i)=>card(`a1 ${i+1}`,'Oxford 3000 · A1',['OX3000','A1']));
+  const b2=Array.from({length:40},(_,i)=>card(`b2 ${i+1}`,'Oxford 3000 · B2',['OX3000','B2']));
+  const dog={...card('dog','Fluent Forever · First 625',['FF625']),id:dogId};
+  const number=card('twenty-one','Fluent Forever · First 625',['FF625']);
   const ipa=Array.from({length:67},(_,i)=>card(`sound ${i+1}`,'IPA 01 · 모음',['IPA']));
-  const input=[...words.slice(0,50),...ipa,...words.slice(50)],before=copy(input);
-  const batches=groups.studyGroups(input).filter(g=>g.key.startsWith('words:'));
-  assert.deepEqual(batches.map(g=>g.cards.length),[100,100,100,100,100,100,29]);
-  assert.deepEqual(batches.flatMap(g=>g.cards.map(c=>c.id)),words.map(c=>c.id));
-  assert.equal(batches[0].cards[99].answer,'word 100');
-  assert.equal(batches[1].cards[0].answer,'word 101');
-  assert.equal(batches[6].cards.at(-1).answer,'word 629');
+  const input=[dog,...a1.slice(0,50),...ipa,...b2,number,...a1.slice(50)],before=copy(input);
+  const all=groups.studyGroups(input),keys=all.map(g=>g.key);
+  assert.equal(keys.some(k=>k.startsWith('words:')),false);
+  assert.deepEqual(keys.filter(k=>k.startsWith('level:')),['level:A1','level:A1:1','level:A1:2','level:A1:3','level:B2','level:등급 밖']);
+  const of=key=>all.find(g=>g.key===key).cards;
+  assert.deepEqual(of('level:A1').map(c=>c.id),[dog,...a1].map(c=>c.id));
+  assert.deepEqual([of('level:A1:1').length,of('level:A1:2').length,of('level:A1:3').length],[100,100,31]);
+  assert.equal(of('level:A1:1')[0].answer,'dog');
+  assert.equal(of('level:A1:2')[0].answer,'a1 100');
+  assert.deepEqual(of('level:B2').map(c=>c.id),b2.map(c=>c.id));
+  assert.deepEqual(of('level:등급 밖').map(c=>c.answer),['twenty-one']);
+  assert.equal(of('words').length,272);
   assert.deepEqual(input,before);
 });
 
-test('ratings, content edits and due order cannot move a word to another batch',()=>{
+test('ratings, content edits and due order cannot move a word to another level or batch',()=>{
   assert.ok(groups);
-  const cards=Array.from({length:102},(_,i)=>card(`word ${i+1}`,'renamed deck',['FF625']));
+  const cards=Array.from({length:102},(_,i)=>card(`word ${i+1}`,'renamed deck',['OX3000','B1']));
+  const dog={...card('dog','Fluent Forever · First 625',['FF625']),id:dogId};
   cards[0]=rateCard(cards[0],4,now);
   cards[100]=editCard(cards[100],{...cards[100],answer:'my correction'});
-  assert.deepEqual(groups.cardsInGroup(cards,'words:2').map(c=>c.id),[cards[100].id,cards[101].id]);
-  assert.equal(groups.cardsInGroup(cards,'words:1').length,100);
+  const edited=editCard(rateCard(dog,1,now),{...dog,answer:'hound'});
+  const input=[...cards,edited];
+  assert.deepEqual(groups.cardsInGroup(input,'level:B1:2').map(c=>c.id),[cards[100].id,cards[101].id]);
+  assert.equal(groups.cardsInGroup(input,'level:B1:1').length,100);
+  assert.deepEqual(groups.cardsInGroup(input,'level:A1').map(c=>c.id),[dogId]);
+  assert.equal(groups.cardsInGroup(input,'level:A1')[0].reviews.length,1);
+});
+
+test('a level tag on a card overrides the listed level',()=>{
+  const dog={...card('dog','Fluent Forever · First 625',['FF625','B2']),id:dogId};
+  assert.deepEqual(groups.studyGroups([dog]).filter(g=>g.key.startsWith('level:')).map(g=>g.key),['level:B2']);
 });
 
 test('due and unknown queues stay in the selected group, while practice includes future cards',()=>{
