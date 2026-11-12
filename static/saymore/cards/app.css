@@ -23,8 +23,11 @@ body{font-family:var(--sk-body);-webkit-font-smoothing:antialiased}
 .shell{max-width:1080px}
 .site-header{padding:18px 0;border-bottom:0;flex-wrap:wrap}
 .brand{font-family:var(--latin);font-size:22px;font-weight:700;letter-spacing:-.01em}
-.site-header nav{margin-left:auto}
-.site-header nav a{color:var(--muted);font-weight:600}.site-header nav a:hover,.site-header nav a[aria-current=page]{color:var(--ink)}.site-header nav a[aria-current=page]{border-bottom:2px solid var(--fill);padding-bottom:4px}
+/* The site menu is a row of big tabs on a wide screen and a bar fixed to the bottom of a phone, as on the study pages. */
+.site-header nav{margin:0 auto;gap:2px;padding:3px;border-radius:999px;background:color-mix(in srgb,var(--ink) 9%,transparent);font-size:14px}
+.site-header nav a{color:var(--ink);font-weight:600;padding:7px 20px;border-radius:999px}
+.site-header nav a[aria-current=page]{background:var(--sk-tab-bg);color:var(--sk-tab-ink)}
+.site-header nav b{display:none}
 .intro{padding:30px 0 24px;align-items:center}
 .eyebrow{letter-spacing:.14em}
 h1,h2,.empty h3{font-family:var(--sk-head);font-weight:var(--sk-head-weight);letter-spacing:var(--sk-head-ls)}
@@ -85,10 +88,11 @@ dialog{border:var(--sk-bw) solid var(--sk-edge);border-radius:calc(var(--sk-r)*1
 .fix-rating button{border:var(--sk-ctl-bw) solid var(--sk-ctl-edge);border-radius:999px;background:var(--paper)}.fix-rating button[aria-pressed="true"]{border-color:var(--fill);background:var(--wash)}
 .study-dictionary a{font-weight:600}
 code{border-radius:5px}
-@media(max-width:660px){.site-header nav{order:3;flex-basis:100%;margin:10px 0 0}h1{font-size:32px}.counts{margin-top:18px;gap:8px}.counts span{flex:1;min-width:0;padding:10px 12px}.counts b{display:block;font-size:22px;margin:0}.workspace-nav{width:100%}.workspace-nav button{flex:1;padding:9px 6px}.study-answer{font-size:42px}.review-workspace .study-answer{font-size:48px}.rating-buttons{gap:6px}.rating-buttons button{font-size:14px;padding:13px 2px 11px}.card-row{padding:14px 16px}}
+@media(max-width:660px){body{padding-bottom:calc(70px + env(safe-area-inset-bottom,0px))}.site-header .skin-picker{margin-left:auto}.site-header nav{position:fixed;left:0;right:0;bottom:0;z-index:20;margin:0;display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-radius:0;background:var(--paper);border-top:var(--sk-ctl-bw) solid var(--line);padding:6px 8px calc(8px + env(safe-area-inset-bottom,0px));font-size:11px}.site-header nav a{display:grid;justify-items:center;gap:2px;padding:3px 0;color:var(--muted)}.site-header nav a[aria-current=page]{background:none;color:var(--ink)}.site-header nav b{display:block;font:400 16px/1.3 var(--sk-ipa);padding:1px 14px;border-radius:999px}.site-header nav a[aria-current=page] b{background:var(--sk-tab-bg);color:var(--sk-tab-ink)}h1{font-size:32px}.counts{margin-top:18px;gap:8px}.counts span{flex:1;min-width:0;padding:10px 12px}.counts b{display:block;font-size:22px;margin:0}.workspace-nav{width:100%}.workspace-nav button{flex:1;padding:9px 6px}.study-answer{font-size:42px}.review-workspace .study-answer{font-size:48px}.rating-buttons{gap:6px}.rating-buttons button{font-size:14px;padding:13px 2px 11px}.card-row{padding:14px 16px}}
 @media(prefers-reduced-motion:reduce){.card-row,.rating-buttons button{transition:none}.card-row:hover,.rating-buttons button:hover{transform:none}}
 /* "This picture does not fit": a quiet mark under the review card. */
-.flag-image{display:block;margin:12px auto 0;font-size:13px;font-weight:600;color:var(--muted);background:none;border:var(--sk-ctl-bw) dashed var(--sk-ctl-edge);border-radius:999px;padding:7px 14px}
+.flag-row{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:12px}
+.flag-image{font-size:13px;font-weight:600;color:var(--muted);background:none;border:var(--sk-ctl-bw) dashed var(--sk-ctl-edge);border-radius:999px;padding:7px 14px}
 .flag-image:hover{color:var(--ink);border-style:solid}
 .flag-image[aria-pressed=true]{color:var(--sk-mark-ink);background:var(--mark);border:var(--sk-ctl-bw) solid var(--sk-btn-edge)}
-.list-tools{display:flex;align-items:center;gap:14px}
+.list-tools,.flag-filters{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:6px 14px}

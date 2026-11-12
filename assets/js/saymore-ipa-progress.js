@@ -56,6 +56,7 @@
     for (const checkbox of root.querySelectorAll("[data-ipa-mastered]")) checkbox.checked = state.items[checkbox.dataset.ipaMastered]?.mastered === true;
     panel.querySelector("[data-ipa-progress-count]").textContent = `${count} / ${choices.length}개 외움`;
     const bar = panel.querySelector("[data-ipa-progress-bar]");
+    try { localStorage.setItem("saymore.ipa.total", String(choices.length)); } catch { /* the home page falls back to its own count */ }
     bar.max = choices.length;
     bar.value = count;
     connect.hidden = !!cloud?.connected;

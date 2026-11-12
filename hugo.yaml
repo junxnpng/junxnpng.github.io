@@ -25,10 +25,10 @@ disableKinds: [taxonomy, term, RSS]
 
 menu:
   main:
-    - {name: 학습 메뉴, url: "/#learning-menu", weight: 5}
-    - {name: IPA, url: /saymore/ipa/, weight: 10}
-    - {name: 듣기, url: /saymore/listen/, weight: 15}
-    - {name: 카드, url: /saymore/cards/, weight: 20}
+    - {name: 홈, url: /, weight: 5, pre: '<b class="sm-tab-glyph" aria-hidden="true">⌂</b>'}
+    - {name: IPA, url: /saymore/ipa/, weight: 10, pre: '<b class="sm-tab-glyph" aria-hidden="true">/ɪ/</b>'}
+    - {name: 듣기, url: /saymore/listen/, weight: 15, pre: '<b class="sm-tab-glyph" aria-hidden="true">r·l</b>'}
+    - {name: 카드, url: /saymore/cards/, weight: 20, pre: '<b class="sm-tab-glyph" aria-hidden="true">Aa</b>'}
 
 params:
   env: production

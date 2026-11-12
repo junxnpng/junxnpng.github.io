@@ -1,35 +1,47 @@
 {{ define "main" }}
-<article class="saymore" lang="ko">
-  <header class="sm-hero">
-    <div>
-      <p class="sm-eyebrow">SAY MORE · AMERICAN ENGLISH</p>
-      <h1>한 소리씩,<br>내 영어로.</h1>
-      <p class="sm-lead">영어의 소리를 구별하고, 입으로 익히는 나만의 연습실.</p>
-      <a class="sm-primary-link" href="{{ "saymore/cards/#review" | relURL }}">오늘 복습 시작 <span aria-hidden="true">→</span></a>
-    </div>
-    <figure class="sm-specimen" lang="en" aria-label="ship과 sheep은 모음 하나만 다릅니다">
-      <p><span class="sm-spec-word">sh<mark>i</mark>p</span><span class="sm-spec-ipa">/ʃ<mark>ɪ</mark>p/</span></p>
-      <p><span class="sm-spec-word">sh<mark>ee</mark>p</span><span class="sm-spec-ipa">/ʃ<mark>iː</mark>p/</span></p>
-      <small lang="ko">소리 하나가 단어를 바꿉니다.</small>
-    </figure>
-  </header>
+<article class="saymore sm-home" lang="ko">
+  <h1 class="sm-sr-only">Say More</h1>
+  {{/* Numbers are filled in by static/saymore/home.js from what this browser has saved. */}}
+  <section class="sm-today" aria-label="나의 진도" data-home-progress data-ipa-total="67">
+    <a class="sm-today-box sm-today-main" href="{{ "saymore/cards/#review" | relURL }}">
+      <span class="sm-today-label">오늘 복습할 카드</span>
+      <strong data-home-due>–</strong>
+      <span class="sm-today-note" data-home-cards-note>카드 페이지를 한 번 열면 여기에 나타나요.</span>
+      <span class="sm-today-go">복습 시작 <span aria-hidden="true">→</span></span>
+    </a>
+    <a class="sm-today-box" href="{{ "saymore/ipa/" | relURL }}">
+      <span class="sm-today-label">IPA 외운 소리</span>
+      <strong><span data-home-ipa>0</span><small> / <span data-home-ipa-total>67</span></small></strong>
+      <span class="sm-meter" aria-hidden="true"><i data-home-ipa-bar></i></span>
+    </a>
+    <a class="sm-today-box" href="{{ "saymore/listen/" | relURL }}">
+      <span class="sm-today-label">듣기 정답률</span>
+      <strong><span data-home-listen>–</span><small> %</small></strong>
+      <span class="sm-meter" aria-hidden="true"><i data-home-listen-bar></i></span>
+      <span class="sm-today-note" data-home-listen-note>아직 푼 문제가 없어요.</span>
+    </a>
+  </section>
   <section id="learning-menu" class="sm-learning-menu" aria-labelledby="learning-menu-title">
     <h2 id="learning-menu-title">학습 메뉴</h2>
     <div class="sm-menu-grid">
     <a class="sm-home-note" href="{{ "saymore/ipa/" | relURL }}">
       <span class="sm-sample" lang="en" aria-hidden="true">/ɪ/ ↔ /iː/</span>
-      <div><h3>IPA · 미국식 발음 <span aria-hidden="true">→</span></h3><p><span lang="en">sheep</span>과 <span lang="en">ship</span>의 모음은 어떻게 다를까요? 예시 단어의 발음기호를 읽고, 미국식 음성을 들으며 그림에서 혀의 위치를 비교해 보세요.</p></div>
+      <div><h3>IPA · 미국식 발음</h3><p><span lang="en">sheep</span>과 <span lang="en">ship</span>의 모음은 어떻게 다를까요? 발음기호를 읽고, 미국식 음성을 들으며 그림에서 혀의 위치를 비교해 보세요.</p></div>
+      <span class="sm-row-arrow" aria-hidden="true">→</span>
     </a>
     <a class="sm-home-note" href="{{ "saymore/listen/" | relURL }}">
       <span class="sm-sample" lang="en" aria-hidden="true">r ↔ l</span>
-      <div><h3>듣기 훈련 · 최소 대립쌍 <span aria-hidden="true">→</span></h3><p><span lang="en">rock</span>과 <span lang="en">lock</span>이 다르게 들리나요? 소리 하나만 다른 두 단어를 듣고 고르면 바로 정답을 알려 줍니다. 약한 소리는 더 자주 나옵니다.</p></div>
+      <div><h3>듣기 훈련 · 최소 대립쌍</h3><p><span lang="en">rock</span>과 <span lang="en">lock</span>이 다르게 들리나요? 소리 하나만 다른 두 단어를 듣고 고르면 바로 정답을 알려 줍니다.</p></div>
+      <span class="sm-row-arrow" aria-hidden="true">→</span>
     </a>
     <a class="sm-home-note" href="{{ "saymore/cards/" | relURL }}">
       <span class="sm-sample" lang="en" aria-hidden="true">Aa</span>
-      <div><h3>단어 카드 · 만들기와 복습 <span aria-hidden="true">→</span></h3><p>사진·발음·예문으로 나만의 카드를 만들고, 복습할 날짜에 다시 떠올려보세요. Dropbox에 저장하고 아이폰과 맥에서 이어서 공부해요.</p></div>
+      <div><h3>단어 카드 · 만들기와 복습</h3><p>사진·발음·예문으로 나만의 카드를 만들고, 복습할 날짜에 다시 떠올려보세요. 아이폰과 맥에서 이어서 공부해요.</p></div>
+      <span class="sm-row-arrow" aria-hidden="true">→</span>
     </a>
     </div>
   </section>
   <p class="sm-footnote">Fluent Forever의 발음 우선 학습에서 영감을 받은 개인 학습 공간입니다.</p>
 </article>
+<script defer src="{{ "saymore/home.js" | relURL }}?v=1"></script>
 {{ end }}

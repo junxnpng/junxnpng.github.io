@@ -7,7 +7,7 @@ import {MediaCache} from './media-cache.mjs?v=1';
 import {parseBundle} from './bundle.mjs?v=1';
 import {prepareImagePatch} from './image-patch.mjs?v=3';
 import {openDropbox} from '../shared/dropbox.mjs?v=3';
-import {imageFlagTag,hasImageFlag,flagImage} from './image-flag.mjs?v=1';
+import {flagKinds,hasFlag,setFlag} from './image-flag.mjs?v=2';
 
 const $=id=>document.getElementById(id);
 let store=null, cachedFolder=null, view='library', busy=false, dirty=false, editedId=null, previewBack=false;
@@ -82,6 +82,8 @@ function updateStats(){
   $('total-count').textContent=cards().length;
   $('new-count').textContent=cards().filter(c=>c.schedule.state===0).length;
   $('due-count').textContent=store ? dueCards(store.library).filter(c=>c.schedule.state!==0).length : 0;
+  // The home page shows today's count from these due dates without opening Dropbox itself.
+  if(store)try{localStorage.setItem('saymore.home.cards.v1',JSON.stringify({at:Date.now(),total:cards().length,fresh:cards().filter(c=>c.schedule.state===0).length,due:cards().filter(c=>c.schedule.state!==0).map(c=>Date.parse(c.schedule.due))}));}catch{/* The home page keeps its last numbers. */}
 }
 function groupLabel(group,now=new Date()){
   const p=studyProgress(group.cards,now);
@@ -109,19 +111,23 @@ function chooseGroup(key){
   $('deck-filter').value=$('review-group').value=key;
   if(view==='review')startReview(unknownSession!==null);else renderLibrary();
 }
-// The mark under a review card: "this picture does not fit the word". It is saved at once, like an answer.
+// The marks under a review card: the picture does not fit the word, or does not fit the sentence.
+// Each is saved at once, like an answer. The sentence mark appears once the back, with its sentence, is showing.
 function flagControl(){
-  const button=$('flag-image'),on=Boolean(activeCard&&hasImageFlag(activeCard));
-  button.hidden=!activeCard?.image;button.setAttribute('aria-pressed',String(on));
-  button.textContent=on?'✓ 그림 바꿀 카드로 표시했어요 · 취소':'그림이 단어와 안 맞아요 · 표시해 두기';
-  button.disabled=busy||saving||!store;
+  $('flag-row').hidden=!activeCard?.image;
+  for(const button of $('flag-row').querySelectorAll('button')){
+    const kind=button.dataset.flag,on=Boolean(activeCard&&hasFlag(activeCard,kind));
+    button.hidden=kind==='sentence'&&!(activeCard?.sentence&&revealed);
+    button.setAttribute('aria-pressed',String(on));button.textContent=flagKinds[kind][on?'on':'off'];
+    button.disabled=busy||saving||!store;
+  }
 }
-async function toggleImageFlag(){
+async function toggleFlag(kind){
   if(busy||saving||!store||!activeCard?.image)return;
   const owner=store,before=activeCard;let updated;
-  try{updated=flagImage(before,!hasImageFlag(before));}catch(e){notice(friendlyError(e),true);return;}
+  try{updated=setFlag(before,kind,!hasFlag(before,kind));}catch(e){notice(friendlyError(e),true);return;}
   const next=cards().map(c=>c.id===updated.id?updated:c);
-  // The card on screen becomes the flagged one, so an answer given next is recorded on top of it.
+  // The card on screen becomes the marked one, so an answer given next is recorded on top of it.
   saving=true;pendingCards=next;activeCard=updated;
   const commit=store.commit({...store.library,cards:next},{},[updated.id],undefined,{deferNotes:true});
   notice('표시를 저장하고 있어요…');controls();
@@ -129,7 +135,7 @@ async function toggleImageFlag(){
     const result=await commit;
     pendingCards=null;saving=false;
     if(store===owner){
-      saved(result,hasImageFlag(updated)?`‘${updated.answer.slice(0,40)}’ 카드를 그림 바꿀 카드로 표시했어요. 카드 목록에서 모아 볼 수 있어요.`:'그림 바꿀 카드 표시를 지웠어요.',{review:true});
+      saved(result,hasFlag(updated,kind)?`‘${updated.answer.slice(0,40)}’ 카드에 표시했어요. 카드 목록에서 모아 볼 수 있어요.`:'표시를 지웠어요.',{review:true});
       const savedNotice=noticeVersion;
       const reportNotes=notes=>{if(store===owner)noteWarnings(notes,noticeVersion===savedNotice);};
       if(result.notes)void result.notes.then(reportNotes,error=>reportNotes({warnings:[{message:error.message}]}));
@@ -138,7 +144,7 @@ async function toggleImageFlag(){
     pendingCards=null;saving=false;
     if(store===owner){
       if(activeCard===updated)activeCard=before;
-      notice(`${friendlyError(e)} 그림 표시는 저장되지 않았어요.`,true);
+      notice(`${friendlyError(e)} 표시는 저장되지 않았어요.`,true);
     }
   }finally{controls();}
 }
@@ -161,8 +167,13 @@ function renderLibrary(){
     row.append(title,schedule,actions);$('card-list').append(row);
   }
   $('list-count').textContent=store ? `${list.length}장` : '';
-  const flagged=cards().filter(hasImageFlag).length;
-  $('flagged-filter').hidden=!flagged;$('flagged-filter').textContent=`그림 바꿀 카드 ${flagged}장 보기`;
+  // Marked cards carry a tag, so showing them is a search for that tag across every card.
+  $('flag-filters').replaceChildren(...Object.entries(flagKinds).flatMap(([kind,{tag,list}])=>{
+    const count=cards().filter(c=>hasFlag(c,kind)).length;if(!count)return [];
+    const button=el('button',`${list} ${count}장`,'text-button');button.type='button';
+    button.addEventListener('click',()=>{$('search').value=tag;if(selectedGroup==='all')renderLibrary();else chooseGroup('all');});
+    return [button];
+  }));
   $('empty-library').hidden=list.length>0;
   $('empty-library').querySelector('h3').textContent=cards().length?'검색에 맞는 카드가 없어요.':'첫 카드를 만들어보세요.';
   controls();
@@ -567,9 +578,7 @@ $('append-bundle').addEventListener('click',()=>importBundle(true));
 for(const b of document.querySelectorAll('[data-view]'))b.addEventListener('click',()=>{if(b.dataset.view==='add'&&view!=='add')resetEditor();switchView(b.dataset.view);});
 for(const b of document.querySelectorAll('[data-open-add]'))b.addEventListener('click',()=>switchView('add'));
 $('search').addEventListener('input',renderLibrary);
-$('flag-image').addEventListener('click',toggleImageFlag);
-// Flagged cards carry a tag, so showing them is a search for that tag across every card.
-$('flagged-filter').addEventListener('click',()=>{$('search').value=imageFlagTag;if(selectedGroup==='all')renderLibrary();else chooseGroup('all');});
+for(const button of $('flag-row').querySelectorAll('button'))button.addEventListener('click',()=>toggleFlag(button.dataset.flag));
 for(const [value,label] of Object.entries(sortOrders)){const option=el('option',label);option.value=value;$('sort-order').append(option);}
 $('sort-order').value=sortOrder;
 $('sort-order').addEventListener('change',()=>{sortOrder=$('sort-order').value;try{localStorage.setItem('saymore.cards.sort.v1',sortOrder);}catch{/* The order still applies for this visit. */}renderLibrary();});
