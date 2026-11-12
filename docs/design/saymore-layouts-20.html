@@ -20,6 +20,7 @@ body{background:var(--bg);color:var(--fg);font:15px/1.6 var(--ui);word-break:kee
 .bar .sep{width:1px;height:20px;background:var(--rule);margin:0 6px}
 .bar output{font-size:12px;color:var(--sub);margin-left:auto}
 #list{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,620px),1fr));gap:30px 22px}
+.sec{grid-column:1/-1;margin:10px 0 -12px;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px}.sec h2{font-size:20px;font-weight:900;letter-spacing:-.03em;margin:0}.sec p{margin:0;font-size:13px;color:var(--sub)}
 .draft{display:flex;flex-direction:column;gap:8px;min-width:0}
 .draft.wide{grid-column:1/-1}
 .cap{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 10px;align-items:start}
@@ -168,7 +169,7 @@ body{background:var(--bg);color:var(--fg);font:15px/1.6 var(--ui);word-break:kee
 
 <div class="wrap">
   <header class="top">
-    <h1>Say More 배치 초안 20</h1>
+    <h1>Say More 배치 초안</h1>
     <p>색과 글꼴은 그대로 두고, 메뉴를 어디에 두고 상자를 어떻게 놓을지만 20가지로 바꿨습니다. 초안마다 왼쪽이 맥(넓은 화면), 오른쪽이 아이폰 화면입니다. 위쪽 단추로 세 테마를 바꿔 가며 볼 수 있습니다. 숫자(오늘 12장 등)는 자리를 보여 주려고 넣은 예시입니다.</p>
   </header>
   <div class="bar" id="bar" role="toolbar" aria-label="초안 보기 설정"></div>
@@ -201,6 +202,14 @@ const LAYOUTS=[
  {n:'접이식',d:'줄을 누르면 그 자리에서 펼쳐집니다. 첫 화면이 짧습니다.',nav:'top',hero:'center',menu:'acc'},
  {n:'한 화면',d:'스크롤 없이 한 화면에 다. 오늘 숫자와 2×2 상자, 알약 메뉴.',nav:'pill',hero:'today',menu:'grid2'},
  {n:'신문 1면',d:'가운데 제호, 큰 예시 단어, 아래는 목차 줄.',nav:'center',hero:'spec',menu:'list'}
+];
+// Second round: the arrangements picked from the 20, each with the progress summary, and all with L03's phone screen.
+const PH={nav:'tabs',hero:'today',menu:'rows'};
+const FINAL=[
+ {n:'큰 탭 (L03 그대로)',d:'맥은 위쪽 큰 탭, 그 아래 진도 요약과 가로 줄 3개.',tag:'맥: L03 · 폰: L03',nav:'tabs',hero:'today',menu:'rows',p:1},
+ {n:'왼쪽 메뉴 + 진도 요약',d:'L06의 왼쪽 메뉴는 그대로 두고, 큰 제목 자리에 진도 요약을 넣었습니다.',tag:'맥: L06 + 진도 요약 · 폰: L03',nav:'side',hero:'today',menu:'rows',ph:PH},
+ {n:'가운데 정렬 + 진도 요약',d:'L07의 가운데 제목 아래에 진도 요약을 넣고, 그 아래 상자 3개.',tag:'맥: L07 + 진도 요약 · 폰: L03',nav:'center',hero:['center','today'],menu:'cols',ph:PH},
+ {n:'좁은 띠 + 벤토 (L16)',d:'맥은 L16 그대로. 폰만 L03 화면으로 바꿨습니다.',tag:'맥: L16 · 폰: L03',nav:'rail',hero:'today',menu:'bento',ph:PH}
 ];
 const IT=[
  {s:'/ɪ/ ↔ /iː/',g:'/ɪ/',k:'IPA',t:'IPA · 미국식 발음',d:'기호를 읽고 혀의 위치를 비교',m:'67 소리',step:'소리 익히기'},
@@ -243,10 +252,10 @@ const MENU={
  sidep:()=>`<div class="sidep"><div class="pick">${IT.map((i,x)=>`<div${x?'':' class="on"'}><h4>${i.k}</h4><p class="mu">${i.d}</p></div>`).join('')}</div><div class="view bx"><p class="lbl">IPA · 모음</p><div class="sym">${['iː','ɪ','e','æ','uː','ʊ','ɑː','ɔː','ʌ','ə','ɝː','ɚ'].map(s=>`<i>${s}</i>`).join('')}</div><span class="go">전체 67 소리 보기 →</span></div></div>`,
  acc:()=>`<div class="acc">${IT.map((i,x)=>`<div class="t bx${x?'':' open'}"><h4>${i.t}</h4><span class="arrow">${x?'+':'−'}</span>${x?'':`<div class="in"><span class="sp">${i.s}</span><p class="mu">${i.d} · ${i.m}</p><span class="go">열기 →</span></div>`}</div>`).join('')}</div>`
 };
-const shot=(l,ph)=>{const sided=['side','rail'].includes(l.nav);
- const page=`<div class="pg">${HERO[l.hero]()}${MENU[l.menu]()}</div>`;
+const shot=(l0,ph)=>{const l=ph&&l0.ph?{...l0,...l0.ph}:l0,sided=['side','rail'].includes(l.nav);
+ const page=`<div class="pg">${[].concat(l.hero).map(h=>HERO[h]()).join('')}${MENU[l.menu]()}</div>`;
  return `<div class="shot${ph?' ph':''}${sided?' sided':''}" data-w="${ph?375:900}">${NAV[l.nav](ph)}${page}${bottom(l.nav,ph)}</div>`};
-const pad=n=>'L'+String(n).padStart(2,'0');
+const pad=n=>n>100?'F'+(n-100):'L'+String(n).padStart(2,'0');
 let stars=new Set();try{stars=new Set(JSON.parse(localStorage.getItem('saymore.layouts.stars')||'[]'))}catch{}
 const save=()=>{try{localStorage.setItem('saymore.layouts.stars',JSON.stringify([...stars]))}catch{}};
 const state={skin:'mono',pick:false,star:false};
@@ -256,8 +265,8 @@ function fitAll(){for(const p of list.querySelectorAll('.pair')){const w=p.clien
   const [a,b]=p.querySelectorAll('.shot');a.style.zoom=stack?w/902:(w-16)/1279;b.style.zoom=stack?Math.min(1,w/377):(w-16)/1279}}
 function render(){
   list.dataset.skin=state.skin;
-  const shown=LAYOUTS.map((l,i)=>({l,i})).filter(({l,i})=>(!state.pick||l.p)&&(!state.star||stars.has(i+1)));
-  list.innerHTML=shown.map(({l,i})=>`<section class="draft" id="l${i+1}"><div class="cap"><b><i>${pad(i+1)}</i>${l.n}${l.now?'<u class="now">지금</u>':''}${l.p?'<u>추천</u>':''}</b><span>${l.d}</span><small>메뉴: ${NAVN[l.nav]} · 첫 화면: ${HERON[l.hero]} · 상자: ${MENUN[l.menu]}</small><div><button type="button" data-star="${i+1}" aria-pressed="${stars.has(i+1)}">★ 찜</button><button type="button" data-wide>크게</button></div></div><div class="pair"><div class="frame">${shot(l,false)}</div><div class="frame">${shot(l,true)}</div></div></section>`).join('')||'<p>조건에 맞는 초안이 없습니다. 위의 단추를 다시 눌러 풀어 주세요.</p>';
+  const shown=[...FINAL.map((l,i)=>({l,i:100+i})),...LAYOUTS.map((l,i)=>({l,i}))].filter(({l,i})=>(!state.pick||l.p)&&(!state.star||stars.has(i+1)));
+  list.innerHTML=shown.map(({l,i},x)=>`${i>=100&&!x?'<div class="sec"><h2>2차 후보</h2><p>고르신 배치에 진도 요약을 넣어 다시 맞춘 네 가지. 폰 화면은 모두 L03입니다.</p></div>':''}${i<100&&(!x||shown[x-1].i>=100)?'<div class="sec"><h2>처음 20가지</h2></div>':''}<section class="draft" id="l${i+1}"><div class="cap"><b><i>${pad(i+1)}</i>${l.n}${l.now?'<u class="now">지금</u>':''}${l.p?'<u>추천</u>':''}</b><span>${l.d}</span><small>${l.tag||`메뉴: ${NAVN[l.nav]} · 첫 화면: ${HERON[l.hero]} · 상자: ${MENUN[l.menu]}`}</small><div><button type="button" data-star="${i+1}" aria-pressed="${stars.has(i+1)}">★ 찜</button><button type="button" data-wide>크게</button></div></div><div class="pair"><div class="frame">${shot(l,false)}</div><div class="frame">${shot(l,true)}</div></div></section>`).join('')||'<p>조건에 맞는 초안이 없습니다. 위의 단추를 다시 눌러 풀어 주세요.</p>';
   bar.innerHTML='<span>테마</span>'+SKINS.map(([id,name])=>`<button type="button" data-skin="${id}" aria-pressed="${state.skin===id}">${name}</button>`).join('')+`<i class="sep"></i><button type="button" data-pick aria-pressed="${state.pick}">추천만</button><button type="button" data-starred aria-pressed="${state.star}">${state.star?'전체 다시 보기':'★ 찜한 것만 ('+stars.size+')'}</button><output>${shown.length}개 표시${stars.size?' · 찜: '+[...stars].sort((a,b)=>a-b).map(pad).join(', '):''}</output>`;
   fitAll();
 }
