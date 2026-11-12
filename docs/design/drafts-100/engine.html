@@ -1,0 +1,202 @@
+<title>Say More 디자인 초안 100</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
+<link id="fontlink" rel="stylesheet" href="__FONTS__">
+<style>
+/* Layout: a contact sheet of 100 drafts. Every draft renders the same two screens (home, review card) at a fixed logical size and is scaled to its cell. */
+:root{--bg:#eef0f3;--fg:#161b22;--sub:#5b6573;--rule:#d5dae2;--chip:#fff;--pick:#2443cf;--pick-ink:#fff;--star:#e0a100;
+  --ui:"Noto Sans KR",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo",sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1116;--fg:#eceff3;--sub:#98a2b0;--rule:#2a313b;--chip:#1a2029;--pick:#9db0ff;--pick-ink:#10141a;--star:#ffd257;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0e1116;--fg:#eceff3;--sub:#98a2b0;--rule:#2a313b;--chip:#1a2029;--pick:#9db0ff;--pick-ink:#10141a;--star:#ffd257;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:15px/1.6 var(--ui);word-break:keep-all;padding-block:26px 70px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1500px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+.top h1{font-size:28px;font-weight:900;letter-spacing:-.04em;margin:0 0 6px;text-wrap:balance}
+.top p{margin:0;color:var(--sub);max-width:70ch}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);padding:10px 0;display:flex;flex-wrap:wrap;gap:6px;align-items:center;border-bottom:1px solid var(--rule)}
+.bar button{font:700 12px/1.4 var(--ui);color:var(--fg);background:var(--chip);border:1px solid var(--rule);border-radius:99px;padding:6px 12px;cursor:pointer}
+.bar button[aria-pressed="true"]{background:var(--pick);border-color:var(--pick);color:var(--pick-ink)}
+.bar button:focus-visible,.draft button:focus-visible{outline:3px solid var(--pick);outline-offset:2px}
+.bar .sep{width:1px;height:20px;background:var(--rule);margin:0 4px}
+.bar output{font-size:12px;color:var(--sub);margin-left:auto}
+#list{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,560px),1fr));gap:26px 22px}
+.fam{grid-column:1/-1;margin:14px 0 -8px;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px}
+.fam h2{font-size:20px;font-weight:900;letter-spacing:-.03em;margin:0}
+.fam p{margin:0;font-size:13px;color:var(--sub)}
+.draft{display:flex;flex-direction:column;gap:8px;min-width:0}
+.draft.wide{grid-column:1/-1}
+.cap{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 10px;align-items:start}
+.cap b{font-size:16px;font-weight:900;letter-spacing:-.03em}
+.cap b i{font-style:normal;color:var(--pick);font-variant-numeric:tabular-nums;margin-right:7px}
+.cap b u{text-decoration:none;font-size:10.5px;font-weight:700;background:var(--star);color:#1b1400;border-radius:99px;padding:2px 8px;margin-left:8px;vertical-align:2px}
+.cap span{grid-column:1;color:var(--sub);font-size:12.5px;line-height:1.5}
+.cap small{grid-column:1;color:var(--sub);font-size:11px;opacity:.85}
+.cap div{grid-column:2;grid-row:1/4;display:flex;gap:6px}
+.cap button{font:700 12px/1 var(--ui);background:var(--chip);color:var(--sub);border:1px solid var(--rule);border-radius:99px;padding:7px 10px;cursor:pointer}
+.cap button[aria-pressed="true"]{color:#1b1400;background:var(--star);border-color:var(--star)}
+.frame{border-radius:16px;overflow:hidden;border:1px solid var(--rule)}
+
+/* ── The mock: fixed 920px logical width, zoomed to the cell. All colours come from the draft's own tokens. ── */
+.m{width:920px;background:var(--mbg);color:var(--inkb);font-family:var(--ko);display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);--bw:1px;--sh:0 1px 2px #0000000a,0 10px 26px #0000000f;--hls:-.055em}
+.m.stack{width:470px;grid-template-columns:minmax(0,1fr)}
+.m>*{min-width:0;padding:22px 26px 28px}
+.m .review{border-left:var(--bw) solid var(--line)}
+.m.stack .review{border-left:0;border-top:var(--bw) solid var(--line)}
+.nav{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:30px}
+.logo{font-family:var(--en);font-weight:700;font-size:20px}
+.links{display:flex;gap:16px;font-size:12px;font-weight:700;color:var(--mutb)}
+.hero{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:22px;align-items:center}
+.eye{font-size:10px;letter-spacing:.14em;font-weight:700;color:var(--acctb);margin:0 0 8px}
+.m h3{font-family:var(--hd,var(--ko));font-size:42px;line-height:1.14;letter-spacing:var(--hls);font-weight:var(--hw);margin:0 0 10px}
+.lead{font-size:13.5px;color:var(--mutb);margin:0 0 16px}
+.btn{display:inline-block;background:var(--acc);color:var(--acc-ink);font-weight:700;font-size:13px;padding:10px 18px;border-radius:var(--rb);border:var(--bw) solid var(--acc)}
+.spec{color:var(--ink);background:var(--surf);border:var(--bw) solid var(--line);border-radius:var(--r);box-shadow:var(--sh);padding:14px 20px;font-family:var(--en)}
+.spec p{display:flex;justify-content:space-between;align-items:baseline;gap:18px;margin:0;padding:4px 0}
+.spec p+p{border-top:1px dashed var(--line)}
+.spec .w{font-size:32px;font-weight:700;line-height:1.25}
+.spec .p{font-size:18px;color:var(--acct)}
+.m mark{background:var(--mark);color:var(--mark-ink);border-radius:.12em;padding:0 .05em}
+.tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:24px}
+.tile{color:var(--ink);background:var(--surf);border:var(--bw) solid var(--line);border-radius:var(--r);box-shadow:var(--sh);padding:14px}
+.tile em{display:inline-block;font-style:normal;font-size:19px;color:var(--acctw);background:var(--wash);border-radius:calc(var(--r)*.6);padding:3px 10px;margin-bottom:10px}
+.tile strong{display:block;font-size:13.5px;letter-spacing:-.02em}
+.tile small{display:block;font-size:11.5px;color:var(--mut);line-height:1.55;margin-top:3px}
+.tabs{display:flex;gap:4px;font-size:12px;font-weight:700;color:var(--mutb);margin-bottom:14px}
+.tabs span{padding:6px 12px;border-radius:var(--rb)}
+.tabs .on{background:var(--surf);color:var(--ink);box-shadow:0 1px 3px #0000001f}
+.prog{display:flex;justify-content:space-between;font-size:11.5px;color:var(--mutb);margin-bottom:10px}
+.card{position:relative;color:var(--ink);background:var(--surf);border:var(--bw) solid var(--line);border-radius:calc(var(--r)*1.25);box-shadow:var(--sh);text-align:center}
+.pic{background:var(--pic);display:grid;place-items:center;padding:14px;border-bottom:var(--bw) solid var(--line);border-radius:calc(var(--r)*1.25 - var(--bw)) calc(var(--r)*1.25 - var(--bw)) 0 0}
+.pic svg{width:92px;height:92px;color:#131b26}
+.body{padding:14px 16px 18px}
+.ans{font-family:var(--en);font-weight:700;font-size:40px;line-height:1.15;margin:0}
+.ipa{font-size:19px;color:var(--acct);margin:2px 0 12px}
+/* IPA is set in one plain face in every draft; themes never restyle it. */
+.m .ipa,.m .spec .p,.m .tile em{font-family:"Noto Sans",-apple-system,"Helvetica Neue",Arial,sans-serif;font-style:normal;letter-spacing:0;font-weight:400}
+.listen{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+.listen span{font-size:11.5px;font-weight:700;background:var(--wash);color:var(--acctw);border-radius:var(--rb);padding:7px 13px;border:var(--bw) solid transparent}
+.rate{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin-top:12px}
+.rate span{--t:var(--c4);--tf:var(--f4);--ti:var(--g4);background:var(--surf);border:var(--bw) solid color-mix(in srgb,var(--t) 40%,var(--line));color:var(--t);border-radius:calc(var(--r)*.8);font-size:12.5px;font-weight:700;padding:9px 2px 7px;text-align:center}
+.rate span small{display:block;font-size:10px;font-weight:500;color:var(--mut)}
+.rate span:nth-child(1){--t:var(--c1);--tf:var(--f1);--ti:var(--g1)}.rate span:nth-child(2){--t:var(--c2);--tf:var(--f2);--ti:var(--g2)}.rate span:nth-child(3){--t:var(--c3);--tf:var(--f3);--ti:var(--g3)}
+
+/* surface treatments */
+.k-flat{--sh:none}.k-flat .spec,.k-flat .tile,.k-flat .card{border-color:transparent}
+.k-line{--sh:none}
+.k-brut{--bw:3px;--line:var(--ink)!important;--sh:5px 5px 0 var(--ink)}.k-brut .listen span{border-color:var(--ink)}.k-brut .btn{border-color:var(--ink);box-shadow:3px 3px 0 var(--ink)}
+.k-clay{--sh:0 7px 0 color-mix(in srgb,var(--acc) 22%,var(--mbg))}.k-clay .spec,.k-clay .tile,.k-clay .card{border-color:transparent}.k-clay .btn{box-shadow:0 5px 0 color-mix(in srgb,var(--acc) 65%,#000)}
+.k-neu{--sh:7px 7px 16px color-mix(in srgb,var(--mbg) 82%,#000),-7px -7px 16px color-mix(in srgb,var(--mbg) 60%,#fff)}.k-neu .spec,.k-neu .tile,.k-neu .card{border-color:transparent;background:var(--mbg);color:var(--inkb)}.k-neu .rate span{background:var(--mbg);border-color:transparent;box-shadow:4px 4px 9px color-mix(in srgb,var(--mbg) 82%,#000),-4px -4px 9px color-mix(in srgb,var(--mbg) 60%,#fff)}.k-neu .tabs .on{background:var(--mbg);box-shadow:inset 3px 3px 6px color-mix(in srgb,var(--mbg) 82%,#000),inset -3px -3px 6px color-mix(in srgb,var(--mbg) 60%,#fff)}
+.k-glass .spec,.k-glass .tile,.k-glass .card{backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.k-edit{--sh:none}.k-edit .spec{border-width:0 0 0 3px;border-color:var(--acc);border-radius:0;background:none;padding-left:18px}.k-edit .tile{border-width:var(--bw) 0 0;border-color:var(--ink);border-radius:0;background:none;padding:12px 0 0}.k-edit .tile em{background:none;padding:0}.k-edit .spec,.k-edit .tile{color:var(--inkb)}.k-edit .tile small{color:var(--mutb)}.k-edit .spec .p,.k-edit .tile em{color:var(--acctb)}
+.k-mono{--sh:none}.k-mono .spec,.k-mono .tile,.k-mono .card{border-style:dashed}.k-mono .eye::before{content:"// "}.k-mono .btn::before{content:"> "}
+.k-note{background-image:repeating-linear-gradient(transparent 0 27px,color-mix(in srgb,var(--line) 70%,transparent) 27px 28px)}.k-note .card,.k-note .spec{background-image:linear-gradient(90deg,transparent 22px,#e58f8f 22px 23px,transparent 23px)}
+.k-grid{background-image:linear-gradient(color-mix(in srgb,var(--line) 55%,transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in srgb,var(--line) 55%,transparent) 1px,transparent 1px);background-size:23px 23px}
+.k-dot{background-image:radial-gradient(color-mix(in srgb,var(--ink) 16%,transparent) 1.2px,transparent 1.3px);background-size:16px 16px}
+.k-stripe .home{background-image:linear-gradient(var(--c1) 0 6px,var(--mark) 6px 12px,var(--c3) 12px 18px,transparent 18px)}.k-stripe .nav{margin-top:14px}
+.k-ios .tiles{grid-template-columns:minmax(0,1fr);gap:0;background:var(--surf);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh)}.k-ios .tile{border:0;border-radius:0;box-shadow:none;display:grid;grid-template-columns:92px minmax(0,1fr);column-gap:12px;align-items:center;padding:11px 14px}.k-ios .tile+.tile{border-top:1px solid var(--line)}.k-ios .tile em{margin:0;grid-row:1/3;text-align:center;font-size:15px}
+.k-bento .hero{background:var(--surf);border:var(--bw) solid var(--line);border-radius:calc(var(--r)*1.3);padding:22px;box-shadow:var(--sh)}.k-bento .spec{box-shadow:none;background:var(--wash);border-color:transparent}.k-bento .tiles{margin-top:10px}.k-bento .tile:nth-child(2){background:var(--acc);border-color:var(--acc);color:var(--acc-ink)}.k-bento .tile:nth-child(2) small{color:inherit;opacity:.8}.k-bento .tile:nth-child(2) em{background:#ffffff33;color:inherit}.k-bento .tile:nth-child(3){background:var(--mark);border-color:var(--mark);color:var(--mark-ink)}.k-bento .tile:nth-child(3) small{color:inherit;opacity:.75}.k-bento .tile:nth-child(3) em{background:#00000014;color:inherit}
+.k-pixel{--r:0px;--rb:0px;--sh:4px 0 0 var(--ink),-4px 0 0 var(--ink),0 4px 0 var(--ink),0 -4px 0 var(--ink)}.k-pixel .spec,.k-pixel .tile,.k-pixel .card,.k-pixel .btn{border-color:transparent}.k-pixel .btn{box-shadow:var(--sh)}.k-pixel .pic{border-radius:0}
+.k-grad h3{background:linear-gradient(100deg,var(--acctb),var(--mark));-webkit-background-clip:text;background-clip:text;color:transparent}.k-grad .btn{background:linear-gradient(100deg,var(--acc),var(--c4));border-color:transparent}
+.k-glow .btn{box-shadow:0 0 22px color-mix(in srgb,var(--acc) 55%,transparent)}.k-glow{--sh:0 0 0 1px color-mix(in srgb,var(--acc) 12%,transparent),0 14px 34px #0008}
+.k-paper .card{box-shadow:0 1px 0 var(--line),0 6px 0 -2px var(--surf),0 7px 0 -2px var(--line),0 12px 0 -4px var(--surf),0 13px 0 -4px var(--line)}
+.k-tilt .card{transform:rotate(-1.2deg)}.k-tilt .spec{transform:rotate(1.2deg)}.k-tilt .btn{transform:rotate(-1deg)}
+.k-tape .card::before{content:"";position:absolute;top:-9px;left:50%;width:74px;height:18px;transform:translateX(-50%) rotate(-2deg);background:color-mix(in srgb,var(--mark) 75%,transparent)}
+.k-hl .tile em{background:linear-gradient(transparent 45%,var(--mark) 45%);color:var(--mark-ink);border-radius:0}
+.k-inv .spec{background:var(--acc);border-color:var(--acc);color:var(--acc-ink)}.k-inv .spec .p{color:var(--acc-ink)}.k-inv .spec mark{background:var(--acc-ink);color:var(--acc)}.k-inv .spec p+p{border-color:color-mix(in srgb,var(--acc-ink) 40%,transparent)}
+.k-ital .logo,.k-ital .ans{font-style:italic}
+.k-caps .eye,.k-caps .tabs,.k-caps .btn{letter-spacing:.08em}
+/* hero layouts */
+.h-center .hero{grid-template-columns:minmax(0,1fr);justify-items:center;text-align:center}.h-center .spec{min-width:300px}
+.h-big h3{font-size:58px;line-height:1.02}
+.h-spec .hero{grid-template-columns:minmax(0,1fr)}.h-spec .spec{order:-1}.h-spec .spec .w{font-size:54px}.h-spec .spec .p{font-size:26px}.h-spec h3{font-size:30px}
+.h-band .home{background:var(--acc);color:var(--acc-ink)}.h-band .home .eye,.h-band .home .lead,.h-band .home .links{color:inherit;opacity:.85}.h-band .home .btn{background:var(--acc-ink);color:var(--acc);border-color:var(--acc-ink)}.h-band .home .spec,.h-band .home .tile{color:var(--ink)}
+/* rating buttons */
+.r-fill .rate span{background:var(--tf);color:var(--ti);border-color:transparent}.r-fill .rate span small{color:inherit;opacity:.85}
+.r-3d .rate span{background:var(--tf);color:var(--ti);border-color:transparent;box-shadow:0 4px 0 color-mix(in srgb,var(--tf) 68%,#000)}.r-3d .rate span small{color:inherit;opacity:.85}
+.r-ghost .rate span{color:var(--ink);border-color:var(--line)}.r-ghost .rate span::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--tf);margin-right:5px;vertical-align:1px}
+.r-bar .rate span{color:var(--ink);border-color:var(--line);border-top:4px solid var(--tf)}
+.r-soft .rate span{background:color-mix(in srgb,var(--tf) 16%,var(--surf));border-color:transparent}
+.r-one .rate span{color:var(--ink);border-color:var(--line)}.r-one .rate span:nth-child(3){background:var(--acc);color:var(--acc-ink);border-color:var(--acc)}.r-one .rate span:nth-child(3) small{color:inherit;opacity:.8}
+.k-brut.r-fill .rate span,.k-brut.r-3d .rate span{border-color:var(--ink);box-shadow:3px 3px 0 var(--ink)}
+/* tabs */
+.t-under .tabs .on{color:var(--inkb);background:none;box-shadow:none;border-radius:0;border-bottom:2px solid var(--acctb)}
+.t-seg .tabs{background:color-mix(in srgb,var(--ink) 9%,transparent);padding:2px;border-radius:calc(var(--rb)*.9 + 2px)}.t-seg .tabs span{flex:1;text-align:center}
+.t-inv .tabs .on{background:var(--inkb);color:var(--mbg);box-shadow:none}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <h1>Say More 디자인 초안 100</h1>
+    <p id="intro"></p>
+  </header>
+  <div class="bar" id="bar" role="toolbar" aria-label="초안 걸러 보기"></div>
+  <main id="list"></main>
+</div>
+
+<script>
+__DATA__
+</script>
+<script>
+const KO={N:'"Noto Sans KR"',S:'"Noto Serif KR"',G:'"Gowun Dodum"',B:'"Gowun Batang"',P:'"IBM Plex Sans KR"',H:'"Black Han Sans"',J:'"Jua"',M:'"Hahmlet"',D:'"Do Hyeon"',NG:'"Nanum Gothic"',NM:'"Nanum Myeongjo"',A1:'"Gothic A1"',SF:'"Sunflower"',OR:'"Orbit"',NC:'"Nanum Gothic Coding"',Y:'-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo"',...(window.KO_EXTRA||{})};
+const hex=h=>{h=h.replace('#','');if(h.length===3)h=[...h].map(c=>c+c).join('');return[0,2,4].map(i=>parseInt(h.slice(i,i+2),16))};
+const toHex=a=>'#'+a.map(v=>Math.round(Math.max(0,Math.min(255,v))).toString(16).padStart(2,'0')).join('');
+const mix=(a,b,t)=>toHex(hex(a).map((v,i)=>v*(1-t)+hex(b)[i]*t));
+const lum=h=>{const[r,g,b]=hex(h).map(v=>{v/=255;return v<=.03928?v/12.92:((v+.055)/1.055)**2.4});return .2126*r+.7152*g+.0722*b};
+const cr=(a,b)=>{const x=lum(a),y=lum(b);return(Math.max(x,y)+.05)/(Math.min(x,y)+.05)};
+// Push a colour toward black or white until it reads on its background.
+const fit=(fg,bg,min)=>{const to=lum(bg)>.4?'#000000':'#ffffff';let c=fg,t=0;while(cr(c,bg)<min&&t<1){t+=.06;c=mix(fg,to,t)}return c};
+const on=bg=>cr('#ffffff',bg)>=cr('#10141a',bg)?'#ffffff':'#10141a';
+function tokens(t){
+  const [bg,sf,ink0,ac]=t.c, o=t.o||{}, dark=lum(sf)<.25;
+  const ink=fit(ink0,sf,7), inkb=fit(ink0,bg,7);
+  const mut=fit(o.mut||mix(ink,sf,.38),sf,4.5), mutb=fit(o.mut||mix(inkb,bg,.38),bg,4.5);
+  const line=o.line||mix(inkb,bg,lum(bg)<.25?.78:.84);
+  const wash=o.wash||mix(ac,sf,dark?.8:.87);
+  const mark=o.mark||'#ffe46b';
+  const tones=o.tones||(dark?['#ff8d8d','#ffc46b','#6fe0a8','#8fb4ff']:['#c0392f','#b06a00','#1c7a55','#2443cf']);
+  const fills=o.fills||(dark?['#e5484d','#f5a524','#30a46c','#3e63dd']:['#e5484d','#f08c00','#2f9e63','#3b5bdb']);
+  const v={mbg:bg,surf:o.surf||sf,ink,inkb,mut,mutb,line,acc:ac,'acc-ink':o.ai||on(ac),acct:fit(ac,sf,4.5),acctb:fit(ac,bg,4.5),acctw:fit(ac,wash,4.5),wash,mark,'mark-ink':on(mark),
+    r:(t.r??16)+'px',rb:(o.rb??((t.r??16)>=10?999:t.r))+'px',ko:(KO[t.ko]||t.ko)+',sans-serif',en:`"${t.en}","Noto Sans",sans-serif`,hw:o.hw||800,pic:o.pic||'#ffffff'};
+  tones.forEach((c,i)=>{v['c'+(i+1)]=fit(c,sf,4.5)});fills.forEach((c,i)=>{v['f'+(i+1)]=c;v['g'+(i+1)]=cr('#ffffff',c)>=3?'#ffffff':'#10141a'});
+  if(o.hd)v.hd=`"${o.hd}",`+v.ko; if(o.hls)v.hls=o.hls;
+  let s=Object.entries(v).map(([k,x])=>`--${k}:${x}`).join(';');
+  if(o.css)s+=';'+o.css; return s;
+}
+const cup='<svg viewBox="0 0 96 96" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 40h44v20a22 22 0 0 1-44 0z" fill="#c98b5a"/><path d="M64 44h8a9 9 0 0 1 0 18h-9"/><path d="M14 86h56"/><path d="M34 28c-4-6 4-8 0-14M48 28c-4-6 4-8 0-14"/></svg>';
+const mock=t=>`<div class="m ${t.k||''}" style='${tokens(t)}'>
+ <div class="home">
+  <div class="nav"><span class="logo">Say More</span><span class="links"><span>IPA</span><span>듣기</span><span>카드</span></span></div>
+  <div class="hero"><div><p class="eye">SAY MORE · AMERICAN ENGLISH</p><h3>한 소리씩,<br>내 영어로.</h3><p class="lead">영어의 소리를 구별하고, 입으로 익히는 나만의 연습실.</p><span class="btn">오늘 복습 시작 →</span></div>
+   <div class="spec" lang="en"><p><span class="w">sh<mark>i</mark>p</span><span class="p">/ʃ<mark>ɪ</mark>p/</span></p><p><span class="w">sh<mark>ee</mark>p</span><span class="p">/ʃ<mark>iː</mark>p/</span></p></div></div>
+  <div class="tiles"><div class="tile"><em>/ɪ/ ↔ /iː/</em><strong>IPA · 미국식 발음</strong><small>기호를 읽고 혀의 위치를 비교</small></div><div class="tile"><em>r ↔ l</em><strong>듣기 훈련</strong><small>소리 하나만 다른 두 단어</small></div><div class="tile"><em>Aa</em><strong>단어 카드</strong><small>만들고, 정한 날에 복습</small></div></div>
+ </div>
+ <div class="review">
+  <div class="tabs"><span>카드 목록</span><span>카드 추가</span><span class="on">복습하기</span></div>
+  <div class="prog"><span>오늘 복습 12 / 37</span><span>첫 625단어</span></div>
+  <div class="card"><div class="pic">${cup}</div><div class="body"><p class="ans" lang="en">coffee</p><p class="ipa">/ˈkɑː.fi/</p><div class="listen"><span>▶ 사람 녹음</span><span>▶ 기기 음성</span></div></div></div>
+  <div class="rate"><span>모름<small>1일 안</small></span><span>어려움<small>3일</small></span><span>알맞음<small>8일</small></span><span>쉬움<small>15일</small></span></div>
+ </div></div>`;
+const pad=n=>String(n).padStart(3,'0');
+let stars=new Set();try{stars=new Set(JSON.parse(localStorage.getItem('saymore.drafts.stars')||'[]'))}catch{}
+const save=()=>{try{localStorage.setItem('saymore.drafts.stars',JSON.stringify([...stars]))}catch{}};
+const state={fam:'all',pick:false,star:stars.size>0};
+const list=document.getElementById('list'),bar=document.getElementById('bar');
+document.getElementById('intro').textContent=INTRO;
+function fitAll(){for(const f of list.querySelectorAll('.frame')){const m=f.firstElementChild,w=f.clientWidth;const stack=w<520;m.classList.toggle('stack',stack);m.style.zoom=w/(stack?470:920)}}
+function render(){
+  const shown=THEMES.map((t,i)=>({t,i})).filter(({t,i})=>(state.fam==='all'||t.f===state.fam)&&(!state.pick||t.p)&&(!state.star||stars.has(i+1)));
+  let html='',last='';
+  for(const {t,i} of shown){
+    if(t.f!==last){last=t.f;html+=`<div class="fam"><h2>${t.f}</h2><p>${FAMILIES[t.f]||''}</p></div>`}
+    html+=`<section class="draft" id="d${i+1}"><div class="cap"><b><i>${pad(i+1)}</i>${t.n}${t.p?'<u>추천</u>':''}</b><span>${t.d}</span>${t.ref?`<small>참고: ${t.ref}</small>`:''}<div><button type="button" data-star="${i+1}" aria-pressed="${stars.has(i+1)}">★ 찜</button><button type="button" data-wide>크게</button></div></div><div class="frame">${mock(t)}</div></section>`;
+  }
+  list.innerHTML=html||'<p>조건에 맞는 초안이 없습니다. 위의 단추를 다시 눌러 풀어 주세요.</p>';
+  const fams=['all',...Object.keys(FAMILIES)];
+  bar.innerHTML=fams.map(f=>`<button type="button" data-fam="${f}" aria-pressed="${state.fam===f}">${f==='all'?'전체':f}</button>`).join('')+`<span class="sep"></span><button type="button" data-pick aria-pressed="${state.pick}">추천만</button><button type="button" data-starred aria-pressed="${state.star}">${state.star?'전체 다시 보기':'★ 찜한 것만 ('+stars.size+')'}</button><output>${shown.length}개 표시${stars.size?' · 찜: '+[...stars].sort((a,b)=>a-b).map(pad).join(', '):''}</output>`;
+  fitAll();
+}
+bar.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.fam)state.fam=b.dataset.fam;else if('pick'in b.dataset)state.pick=!state.pick;else if('starred'in b.dataset)state.star=!state.star;render()});
+list.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.star){const n=+b.dataset.star;stars.has(n)?stars.delete(n):stars.add(n);save();const y=scrollY;render();scrollTo(0,y)}else if('wide'in b.dataset){const d=b.closest('.draft');d.classList.toggle('wide');b.textContent=d.classList.contains('wide')?'작게':'크게';fitAll()}});
+addEventListener('resize',fitAll);
+render();document.fonts&&document.fonts.ready.then(fitAll);
+</script>

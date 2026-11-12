@@ -1,0 +1,352 @@
+{
+  "note": "Say More 디자인 초안 100개 중 추천안과 사이트에 적용한 안. 전체는 saymore-drafts-100.html 을 브라우저로 열면 보입니다. 원본은 drafts-100/ (python3 build.py 로 다시 만듭니다).",
+  "applied": [
+    {
+      "no": "003",
+      "name": "흑백 미니멀",
+      "family": "차분·미니멀",
+      "note": "흰 바탕에 검정 하나. “알맞음”만 검게 채워 눈이 먼저 가게 했습니다.",
+      "reference": "Minimalism, Mochi",
+      "colors": {
+        "background": "#ffffff",
+        "surface": "#ffffff",
+        "ink": "#0a0a0a",
+        "accent": "#0a0a0a"
+      },
+      "radius": 10,
+      "korean_font": "IBM Plex Sans KR",
+      "latin_font": "Inter",
+      "shape": "k-line r-one t-inv",
+      "options": {
+        "mark": "#e6ff5c",
+        "hw": 600
+      }
+    },
+    {
+      "no": "055",
+      "name": "드라큘라",
+      "family": "어두운 화면",
+      "note": "보라와 분홍이 선명한 어둠.",
+      "reference": "Dracula",
+      "colors": {
+        "background": "#282a36",
+        "surface": "#44475a",
+        "ink": "#f8f8f2",
+        "accent": "#bd93f9"
+      },
+      "radius": 10,
+      "korean_font": "Noto Sans KR",
+      "latin_font": "Outfit",
+      "shape": "k-flat r-fill",
+      "options": {
+        "mark": "#ff79c6",
+        "fills": [
+          "#ff5555",
+          "#ffb86c",
+          "#50fa7b",
+          "#8be9fd"
+        ]
+      }
+    },
+    {
+      "no": "067",
+      "name": "팝",
+      "family": "굵고 강한",
+      "note": "노란 바탕, 굵은 검은 테두리, 딱딱한 그림자, 색 블록 버튼.",
+      "reference": "Neubrutalism",
+      "colors": {
+        "background": "#fff36b",
+        "surface": "#ffffff",
+        "ink": "#000000",
+        "accent": "#ff4f9a"
+      },
+      "radius": 14,
+      "korean_font": "Noto Sans KR",
+      "latin_font": "Archivo",
+      "shape": "k-brut r-fill",
+      "options": {
+        "hd": "Black Han Sans",
+        "hw": 400,
+        "hls": "-.02em",
+        "ai": "#000000",
+        "mark": "#7df3a0",
+        "fills": [
+          "#ff6b6b",
+          "#ffa94d",
+          "#69db7c",
+          "#74c0fc"
+        ]
+      }
+    }
+  ],
+  "recommended": [
+    {
+      "no": "001",
+      "name": "연구실",
+      "family": "차분·미니멀",
+      "note": "회청색 종이에 코발트 한 색. 처음 로컬에 적용해 본 안입니다.",
+      "reference": "",
+      "colors": {
+        "background": "#f2f4f8",
+        "surface": "#ffffff",
+        "ink": "#131b26",
+        "accent": "#2443cf"
+      },
+      "radius": 18,
+      "korean_font": "Noto Sans KR",
+      "latin_font": "Charis SIL",
+      "shape": "",
+      "options": {}
+    },
+    {
+      "no": "003",
+      "name": "흑백 미니멀",
+      "family": "차분·미니멀",
+      "note": "흰 바탕에 검정 하나. “알맞음”만 검게 채워 눈이 먼저 가게 했습니다.",
+      "reference": "Minimalism, Mochi",
+      "colors": {
+        "background": "#ffffff",
+        "surface": "#ffffff",
+        "ink": "#0a0a0a",
+        "accent": "#0a0a0a"
+      },
+      "radius": 10,
+      "korean_font": "IBM Plex Sans KR",
+      "latin_font": "Inter",
+      "shape": "k-line r-one t-inv",
+      "options": {
+        "mark": "#e6ff5c",
+        "hw": 600
+      }
+    },
+    {
+      "no": "012",
+      "name": "사전",
+      "family": "종이·편집",
+      "note": "종이 사전의 표제어 조판. 이탤릭 표제어와 자주색.",
+      "reference": "Oxford Learner’s, 종이 사전",
+      "colors": {
+        "background": "#eef1ec",
+        "surface": "#f9faf6",
+        "ink": "#1c2420",
+        "accent": "#8a1c2b"
+      },
+      "radius": 3,
+      "korean_font": "Gowun Batang",
+      "latin_font": "Gentium Plus",
+      "shape": "k-edit k-ital r-ghost t-under",
+      "options": {
+        "mark": "#f3d9a0",
+        "hw": 700,
+        "hls": "-.04em"
+      }
+    },
+    {
+      "no": "022",
+      "name": "기본 앱",
+      "family": "앱 느낌",
+      "note": "아이폰 기본 앱처럼. 목록 묶음, 칸 나눔 탭, 채운 평가 버튼.",
+      "reference": "iOS 기본 앱",
+      "colors": {
+        "background": "#f2f2f7",
+        "surface": "#ffffff",
+        "ink": "#000000",
+        "accent": "#007aff"
+      },
+      "radius": 14,
+      "korean_font": "system",
+      "latin_font": "Inter",
+      "shape": "k-flat k-ios t-seg r-fill",
+      "options": {
+        "rb": 12,
+        "fills": [
+          "#ff3b30",
+          "#ff9500",
+          "#34c759",
+          "#007aff"
+        ]
+      }
+    },
+    {
+      "no": "025",
+      "name": "벤토",
+      "family": "앱 느낌",
+      "note": "도시락 칸처럼 크기와 색이 다른 상자로 나눕니다.",
+      "reference": "Bento grid (superdesign.dev)",
+      "colors": {
+        "background": "#f5f5f7",
+        "surface": "#ffffff",
+        "ink": "#1d1d1f",
+        "accent": "#0071e3"
+      },
+      "radius": 22,
+      "korean_font": "system",
+      "latin_font": "Inter",
+      "shape": "k-flat k-bento r-soft",
+      "options": {
+        "mark": "#ffb340"
+      }
+    },
+    {
+      "no": "033",
+      "name": "파란 한 버튼",
+      "family": "서비스 참고",
+      "note": "화면마다 파란 버튼 하나, 짧고 굵은 제목, 그림자 없는 넓은 면.",
+      "reference": "Toss",
+      "colors": {
+        "background": "#f2f4f6",
+        "surface": "#ffffff",
+        "ink": "#191f28",
+        "accent": "#3182f6"
+      },
+      "radius": 20,
+      "korean_font": "Noto Sans KR",
+      "latin_font": "Inter",
+      "shape": "k-flat r-soft",
+      "options": {
+        "wash": "#e8f3ff",
+        "mark": "#ffe69b",
+        "rb": 14
+      }
+    },
+    {
+      "no": "034",
+      "name": "플립 카드",
+      "family": "서비스 참고",
+      "note": "옅은 청회색 바탕에 흰 카드 한 장. 남보라 포인트.",
+      "reference": "Quizlet",
+      "colors": {
+        "background": "#f6f7fb",
+        "surface": "#ffffff",
+        "ink": "#282d49",
+        "accent": "#4255ff"
+      },
+      "radius": 14,
+      "korean_font": "Noto Sans KR",
+      "latin_font": "Poppins",
+      "shape": "",
+      "options": {
+        "mark": "#ffcc00"
+      }
+    },
+    {
+      "no": "048",
+      "name": "야간 연습실",
+      "family": "어두운 화면",
+      "note": "짙은 남색에 민트 한 색. 버튼이 은은하게 빛납니다.",
+      "reference": "",
+      "colors": {
+        "background": "#0b1020",
+        "surface": "#131a30",
+        "ink": "#eaf0ff",
+        "accent": "#5ef0c2"
+      },
+      "radius": 16,
+      "korean_font": "IBM Plex Sans KR",
+      "latin_font": "Charis SIL",
+      "shape": "k-glow",
+      "options": {
+        "mark": "#5ef0c2",
+        "pic": "#f4f7ff",
+        "hw": 700
+      }
+    },
+    {
+      "no": "059",
+      "name": "말랑 파스텔",
+      "family": "통통·귀여움",
+      "note": "연보라 바탕에 둥글고 통통한 버튼.",
+      "reference": "Claymorphism",
+      "colors": {
+        "background": "#f6f0ff",
+        "surface": "#ffffff",
+        "ink": "#3b2e5a",
+        "accent": "#7c5cff"
+      },
+      "radius": 26,
+      "korean_font": "Noto Sans KR",
+      "latin_font": "Nunito",
+      "shape": "k-clay r-soft",
+      "options": {
+        "hd": "Jua",
+        "hw": 400,
+        "mark": "#ffd9a8"
+      }
+    },
+    {
+      "no": "069",
+      "name": "스위스",
+      "family": "굵고 강한",
+      "note": "빨강·검정·흰색, 아주 큰 제목, 엄격한 왼쪽 정렬.",
+      "reference": "Swiss / International style",
+      "colors": {
+        "background": "#f4f4f2",
+        "surface": "#ffffff",
+        "ink": "#111111",
+        "accent": "#e3120b"
+      },
+      "radius": 0,
+      "korean_font": "Noto Sans KR",
+      "latin_font": "Inter",
+      "shape": "k-edit k-inv h-big t-inv r-ghost",
+      "options": {
+        "hw": 900,
+        "hls": "-.07em",
+        "mark": "#e3120b",
+        "fills": [
+          "#e3120b",
+          "#111",
+          "#111",
+          "#111"
+        ]
+      }
+    },
+    {
+      "no": "087",
+      "name": "형광펜 공책",
+      "family": "손맛",
+      "note": "줄 공책과 색인 카드. 다른 소리를 형광펜으로 칠합니다.",
+      "reference": "",
+      "colors": {
+        "background": "#fbfaf3",
+        "surface": "#fffef8",
+        "ink": "#1d2a44",
+        "accent": "#1f4fb8"
+      },
+      "radius": 6,
+      "korean_font": "Gowun Dodum",
+      "latin_font": "Andika",
+      "shape": "k-note k-hl k-tilt",
+      "options": {
+        "mark": "#ffe94d",
+        "rb": 6,
+        "hw": 400,
+        "hls": "-.03em",
+        "line": "#cfd9ea",
+        "css": "--sh:2px 3px 0 #1d2a4414"
+      }
+    },
+    {
+      "no": "095",
+      "name": "숲",
+      "family": "한국색·자연",
+      "note": "짙은 초록과 모래색. 부드러운 명조.",
+      "reference": "Biophilic design",
+      "colors": {
+        "background": "#e9ede3",
+        "surface": "#f8f9f3",
+        "ink": "#18301f",
+        "accent": "#1f5c3a"
+      },
+      "radius": 14,
+      "korean_font": "Hahmlet",
+      "latin_font": "Gentium Plus",
+      "shape": "k-line",
+      "options": {
+        "mark": "#f0d77a",
+        "rb": 10,
+        "hw": 700
+      }
+    }
+  ]
+}

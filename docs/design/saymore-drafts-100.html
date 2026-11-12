@@ -1,0 +1,327 @@
+<title>Say More 디자인 초안 100</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
+<link id="fontlink" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&amp;family=Archivo:wght@700;900&amp;family=Bagel+Fat+One&amp;family=Baloo+2:wght@500;800&amp;family=Bangers&amp;family=Black+Han+Sans&amp;family=Bricolage+Grotesque:wght@500;800&amp;family=Caveat:wght@500;700&amp;family=Charis+SIL:wght@400;700&amp;family=Cormorant+Garamond:wght@500;700&amp;family=Courier+Prime:wght@400;700&amp;family=Do+Hyeon&amp;family=EB+Garamond:wght@500;700&amp;family=Figtree:wght@500;800&amp;family=Fredoka:wght@500;700&amp;family=Gaegu:wght@400;700&amp;family=Gentium+Plus:wght@400;700&amp;family=Gothic+A1:wght@400;600;800;900&amp;family=Gowun+Batang:wght@400;700&amp;family=Gowun+Dodum&amp;family=Gugi&amp;family=Hahmlet:wght@400;700;900&amp;family=Hi+Melody&amp;family=IBM+Plex+Mono:wght@400;600&amp;family=IBM+Plex+Sans:wght@400;700&amp;family=IBM+Plex+Sans+KR:wght@400;600;700&amp;family=Inter:wght@400;700;800&amp;family=JetBrains+Mono:wght@400;700&amp;family=Josefin+Sans:wght@500;700&amp;family=Jua&amp;family=Libre+Baskerville:wght@400;700&amp;family=Lora:wght@500;700&amp;family=Manrope:wght@500;800&amp;family=Merriweather:wght@400;700&amp;family=Montserrat:wght@500;800&amp;family=Nanum+Gothic:wght@400;700;800&amp;family=Nanum+Gothic+Coding:wght@400;700&amp;family=Nanum+Myeongjo:wght@400;700;800&amp;family=Nanum+Pen+Script&amp;family=Newsreader:wght@500;700&amp;family=Noto+Sans:wght@400;700&amp;family=Noto+Sans+KR:wght@400;500;700;900&amp;family=Noto+Serif:wght@400;700&amp;family=Noto+Serif+KR:wght@400;700;900&amp;family=Nunito:wght@600;800&amp;family=Open+Sans:wght@400;700&amp;family=Orbitron:wght@500;800&amp;family=Outfit:wght@500;800&amp;family=Patrick+Hand&amp;family=Pixelify+Sans:wght@400;700&amp;family=Playfair+Display:wght@500;800&amp;family=Plus+Jakarta+Sans:wght@500;800&amp;family=Poor+Story&amp;family=Poppins:wght@500;700&amp;family=Quicksand:wght@500;700&amp;family=Righteous&amp;family=Roboto:wght@400;700&amp;family=Sora:wght@400;700&amp;family=Source+Sans+3:wght@400;700&amp;family=Space+Grotesk:wght@500;700&amp;family=Special+Elite&amp;family=Varela+Round&amp;display=swap">
+<style>
+/* Layout: a contact sheet of 100 drafts. Every draft renders the same two screens (home, review card) at a fixed logical size and is scaled to its cell. */
+:root{--bg:#eef0f3;--fg:#161b22;--sub:#5b6573;--rule:#d5dae2;--chip:#fff;--pick:#2443cf;--pick-ink:#fff;--star:#e0a100;
+  --ui:"Noto Sans KR",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo",sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1116;--fg:#eceff3;--sub:#98a2b0;--rule:#2a313b;--chip:#1a2029;--pick:#9db0ff;--pick-ink:#10141a;--star:#ffd257;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0e1116;--fg:#eceff3;--sub:#98a2b0;--rule:#2a313b;--chip:#1a2029;--pick:#9db0ff;--pick-ink:#10141a;--star:#ffd257;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:15px/1.6 var(--ui);word-break:keep-all;padding-block:26px 70px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1500px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+.top h1{font-size:28px;font-weight:900;letter-spacing:-.04em;margin:0 0 6px;text-wrap:balance}
+.top p{margin:0;color:var(--sub);max-width:70ch}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);padding:10px 0;display:flex;flex-wrap:wrap;gap:6px;align-items:center;border-bottom:1px solid var(--rule)}
+.bar button{font:700 12px/1.4 var(--ui);color:var(--fg);background:var(--chip);border:1px solid var(--rule);border-radius:99px;padding:6px 12px;cursor:pointer}
+.bar button[aria-pressed="true"]{background:var(--pick);border-color:var(--pick);color:var(--pick-ink)}
+.bar button:focus-visible,.draft button:focus-visible{outline:3px solid var(--pick);outline-offset:2px}
+.bar .sep{width:1px;height:20px;background:var(--rule);margin:0 4px}
+.bar output{font-size:12px;color:var(--sub);margin-left:auto}
+#list{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,560px),1fr));gap:26px 22px}
+.fam{grid-column:1/-1;margin:14px 0 -8px;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px}
+.fam h2{font-size:20px;font-weight:900;letter-spacing:-.03em;margin:0}
+.fam p{margin:0;font-size:13px;color:var(--sub)}
+.draft{display:flex;flex-direction:column;gap:8px;min-width:0}
+.draft.wide{grid-column:1/-1}
+.cap{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 10px;align-items:start}
+.cap b{font-size:16px;font-weight:900;letter-spacing:-.03em}
+.cap b i{font-style:normal;color:var(--pick);font-variant-numeric:tabular-nums;margin-right:7px}
+.cap b u{text-decoration:none;font-size:10.5px;font-weight:700;background:var(--star);color:#1b1400;border-radius:99px;padding:2px 8px;margin-left:8px;vertical-align:2px}
+.cap span{grid-column:1;color:var(--sub);font-size:12.5px;line-height:1.5}
+.cap small{grid-column:1;color:var(--sub);font-size:11px;opacity:.85}
+.cap div{grid-column:2;grid-row:1/4;display:flex;gap:6px}
+.cap button{font:700 12px/1 var(--ui);background:var(--chip);color:var(--sub);border:1px solid var(--rule);border-radius:99px;padding:7px 10px;cursor:pointer}
+.cap button[aria-pressed="true"]{color:#1b1400;background:var(--star);border-color:var(--star)}
+.frame{border-radius:16px;overflow:hidden;border:1px solid var(--rule)}
+
+/* ── The mock: fixed 920px logical width, zoomed to the cell. All colours come from the draft's own tokens. ── */
+.m{width:920px;background:var(--mbg);color:var(--inkb);font-family:var(--ko);display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);--bw:1px;--sh:0 1px 2px #0000000a,0 10px 26px #0000000f;--hls:-.055em}
+.m.stack{width:470px;grid-template-columns:minmax(0,1fr)}
+.m>*{min-width:0;padding:22px 26px 28px}
+.m .review{border-left:var(--bw) solid var(--line)}
+.m.stack .review{border-left:0;border-top:var(--bw) solid var(--line)}
+.nav{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:30px}
+.logo{font-family:var(--en);font-weight:700;font-size:20px}
+.links{display:flex;gap:16px;font-size:12px;font-weight:700;color:var(--mutb)}
+.hero{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:22px;align-items:center}
+.eye{font-size:10px;letter-spacing:.14em;font-weight:700;color:var(--acctb);margin:0 0 8px}
+.m h3{font-family:var(--hd,var(--ko));font-size:42px;line-height:1.14;letter-spacing:var(--hls);font-weight:var(--hw);margin:0 0 10px}
+.lead{font-size:13.5px;color:var(--mutb);margin:0 0 16px}
+.btn{display:inline-block;background:var(--acc);color:var(--acc-ink);font-weight:700;font-size:13px;padding:10px 18px;border-radius:var(--rb);border:var(--bw) solid var(--acc)}
+.spec{color:var(--ink);background:var(--surf);border:var(--bw) solid var(--line);border-radius:var(--r);box-shadow:var(--sh);padding:14px 20px;font-family:var(--en)}
+.spec p{display:flex;justify-content:space-between;align-items:baseline;gap:18px;margin:0;padding:4px 0}
+.spec p+p{border-top:1px dashed var(--line)}
+.spec .w{font-size:32px;font-weight:700;line-height:1.25}
+.spec .p{font-size:18px;color:var(--acct)}
+.m mark{background:var(--mark);color:var(--mark-ink);border-radius:.12em;padding:0 .05em}
+.tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:24px}
+.tile{color:var(--ink);background:var(--surf);border:var(--bw) solid var(--line);border-radius:var(--r);box-shadow:var(--sh);padding:14px}
+.tile em{display:inline-block;font-style:normal;font-size:19px;color:var(--acctw);background:var(--wash);border-radius:calc(var(--r)*.6);padding:3px 10px;margin-bottom:10px}
+.tile strong{display:block;font-size:13.5px;letter-spacing:-.02em}
+.tile small{display:block;font-size:11.5px;color:var(--mut);line-height:1.55;margin-top:3px}
+.tabs{display:flex;gap:4px;font-size:12px;font-weight:700;color:var(--mutb);margin-bottom:14px}
+.tabs span{padding:6px 12px;border-radius:var(--rb)}
+.tabs .on{background:var(--surf);color:var(--ink);box-shadow:0 1px 3px #0000001f}
+.prog{display:flex;justify-content:space-between;font-size:11.5px;color:var(--mutb);margin-bottom:10px}
+.card{position:relative;color:var(--ink);background:var(--surf);border:var(--bw) solid var(--line);border-radius:calc(var(--r)*1.25);box-shadow:var(--sh);text-align:center}
+.pic{background:var(--pic);display:grid;place-items:center;padding:14px;border-bottom:var(--bw) solid var(--line);border-radius:calc(var(--r)*1.25 - var(--bw)) calc(var(--r)*1.25 - var(--bw)) 0 0}
+.pic svg{width:92px;height:92px;color:#131b26}
+.body{padding:14px 16px 18px}
+.ans{font-family:var(--en);font-weight:700;font-size:40px;line-height:1.15;margin:0}
+.ipa{font-size:19px;color:var(--acct);margin:2px 0 12px}
+/* IPA is set in one plain face in every draft; themes never restyle it. */
+.m .ipa,.m .spec .p,.m .tile em{font-family:"Noto Sans",-apple-system,"Helvetica Neue",Arial,sans-serif;font-style:normal;letter-spacing:0;font-weight:400}
+.listen{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+.listen span{font-size:11.5px;font-weight:700;background:var(--wash);color:var(--acctw);border-radius:var(--rb);padding:7px 13px;border:var(--bw) solid transparent}
+.rate{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin-top:12px}
+.rate span{--t:var(--c4);--tf:var(--f4);--ti:var(--g4);background:var(--surf);border:var(--bw) solid color-mix(in srgb,var(--t) 40%,var(--line));color:var(--t);border-radius:calc(var(--r)*.8);font-size:12.5px;font-weight:700;padding:9px 2px 7px;text-align:center}
+.rate span small{display:block;font-size:10px;font-weight:500;color:var(--mut)}
+.rate span:nth-child(1){--t:var(--c1);--tf:var(--f1);--ti:var(--g1)}.rate span:nth-child(2){--t:var(--c2);--tf:var(--f2);--ti:var(--g2)}.rate span:nth-child(3){--t:var(--c3);--tf:var(--f3);--ti:var(--g3)}
+
+/* surface treatments */
+.k-flat{--sh:none}.k-flat .spec,.k-flat .tile,.k-flat .card{border-color:transparent}
+.k-line{--sh:none}
+.k-brut{--bw:3px;--line:var(--ink)!important;--sh:5px 5px 0 var(--ink)}.k-brut .listen span{border-color:var(--ink)}.k-brut .btn{border-color:var(--ink);box-shadow:3px 3px 0 var(--ink)}
+.k-clay{--sh:0 7px 0 color-mix(in srgb,var(--acc) 22%,var(--mbg))}.k-clay .spec,.k-clay .tile,.k-clay .card{border-color:transparent}.k-clay .btn{box-shadow:0 5px 0 color-mix(in srgb,var(--acc) 65%,#000)}
+.k-neu{--sh:7px 7px 16px color-mix(in srgb,var(--mbg) 82%,#000),-7px -7px 16px color-mix(in srgb,var(--mbg) 60%,#fff)}.k-neu .spec,.k-neu .tile,.k-neu .card{border-color:transparent;background:var(--mbg);color:var(--inkb)}.k-neu .rate span{background:var(--mbg);border-color:transparent;box-shadow:4px 4px 9px color-mix(in srgb,var(--mbg) 82%,#000),-4px -4px 9px color-mix(in srgb,var(--mbg) 60%,#fff)}.k-neu .tabs .on{background:var(--mbg);box-shadow:inset 3px 3px 6px color-mix(in srgb,var(--mbg) 82%,#000),inset -3px -3px 6px color-mix(in srgb,var(--mbg) 60%,#fff)}
+.k-glass .spec,.k-glass .tile,.k-glass .card{backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.k-edit{--sh:none}.k-edit .spec{border-width:0 0 0 3px;border-color:var(--acc);border-radius:0;background:none;padding-left:18px}.k-edit .tile{border-width:var(--bw) 0 0;border-color:var(--ink);border-radius:0;background:none;padding:12px 0 0}.k-edit .tile em{background:none;padding:0}.k-edit .spec,.k-edit .tile{color:var(--inkb)}.k-edit .tile small{color:var(--mutb)}.k-edit .spec .p,.k-edit .tile em{color:var(--acctb)}
+.k-mono{--sh:none}.k-mono .spec,.k-mono .tile,.k-mono .card{border-style:dashed}.k-mono .eye::before{content:"// "}.k-mono .btn::before{content:"> "}
+.k-note{background-image:repeating-linear-gradient(transparent 0 27px,color-mix(in srgb,var(--line) 70%,transparent) 27px 28px)}.k-note .card,.k-note .spec{background-image:linear-gradient(90deg,transparent 22px,#e58f8f 22px 23px,transparent 23px)}
+.k-grid{background-image:linear-gradient(color-mix(in srgb,var(--line) 55%,transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in srgb,var(--line) 55%,transparent) 1px,transparent 1px);background-size:23px 23px}
+.k-dot{background-image:radial-gradient(color-mix(in srgb,var(--ink) 16%,transparent) 1.2px,transparent 1.3px);background-size:16px 16px}
+.k-stripe .home{background-image:linear-gradient(var(--c1) 0 6px,var(--mark) 6px 12px,var(--c3) 12px 18px,transparent 18px)}.k-stripe .nav{margin-top:14px}
+.k-ios .tiles{grid-template-columns:minmax(0,1fr);gap:0;background:var(--surf);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh)}.k-ios .tile{border:0;border-radius:0;box-shadow:none;display:grid;grid-template-columns:92px minmax(0,1fr);column-gap:12px;align-items:center;padding:11px 14px}.k-ios .tile+.tile{border-top:1px solid var(--line)}.k-ios .tile em{margin:0;grid-row:1/3;text-align:center;font-size:15px}
+.k-bento .hero{background:var(--surf);border:var(--bw) solid var(--line);border-radius:calc(var(--r)*1.3);padding:22px;box-shadow:var(--sh)}.k-bento .spec{box-shadow:none;background:var(--wash);border-color:transparent}.k-bento .tiles{margin-top:10px}.k-bento .tile:nth-child(2){background:var(--acc);border-color:var(--acc);color:var(--acc-ink)}.k-bento .tile:nth-child(2) small{color:inherit;opacity:.8}.k-bento .tile:nth-child(2) em{background:#ffffff33;color:inherit}.k-bento .tile:nth-child(3){background:var(--mark);border-color:var(--mark);color:var(--mark-ink)}.k-bento .tile:nth-child(3) small{color:inherit;opacity:.75}.k-bento .tile:nth-child(3) em{background:#00000014;color:inherit}
+.k-pixel{--r:0px;--rb:0px;--sh:4px 0 0 var(--ink),-4px 0 0 var(--ink),0 4px 0 var(--ink),0 -4px 0 var(--ink)}.k-pixel .spec,.k-pixel .tile,.k-pixel .card,.k-pixel .btn{border-color:transparent}.k-pixel .btn{box-shadow:var(--sh)}.k-pixel .pic{border-radius:0}
+.k-grad h3{background:linear-gradient(100deg,var(--acctb),var(--mark));-webkit-background-clip:text;background-clip:text;color:transparent}.k-grad .btn{background:linear-gradient(100deg,var(--acc),var(--c4));border-color:transparent}
+.k-glow .btn{box-shadow:0 0 22px color-mix(in srgb,var(--acc) 55%,transparent)}.k-glow{--sh:0 0 0 1px color-mix(in srgb,var(--acc) 12%,transparent),0 14px 34px #0008}
+.k-paper .card{box-shadow:0 1px 0 var(--line),0 6px 0 -2px var(--surf),0 7px 0 -2px var(--line),0 12px 0 -4px var(--surf),0 13px 0 -4px var(--line)}
+.k-tilt .card{transform:rotate(-1.2deg)}.k-tilt .spec{transform:rotate(1.2deg)}.k-tilt .btn{transform:rotate(-1deg)}
+.k-tape .card::before{content:"";position:absolute;top:-9px;left:50%;width:74px;height:18px;transform:translateX(-50%) rotate(-2deg);background:color-mix(in srgb,var(--mark) 75%,transparent)}
+.k-hl .tile em{background:linear-gradient(transparent 45%,var(--mark) 45%);color:var(--mark-ink);border-radius:0}
+.k-inv .spec{background:var(--acc);border-color:var(--acc);color:var(--acc-ink)}.k-inv .spec .p{color:var(--acc-ink)}.k-inv .spec mark{background:var(--acc-ink);color:var(--acc)}.k-inv .spec p+p{border-color:color-mix(in srgb,var(--acc-ink) 40%,transparent)}
+.k-ital .logo,.k-ital .ans{font-style:italic}
+.k-caps .eye,.k-caps .tabs,.k-caps .btn{letter-spacing:.08em}
+/* hero layouts */
+.h-center .hero{grid-template-columns:minmax(0,1fr);justify-items:center;text-align:center}.h-center .spec{min-width:300px}
+.h-big h3{font-size:58px;line-height:1.02}
+.h-spec .hero{grid-template-columns:minmax(0,1fr)}.h-spec .spec{order:-1}.h-spec .spec .w{font-size:54px}.h-spec .spec .p{font-size:26px}.h-spec h3{font-size:30px}
+.h-band .home{background:var(--acc);color:var(--acc-ink)}.h-band .home .eye,.h-band .home .lead,.h-band .home .links{color:inherit;opacity:.85}.h-band .home .btn{background:var(--acc-ink);color:var(--acc);border-color:var(--acc-ink)}.h-band .home .spec,.h-band .home .tile{color:var(--ink)}
+/* rating buttons */
+.r-fill .rate span{background:var(--tf);color:var(--ti);border-color:transparent}.r-fill .rate span small{color:inherit;opacity:.85}
+.r-3d .rate span{background:var(--tf);color:var(--ti);border-color:transparent;box-shadow:0 4px 0 color-mix(in srgb,var(--tf) 68%,#000)}.r-3d .rate span small{color:inherit;opacity:.85}
+.r-ghost .rate span{color:var(--ink);border-color:var(--line)}.r-ghost .rate span::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--tf);margin-right:5px;vertical-align:1px}
+.r-bar .rate span{color:var(--ink);border-color:var(--line);border-top:4px solid var(--tf)}
+.r-soft .rate span{background:color-mix(in srgb,var(--tf) 16%,var(--surf));border-color:transparent}
+.r-one .rate span{color:var(--ink);border-color:var(--line)}.r-one .rate span:nth-child(3){background:var(--acc);color:var(--acc-ink);border-color:var(--acc)}.r-one .rate span:nth-child(3) small{color:inherit;opacity:.8}
+.k-brut.r-fill .rate span,.k-brut.r-3d .rate span{border-color:var(--ink);box-shadow:3px 3px 0 var(--ink)}
+/* tabs */
+.t-under .tabs .on{color:var(--inkb);background:none;box-shadow:none;border-radius:0;border-bottom:2px solid var(--acctb)}
+.t-seg .tabs{background:color-mix(in srgb,var(--ink) 9%,transparent);padding:2px;border-radius:calc(var(--rb)*.9 + 2px)}.t-seg .tabs span{flex:1;text-align:center}
+.t-inv .tabs .on{background:var(--inkb);color:var(--mbg);box-shadow:none}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <h1>Say More 디자인 초안 100</h1>
+    <p id="intro"></p>
+  </header>
+  <div class="bar" id="bar" role="toolbar" aria-label="초안 걸러 보기"></div>
+  <main id="list"></main>
+</div>
+
+<script>
+const INTRO='같은 두 화면(홈, 복습 카드)을 100가지 방향으로 입혔습니다. 실제 학습 앱·사전 사이트와 디자인 경향 자료를 조사해 참고했고, 참고한 곳은 각 초안 아래에 적었습니다. 발음기호는 어느 안에서나 같은 기본 글꼴입니다. 마음에 드는 초안에 ★ 찜을 눌러 두면 위쪽에 번호가 모입니다.';
+const FAMILIES={
+ '차분·미니멀':'장식을 줄이고 여백과 글자로 정리한 안. 매일 오래 봐도 덜 질립니다.',
+ '종이·편집':'사전, 책, 신문의 조판에서 가져온 안.',
+ '앱 느낌':'아이폰·맥의 기본 앱이나 요즘 서비스 화면에 가까운 안.',
+ '서비스 참고':'실제 학습 앱·사전·도구의 색과 모양을 참고한 안. 로고나 그림은 쓰지 않고 분위기만 가져왔습니다.',
+ '어두운 화면':'밤에 보기 편한 안. 널리 쓰이는 어두운 색 조합을 가져왔습니다.',
+ '통통·귀여움':'둥글고 말랑한 버튼, 파스텔 색.',
+ '굵고 강한':'굵은 선, 큰 글자, 강한 색 대비.',
+ '레트로':'옛 컴퓨터, 오디오 기기, 2000년대 웹의 분위기.',
+ '손맛':'공책, 손글씨, 스크랩북, 인쇄물.',
+ '한국색·자연':'한지, 쪽빛, 오방색, 숲과 바다의 색.'
+};
+const THEMES=[
+// ── 차분·미니멀
+{n:'연구실',f:'차분·미니멀',d:'회청색 종이에 코발트 한 색. 처음 로컬에 적용해 본 안입니다.',ref:'',k:'',c:['#f2f4f8','#ffffff','#131b26','#2443cf'],r:18,ko:'N',en:'Charis SIL',p:1},
+{n:'클린',f:'차분·미니멀',d:'흰 바탕, 얇은 선, 파란 포인트. 가장 무난한 기본형.',ref:'Clean UI (daisyUI trends)',k:'k-line r-ghost t-under',c:['#ffffff','#f6f7f9','#111827','#2563eb'],r:8,ko:'N',en:'Inter'},
+{n:'흑백 미니멀',f:'차분·미니멀',d:'흰 바탕에 검정 하나. “알맞음”만 검게 채워 눈이 먼저 가게 했습니다.',ref:'Minimalism, Mochi',k:'k-line r-one t-inv',c:['#ffffff','#ffffff','#0a0a0a','#0a0a0a'],r:10,ko:'P',en:'Inter',o:{mark:'#e6ff5c',hw:600},p:1},
+{n:'한 점 주황',f:'차분·미니멀',d:'흑백에 주황 한 점만 씁니다.',ref:'Monochrome UI',k:'k-flat r-ghost t-under',c:['#ffffff','#f2f2f2','#0a0a0a','#ff4f00'],r:4,ko:'A1',en:'Space Grotesk',o:{mark:'#ffd9c2'}},
+{n:'무지',f:'차분·미니멀',d:'생성 종이색에 짙은 팥색. 일본식 무인양품 느낌.',ref:'Japanese minimalism',k:'k-line r-ghost',c:['#f5f2eb','#ffffff','#2b2b2b','#7f0019'],r:2,ko:'G',en:'Noto Sans',o:{mark:'#eadcb8',hw:400}},
+{n:'북유럽',f:'차분·미니멀',d:'따뜻한 흰색, 남색 글자, 겨자색 포인트.',ref:'Scandinavian modern',k:'',c:['#f7f5f0','#ffffff','#22303c','#22303c'],r:10,ko:'N',en:'Manrope',o:{mark:'#f0cf5b'}},
+{n:'베이지',f:'차분·미니멀',d:'밀크티색 바탕에 부드러운 살구색 버튼.',ref:'Millennial beige',k:'k-flat r-soft',c:['#f1e9de','#faf5ee','#4a4038','#b4673f'],r:16,ko:'G',en:'Quicksand',o:{mark:'#f3d3b8',hw:400}},
+{n:'조용한 고급',f:'차분·미니멀',d:'가는 명조와 넓은 자간, 금갈색. 호텔 안내문 같은 차분함.',ref:'Quiet luxury',k:'k-line k-caps r-ghost t-under',c:['#f6f3ee','#ffffff','#1f1d1a','#6b5b45'],r:2,ko:'S',en:'Cormorant Garamond',o:{mark:'#e7dcc6',hw:400,hls:'-.03em'}},
+{n:'안개',f:'차분·미니멀',d:'회청색 한 톤으로만 구성한 조용한 화면.',ref:'',k:'k-flat r-soft',c:['#e9eef2','#f7fafc','#243342','#2f6f96'],r:14,ko:'N',en:'Figtree',o:{mark:'#cfe6f2'}},
+{n:'노르드 밝은',f:'차분·미니멀',d:'북극 테마로 알려진 Nord의 밝은 색 조합.',ref:'Nord (nordtheme.com)',k:'k-flat r-bar',c:['#eceff4','#e5e9f0','#2e3440','#5e81ac'],r:8,ko:'P',en:'Inter',o:{mark:'#ebcb8b',tones:['#bf616a','#d08770','#a3be8c','#5e81ac'],fills:['#bf616a','#d08770','#a3be8c','#5e81ac']}},
+{n:'플렉소키 종이',f:'차분·미니멀',d:'잉크와 종이를 본뜬 Flexoki 색. 눈이 편한 미색.',ref:'Flexoki (stephango.com)',k:'k-flat r-ghost',c:['#fffcf0','#f2f0e5','#100f0f','#205ea6'],r:6,ko:'N',en:'Inter',o:{mark:'#f6e2a0',fills:['#af3029','#bc5215','#66800b','#205ea6']}},
+// ── 종이·편집
+{n:'사전',f:'종이·편집',d:'종이 사전의 표제어 조판. 이탤릭 표제어와 자주색.',ref:'Oxford Learner’s, 종이 사전',k:'k-edit k-ital r-ghost t-under',c:['#eef1ec','#f9faf6','#1c2420','#8a1c2b'],r:3,ko:'B',en:'Gentium Plus',o:{mark:'#f3d9a0',hw:700,hls:'-.04em'},p:1},
+{n:'편집 명조',f:'종이·편집',d:'잡지 본문처럼 큰 명조 제목과 가는 선.',ref:'Editorial design',k:'k-edit h-big t-under r-bar',c:['#fbf9f4','#ffffff','#1c1b19','#9b2c1f'],r:2,ko:'S',en:'EB Garamond',o:{hw:900,mark:'#f1dcc0'}},
+{n:'큰 글자',f:'종이·편집',d:'글자 크기만으로 화면을 채웁니다. 파란색 한 점.',ref:'Type-first design',k:'k-line h-big t-inv r-one',c:['#f4f1ea','#ffffff','#0b0b0b','#0038ff'],r:0,ko:'N',en:'Archivo',o:{hw:900,mark:'#cdd8ff'}},
+{n:'먹',f:'종이·편집',d:'흑백만 씁니다. 다른 소리는 검게 뒤집어 표시합니다.',ref:'',k:'k-line h-big r-ghost t-under',c:['#ffffff','#ffffff','#000000','#000000'],r:0,ko:'S',en:'Gentium Plus',o:{hw:900,mark:'#000000',fills:['#000','#000','#000','#000']}},
+{n:'신문',f:'종이·편집',d:'신문 1면처럼 굵은 가로선과 명조 제목.',ref:'',k:'k-edit r-bar t-under',c:['#f3f1ea','#f3f1ea','#111111','#111111'],r:0,ko:'NM',en:'Playfair Display',o:{hw:800,mark:'#e4dfcf'}},
+{n:'문고본',f:'종이·편집',d:'바랜 책장 색에 붉은 책등. 카드가 종이 묶음처럼 겹쳐 보입니다.',ref:'Paper skeuomorphism',k:'k-paper r-ghost',c:['#f6efe0','#fbf6ea','#2e2416','#8b1e1e'],r:2,ko:'NM',en:'Libre Baskerville',o:{hw:800,mark:'#f0d9a8'}},
+{n:'다크 아카데미아',f:'종이·편집',d:'어두운 서재. 양피지색 글자와 놋쇠색.',ref:'Dark academia',k:'k-line t-under',c:['#1e1a16','#2a241e','#e8dcc4','#c79a55'],r:2,ko:'S',en:'EB Garamond',o:{mark:'#c79a55',pic:'#f3ead8',hw:700}},
+{n:'와비사비',f:'종이·편집',d:'흙빛과 이끼색. 꾸미지 않은 듯한 차분함.',ref:'Wabi-sabi',k:'k-flat r-soft',c:['#eae4d9','#f3eee5','#3a3530','#7a5a40'],r:6,ko:'B',en:'Lora',o:{mark:'#d9cbb0',hw:700}},
+{n:'솔라라이즈 종이',f:'종이·편집',d:'오래 봐도 눈이 덜 피곤하도록 설계된 Solarized 밝은 색.',ref:'Solarized Light',k:'k-flat r-bar',c:['#fdf6e3','#eee8d5','#586e75','#268bd2'],r:4,ko:'N',en:'Source Sans 3',o:{mark:'#f5e0a0',fills:['#dc322f','#cb4b16','#859900','#268bd2']}},
+{n:'로제 파인 새벽',f:'종이·편집',d:'분홍빛 도는 미색과 청록. 부드러운 아침 느낌.',ref:'Rosé Pine Dawn',k:'',c:['#faf4ed','#fffaf3','#575279','#286983'],r:12,ko:'G',en:'Lora',o:{mark:'#f6c177',hw:400}},
+// ── 앱 느낌
+{n:'기본 앱',f:'앱 느낌',d:'아이폰 기본 앱처럼. 목록 묶음, 칸 나눔 탭, 채운 평가 버튼.',ref:'iOS 기본 앱',k:'k-flat k-ios t-seg r-fill',c:['#f2f2f7','#ffffff','#000000','#007aff'],r:14,ko:'Y',en:'Inter',o:{rb:12,fills:['#ff3b30','#ff9500','#34c759','#007aff']},p:1},
+{n:'머티리얼',f:'앱 느낌',d:'안드로이드의 Material 3. 연보라 톤 면으로 높낮이를 나눕니다.',ref:'Material Design 3',k:'k-flat r-soft',c:['#fef7ff','#f3edf7','#1d1b20','#6750a4'],r:20,ko:'N',en:'Roboto',o:{mark:'#e8def8'}},
+{n:'플루언트',f:'앱 느낌',d:'윈도우 11 느낌. 옅은 회색에 얇은 그림자.',ref:'Fluent Design',k:'t-under',c:['#f3f3f3','#ffffff','#1b1b1b','#0f6cbd'],r:6,ko:'N',en:'Open Sans',o:{mark:'#cfe4fa'}},
+{n:'벤토',f:'앱 느낌',d:'도시락 칸처럼 크기와 색이 다른 상자로 나눕니다.',ref:'Bento grid (superdesign.dev)',k:'k-flat k-bento r-soft',c:['#f5f5f7','#ffffff','#1d1d1f','#0071e3'],r:22,ko:'Y',en:'Inter',o:{mark:'#ffb340'},p:1},
+{n:'벤토 다크',f:'앱 느낌',d:'벤토의 어두운 판.',ref:'Bento grid',k:'k-flat k-bento r-soft',c:['#000000','#1c1c1e','#f5f5f7','#0a84ff'],r:22,ko:'Y',en:'Inter',o:{mark:'#ffd60a'}},
+{n:'촘촘한 도구',f:'앱 느낌',d:'작은 글자와 얇은 선으로 한 화면에 많이 담습니다. 맥에서 편하고 폰에선 빽빽합니다.',ref:'Data-dense utilitarian UI',k:'k-line t-under r-ghost',c:['#ffffff','#f7f7f8','#18181b','#2563eb'],r:4,ko:'P',en:'IBM Plex Sans',o:{hw:700}},
+{n:'유리',f:'앱 느낌',d:'주황에서 파랑으로 번지는 배경 위 반투명 판.',ref:'Glassmorphism',k:'k-glass t-seg r-ghost',c:['#6f52f0','#8a74f5','#ffffff','#ffffff'],r:22,ko:'N',en:'Charis SIL',o:{surf:'rgba(255,255,255,.18)',line:'rgba(255,255,255,.4)',wash:'#9a86f7',mark:'#ffffff',pic:'rgba(255,255,255,.92)',tones:['#fff','#fff','#fff','#fff'],fills:['#ffb1a8','#ffd98a','#a8f0c6','#bcd4ff'],css:'background-image:radial-gradient(120% 90% at 0% 0%,#ff8a5c 0,transparent 55%),radial-gradient(90% 90% at 100% 100%,#22a5e8 0,transparent 55%)'}},
+{n:'리퀴드 글라스',f:'앱 느낌',d:'밝은 하늘색 배경에 맑은 유리판. 최신 아이폰 화면 느낌.',ref:'Liquid Glass',k:'k-glass t-seg r-soft',c:['#d5e4f5','#eef4fb','#0f1b2d','#0a5fe0'],r:24,ko:'Y',en:'Inter',o:{surf:'rgba(255,255,255,.55)',line:'rgba(255,255,255,.9)',css:'background-image:radial-gradient(90% 80% at 10% 0%,#bfe3ff 0,transparent 60%),radial-gradient(80% 80% at 100% 100%,#e2d4ff 0,transparent 60%)'}},
+{n:'오로라',f:'앱 느낌',d:'남색 밤하늘에 보라·청록 빛이 번집니다.',ref:'Aurora UI / mesh gradient',k:'k-glow k-grad r-soft',c:['#0b1020','#151b33','#e6e9f5','#7c5cff'],r:16,ko:'N',en:'Sora',o:{mark:'#22d3ee',css:'background-image:radial-gradient(70% 60% at 15% 0%,#3b2a8f88 0,transparent 70%),radial-gradient(60% 60% at 100% 100%,#0e6f8a66 0,transparent 70%)'}},
+{n:'머티리얼 초록',f:'앱 느낌',d:'Material의 색 톤 방식을 초록에 적용.',ref:'Material You',k:'k-flat r-soft',c:['#f4fbf1','#e6f1e1','#191d17','#3a6a2e'],r:24,ko:'N',en:'Roboto',o:{mark:'#d6e8a8'}},
+// ── 서비스 참고
+{n:'통통 초록',f:'서비스 참고',d:'아래쪽이 두꺼운 통통한 버튼. 누르면 들어가는 느낌.',ref:'Duolingo의 버튼 방식',k:'k-line r-3d',c:['#ffffff','#ffffff','#3c3c3c','#58cc02'],r:16,ko:'N',en:'Nunito',o:{css:'--bw:2px',line:'#e5e5e5',ai:'#ffffff',mark:'#ffc800',fills:['#ff4b4b','#ff9600','#58cc02','#1cb0f6'],hd:'Jua',hw:400}},
+{n:'파란 한 버튼',f:'서비스 참고',d:'화면마다 파란 버튼 하나, 짧고 굵은 제목, 그림자 없는 넓은 면.',ref:'Toss',k:'k-flat r-soft',c:['#f2f4f6','#ffffff','#191f28','#3182f6'],r:20,ko:'N',en:'Inter',o:{wash:'#e8f3ff',mark:'#ffe69b',rb:14},p:1},
+{n:'플립 카드',f:'서비스 참고',d:'옅은 청회색 바탕에 흰 카드 한 장. 남보라 포인트.',ref:'Quizlet',k:'',c:['#f6f7fb','#ffffff','#282d49','#4255ff'],r:14,ko:'N',en:'Poppins',o:{mark:'#ffcc00'},p:1},
+{n:'크림과 남색',f:'서비스 참고',d:'크림색 바탕, 남색 글자, 노랑 한 색.',ref:'Memrise',k:'k-flat r-one',c:['#fcfaf2','#ffffff','#2b3648','#ffbb00'],r:16,ko:'N',en:'Fredoka',o:{ai:'#2b3648',mark:'#ffe08a'}},
+{n:'보라 네온',f:'서비스 참고',d:'짙은 보라 바탕에 형광 연두·보라. 그림 낱말 맞추기 느낌.',ref:'Drops',k:'k-flat r-fill',c:['#261453','#34206b','#ffffff','#c148ff'],r:22,ko:'N',en:'Montserrat',o:{mark:'#daeb3f',pic:'#f4ecff',fills:['#ff5d8f','#ffb347','#daeb3f','#6aa8ff']}},
+{n:'사전 남색',f:'서비스 참고',d:'남색 머리띠와 노랑 포인트, 촘촘한 사전 배치.',ref:'Cambridge Dictionary',k:'k-line h-band t-under r-ghost',c:['#ffffff','#ffffff','#1d2a57','#1d2a57'],r:2,ko:'NG',en:'Noto Sans',o:{mark:'#fec400',hw:800}},
+{n:'학습자 사전',f:'서비스 참고',d:'남색 띠 위 명조 표제어, 옅은 하늘색 상자.',ref:'Oxford Learner’s Dictionaries',k:'k-line t-under r-bar',c:['#ffffff','#ecf5ff','#07255e','#0d3880'],r:4,ko:'N',en:'Merriweather',o:{mark:'#ffe9a8',hd:'Noto Serif KR'}},
+{n:'노랑과 검정',f:'서비스 참고',d:'노랑 바탕에 검정 글자, 크고 둥근 상자.',ref:'Kakao',k:'k-flat r-ghost t-inv',c:['#fae100','#ffffff','#111111','#111111'],r:22,ko:'N',en:'Outfit',o:{mark:'#fae100'}},
+{n:'전기 파랑',f:'서비스 참고',d:'흰 바탕에 선명한 파랑과 하늘빛 강조. 말하기 앱 느낌.',ref:'Speak',k:'k-flat r-soft',c:['#ffffff','#f2f4f6','#12205a','#1c49ff'],r:22,ko:'N',en:'Plus Jakarta Sans',o:{mark:'#4fffff'}},
+{n:'남보라 그라데이션',f:'서비스 참고',d:'깊은 남색 바탕에 보라에서 하늘색으로 흐르는 버튼.',ref:'ELSA Speak',k:'k-flat k-grad r-soft',c:['#050024','#181233','#ffffff','#7d51ff'],r:18,ko:'N',en:'Sora',o:{mark:'#1aedd5',tones:['#ff8d8d','#ffc46b','#1aedd5','#00c5ff']}},
+{n:'따뜻한 회색',f:'서비스 참고',d:'흰 바탕, 따뜻한 회색 면, 작은 원색 점. 문서 도구 느낌.',ref:'Notion',k:'k-flat r-ghost t-under',c:['#ffffff','#f6f5f4','#191918','#097fe8'],r:10,ko:'N',en:'Inter',o:{mark:'#fdecc8',fills:['#f64932','#ffb110','#1aae39','#097fe8']}},
+{n:'근흑과 실선',f:'서비스 참고',d:'거의 검은 바탕, 머리카락 굵기 선, 작은 연보라.',ref:'Linear',k:'k-line r-ghost',c:['#08090a','#101113','#e2e4e7','#8fa4ff'],r:8,ko:'N',en:'Inter',o:{line:'#2e2e32',mark:'#8fa4ff',hw:600}},
+{n:'명조와 주황',f:'서비스 참고',d:'따뜻한 미색에 명조 제목과 주황 버튼.',ref:'Babbel',k:'k-flat r-ghost',c:['#f6f4ef','#ffffff','#151515','#fe4d01'],r:6,ko:'N',en:'Newsreader',o:{hd:'Noto Serif KR',mark:'#ffd966',hw:700}},
+{n:'크림과 파랑',f:'서비스 참고',d:'크림색 바탕에 둥글둥글한 제목과 쨍한 파랑.',ref:'Arc',k:'k-flat r-one',c:['#fffcec','#ffffff','#0b0b0b','#3139fb'],r:18,ko:'N',en:'Varela Round',o:{hd:'Jua',hw:400,mark:'#c9d6ff'}},
+{n:'조용한 카드',f:'서비스 참고',d:'연회색 바탕에 흰 카드, 먹색 버튼. 메모 앱 같은 단순함.',ref:'Mochi',k:'k-line r-ghost',c:['#f7f7f7','#ffffff','#333333','#37352f'],r:12,ko:'Y',en:'Inter',o:{line:'#dfdfdf',mark:'#fff1a8',hw:700}},
+{n:'읽기 좋은 밤',f:'서비스 참고',d:'푸른 기 도는 검정에 명조 본문. 오래 읽는 화면용.',ref:'Readwise Reader',k:'k-flat r-ghost',c:['#0f1c2c','#1c242c','#e0e3e6','#5b8cff'],r:12,ko:'S',en:'Noto Serif',o:{mark:'#cf7130',hw:700}},
+// ── 어두운 화면
+{n:'야간 연습실',f:'어두운 화면',d:'짙은 남색에 민트 한 색. 버튼이 은은하게 빛납니다.',ref:'',k:'k-glow',c:['#0b1020','#131a30','#eaf0ff','#5ef0c2'],r:16,ko:'P',en:'Charis SIL',o:{mark:'#5ef0c2',pic:'#f4f7ff',hw:700},p:1},
+{n:'노르드',f:'어두운 화면',d:'회청색 어둠. 가장 널리 쓰이는 차분한 어두운 색.',ref:'Nord',k:'k-flat',c:['#2e3440','#3b4252','#d8dee9','#88c0d0'],r:8,ko:'N',en:'Inter',o:{mark:'#ebcb8b',tones:['#f0a3aa','#ebcb8b','#a3be8c','#88c0d0'],pic:'#eceff4'}},
+{n:'카푸치노 모카',f:'어두운 화면',d:'보랏빛 어둠에 파스텔 포인트.',ref:'Catppuccin Mocha',k:'k-flat r-soft',c:['#1e1e2e','#313244','#cdd6f4','#cba6f7'],r:14,ko:'N',en:'Nunito',o:{mark:'#fab387',tones:['#f38ba8','#fab387','#a6e3a1','#89b4fa'],fills:['#f38ba8','#fab387','#a6e3a1','#89b4fa'],pic:'#eff1f5'}},
+{n:'도쿄의 밤',f:'어두운 화면',d:'네온 간판이 비치는 남색 밤.',ref:'Tokyo Night',k:'k-line',c:['#1a1b26','#24283b','#c0caf5','#7aa2f7'],r:10,ko:'P',en:'JetBrains Mono',o:{mark:'#bb9af7',hw:700}},
+{n:'가나가와',f:'어두운 화면',d:'먹색 바탕에 바랜 금색과 물빛. 옛 판화 색.',ref:'Kanagawa',k:'k-line t-under',c:['#1f1f28','#2a2a37','#dcd7ba','#7e9cd8'],r:4,ko:'S',en:'Noto Serif',o:{mark:'#e6c384',pic:'#f2ecd6',hw:700}},
+{n:'늘푸른 숲 밤',f:'어두운 화면',d:'녹회색 어둠에 연두. 눈이 편한 저대비.',ref:'Everforest dark',k:'k-flat r-soft',c:['#2d353b','#343f44','#d3c6aa','#a7c080'],r:12,ko:'G',en:'Lora',o:{mark:'#e69875',pic:'#f3ead3',hw:400}},
+{n:'그루브박스',f:'어두운 화면',d:'갈색 기 도는 어둠에 호박색. 옛 모니터 느낌.',ref:'Gruvbox dark',k:'k-flat r-bar',c:['#282828','#3c3836','#ebdbb2','#fabd2f'],r:4,ko:'N',en:'IBM Plex Mono',o:{mark:'#fe8019',fills:['#fb4934','#fe8019','#b8bb26','#83a598'],pic:'#fbf1c7'}},
+{n:'드라큘라',f:'어두운 화면',d:'보라와 분홍이 선명한 어둠.',ref:'Dracula',k:'k-flat r-fill',c:['#282a36','#44475a','#f8f8f2','#bd93f9'],r:10,ko:'N',en:'Outfit',o:{mark:'#ff79c6',fills:['#ff5555','#ffb86c','#50fa7b','#8be9fd']}},
+{n:'순흑',f:'어두운 화면',d:'완전한 검정. 아이폰 화면에서 가장 깊게 보입니다.',ref:'Raycast의 검정 바탕',k:'k-line r-one t-inv',c:['#000000','#0d0d0d','#ffffff','#ffffff'],r:12,ko:'Y',en:'Inter',o:{mark:'#e6ff5c',line:'#2a2a2a'}},
+{n:'아르데코',f:'어두운 화면',d:'짙은 청록에 금색 선. 1920년대 극장 간판.',ref:'Art Deco',k:'k-line k-caps t-under r-ghost',c:['#0f1a1c','#18282b','#f1e6c8','#c9a227'],r:0,ko:'M',en:'Playfair Display',o:{mark:'#c9a227',line:'#c9a22766',pic:'#f1e6c8',hw:700}},
+{n:'로제 파인',f:'어두운 화면',d:'자줏빛 어둠에 연보라와 살구.',ref:'Rosé Pine',k:'r-soft',c:['#191724','#1f1d2e','#e0def4','#c4a7e7'],r:14,ko:'G',en:'Lora',o:{mark:'#f6c177',tones:['#eb6f92','#f6c177','#9ccfd8','#c4a7e7'],hw:400}},
+// ── 통통·귀여움
+{n:'말랑 파스텔',f:'통통·귀여움',d:'연보라 바탕에 둥글고 통통한 버튼.',ref:'Claymorphism',k:'k-clay r-soft',c:['#f6f0ff','#ffffff','#3b2e5a','#7c5cff'],r:26,ko:'N',en:'Nunito',o:{hd:'Jua',hw:400,mark:'#ffd9a8'},p:1},
+{n:'찰흙',f:'통통·귀여움',d:'찰흙으로 빚은 듯 도톰한 버튼.',ref:'Claymorphism',k:'k-clay r-3d',c:['#f3eeff','#ffffff','#3b2f63','#8b5cf6'],r:28,ko:'N',en:'Baloo 2',o:{hd:'Jua',hw:400,mark:'#fda4af',fills:['#fb7185','#fbbf24','#34d399','#8b5cf6']}},
+{n:'카와이',f:'통통·귀여움',d:'딸기우유색과 민트. 아기자기한 문구류 느낌.',ref:'Kawaii UI',k:'r-soft',c:['#fff5f8','#ffffff','#5a4a54','#e0527f'],r:24,ko:'N',en:'Quicksand',o:{hd:'Jua',hw:400,mark:'#9ad9c7'}},
+{n:'민트 초코',f:'통통·귀여움',d:'민트색 바탕에 초콜릿색 글자.',ref:'',k:'k-clay r-3d',c:['#eaf7f1','#ffffff','#3a2b23','#1f8f78'],r:22,ko:'N',en:'Baloo 2',o:{hd:'Bagel Fat One',hw:400,mark:'#ffd9a8',hls:'-.02em'}},
+{n:'복숭아',f:'통통·귀여움',d:'복숭아색과 주황. 손으로 쓴 듯한 제목.',ref:'',k:'k-flat r-fill',c:['#fff1e8','#ffffff','#4a2c2a','#f0623d'],r:24,ko:'N',en:'Nunito',o:{hd:'Poor Story',hw:400,mark:'#ffd0b8',hls:'-.02em'}},
+{n:'도파민',f:'통통·귀여움',d:'분홍·청록 원색 상자. 기분이 확 올라가는 색.',ref:'Dopamine design',k:'k-flat k-bento r-fill',c:['#fff7ed','#ffffff','#1f1235','#ff3d81'],r:16,ko:'N',en:'Outfit',o:{hd:'Black Han Sans',hw:400,mark:'#2dd4bf',hls:'-.02em'}},
+{n:'레몬 소다',f:'통통·귀여움',d:'레몬색 바탕에 파란 통통 버튼.',ref:'',k:'k-clay r-3d',c:['#fffbe0','#ffffff','#27324a','#2f6bff'],r:20,ko:'N',en:'Fredoka',o:{hd:'Jua',hw:400,mark:'#ffe14d'}},
+{n:'솜사탕 밤',f:'통통·귀여움',d:'귀여운 안의 어두운 판. 보라 밤에 분홍.',ref:'',k:'k-flat r-soft',c:['#241b3a','#30264d','#f3eaff','#ff9ecd'],r:24,ko:'N',en:'Nunito',o:{hd:'Jua',hw:400,mark:'#9be7ff',pic:'#f6efff'}},
+// ── 굵고 강한
+{n:'팝',f:'굵고 강한',d:'노란 바탕, 굵은 검은 테두리, 딱딱한 그림자, 색 블록 버튼.',ref:'Neubrutalism',k:'k-brut r-fill',c:['#fff36b','#ffffff','#000000','#ff4f9a'],r:14,ko:'N',en:'Archivo',o:{hd:'Black Han Sans',hw:400,hls:'-.02em',ai:'#000000',mark:'#7df3a0',fills:['#ff6b6b','#ffa94d','#69db7c','#74c0fc']}},
+{n:'브루탈 크림',f:'굵고 강한',d:'팝의 차분한 판. 크림 바탕에 노랑 버튼.',ref:'Neubrutalism',k:'k-brut r-fill',c:['#fffdf5','#ffffff','#000000','#ffd23f'],r:6,ko:'N',en:'Space Grotesk',o:{hd:'Do Hyeon',hw:400,hls:'-.01em',mark:'#ff9d9d',fills:['#ff8a8a','#ffc46b','#8ce99a','#91c8ff']}},
+{n:'스위스',f:'굵고 강한',d:'빨강·검정·흰색, 아주 큰 제목, 엄격한 왼쪽 정렬.',ref:'Swiss / International style',k:'k-edit k-inv h-big t-inv r-ghost',c:['#f4f4f2','#ffffff','#111111','#e3120b'],r:0,ko:'N',en:'Inter',o:{hw:900,hls:'-.07em',mark:'#e3120b',fills:['#e3120b','#111','#111','#111']},p:1},
+{n:'바우하우스',f:'굵고 강한',d:'빨강·노랑·파랑 삼원색 면.',ref:'Bauhaus',k:'k-flat k-bento r-fill',c:['#f4f0e6','#ffffff','#111111','#d62828'],r:0,ko:'N',en:'Josefin Sans',o:{hw:900,mark:'#f2c12e',fills:['#d62828','#b8860b','#1d4e89','#111111']}},
+{n:'멤피스',f:'굵고 강한',d:'점무늬 바탕에 산호색과 청록. 80년대 가구 디자인.',ref:'Memphis design',k:'k-brut k-dot r-fill',c:['#fff8e7','#ffffff','#1a1a1a','#ff5e5b'],r:12,ko:'N',en:'Outfit',o:{hd:'Bagel Fat One',hw:400,hls:'-.02em',mark:'#00cecb',fills:['#ff8a87','#ffd166','#5eead4','#93c5fd']}},
+{n:'코발트 띠',f:'굵고 강한',d:'홈 화면 전체를 코발트로 칠하고 글자를 뒤집었습니다.',ref:'',k:'k-flat h-band r-one',c:['#f5f6fa','#ffffff','#10131a','#1f3fff'],r:12,ko:'N',en:'Space Grotesk',o:{mark:'#ffe46b'}},
+{n:'굵은 흑백',f:'굵고 강한',d:'검은 굵은 선과 형광 노랑 표시만.',ref:'Brutalism',k:'k-brut r-ghost t-inv',c:['#ffffff','#ffffff','#000000','#000000'],r:0,ko:'N',en:'Archivo',o:{hd:'Black Han Sans',hw:400,hls:'-.02em',mark:'#ffe600'}},
+{n:'형광',f:'굵고 강한',d:'검정 바탕에 형광 연두 하나.',ref:'',k:'k-line h-big t-inv r-one',c:['#0a0a0a','#161616','#ffffff','#d4ff3a'],r:0,ko:'N',en:'Archivo',o:{hw:900,mark:'#d4ff3a',line:'#3a3a3a'}},
+{n:'만화 망점',f:'굵고 강한',d:'만화책 인쇄의 망점과 굵은 먹선.',ref:'Halftone / comic book',k:'k-brut k-dot r-fill',c:['#fdf6e3','#ffffff','#1b1b1b','#ff48b0'],r:0,ko:'N',en:'Bangers',o:{hd:'Do Hyeon',hw:400,hls:'-.01em',ai:'#1b1b1b',mark:'#ffe14d',fills:['#ff8fb8','#ffd166','#7ee0a1','#7cc4ff']}},
+// ── 레트로
+{n:'카세트',f:'레트로',d:'70년대 오디오 기기의 주황·겨자·청록 줄무늬.',ref:'Mid-century / 70s hi-fi',k:'k-stripe',c:['#f3e6d0','#fbf3e4','#3a2418','#c9481a'],r:12,ko:'N',en:'Righteous',o:{hd:'Do Hyeon',hw:400,hls:'-.01em',mark:'#f2b441',rb:8,tones:['#b93a2a','#b5560f','#2f7d6d','#2b5d8a'],fills:['#b93a2a','#d9822b','#2f7d6d','#2b5d8a']}},
+{n:'미드센추리',f:'레트로',d:'50년대 포스터의 겨자·청록·주황.',ref:'Mid-century modern',k:'k-flat r-fill',c:['#f3e9d2','#fbf5e6','#2f2a25','#c66a14'],r:8,ko:'G',en:'Josefin Sans',o:{mark:'#f2c879',hw:400,fills:['#b8452c','#c66a14','#5d7a3a','#2a7f86']}},
+{n:'Y2K',f:'레트로',d:'2000년대 초 웹. 분홍·하늘색 번짐과 미래적인 글자.',ref:'Y2K',k:'k-grad r-soft',c:['#e8f0ff','#ffffff','#1b1f3b','#e11bb6'],r:24,ko:'N',en:'Orbitron',o:{hd:'Gugi',hw:400,hls:'-.02em',mark:'#6ee7ff',css:'background-image:linear-gradient(160deg,#e8f0ff,#ffe3f8)'}},
+{n:'맑은 하늘',f:'레트로',d:'2000년대 중반의 하늘·물방울·광택 느낌.',ref:'Frutiger Aero',k:'r-fill',c:['#cfeaff','#ffffff','#0b3558','#0b7fd1'],r:12,ko:'N',en:'Nunito',o:{mark:'#c8f07a',fills:['#e2574c','#f29b1d','#58b530','#1e9bf0'],css:'background-image:linear-gradient(#bfe5ff,#eaf8ff 60%,#d8f5c8)'}},
+{n:'옛 컴퓨터',f:'레트로',d:'90년대 운영체제의 회색 창과 청록 바탕화면.',ref:'Retro computing',k:'r-ghost t-inv',c:['#008080','#c0c0c0','#000000','#000080'],r:0,ko:'NC',en:'IBM Plex Mono',o:{line:'#000000',wash:'#dcdcdc',mark:'#ffff7a',hw:700,hls:'-.03em',css:'--sh:inset -2px -2px 0 #808080,inset 2px 2px 0 #ffffff'}},
+{n:'터미널',f:'레트로',d:'검은 화면에 초록 글자.',ref:'Terminal / CLI UI',k:'k-mono t-inv r-ghost',c:['#0c0c0c','#161616','#d4d4d4','#33ff66'],r:0,ko:'NC',en:'JetBrains Mono',o:{mark:'#ffb000',hw:700,hls:'-.03em',line:'#33ff6655'}},
+{n:'픽셀',f:'레트로',d:'8비트 게임 화면. 계단 모양 모서리.',ref:'Pixel art, Clozemaster',k:'k-pixel r-fill',c:['#1a1c2c','#333c57','#f4f4f4','#ffcd75'],r:0,ko:'NC',en:'Pixelify Sans',o:{mark:'#41a6f6',hw:700,hls:'-.02em',fills:['#b13e53','#ef7d57','#38b764','#3b5dc9'],pic:'#f4f4f4'}},
+{n:'베이퍼웨이브',f:'레트로',d:'보라 밤에 분홍·하늘색 격자.',ref:'Vaporwave',k:'k-grid k-grad r-ghost',c:['#1a1033','#2b1b4f','#f5e9ff','#ff71ce'],r:0,ko:'N',en:'Righteous',o:{mark:'#01cdfe',line:'#ff71ce55',hw:900}},
+{n:'신스웨이브',f:'레트로',d:'80년대 네온. 자홍색 버튼이 빛납니다.',ref:'Synthwave / Outrun',k:'k-glow r-soft',c:['#0d0221','#1b0b3a','#f6f1ff','#ff2975'],r:4,ko:'N',en:'Orbitron',o:{mark:'#f9c80e',hw:900}},
+{n:'사양서',f:'레트로',d:'고정폭 글꼴과 점선 상자. 기술 문서처럼 건조합니다.',ref:'',k:'k-mono t-inv',c:['#f7f7f4','#ffffff','#1a1a18','#0b7a3e'],r:0,ko:'P',en:'IBM Plex Mono',o:{mark:'#c9f2d5',line:'#1a1a18',hw:600,hls:'-.04em'}},
+{n:'청사진',f:'레트로',d:'설계 도면. 파란 바탕에 흰 선과 모눈.',ref:'Blueprint',k:'k-grid k-mono r-ghost',c:['#0f3b82','#134a9e','#eaf2ff','#ffffff'],r:0,ko:'P',en:'IBM Plex Mono',o:{mark:'#ffe46b',line:'#ffffff88',pic:'#eaf2ff',hw:600,hls:'-.04em',tones:['#fff','#fff','#fff','#fff'],fills:['#ff9d9d','#ffd27a','#9df0b8','#ffffff']}},
+// ── 손맛
+{n:'형광펜 공책',f:'손맛',d:'줄 공책과 색인 카드. 다른 소리를 형광펜으로 칠합니다.',ref:'',k:'k-note k-hl k-tilt',c:['#fbfaf3','#fffef8','#1d2a44','#1f4fb8'],r:6,ko:'G',en:'Andika',o:{mark:'#ffe94d',rb:6,hw:400,hls:'-.03em',line:'#cfd9ea',css:'--sh:2px 3px 0 #1d2a4414'},p:1},
+{n:'손그림',f:'손맛',d:'연필로 그린 듯한 선과 손글씨 제목.',ref:'Hand-drawn UI',k:'k-line k-tilt r-ghost',c:['#fffdf8','#ffffff','#2b2b2b','#2f6fe0'],r:14,ko:'N',en:'Patrick Hand',o:{hd:'Gaegu',hw:700,hls:'-.01em',mark:'#fde68a',line:'#2b2b2b',css:'--bw:2px'}},
+{n:'스크랩북',f:'손맛',d:'마스킹테이프로 붙인 카드. 살짝 기울어져 있습니다.',ref:'Scrapbook / sticker UI',k:'k-tape k-tilt r-soft',c:['#f7f1e5','#ffffff','#2d2a26','#e85d3a'],r:4,ko:'N',en:'Caveat',o:{hd:'Hi Melody',hw:400,hls:'0',mark:'#bcd3ff'}},
+{n:'색인 카드',f:'손맛',d:'줄 그어진 색인 카드 묶음과 타자기 글씨.',ref:'',k:'k-note k-paper r-ghost',c:['#e8e4da','#fffef6','#22252b','#c2392b'],r:4,ko:'NG',en:'Courier Prime',o:{mark:'#ffe27a',line:'#b9c7dd',hw:800}},
+{n:'타자기',f:'손맛',d:'누런 종이에 타자기 글씨. 색은 먹 하나.',ref:'',k:'k-line r-ghost t-under',c:['#efeadd','#f7f3e8','#222222','#222222'],r:0,ko:'NM',en:'Special Elite',o:{mark:'#f0d77a',hw:800}},
+{n:'칠판',f:'손맛',d:'녹색 칠판에 분필 글씨.',ref:'',k:'k-line r-ghost',c:['#23352d','#2c4238','#f1f1e6','#ffe27a'],r:6,ko:'N',en:'Caveat',o:{hd:'Nanum Pen Script',hw:400,hls:'0',mark:'#ffe27a',line:'#f1f1e666',pic:'#f1f1e6',css:'--bw:2px',tones:['#ffb3a8','#ffe27a','#b8f0c0','#a8d8ff']}},
+{n:'리소 인쇄',f:'손맛',d:'두 가지 잉크로 찍은 독립출판물. 남색과 형광 주황.',ref:'Risograph 인쇄물',k:'k-flat k-dot r-fill',c:['#f6efe2','#fffaf0','#1f2a5c','#ff5a4e'],r:0,ko:'N',en:'Bricolage Grotesque',o:{hd:'Black Han Sans',hw:400,hls:'-.02em',mark:'#ffd94a',fills:['#ff5a4e','#1f2a5c','#1f2a5c','#1f2a5c']}},
+{n:'진',f:'손맛',d:'복사해서 오려 붙인 독립 잡지.',ref:'Punk zine',k:'k-brut k-tilt k-tape r-ghost',c:['#f2f2f2','#ffffff','#0a0a0a','#ff2e2e'],r:0,ko:'N',en:'Special Elite',o:{hd:'Do Hyeon',hw:400,hls:'-.01em',mark:'#ffe600'}},
+// ── 한국색·자연
+{n:'숲',f:'한국색·자연',d:'짙은 초록과 모래색. 부드러운 명조.',ref:'Biophilic design',k:'k-line',c:['#e9ede3','#f8f9f3','#18301f','#1f5c3a'],r:14,ko:'M',en:'Gentium Plus',o:{mark:'#f0d77a',rb:10,hw:700},p:1},
+{n:'오방색',f:'한국색·자연',d:'청·적·황·백·흑 다섯 색을 평가 버튼과 줄무늬에.',ref:'오방색 (근사값)',k:'k-stripe k-line r-bar',c:['#f5f5f0','#ffffff','#1a1a1a','#1e5bb0'],r:4,ko:'N',en:'Noto Serif',o:{hd:'Noto Serif KR',hw:900,mark:'#f2c230',tones:['#c8102e','#9a7400','#1a1a1a','#1e5bb0'],fills:['#c8102e','#f2c230','#1a1a1a','#1e5bb0']}},
+{n:'한지',f:'한국색·자연',d:'한지의 누르스름한 흰색에 대추색.',ref:'',k:'k-flat r-soft',c:['#efe8d8','#f7f2e6','#2b2620','#7a3b2e'],r:8,ko:'B',en:'Lora',o:{mark:'#e6cf9a',hw:700}},
+{n:'쪽빛',f:'한국색·자연',d:'쪽으로 물들인 남색과 치자색.',ref:'',k:'',c:['#eef1f6','#ffffff','#14213d','#1b3a6b'],r:10,ko:'S',en:'Noto Serif',o:{mark:'#f2d16b',hw:900}},
+{n:'단청',f:'한국색·자연',d:'짙은 녹청 바탕에 주홍과 황색. 궁궐 처마의 색.',ref:'단청 (근사값)',k:'k-line',c:['#14342b','#1b4338','#f3ead2','#f0744a'],r:6,ko:'M',en:'Playfair Display',o:{mark:'#f2c230',pic:'#f3ead2',hw:700}},
+{n:'바다 유리',f:'한국색·자연',d:'물빛 청록과 모래색. 맑고 시원합니다.',ref:'',k:'k-flat r-soft',c:['#e4f1f1','#f6fbfb','#12343b','#0f7c82'],r:18,ko:'N',en:'Figtree',o:{mark:'#ffd9a0'}}
+];
+
+</script>
+<script>
+const KO={N:'"Noto Sans KR"',S:'"Noto Serif KR"',G:'"Gowun Dodum"',B:'"Gowun Batang"',P:'"IBM Plex Sans KR"',H:'"Black Han Sans"',J:'"Jua"',M:'"Hahmlet"',D:'"Do Hyeon"',NG:'"Nanum Gothic"',NM:'"Nanum Myeongjo"',A1:'"Gothic A1"',SF:'"Sunflower"',OR:'"Orbit"',NC:'"Nanum Gothic Coding"',Y:'-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo"',...(window.KO_EXTRA||{})};
+const hex=h=>{h=h.replace('#','');if(h.length===3)h=[...h].map(c=>c+c).join('');return[0,2,4].map(i=>parseInt(h.slice(i,i+2),16))};
+const toHex=a=>'#'+a.map(v=>Math.round(Math.max(0,Math.min(255,v))).toString(16).padStart(2,'0')).join('');
+const mix=(a,b,t)=>toHex(hex(a).map((v,i)=>v*(1-t)+hex(b)[i]*t));
+const lum=h=>{const[r,g,b]=hex(h).map(v=>{v/=255;return v<=.03928?v/12.92:((v+.055)/1.055)**2.4});return .2126*r+.7152*g+.0722*b};
+const cr=(a,b)=>{const x=lum(a),y=lum(b);return(Math.max(x,y)+.05)/(Math.min(x,y)+.05)};
+// Push a colour toward black or white until it reads on its background.
+const fit=(fg,bg,min)=>{const to=lum(bg)>.4?'#000000':'#ffffff';let c=fg,t=0;while(cr(c,bg)<min&&t<1){t+=.06;c=mix(fg,to,t)}return c};
+const on=bg=>cr('#ffffff',bg)>=cr('#10141a',bg)?'#ffffff':'#10141a';
+function tokens(t){
+  const [bg,sf,ink0,ac]=t.c, o=t.o||{}, dark=lum(sf)<.25;
+  const ink=fit(ink0,sf,7), inkb=fit(ink0,bg,7);
+  const mut=fit(o.mut||mix(ink,sf,.38),sf,4.5), mutb=fit(o.mut||mix(inkb,bg,.38),bg,4.5);
+  const line=o.line||mix(inkb,bg,lum(bg)<.25?.78:.84);
+  const wash=o.wash||mix(ac,sf,dark?.8:.87);
+  const mark=o.mark||'#ffe46b';
+  const tones=o.tones||(dark?['#ff8d8d','#ffc46b','#6fe0a8','#8fb4ff']:['#c0392f','#b06a00','#1c7a55','#2443cf']);
+  const fills=o.fills||(dark?['#e5484d','#f5a524','#30a46c','#3e63dd']:['#e5484d','#f08c00','#2f9e63','#3b5bdb']);
+  const v={mbg:bg,surf:o.surf||sf,ink,inkb,mut,mutb,line,acc:ac,'acc-ink':o.ai||on(ac),acct:fit(ac,sf,4.5),acctb:fit(ac,bg,4.5),acctw:fit(ac,wash,4.5),wash,mark,'mark-ink':on(mark),
+    r:(t.r??16)+'px',rb:(o.rb??((t.r??16)>=10?999:t.r))+'px',ko:(KO[t.ko]||t.ko)+',sans-serif',en:`"${t.en}","Noto Sans",sans-serif`,hw:o.hw||800,pic:o.pic||'#ffffff'};
+  tones.forEach((c,i)=>{v['c'+(i+1)]=fit(c,sf,4.5)});fills.forEach((c,i)=>{v['f'+(i+1)]=c;v['g'+(i+1)]=cr('#ffffff',c)>=3?'#ffffff':'#10141a'});
+  if(o.hd)v.hd=`"${o.hd}",`+v.ko; if(o.hls)v.hls=o.hls;
+  let s=Object.entries(v).map(([k,x])=>`--${k}:${x}`).join(';');
+  if(o.css)s+=';'+o.css; return s;
+}
+const cup='<svg viewBox="0 0 96 96" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 40h44v20a22 22 0 0 1-44 0z" fill="#c98b5a"/><path d="M64 44h8a9 9 0 0 1 0 18h-9"/><path d="M14 86h56"/><path d="M34 28c-4-6 4-8 0-14M48 28c-4-6 4-8 0-14"/></svg>';
+const mock=t=>`<div class="m ${t.k||''}" style='${tokens(t)}'>
+ <div class="home">
+  <div class="nav"><span class="logo">Say More</span><span class="links"><span>IPA</span><span>듣기</span><span>카드</span></span></div>
+  <div class="hero"><div><p class="eye">SAY MORE · AMERICAN ENGLISH</p><h3>한 소리씩,<br>내 영어로.</h3><p class="lead">영어의 소리를 구별하고, 입으로 익히는 나만의 연습실.</p><span class="btn">오늘 복습 시작 →</span></div>
+   <div class="spec" lang="en"><p><span class="w">sh<mark>i</mark>p</span><span class="p">/ʃ<mark>ɪ</mark>p/</span></p><p><span class="w">sh<mark>ee</mark>p</span><span class="p">/ʃ<mark>iː</mark>p/</span></p></div></div>
+  <div class="tiles"><div class="tile"><em>/ɪ/ ↔ /iː/</em><strong>IPA · 미국식 발음</strong><small>기호를 읽고 혀의 위치를 비교</small></div><div class="tile"><em>r ↔ l</em><strong>듣기 훈련</strong><small>소리 하나만 다른 두 단어</small></div><div class="tile"><em>Aa</em><strong>단어 카드</strong><small>만들고, 정한 날에 복습</small></div></div>
+ </div>
+ <div class="review">
+  <div class="tabs"><span>카드 목록</span><span>카드 추가</span><span class="on">복습하기</span></div>
+  <div class="prog"><span>오늘 복습 12 / 37</span><span>첫 625단어</span></div>
+  <div class="card"><div class="pic">${cup}</div><div class="body"><p class="ans" lang="en">coffee</p><p class="ipa">/ˈkɑː.fi/</p><div class="listen"><span>▶ 사람 녹음</span><span>▶ 기기 음성</span></div></div></div>
+  <div class="rate"><span>모름<small>1일 안</small></span><span>어려움<small>3일</small></span><span>알맞음<small>8일</small></span><span>쉬움<small>15일</small></span></div>
+ </div></div>`;
+const pad=n=>String(n).padStart(3,'0');
+let stars=new Set();try{stars=new Set(JSON.parse(localStorage.getItem('saymore.drafts.stars')||'[]'))}catch{}
+const save=()=>{try{localStorage.setItem('saymore.drafts.stars',JSON.stringify([...stars]))}catch{}};
+const state={fam:'all',pick:false,star:stars.size>0};
+const list=document.getElementById('list'),bar=document.getElementById('bar');
+document.getElementById('intro').textContent=INTRO;
+function fitAll(){for(const f of list.querySelectorAll('.frame')){const m=f.firstElementChild,w=f.clientWidth;const stack=w<520;m.classList.toggle('stack',stack);m.style.zoom=w/(stack?470:920)}}
+function render(){
+  const shown=THEMES.map((t,i)=>({t,i})).filter(({t,i})=>(state.fam==='all'||t.f===state.fam)&&(!state.pick||t.p)&&(!state.star||stars.has(i+1)));
+  let html='',last='';
+  for(const {t,i} of shown){
+    if(t.f!==last){last=t.f;html+=`<div class="fam"><h2>${t.f}</h2><p>${FAMILIES[t.f]||''}</p></div>`}
+    html+=`<section class="draft" id="d${i+1}"><div class="cap"><b><i>${pad(i+1)}</i>${t.n}${t.p?'<u>추천</u>':''}</b><span>${t.d}</span>${t.ref?`<small>참고: ${t.ref}</small>`:''}<div><button type="button" data-star="${i+1}" aria-pressed="${stars.has(i+1)}">★ 찜</button><button type="button" data-wide>크게</button></div></div><div class="frame">${mock(t)}</div></section>`;
+  }
+  list.innerHTML=html||'<p>조건에 맞는 초안이 없습니다. 위의 단추를 다시 눌러 풀어 주세요.</p>';
+  const fams=['all',...Object.keys(FAMILIES)];
+  bar.innerHTML=fams.map(f=>`<button type="button" data-fam="${f}" aria-pressed="${state.fam===f}">${f==='all'?'전체':f}</button>`).join('')+`<span class="sep"></span><button type="button" data-pick aria-pressed="${state.pick}">추천만</button><button type="button" data-starred aria-pressed="${state.star}">${state.star?'전체 다시 보기':'★ 찜한 것만 ('+stars.size+')'}</button><output>${shown.length}개 표시${stars.size?' · 찜: '+[...stars].sort((a,b)=>a-b).map(pad).join(', '):''}</output>`;
+  fitAll();
+}
+bar.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.fam)state.fam=b.dataset.fam;else if('pick'in b.dataset)state.pick=!state.pick;else if('starred'in b.dataset)state.star=!state.star;render()});
+list.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.star){const n=+b.dataset.star;stars.has(n)?stars.delete(n):stars.add(n);save();const y=scrollY;render();scrollTo(0,y)}else if('wide'in b.dataset){const d=b.closest('.draft');d.classList.toggle('wide');b.textContent=d.classList.contains('wide')?'작게':'크게';fitAll()}});
+addEventListener('resize',fitAll);
+render();document.fonts&&document.fonts.ready.then(fitAll);
+</script>
