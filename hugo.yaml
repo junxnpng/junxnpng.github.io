@@ -28,12 +28,13 @@ menu:
     - {name: 학습 메뉴, url: "/#learning-menu", weight: 5}
     - {name: IPA, url: /saymore/ipa/, weight: 10}
     - {name: 듣기, url: /saymore/listen/, weight: 15}
+    - {name: 카드, url: /saymore/cards/, weight: 20}
 
 params:
   env: production
   description: "Fluent Forever의 발음 우선 학습에서 영감을 받은 나만의 영어 회화 연습실."
   defaultTheme: auto
-  disableThemeToggle: false
+  disableThemeToggle: true    # the Theme button (static/saymore/skin.js) picks the skin instead
   ShowReadingTime: true
   ShowWordCount: false
   ShowToc: true

@@ -1,0 +1,79 @@
+/* Say More skins. One file holds every colour, font and shape token; the study pages (assets/css/saymore.css)
+   and the cards app (cards/app.css) map these onto their own names. skin.js sets data-skin on <html>.
+   Fonts are bundled (SIL Open Font License 1.1, see fonts/OFL-*.txt) because the cards app only loads from this site. */
+@font-face { font-family: "SM IPA"; src: url("fonts/noto-sans-400.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "SM IPA"; src: url("fonts/noto-sans-700.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+@font-face { font-family: "SM Inter"; src: url("fonts/inter.woff2") format("woff2"); font-weight: 400 800; font-display: swap; }
+@font-face { font-family: "SM Outfit"; src: url("fonts/outfit.woff2") format("woff2"); font-weight: 400 800; font-display: swap; }
+@font-face { font-family: "SM Archivo"; src: url("fonts/archivo.woff2") format("woff2"); font-weight: 400 800; font-display: swap; }
+@font-face { font-family: "SM Black Han Sans"; src: url("fonts/black-han-sans.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+
+/* 흑백 미니멀 (mono) — also what shows before skin.js runs. */
+:root {
+  --sk-kr: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", "Noto Sans KR", "Malgun Gothic", sans-serif;
+  /* Pronunciation symbols use this one plain face in every skin. */
+  --sk-ipa: "SM IPA", -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", Arial, sans-serif;
+  --sk-latin: "SM Inter";
+  --sk-body: var(--sk-latin), "SM IPA", var(--sk-kr);
+  --sk-head: var(--sk-body); --sk-head-weight: 600; --sk-head-ls: -.045em;
+  --sk-bg: #fff; --sk-surface: #fff; --sk-ink: #0a0a0a; --sk-muted: #616161; --sk-line: #d8d8d8; --sk-wash: #f0f0f0;
+  --sk-accent: #0a0a0a; --sk-fill: #0a0a0a; --sk-on-fill: #fff; --sk-fill-deep: #333;
+  --sk-mark: #e6ff5c; --sk-mark-ink: #10141a;
+  --sk-red: #a93229; --sk-amber: #875200; --sk-green: #196b4b; --sk-good-wash: #e4efea; --sk-bad-wash: #f6e6e5;
+  --sk-field: #fff; --sk-field-line: #b6b6b6;
+  --sk-r: 10px; --sk-bw: 1px; --sk-edge: var(--sk-line); --sk-shadow: none;
+  --sk-ctl-bw: 1px; --sk-ctl-edge: #b6b6b6; --sk-btn-edge: var(--sk-fill); --sk-shadow-sm: none;
+  --sk-tab-bg: #0a0a0a; --sk-tab-ink: #fff;
+  --sk-rate1-bg: #fff; --sk-rate1-ink: #0a0a0a; --sk-rate2-bg: #fff; --sk-rate2-ink: #0a0a0a;
+  --sk-rate3-bg: #0a0a0a; --sk-rate3-ink: #fff; --sk-rate4-bg: #fff; --sk-rate4-ink: #0a0a0a;
+  --sk-rate-edge: #b6b6b6; --sk-rate3-edge: #0a0a0a;
+  color-scheme: light;
+}
+/* 드라큘라 (dracula) */
+:root[data-skin="dracula"] {
+  --sk-latin: "SM Outfit"; --sk-head-weight: 800; --sk-head-ls: -.05em;
+  --sk-bg: #282a36; --sk-surface: #44475a; --sk-ink: #f8f8f2; --sk-muted: #d2d2d4; --sk-line: #56575f; --sk-wash: #5c567a;
+  --sk-accent: #dfcbfc; --sk-fill: #bd93f9; --sk-on-fill: #10141a; --sk-fill-deep: #c7a3fa;
+  --sk-mark: #ff79c6; --sk-mark-ink: #10141a;
+  --sk-red: #ffc6c6; --sk-amber: #ffc98f; --sk-green: #50fa7b; --sk-good-wash: #46625f; --sk-bad-wash: #6a4a56;
+  --sk-field: #21222c; --sk-field-line: #8c8e97;
+  --sk-edge: transparent; --sk-ctl-edge: #8c8e97;
+  --sk-tab-bg: #bd93f9; --sk-tab-ink: #10141a;
+  --sk-rate1-bg: #ff5555; --sk-rate1-ink: #10141a; --sk-rate2-bg: #ffb86c; --sk-rate2-ink: #10141a;
+  --sk-rate3-bg: #50fa7b; --sk-rate3-ink: #10141a; --sk-rate4-bg: #8be9fd; --sk-rate4-ink: #10141a;
+  --sk-rate-edge: transparent; --sk-rate3-edge: transparent;
+  color-scheme: dark;
+}
+/* 팝 (pop) */
+:root[data-skin="pop"] {
+  --sk-latin: "SM Archivo";
+  --sk-head: "SM Black Han Sans", var(--sk-body); --sk-head-weight: 400; --sk-head-ls: -.02em;
+  --sk-bg: #fff36b; --sk-surface: #fff; --sk-ink: #000; --sk-muted: #4d4d4d; --sk-line: #000; --sk-wash: #ffe8f2;
+  --sk-accent: #b3376c; --sk-fill: #ff4f9a; --sk-on-fill: #000; --sk-fill-deep: #ff75b0;
+  --sk-mark: #7df3a0; --sk-mark-ink: #10141a;
+  --sk-red: #c0392f; --sk-amber: #9b5d00; --sk-green: #1c7a55; --sk-good-wash: #ddebe6; --sk-bad-wash: #f6e1e0;
+  --sk-field: #fff; --sk-field-line: #000;
+  --sk-r: 14px; --sk-bw: 3px; --sk-edge: #000; --sk-shadow: 5px 5px 0 #000;
+  --sk-ctl-bw: 2px; --sk-ctl-edge: #000; --sk-btn-edge: #000; --sk-shadow-sm: 3px 3px 0 #000;
+  --sk-tab-bg: #000; --sk-tab-ink: #fff;
+  --sk-rate1-bg: #ff6b6b; --sk-rate1-ink: #000; --sk-rate2-bg: #ffa94d; --sk-rate2-ink: #000;
+  --sk-rate3-bg: #69db7c; --sk-rate3-ink: #000; --sk-rate4-bg: #74c0fc; --sk-rate4-ink: #000;
+  --sk-rate-edge: #000; --sk-rate3-edge: #000;
+  color-scheme: light;
+}
+
+/* Theme button and its menu (added to the header by skin.js). */
+.skin-picker { position: relative; flex-shrink: 0; line-height: 1.4; font-family: var(--sk-body); }
+.skin-button { display: inline-flex; align-items: center; gap: 7px; font: inherit; font-size: 13px; font-weight: 700; color: var(--sk-ink); background: var(--sk-surface); border: var(--sk-ctl-bw) solid var(--sk-ctl-edge); border-radius: 999px; padding: 7px 14px; cursor: pointer; box-shadow: var(--sk-shadow-sm); }
+.skin-button::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--sk-fill); box-shadow: 0 0 0 2px var(--sk-mark); }
+.skin-button:focus-visible, .skin-menu button:focus-visible { outline: 3px solid var(--sk-accent); outline-offset: 3px; }
+.skin-menu { position: absolute; top: calc(100% + 8px); right: 0; z-index: 30; display: grid; gap: 4px; min-width: 190px; padding: 6px; background: var(--sk-surface); border: var(--sk-ctl-bw) solid var(--sk-ctl-edge); border-radius: 14px; box-shadow: 0 12px 32px #0000002e; }
+.skin-menu[hidden] { display: none; }
+.skin-menu button { display: flex; align-items: center; gap: 10px; width: 100%; font: inherit; font-size: 14px; font-weight: 600; text-align: left; color: var(--sk-ink); background: none; border: 0; border-radius: 9px; padding: 9px 10px; cursor: pointer; }
+.skin-menu button:hover { background: var(--sk-wash); }
+.skin-menu button[aria-checked="true"] { background: var(--sk-wash); }
+.skin-menu button[aria-checked="true"]::after { content: "✓"; margin-left: auto; font-weight: 700; }
+.skin-swatch { width: 26px; height: 26px; border-radius: 50%; border: 2px solid #0000002e; flex-shrink: 0; }
+.skin-swatch[data-swatch="mono"] { background: linear-gradient(135deg, #fff 50%, #0a0a0a 50%); }
+.skin-swatch[data-swatch="dracula"] { background: linear-gradient(135deg, #282a36 50%, #bd93f9 50%); }
+.skin-swatch[data-swatch="pop"] { background: linear-gradient(135deg, #fff36b 50%, #ff4f9a 50%); }

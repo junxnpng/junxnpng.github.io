@@ -1,12 +1,21 @@
 {{ define "main" }}
 <article class="saymore" lang="ko">
   <header class="sm-hero">
-    <p class="sm-eyebrow">SAY MORE · AMERICAN ENGLISH</p>
-    <h1>한 소리씩,<br>내 영어로.</h1>
-    <p class="sm-lead">영어의 소리를 구별하고, 입으로 익히는 나만의 연습실.</p>
+    <div>
+      <p class="sm-eyebrow">SAY MORE · AMERICAN ENGLISH</p>
+      <h1>한 소리씩,<br>내 영어로.</h1>
+      <p class="sm-lead">영어의 소리를 구별하고, 입으로 익히는 나만의 연습실.</p>
+      <a class="sm-primary-link" href="{{ "saymore/cards/#review" | relURL }}">오늘 복습 시작 <span aria-hidden="true">→</span></a>
+    </div>
+    <figure class="sm-specimen" lang="en" aria-label="ship과 sheep은 모음 하나만 다릅니다">
+      <p><span class="sm-spec-word">sh<mark>i</mark>p</span><span class="sm-spec-ipa">/ʃ<mark>ɪ</mark>p/</span></p>
+      <p><span class="sm-spec-word">sh<mark>ee</mark>p</span><span class="sm-spec-ipa">/ʃ<mark>iː</mark>p/</span></p>
+      <small lang="ko">소리 하나가 단어를 바꿉니다.</small>
+    </figure>
   </header>
   <section id="learning-menu" class="sm-learning-menu" aria-labelledby="learning-menu-title">
     <h2 id="learning-menu-title">학습 메뉴</h2>
+    <div class="sm-menu-grid">
     <a class="sm-home-note" href="{{ "saymore/ipa/" | relURL }}">
       <span class="sm-sample" lang="en" aria-hidden="true">/ɪ/ ↔ /iː/</span>
       <div><h3>IPA · 미국식 발음 <span aria-hidden="true">→</span></h3><p><span lang="en">sheep</span>과 <span lang="en">ship</span>의 모음은 어떻게 다를까요? 예시 단어의 발음기호를 읽고, 미국식 음성을 들으며 그림에서 혀의 위치를 비교해 보세요.</p></div>
@@ -17,8 +26,9 @@
     </a>
     <a class="sm-home-note" href="{{ "saymore/cards/" | relURL }}">
       <span class="sm-sample" lang="en" aria-hidden="true">Aa</span>
-      <div><h3>첫 100단어 · 카드 만들기와 복습 <span aria-hidden="true">→</span></h3><p>사진·발음·예문으로 나만의 카드를 만들고, 복습할 날짜에 다시 떠올려보세요. Dropbox에 저장하고 아이폰과 맥에서 이어서 공부해요.</p></div>
+      <div><h3>단어 카드 · 만들기와 복습 <span aria-hidden="true">→</span></h3><p>사진·발음·예문으로 나만의 카드를 만들고, 복습할 날짜에 다시 떠올려보세요. Dropbox에 저장하고 아이폰과 맥에서 이어서 공부해요.</p></div>
     </a>
+    </div>
   </section>
   <p class="sm-footnote">Fluent Forever의 발음 우선 학습에서 영감을 받은 개인 학습 공간입니다.</p>
 </article>
