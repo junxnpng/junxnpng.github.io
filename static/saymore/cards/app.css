@@ -87,3 +87,8 @@ dialog{border:var(--sk-bw) solid var(--sk-edge);border-radius:calc(var(--sk-r)*1
 code{border-radius:5px}
 @media(max-width:660px){.site-header nav{order:3;flex-basis:100%;margin:10px 0 0}h1{font-size:32px}.counts{margin-top:18px;gap:8px}.counts span{flex:1;min-width:0;padding:10px 12px}.counts b{display:block;font-size:22px;margin:0}.workspace-nav{width:100%}.workspace-nav button{flex:1;padding:9px 6px}.study-answer{font-size:42px}.review-workspace .study-answer{font-size:48px}.rating-buttons{gap:6px}.rating-buttons button{font-size:14px;padding:13px 2px 11px}.card-row{padding:14px 16px}}
 @media(prefers-reduced-motion:reduce){.card-row,.rating-buttons button{transition:none}.card-row:hover,.rating-buttons button:hover{transform:none}}
+/* "This picture does not fit": a quiet mark under the review card. */
+.flag-image{display:block;margin:12px auto 0;font-size:13px;font-weight:600;color:var(--muted);background:none;border:var(--sk-ctl-bw) dashed var(--sk-ctl-edge);border-radius:999px;padding:7px 14px}
+.flag-image:hover{color:var(--ink);border-style:solid}
+.flag-image[aria-pressed=true]{color:var(--sk-mark-ink);background:var(--mark);border:var(--sk-ctl-bw) solid var(--sk-btn-edge)}
+.list-tools{display:flex;align-items:center;gap:14px}
