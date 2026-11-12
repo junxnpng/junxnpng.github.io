@@ -8,26 +8,19 @@ const isIpa=card=>!isWord(card)&&(card.tags.includes('IPA')||/^IPA(?:\s|$)/i.tes
 export function studyGroups(cards){
   const groups=[{key:'all',label:'전체 카드',section:'전체',cards}];
   const ipa=cards.filter(isIpa),words=cards.filter(isWord);
-  if(ipa.length){
-    groups.push({key:'ipa',label:'IPA 전체',section:'IPA',cards:ipa});
-    for(const deck of [...new Set(ipa.map(c=>c.deck))].sort())groups.push({key:`ipa-deck:${deck}`,label:deck,section:'IPA',cards:ipa.filter(c=>c.deck===deck)});
+  // One group per CEFR level, in library order, which ratings and edits keep.
+  for(const level of [...levels,unlevelled]){
+    const list=words.filter(c=>(cardLevel(c)||unlevelled)===level);
+    if(list.length)groups.push({key:`level:${level}`,label:level===unlevelled?'등급 밖 (숫자·문법 용어 등)':level,section:'단어',cards:list});
   }
-  if(words.length){
-    groups.push({key:'words',label:'단어 전체',section:'단어',cards:words});
-    // One section per CEFR level, then 100-card batches inside it. Batches are cut from the library
-    // order, which ratings and edits keep, so a card stays in the same batch on every device.
-    for(const level of [...levels,unlevelled]){
-      const list=words.filter(c=>(cardLevel(c)||unlevelled)===level);
-      if(!list.length)continue;
-      const section=level===unlevelled?'단어 · 등급 밖 (숫자·문법 용어 등)':`단어 · ${level}`;
-      groups.push({key:`level:${level}`,label:`${level} 전체`,section,cards:list});
-      if(list.length>100)for(let start=0;start<list.length;start+=100)groups.push({key:`level:${level}:${start/100+1}`,label:`${level} ${start+1}–${Math.min(start+100,list.length)}`,section,cards:list.slice(start,start+100)});
-    }
-  }
+  if(ipa.length)groups.push({key:'ipa',label:'IPA',section:'IPA',cards:ipa});
   const own=cards.filter(c=>!isIpa(c)&&!isWord(c));
   for(const deck of [...new Set(own.map(c=>c.deck))].sort())groups.push({key:`deck:${deck}`,label:deck,section:'내 덱',cards:own.filter(c=>c.deck===deck)});
   return groups;
 }
+
+// Practice order: cards never reviewed first, then the rest; each part keeps the library order.
+export function unseenFirst(cards){return [...cards.filter(c=>!c.reviews.length),...cards.filter(c=>c.reviews.length)];}
 
 export function cardsInGroup(cards,key){return studyGroups(cards).find(group=>group.key===key)?.cards||[];}
 

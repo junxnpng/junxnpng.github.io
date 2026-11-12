@@ -9,7 +9,7 @@ const card=(answer,deck,tags=[])=>newCard({type:'basic',front:'Recall the word.'
 
 const dogId='01cac855-1800-58b9-94e8-4be5e45d7d62'; // "dog" in the first 625 deck: listed as A1 in levels.mjs
 
-test('word cards are grouped by CEFR level, in 100-card batches, and never include IPA cards',()=>{
+test('word cards are grouped by CEFR level only, followed by one IPA group',()=>{
   assert.ok(groups,'study group selection is not implemented');
   const a1=Array.from({length:230},(_,i)=>card(`a1 ${i+1}`,'Oxford 3000 · A1',['OX3000','A1']));
   const b2=Array.from({length:40},(_,i)=>card(`b2 ${i+1}`,'Oxford 3000 · B2',['OX3000','B2']));
@@ -19,19 +19,17 @@ test('word cards are grouped by CEFR level, in 100-card batches, and never inclu
   const input=[dog,...a1.slice(0,50),...ipa,...b2,number,...a1.slice(50)],before=copy(input);
   const all=groups.studyGroups(input),keys=all.map(g=>g.key);
   assert.equal(keys.some(k=>k.startsWith('words:')),false);
-  assert.deepEqual(keys.filter(k=>k.startsWith('level:')),['level:A1','level:A1:1','level:A1:2','level:A1:3','level:B2','level:등급 밖']);
+  assert.deepEqual(keys,['all','level:A1','level:B2','level:등급 밖','ipa']);
   const of=key=>all.find(g=>g.key===key).cards;
   assert.deepEqual(of('level:A1').map(c=>c.id),[dog,...a1].map(c=>c.id));
-  assert.deepEqual([of('level:A1:1').length,of('level:A1:2').length,of('level:A1:3').length],[100,100,31]);
-  assert.equal(of('level:A1:1')[0].answer,'dog');
-  assert.equal(of('level:A1:2')[0].answer,'a1 100');
+  assert.equal(of('level:A1')[0].answer,'dog');
   assert.deepEqual(of('level:B2').map(c=>c.id),b2.map(c=>c.id));
   assert.deepEqual(of('level:등급 밖').map(c=>c.answer),['twenty-one']);
-  assert.equal(of('words').length,272);
+  assert.equal(of('ipa').length,67);
   assert.deepEqual(input,before);
 });
 
-test('ratings, content edits and due order cannot move a word to another level or batch',()=>{
+test('ratings, content edits and due order cannot move a word to another level or position',()=>{
   assert.ok(groups);
   const cards=Array.from({length:102},(_,i)=>card(`word ${i+1}`,'renamed deck',['OX3000','B1']));
   const dog={...card('dog','Fluent Forever · First 625',['FF625']),id:dogId};
@@ -39,8 +37,7 @@ test('ratings, content edits and due order cannot move a word to another level o
   cards[100]=editCard(cards[100],{...cards[100],answer:'my correction'});
   const edited=editCard(rateCard(dog,1,now),{...dog,answer:'hound'});
   const input=[...cards,edited];
-  assert.deepEqual(groups.cardsInGroup(input,'level:B1:2').map(c=>c.id),[cards[100].id,cards[101].id]);
-  assert.equal(groups.cardsInGroup(input,'level:B1:1').length,100);
+  assert.deepEqual(groups.cardsInGroup(input,'level:B1').map(c=>c.id),cards.map(c=>c.id));
   assert.deepEqual(groups.cardsInGroup(input,'level:A1').map(c=>c.id),[dogId]);
   assert.equal(groups.cardsInGroup(input,'level:A1')[0].reviews.length,1);
 });
@@ -60,21 +57,25 @@ test('due and unknown queues stay in the selected group, while practice includes
   assert.deepEqual(groups.studyQueue(cards,'ipa','due',now).map(c=>c.answer),['new']);
   assert.deepEqual(groups.studyQueue(cards,'ipa','unknown',now).map(c=>c.answer),['forgotten']);
   assert.deepEqual(groups.studyQueue(cards,'ipa','practice',now).map(c=>c.answer),['forgotten','known','new']);
-  assert.deepEqual(groups.studyQueue(cards,'words','practice',now).map(c=>c.answer),['other']);
+  assert.deepEqual(groups.studyQueue(cards,'level:등급 밖','practice',now).map(c=>c.answer),['other']);
+  assert.deepEqual(groups.unseenFirst(groups.cardsInGroup(cards,'ipa')).map(c=>c.answer),['new','forgotten','known']);
+  assert.deepEqual(groups.unseenFirst([]),[]);
   assert.deepEqual(cards,before);
 });
 
-test('IPA sections and personal decks are selectable and an unknown group cannot fall back to all cards',()=>{
+test('all IPA cards share one group, personal decks are selectable, and an unknown group cannot fall back to all cards',()=>{
   assert.ok(groups);
   const vowel=card('vowel','IPA 01 · 모음',['IPA']);
   const consonant=card('consonant','IPA 02 · 자음',['IPA']);
   const custom=card('custom','My own deck');
   const cards=[vowel,consonant,custom];
   const options=groups.studyGroups(cards);
-  const section=options.find(g=>g.label===vowel.deck),own=options.find(g=>g.label===custom.deck);
-  assert.deepEqual(groups.cardsInGroup(cards,section.key).map(c=>c.answer),['vowel']);
+  const own=options.find(g=>g.label===custom.deck);
+  assert.deepEqual(options.map(g=>g.key),['all','ipa',own.key]);
+  assert.deepEqual(groups.cardsInGroup(cards,'ipa').map(c=>c.answer),['vowel','consonant']);
   assert.deepEqual(groups.cardsInGroup(cards,own.key).map(c=>c.answer),['custom']);
   assert.deepEqual(groups.studyQueue(cards,'words:99','due',now),[]);
+  assert.deepEqual(groups.studyQueue(cards,'level:A1:1','due',now),[]);
 });
 
 test('progress partitions cards into due, reviewed today, and future without double counting repeats',()=>{

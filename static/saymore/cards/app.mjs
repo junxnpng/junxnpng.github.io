@@ -1,5 +1,5 @@
 import {newCard, editCard, rateCard, correctLastReview, reviewOptions, dueCards, dateLabel, intervalLabel, ratings, overdueMs, reviewLateMs, waitLabel} from './model.mjs?v=5';
-import {studyGroups,cardsInGroup,studyQueue,studyProgress,sortCards,sortOrders,resumeIndex} from './study-groups.mjs?v=7';
+import {studyGroups,cardsInGroup,studyQueue,studyProgress,sortCards,sortOrders,resumeIndex,unseenFirst} from './study-groups.mjs?v=8';
 import {FolderStore, rememberedFolder, friendlyError} from './storage.mjs?v=5';
 import {el, showCard} from './view.mjs?v=5';
 import {DropboxStore} from './dropbox-store.mjs?v=9';
@@ -17,7 +17,7 @@ const mediaCache=new MediaCache(path=>store.readMedia(path));
 const inputs=['front','answer','ipa','speech','sentence','memory','tags'];
 const supported=typeof window.showDirectoryPicker==='function';
 let cloud=null,refreshing=false;
-let selectedGroup='all',practiceIndex=0;
+let selectedGroup='all',practiceIndex=0,practiceOrder=[];
 let sortOrder='default', lastGraded=null;
 try{const saved=localStorage.getItem('saymore.cards.sort.v1');if(Object.hasOwn(sortOrders,saved||''))sortOrder=saved;}catch{/* Sorting still works for this visit. */}
 try{selectedGroup=localStorage.getItem('saymore.cards.group.v1')||'all';}catch{/* Selection is optional when browser storage is unavailable. */}
@@ -68,14 +68,23 @@ function retryControls(){
     const group=groups.find(g=>g.key===option.value);if(group)option.textContent=groupLabel(group,now);
   }
   const group=groups.find(g=>g.key===selectedGroup),progress=studyProgress(group?.cards||[],now);
-  $('review-group-help').textContent=store?`${group?.label||'선택한 묶음'} · 전체 ${progress.total}장 · 오늘 완료 ${progress.completedToday}장 · 지금 남음 ${progress.remaining}장 · 다음 복습 대기 ${progress.waiting}장. 오늘 완료는 오늘 평가한 뒤 정기 복습에서 빠진 카드예요. ‘모름’은 원할 때 따로 다시 볼 수 있어요.`:'Dropbox를 연결하면 IPA와 100장씩 나눈 단어 묶음을 고를 수 있어요.';
+  $('review-group-help').textContent=store?`${group?.label||'선택한 묶음'} · 전체 ${progress.total}장 · 오늘 완료 ${progress.completedToday}장 · 지금 남음 ${progress.remaining}장 · 다음 복습 대기 ${progress.waiting}장. 오늘 완료는 오늘 평가한 뒤 정기 복습에서 빠진 카드예요. ‘모름’은 원할 때 따로 다시 볼 수 있어요.`:'Dropbox를 연결하면 등급별 단어 묶음(A1–B2)과 IPA 묶음을 고를 수 있어요.';
   const remembered=store&&cardsInGroup(cards(),selectedGroup).some(c=>c.id===practicePositions()[selectedGroup]);
-  $('review-mode-help').textContent=$('review-mode').value==='resume'?(remembered?'지난번에 멈춘 카드부터 순서대로 이어서 봐요.':'이 묶음에서 기억해 둔 위치가 아직 없어서, 한 번도 복습하지 않은 첫 카드부터 시작해요.')+' 평가하면 기록과 다음 날짜가 저장되고, 평가 없이 넘겨도 돼요.':practice?'복습 날짜와 상관없이 묶음 전체를 처음부터 순서대로 봐요. 평가하면 기록과 다음 날짜가 저장되고, 평가 없이 넘겨도 돼요.':'한 번도 안 한 카드를 먼저, 그다음 복습 날짜가 된 카드를 오래 기다린 것부터 보여줘요. 정답 확인 후 평가하면 기록과 다음 날짜가 저장돼요.';
+  $('review-mode-help').textContent=$('review-mode').value==='resume'?(remembered?'지난번에 멈춘 카드부터 이어서 봐요. 한 번도 안 한 카드가 먼저 나와요.':'이 묶음에서 기억해 둔 위치가 아직 없어서, 한 번도 복습하지 않은 첫 카드부터 시작해요.')+' 평가하면 기록과 다음 날짜가 저장되고, 평가 없이 넘겨도 돼요.':practice?'복습 날짜와 상관없이 묶음 전체를 봐요. 한 번도 안 한 카드가 먼저 나오고, 그다음 이미 본 카드가 나와요. 평가하면 기록과 다음 날짜가 저장되고, 평가 없이 넘겨도 돼요.':'한 번도 안 한 카드를 먼저, 그다음 복습 날짜가 된 카드를 오래 기다린 것부터 보여줘요. 정답 확인 후 평가하면 기록과 다음 날짜가 저장돼요.';
 }
 function isPractice(){return ['practice','resume'].includes($('review-mode').value);}
 // Free practice remembers the card last shown in each group so "이어서 연습" can continue from it.
 function practicePositions(){try{const value=JSON.parse(localStorage.getItem('saymore.cards.practice-position.v1'));return value&&typeof value==='object'?value:{};}catch{return {};}}
-function practiceStart(){return store&&$('review-mode').value==='resume'?resumeIndex(cardsInGroup(cards(),selectedGroup),practicePositions()[selectedGroup]):0;}
+// Practice shows cards never reviewed first. The order is fixed when practice starts, so a card that
+// gets rated on the way does not jump behind the others and shift every position after it.
+function practiceCards(list=cards()){
+  const byId=new Map(cardsInGroup(list,selectedGroup).map(c=>[c.id,c])),known=new Set(practiceOrder);
+  return [...practiceOrder.map(id=>byId.get(id)).filter(Boolean),...[...byId.values()].filter(c=>!known.has(c.id))];
+}
+function practiceStart(){
+  practiceOrder=store?unseenFirst(cardsInGroup(cards(),selectedGroup)).map(c=>c.id):[];
+  return store&&$('review-mode').value==='resume'?resumeIndex(practiceCards(),practicePositions()[selectedGroup]):0;
+}
 function rememberPractice(cardId){try{const all=practicePositions();if(cardId)all[selectedGroup]=cardId;else delete all[selectedGroup];localStorage.setItem('saymore.cards.practice-position.v1',JSON.stringify(all));}catch{/* The position still holds for this visit. */}}
 function setBusy(value){busy=value;controls();}
 function updateStats(){
@@ -229,7 +238,7 @@ function startReview(unknown=false,restart=false){
   if(unknown)$('review-mode').value='due';
   unknownSession=unknown&&store?new Set(studyQueue(cards(),selectedGroup,'unknown').map(c=>c.id)):null;
   sessionCount=0;activeCard=null;
-  practiceIndex=restart?0:practiceStart();
+  const start=practiceStart();practiceIndex=restart?0:start;
   void showNextReview();
 }
 async function loadFolder(folder,epoch){
@@ -422,7 +431,7 @@ async function showNextReview(){
   const request=++reviewRequest,owner=store,practice=isPractice();
   const queue=!store?[]:unknownSession?
     studyQueue(cards(),selectedGroup,'unknown').filter(c=>unknownSession.has(c.id)):
-    studyQueue(cards(),selectedGroup,practice?'practice':'due');
+    practice?practiceCards():studyQueue(cards(),selectedGroup,'due');
   const remaining=practice?queue.slice(practiceIndex):queue;
   activeCard=remaining[0]||null;revealed=false;
   flagControl();
@@ -482,7 +491,7 @@ async function grade(rating){
   // Saving a megabyte to Dropbox takes a second or more. Move on to the next card at once; the next
   // answer waits until this one is stored, and a failed save brings this card back.
   saving=true;pendingCards=next;
-  if(practice){const group=cardsInGroup(next,selectedGroup);practiceIndex=Math.min(practiceIndex+1,group.length);rememberPractice(group[practiceIndex]?.id||null);}
+  if(practice){const group=practiceCards(next);practiceIndex=Math.min(practiceIndex+1,group.length);rememberPractice(group[practiceIndex]?.id||null);}
   const commit=store.commit({...store.library,cards:next},{},[updated.id],undefined,{deferNotes:true});
   const wasUnknown=unknownSession?.delete(updated.id);
   lastGraded={id:updated.id,answer:updated.answer,rating};sessionCount++;
@@ -511,7 +520,7 @@ async function grade(rating){
 }
 function movePractice(step){
   if(busy||!store||!isPractice())return;
-  const group=cardsInGroup(cards(),selectedGroup);
+  const group=practiceCards();
   practiceIndex=Math.max(0,Math.min(practiceIndex+step,group.length));
   rememberPractice(group[practiceIndex]?.id||null); // only moving through cards updates the position, not opening the mode
   void showNextReview();
