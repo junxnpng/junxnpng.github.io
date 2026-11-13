@@ -12,9 +12,8 @@
 <div class="sm-choice" data-search="{{ $search }}">
   <a class="sm-choice-select" data-ipa-select="{{ $id }}" href="#{{ $id }}" aria-controls="{{ $id }}" aria-expanded="true" aria-label="{{ $symbol }} {{ $word }} 설명 보기">
     {{ if not .extra }}<small>{{ printf "%02d" (int $item.number) }}</small>{{ end }}
-    <span class="sm-choice-symbol" lang="en">{{ $symbol }}</span>
+    <b class="sm-choice-mark" data-ipa-mark hidden aria-hidden="true">?</b>
+    <span class="sm-choice-symbol" lang="en">{{ replace (htmlEscape $symbol) "ː" `<span class="sm-length">ː</span>` | safeHTML }}</span>
     <span class="sm-choice-word" title="{{ $word }}">{{ $word }}</span>
   </a>
-  <a class="sm-choice-listen" href="{{ $url }}" target="_blank" rel="noopener noreferrer" aria-label="{{ $symbol }} {{ $word }} 원본에서 듣기 (새 탭)" title="원본에서 듣기 · 새 탭"><span aria-hidden="true">▶</span></a>
-  <label class="sm-choice-progress" hidden><input type="checkbox" data-ipa-mastered="{{ $id }}" aria-label="{{ $symbol }} {{ $word }} 외웠어요"><span>외웠어요</span></label>
 </div>

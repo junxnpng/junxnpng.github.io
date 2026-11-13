@@ -52,6 +52,11 @@
       const done = state.items[link.dataset.ipaSelect]?.mastered === true;
       if (done) count++;
       link.closest(".sm-choice").classList.toggle("is-mastered", done);
+      // The tile only shows the state; the checkbox lives in the explanation card.
+      const mark = link.querySelector("[data-ipa-mark]");
+      mark.textContent = done ? "✓" : "?";
+      mark.hidden = false;
+      link.setAttribute("aria-label", `${link.dataset.ipaLabel} · ${done ? "외움" : "아직 안 외움"}`);
     }
     for (const checkbox of root.querySelectorAll("[data-ipa-mastered]")) checkbox.checked = state.items[checkbox.dataset.ipaMastered]?.mastered === true;
     panel.querySelector("[data-ipa-progress-count]").textContent = `${count} / ${choices.length}개 외움`;
@@ -68,7 +73,7 @@
 
   readLocal();
   for (const link of choices) {
-    link.closest(".sm-choice").querySelector(".sm-choice-progress").hidden = false;
+    link.dataset.ipaLabel = link.getAttribute("aria-label");
     const label = document.createElement("label");
     label.className = "sm-card-progress";
     const checkbox = document.createElement("input");
