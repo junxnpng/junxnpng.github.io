@@ -55,7 +55,28 @@
     }));
   }
 
+  // The floating "top" button: while an explanation is open it first returns to the tile that was
+  // picked, so the next sound is one tap away. With the tile already on screen it goes to the top.
+  const topLink = document.getElementById("top-link");
+  topLink?.addEventListener("click", event => {
+    const record = records.get(selected[0]);
+    if (!record) return;
+    const box = record.choice.getBoundingClientRect();
+    if (box.top >= 0 && box.bottom <= innerHeight) return;
+    event.preventDefault();
+    record.choice.scrollIntoView({
+      behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth",
+      block: "center"
+    });
+    record.link.focus({ preventScroll: true });
+  });
+
   function render() {
+    if (topLink) {
+      const label = selected.length ? "고른 기호 위치로 돌아가기" : "맨 위로";
+      topLink.setAttribute("aria-label", label);
+      topLink.title = label;
+    }
     for (const group of groups) {
       const active = group === activeGroup;
       const ids = active ? selected : [];
