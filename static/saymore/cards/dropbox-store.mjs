@@ -352,9 +352,13 @@ export class DropboxStore{
     const existing=new Set(this.library.cards.map(c=>c.id));
     const added=incoming.cards.filter(c=>!existing.has(c.id));
     const refs=new Set(added.flatMap(c=>[c.image?.path,c.audio?.path].filter(Boolean)));
-    for(const path of refs)if(!entries.has(path)||entries.get(path).size>10*1024*1024)throw Error('새 덱의 첨부파일이 없거나 너무 큽니다. 기존 카드는 그대로 유지합니다.');
+    // A new card may reuse a picture or recording that a card already in the library holds; that file is not sent again.
+    const held=new Set(this.library.cards.flatMap(c=>[c.image?.path,c.audio?.path].filter(Boolean)));
+    for(const path of refs)if(entries.has(path)?entries.get(path).size>10*1024*1024:!held.has(path))throw Error('새 덱의 첨부파일이 없거나 너무 큽니다. 기존 카드는 그대로 유지합니다.');
     if(!added.length)return {added:0,skipped:incoming.cards.length,warnings:[]};
-    const uploads=Object.fromEntries([...refs].map(path=>[path,entries.get(path)]));
+    const uploads=Object.fromEntries([...refs].filter(path=>entries.has(path)).map(path=>[path,entries.get(path)]));
+    // Nothing here ever deletes an attachment; if cleanup is added, count every card that uses a path first.
+    for(const path of refs)if(!entries.has(path))await this.readMedia(path);
     const result=await this.commit({...copy(this.library),cards:[...copy(this.library.cards),...added]},uploads,added.map(c=>c.id),onProgress);
     const stored=await DropboxStore.read(this.cloud,this);
     const readBack=stored.raw!==null&&stored.library;

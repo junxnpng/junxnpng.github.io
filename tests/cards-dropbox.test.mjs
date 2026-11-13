@@ -571,3 +571,19 @@ test('a save still succeeds when another device saved first',async()=>{
   assert.equal((await stored(cloud)).cards[1].reviews[0].rating,4);
   assert.deepEqual((await stored(cloud)).cards.map(c=>c.reviews.length),[1,1]);
 });
+
+test('a new card may reuse a picture an existing card holds, without sending the file again',async()=>{
+  const path='media/00000000-0000-0000-0000-000000000009.png';
+  const base=newLibrary();base.cards=[newCard({...fields('old'),image:{path,credit:'mine'}})];
+  const cloud=memoryCloud(base);cloud.files.set('/cards/'+path,new Blob(['png'],{type:'image/png'}));
+  const store=await api.DropboxStore.open(cloud),before=cloud.files.size;
+  const incoming=newLibrary();incoming.cards=[newCard({...fields('new'),image:{path,credit:'mine'}})];
+  const result=await store.appendEntries([{path:'library.json',blob:new Blob([JSON.stringify(incoming)])}]);
+  assert.equal(result.added,1);assert.equal(store.library.cards[1].image.path,path);
+  assert.equal([...cloud.files.keys()].filter(key=>key.startsWith('/cards/media/')).length,1);
+  assert.ok(cloud.files.size>=before);
+  cloud.files.delete('/cards/'+path);
+  const more=newLibrary();more.cards=[newCard({...fields('third'),image:{path,credit:'mine'}})];
+  await assert.rejects(store.appendEntries([{path:'library.json',blob:new Blob([JSON.stringify(more)])}]));
+  assert.equal(store.library.cards.length,2);
+});
