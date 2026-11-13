@@ -2,7 +2,8 @@ import {newCard, editCard, rateCard, correctLastReview, reviewOptions, dueCards,
 import {studyGroups,cardsInGroup,studyQueue,studyProgress,sortCards,sortOrders,resumeIndex,unseenFirst} from './study-groups.mjs?v=8';
 import {FolderStore, rememberedFolder, friendlyError} from './storage.mjs?v=5';
 import {el, showCard} from './view.mjs?v=5';
-import {DropboxStore} from './dropbox-store.mjs?v=9';
+import {DropboxStore} from './dropbox-store.mjs?v=10';
+import {readSnapshot,writeSnapshot,clearSnapshot} from './snapshot-cache.mjs?v=1';
 import {MediaCache} from './media-cache.mjs?v=1';
 import {parseBundle} from './bundle.mjs?v=1';
 import {prepareImagePatch} from './image-patch.mjs?v=3';
@@ -157,24 +158,39 @@ async function toggleFlag(kind){
     }
   }finally{controls();}
 }
+let listRest=[];
+const listWatch='IntersectionObserver' in window?new IntersectionObserver(entries=>{if(entries.some(e=>e.isIntersecting)&&listRest.length)appendRows();},{rootMargin:'600px'}):null;
+function cardRow(c){
+  const row=el('article',undefined,'card-row'), title=el('div');
+  title.append(el('h3',c.answer),el('p',[c.ipa,c.deck,c.tags.map(t=>'#'+t).join(' ')].filter(Boolean).join(' · ')));
+  const schedule=el('div',undefined,'row-schedule');
+  const state=c.schedule.state===0?'새 카드':Date.parse(c.schedule.due)<=Date.now()?'복습할 시간':'다음 복습';
+  const waited=waitLabel(overdueMs(c));
+  schedule.append(el('span',state,'status'),el('span',c.schedule.state===0?'바로 학습할 수 있어요':dateLabel(c.schedule.due)),el('p',`복습 ${c.reviews.length}회${waited?` · 예정일에서 ${waited} 지남`:''}`));
+  const actions=el('div',undefined,'row-actions'), preview=el('button','미리 보기','text-button'), edit=el('button','수정','text-button');
+  preview.addEventListener('click',()=>openDetail(c.id));edit.addEventListener('click',()=>openEdit(c.id));
+  actions.append(preview,edit);
+  if(c.reviews.at(-1)?.log){const fix=el('button','평가 고치기','text-button');fix.addEventListener('click',()=>openDetail(c.id,true));actions.append(fix);}
+  row.append(title,schedule,actions);
+  return row;
+}
+function appendRows(count=60){
+  const fragment=document.createDocumentFragment();
+  for(const c of listRest.splice(0,count))fragment.append(cardRow(c));
+  $('card-list').append(fragment);
+  $('list-more').hidden=!listRest.length;
+  $('list-more').textContent=`더 보기 · 남은 ${listRest.length}장`;
+}
 function renderLibrary(){
   updateStats();
   const q=$('search').value.trim().toLocaleLowerCase();
   const list=sortCards(cardsInGroup(cards(),selectedGroup),sortOrder).filter(c=>!q||[c.answer,c.front,c.sentence,c.memory,c.deck,...c.tags].join(' ').toLocaleLowerCase().includes(q));
-  $('card-list').replaceChildren();
-  for(const c of list){
-    const row=el('article',undefined,'card-row'), title=el('div');
-    title.append(el('h3',c.answer),el('p',[c.ipa,c.deck,c.tags.map(t=>'#'+t).join(' ')].filter(Boolean).join(' · ')));
-    const schedule=el('div',undefined,'row-schedule');
-    const state=c.schedule.state===0?'새 카드':Date.parse(c.schedule.due)<=Date.now()?'복습할 시간':'다음 복습';
-    const waited=waitLabel(overdueMs(c));
-    schedule.append(el('span',state,'status'),el('span',c.schedule.state===0?'바로 학습할 수 있어요':dateLabel(c.schedule.due)),el('p',`복습 ${c.reviews.length}회${waited?` · 예정일에서 ${waited} 지남`:''}`));
-    const actions=el('div',undefined,'row-actions'), preview=el('button','미리 보기','text-button'), edit=el('button','수정','text-button');
-    preview.addEventListener('click',()=>openDetail(c.id));edit.addEventListener('click',()=>openEdit(c.id));
-    actions.append(preview,edit);
-    if(c.reviews.at(-1)?.log){const fix=el('button','평가 고치기','text-button');fix.addEventListener('click',()=>openDetail(c.id,true));actions.append(fix);}
-    row.append(title,schedule,actions);$('card-list').append(row);
-  }
+  // A long list is drawn a screenful at a time: the rest is added as the reader reaches the end.
+  // Redrawing after a save shows as many rows as were on screen, so the reader keeps their place.
+  const shown=Math.max(60,$('card-list').children.length);
+  $('card-list').replaceChildren();listRest=list.slice();appendRows(shown);
+  // The button may still be on screen after the list was redrawn; watching it afresh makes it report that.
+  listWatch?.unobserve($('list-more'));listWatch?.observe($('list-more'));
   $('list-count').textContent=store ? `${list.length}장` : '';
   // Marked cards carry a tag, so showing them is a search for that tag across every card.
   $('flag-filters').replaceChildren(...Object.entries(flagKinds).flatMap(([kind,{tag,list}])=>{
@@ -285,13 +301,23 @@ function saved(result,message,{review=false}={}){
   if(review)updateStats();else{updateDecks();renderLibrary();}
   if(!noteWarnings(result))notice(message);
 }
+// The library file is remembered in this browser so the next visit need not download it again.
+let rememberedRev=null;
+function rememberSnapshot(){
+  if(store?.kind!=='dropbox'||!cloud?.connected||store.raw===null||!store.rev||store.rev===rememberedRev)return;
+  rememberedRev=store.rev;void writeSnapshot({raw:store.raw,rev:store.rev,hash:store.hash});
+}
+// Cards changed on two devices that never saw each other's change. Nothing is thrown away: the other
+// version is kept in journal.json in the Dropbox folder.
+function conflictNote(){return store?.conflicts?` 카드 ${store.conflicts}장은 두 기기에서 서로 다르게 바뀌어 한쪽만 반영했어요. 다른 쪽 기록은 Dropbox의 journal.json에 남아 있어요.`:'';}
 async function loadCloud(epoch){
   await store?.flushNotes?.();
-  const loaded=await DropboxStore.open(cloud);
+  const loaded=await DropboxStore.open(cloud,store?.kind==='dropbox'?store:await readSnapshot());
   if(epoch!==connectionEpoch)return;
   store=loaded;clearMediaCache();lastSaved='';activeCard=null;unknownSession=null;practiceIndex=practiceStart();
+  rememberSnapshot();
   $('reconnect').hidden=true;updateDecks();renderLibrary();
-  notice(`${cards().length}장의 카드와 복습 기록을 Dropbox에서 불러왔어요.`);
+  notice(`${cards().length}장의 카드와 복습 기록을 Dropbox에서 불러왔어요.`+conflictNote());
   if(view==='review')await showNextReview();
 }
 async function connectCloud(){
@@ -314,12 +340,16 @@ async function refreshCloud(){
   const previous=store,epoch=connectionEpoch;
   let applied=false;
   try{
-    const next=await DropboxStore.open(cloud);
-    if(busy||saving||dirty||store?.pendingNotes||(view==='review'&&revealed)||store!==previous||epoch!==connectionEpoch||next.rev===previous.rev)return;
+    // Two small requests tell whether another device saved; the files are read only if one did.
+    const seen=previous.version;
+    if(!await previous.changed())return;
+    const next=await DropboxStore.open(cloud,previous);
+    // `seen` guards against a save of our own finishing while the files were being read.
+    if(busy||saving||dirty||store?.pendingNotes||(view==='review'&&revealed)||store!==previous||previous.version!==seen||epoch!==connectionEpoch||next.version===seen)return;
     applied=true;setBusy(true);
-    store=next;clearMediaCache();updateDecks();renderLibrary();
+    store=next;rememberSnapshot();clearMediaCache();updateDecks();renderLibrary();
     if(view==='review')await showNextReview();
-    notice('다른 기기에서 저장한 최신 기록을 불러왔어요.');
+    notice('다른 기기에서 저장한 최신 기록을 불러왔어요.'+conflictNote());
   }catch(e){notice(friendlyError(e),true);}finally{refreshing=false;if(applied)setBusy(false);}
 }
 async function saveCard(event){
@@ -533,6 +563,7 @@ $('disconnect-dropbox').addEventListener('click',async()=>{
   try{
     await store?.flushNotes?.();cloud?.disconnect();connectionEpoch++;
     if(store?.kind==='dropbox'){store=null;clearMediaCache();activeCard=null;unknownSession=null;renderLibrary();if(view==='review')showNextReview();}
+    rememberedRev=null;await clearSnapshot();
     notice('이 브라우저의 연결을 해제했어요. Dropbox에 저장된 카드와 기록은 그대로 있어요.');
   }catch(e){notice(friendlyError(e),true);}finally{setBusy(false);}
 });
@@ -592,6 +623,8 @@ $('search').addEventListener('input',renderLibrary);
 for(const button of $('flag-row').querySelectorAll('button'))button.addEventListener('click',()=>toggleFlag(button.dataset.flag));
 for(const [value,label] of Object.entries(sortOrders)){const option=el('option',label);option.value=value;$('sort-order').append(option);}
 $('sort-order').value=sortOrder;
+$('list-more').addEventListener('click',()=>appendRows());
+listWatch?.observe($('list-more'));
 $('sort-order').addEventListener('change',()=>{sortOrder=$('sort-order').value;try{localStorage.setItem('saymore.cards.sort.v1',sortOrder);}catch{/* The order still applies for this visit. */}renderLibrary();});
 $('fix-last').addEventListener('click',()=>lastGraded&&openDetail(lastGraded.id,true));
 for(const id of ['deck-filter','review-group'])$(id).addEventListener('change',()=>chooseGroup($(id).value));
@@ -618,7 +651,7 @@ for(const b of document.querySelectorAll('[data-rating]'))b.addEventListener('cl
 $('repair-notes').addEventListener('click',async()=>{if(!store||busy)return;setBusy(true);try{const result=await store.exportNotes();$('repair-notes').hidden=result.warnings.length===0;saved(result,'읽기용 노트를 다시 저장했어요.');}catch(e){notice(friendlyError(e),true);}finally{setBusy(false);}});
 window.addEventListener('beforeunload',e=>{if(dirty||busy){e.preventDefault();e.returnValue='';}});
 document.addEventListener('keydown',e=>{if(view!=='review'||busy||$('detail-dialog').open||/INPUT|TEXTAREA|SELECT/.test(e.target.tagName))return;if(e.code==='Space'){if(e.target.closest('button,a,summary'))return;e.preventDefault();if(!revealed||isPractice())reveal();}else if(revealed&&/^[1-4]$/.test(e.key))grade(Number(e.key));});
-setInterval(()=>{if(store&&!busy)updateStats();void refreshCloud();},30000);
+setInterval(()=>{if(store&&!busy)updateStats();rememberSnapshot();void refreshCloud();},30000);
 window.addEventListener('pageshow',()=>void refreshCloud());
 window.addEventListener('online',()=>void refreshCloud());
 // GitHub Pages lets the browser reuse this page for ten minutes, so a new release can lag behind.
@@ -640,7 +673,7 @@ void checkForUpdate();
 window.addEventListener('storage',async event=>{
   if(event.key!=='saymore.dropbox.auth.v1'||!cloud)return;
   controls();
-  if(cloud.connected&&!busy&&!dirty){const epoch=++connectionEpoch;setBusy(true);try{await loadCloud(epoch);}catch(e){notice(friendlyError(e),true);}finally{setBusy(false);}}
+  if(cloud.connected&&!busy&&!saving&&!dirty){const epoch=++connectionEpoch;setBusy(true);try{await loadCloud(epoch);}catch(e){notice(friendlyError(e),true);}finally{setBusy(false);}}
   else if(!cloud.connected)notice('이 브라우저의 Dropbox 연결이 해제되었어요. 다시 연결하면 저장된 기록을 읽을 수 있어요.');
 });
 $('browser-support').textContent='Dropbox 저장은 아이폰 Safari와 맥 Chrome에서 사용할 수 있어요. 사진·음원도 내 Dropbox에 저장해요.';

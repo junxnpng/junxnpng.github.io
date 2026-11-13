@@ -6,9 +6,9 @@
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' blob: data:; media-src 'self' blob:; connect-src 'self' https://api.dropboxapi.com https://content.dropboxapi.com; object-src 'none'; base-uri 'self'; form-action 'none'">
   <title>내 단어 카드 · Say More</title>
-  <link rel="icon" href="/saymore/icons/speech.svg"><link rel="stylesheet" href="../skin.css?v=1"><link rel="stylesheet" href="./app.css?v=tabs-1">
+  <link rel="icon" href="/saymore/icons/speech.svg"><link rel="stylesheet" href="../skin.css?v=1"><link rel="stylesheet" href="./app.css?v=journal-1">
   <script src="../skin.js?v=1"></script>
-  <script type="module" src="./app.mjs?v=levels-2"></script>
+  <script type="module" src="./app.mjs?v=journal-2"></script>
 </head>
 <body>
 <div class="shell">
@@ -23,7 +23,7 @@
     <section id="library-view" aria-labelledby="library-title">
       <div class="section-heading"><h2 id="library-title">모아둔 카드</h2><div class="list-tools"><span id="flag-filters" class="flag-filters"></span><span id="list-count" class="small"></span></div></div>
       <div class="filters study-filters"><label class="search">단어·태그 찾기<input id="search" type="search" placeholder="단어, 예문, 태그로 검색"></label><label>학습할 묶음<select id="deck-filter"><option value="all">전체 카드</option></select></label><label>목록 순서<select id="sort-order"></select></label></div>
-      <div id="card-list" class="card-list"></div>
+      <div id="card-list" class="card-list"></div><button id="list-more" class="secondary list-more" type="button" hidden>더 보기</button>
       <div id="empty-library" class="empty"><p class="empty-symbol" aria-hidden="true">Aa</p><h3>첫 카드를 만들어보세요.</h3><p>사진이나 질문을 앞면에, 떠올릴 단어를 뒷면에 담아요.</p><button class="primary" data-open-add>새 카드 만들기</button><a href="/saymore/card-demo/">coffee 예시 먼저 보기 ↗</a></div>
     </section>
 

@@ -96,3 +96,5 @@ code{border-radius:5px}
 .flag-image:hover{color:var(--ink);border-style:solid}
 .flag-image[aria-pressed=true]{color:var(--sk-mark-ink);background:var(--mark);border:var(--sk-ctl-bw) solid var(--sk-btn-edge)}
 .list-tools,.flag-filters{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:6px 14px}
+.list-more{display:block;margin:14px auto 0}
+.list-more[hidden]{display:none}

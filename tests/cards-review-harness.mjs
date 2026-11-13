@@ -12,15 +12,18 @@ const $=id=>document.getElementById(id),imagePath='media/00000000-0000-0000-0000
 const now=new Date(),seed=newLibrary(now);
 seed.cards=Array.from({length:groupedFixture?698:500},(_,i)=>newCard({type:'basic',deck:groupedFixture?(i<67?'IPA 01 · 모음':i<696?'Fluent Forever · First 625':'내 단어'): '속도 검증',tags:groupedFixture?(i<67?['IPA']:i<696?['FF625']:[]):[],front:`테스트 카드 ${i+1}`,answer:groupedFixture?(i<67?`IPA ${i+1}`:i<696?`word ${i-66}`:`personal ${i-695}`):`answer ${i+1}`,image:i<3?{path:imagePath,credit:'fixture'}:null,audio:i<3?{path:audioPath,credit:'fixture'}:null},now));
 if(groupedFixture){for(const [index,rating]of [[0,1],[167,4],[168,1]])seed.cards[index]=rateCard(seed.cards[index],rating,now);}
-const files=new Map([['/cards/library.json',{blob:new Blob([localStorage.getItem(key)||JSON.stringify(seed)]),rev:'1'}]]);
-let revision=1,pendingNotes=0,pendingAudio=0,started=0,elapsed=null,listChanges=0,requests=0,canonicalWrites=0;
+const files=new Map([['/cards/library.json',{blob:new Blob([localStorage.getItem(key)||JSON.stringify(seed)]),rev:String(Date.now())}]]);
+let revision=Date.now(),pendingNotes=0,pendingAudio=0,started=0,elapsed=null,listChanges=0,requests=0,canonicalWrites=0;
 const errors=[];
 const delay=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 const json=(value,status=200)=>new Response(JSON.stringify(value),{status,headers:{'Content-Type':'application/json'}});
 const conflict=()=>json({error_summary:'path/conflict'},409);
 async function status(){
   const library=JSON.parse(await files.get('/cards/library.json').blob.text());
-  $('qa-status').textContent=`Transition: ${elapsed??'—'} ms | Saved reviews: ${library.cards.reduce((n,c)=>n+c.reviews.length,0)} | Canonical writes: ${canonicalWrites} | Pending notes: ${pendingNotes} | Pending audio: ${pendingAudio} | Library rebuilds: ${listChanges} | Requests: ${requests}`;
+  // Reviews live in the snapshot or, for cards changed since, in the journal.
+  const journal=files.has('/cards/journal.json')?JSON.parse(await files.get('/cards/journal.json').blob.text()):{entries:[]};
+  const latest=new Map([...library.cards,...journal.entries.map(e=>e.card)].map(c=>[c.id,c]));
+  $('qa-status').textContent=`Transition: ${elapsed??'—'} ms | Saved reviews: ${[...latest.values()].reduce((n,c)=>n+c.reviews.length,0)} | Journal: ${journal.entries.length} | Canonical writes: ${canonicalWrites} | Pending notes: ${pendingNotes} | Pending audio: ${pendingAudio} | Library rebuilds: ${listChanges} | Requests: ${requests}`;
 }
 function failure(error){errors.push(String(error));$('qa-errors').textContent=errors.join('\n');}
 window.addEventListener('error',e=>failure(e.message));
@@ -46,7 +49,7 @@ globalThis.fetch=async(url,options={})=>{
     const source=files.get(args.from_path);files.set(args.to_path,{blob:source.blob,rev:String(++revision)});
     return json({metadata:{content_hash:'hash-'+source.rev}});
   }
-  if(action==='get_metadata'){requests++;await delay(80);const file=files.get(path);return file?json({content_hash:'hash-'+file.rev}):json({error_summary:'path/not_found',error:{path:{'.tag':'not_found'}}},409);}
+  if(action==='get_metadata'){requests++;await delay(80);const file=files.get(path);return file?json({rev:file.rev,content_hash:'hash-'+file.rev}):json({error_summary:'path/not_found',error:{path:{'.tag':'not_found'}}},409);}
   requests++;void status();await delay(80);
   if(action==='create_folder_v2')return json({});
   if(action==='download'){
@@ -58,14 +61,15 @@ globalThis.fetch=async(url,options={})=>{
     const file=files.get(path);void status();
     return file?new Response(file.blob,{headers:{'Dropbox-API-Result':JSON.stringify({rev:file.rev,content_hash:'hash-'+file.rev})}}):json({error_summary:'path/not_found',error:{path:{'.tag':'not_found'}}},409);
   }
-  for(const [id,match]of [['qa-fail-save',path==='/cards/library.json'],['qa-fail-note',path.includes('/notes/')]]){
+  for(const [id,match]of [['qa-fail-save',path==='/cards/library.json'||path==='/cards/journal.json'],['qa-fail-note',path.includes('/notes/')]]){
     if(match&&$(id).checked){$(id).checked=false;void status();return json({error_summary:'test/offline'},503);}
   }
   const previous=files.get(path),expected=args.mode['.tag']==='update'?args.mode.update:null;
   if((previous?.rev||null)!==expected)return conflict();
   const blob=options.body instanceof Blob?options.body:new Blob([options.body]),rev=String(++revision);
   files.set(path,{blob,rev});
-  if(path==='/cards/library.json'){canonicalWrites++;localStorage.setItem(key,await blob.text());}
+  if(path==='/cards/library.json'){canonicalWrites++;try{localStorage.setItem(key,await blob.text());}catch{/* too large to keep across reloads */}}
+  if(path==='/cards/journal.json')canonicalWrites++;
   void status();return json({rev,content_hash:'hash-'+rev});
 };
 document.addEventListener('click',event=>{if(event.target.closest('[data-rating]')&&!event.target.closest('button').disabled)started=performance.now();},true);
@@ -75,4 +79,4 @@ new MutationObserver(()=>{
   void status();
 }).observe($('review-view'),{childList:true,subtree:true,attributes:true,attributeFilter:['hidden']});
 new MutationObserver(()=>{listChanges++;void status();}).observe($('card-list'),{childList:true});
-await import('./app.mjs?v=levels-2');
+await import('./app.mjs?v=journal-2');
