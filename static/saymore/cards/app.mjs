@@ -1,5 +1,5 @@
 import {newCard, editCard, rateCard, correctLastReview, reviewOptions, dueCards, dateLabel, intervalLabel, ratings, overdueMs, reviewLateMs, waitLabel} from './model.mjs?v=5';
-import {studyGroups,cardsInGroup,studyQueue,studyProgress,sortCards,sortOrders,resumeIndex,unseenFirst} from './study-groups.mjs?v=8';
+import {studyGroups,cardsInGroup,studyQueue,studyProgress,sortCards,sortOrders,resumeIndex,unseenFirst,setSection,inSection,sections} from './study-groups.mjs?v=9';
 import {FolderStore, rememberedFolder, friendlyError} from './storage.mjs?v=5';
 import {el, showCard} from './view.mjs?v=5';
 import {DropboxStore} from './dropbox-store.mjs?v=10';
@@ -21,7 +21,11 @@ let cloud=null,refreshing=false;
 let selectedGroup='all',practiceIndex=0,practiceOrder=[];
 let sortOrder='default', lastGraded=null;
 try{const saved=localStorage.getItem('saymore.cards.sort.v1');if(Object.hasOwn(sortOrders,saved||''))sortOrder=saved;}catch{/* Sorting still works for this visit. */}
-try{selectedGroup=localStorage.getItem('saymore.cards.group.v1')||'all';}catch{/* Selection is optional when browser storage is unavailable. */}
+// The same page serves three tabs: word cards, and with ?set=form or ?set=order the cards of that tab alone.
+const section=setSection(new URLSearchParams(location.search).get('set'));
+const groupKey=section==='cards'?'saymore.cards.group.v1':`saymore.cards.group.${section}.v1`;
+const positionKey=section==='cards'?'saymore.cards.practice-position.v1':`saymore.cards.practice-position.${section}.v1`;
+try{selectedGroup=localStorage.getItem(groupKey)||'all';}catch{/* Selection is optional when browser storage is unavailable. */}
 
 function notice(message,error=false){noticeVersion++;$('notice').textContent=message;$('notice').hidden=!message;$('notice').classList.toggle('error',error);}
 // While an answer is being saved the review continues on the cards as they will be once it is stored.
@@ -75,7 +79,7 @@ function retryControls(){
 }
 function isPractice(){return ['practice','resume'].includes($('review-mode').value);}
 // Free practice remembers the card last shown in each group so "이어서 연습" can continue from it.
-function practicePositions(){try{const value=JSON.parse(localStorage.getItem('saymore.cards.practice-position.v1'));return value&&typeof value==='object'?value:{};}catch{return {};}}
+function practicePositions(){try{const value=JSON.parse(localStorage.getItem(positionKey));return value&&typeof value==='object'?value:{};}catch{return {};}}
 // Practice shows cards never reviewed first. The order is fixed when practice starts, so a card that
 // gets rated on the way does not jump behind the others and shift every position after it.
 function practiceCards(list=cards()){
@@ -86,21 +90,25 @@ function practiceStart(){
   practiceOrder=store?unseenFirst(cardsInGroup(cards(),selectedGroup)).map(c=>c.id):[];
   return store&&$('review-mode').value==='resume'?resumeIndex(practiceCards(),practicePositions()[selectedGroup]):0;
 }
-function rememberPractice(cardId){try{const all=practicePositions();if(cardId)all[selectedGroup]=cardId;else delete all[selectedGroup];localStorage.setItem('saymore.cards.practice-position.v1',JSON.stringify(all));}catch{/* The position still holds for this visit. */}}
+function rememberPractice(cardId){try{const all=practicePositions();if(cardId)all[selectedGroup]=cardId;else delete all[selectedGroup];localStorage.setItem(positionKey,JSON.stringify(all));}catch{/* The position still holds for this visit. */}}
 function setBusy(value){busy=value;controls();}
 function updateStats(){
-  $('total-count').textContent=cards().length;
-  $('new-count').textContent=cards().filter(c=>c.schedule.state===0).length;
-  $('due-count').textContent=store ? dueCards(store.library).filter(c=>c.schedule.state!==0).length : 0;
+  const mine=inSection(cards());
+  $('total-count').textContent=mine.length;
+  $('new-count').textContent=mine.filter(c=>c.schedule.state===0).length;
+  $('due-count').textContent=store ? inSection(dueCards(store.library)).filter(c=>c.schedule.state!==0).length : 0;
   // The home page shows today's count from these due dates without opening Dropbox itself.
-  if(store)try{localStorage.setItem('saymore.home.cards.v1',JSON.stringify({at:Date.now(),total:cards().length,fresh:cards().filter(c=>c.schedule.state===0).length,due:cards().filter(c=>c.schedule.state!==0).map(c=>Date.parse(c.schedule.due))}));}catch{/* The home page keeps its last numbers. */}
+  if(store)try{
+    const summary=list=>({total:list.length,fresh:list.filter(c=>c.schedule.state===0).length,due:list.filter(c=>c.schedule.state!==0).map(c=>Date.parse(c.schedule.due))});
+    localStorage.setItem('saymore.home.cards.v1',JSON.stringify({at:Date.now(),...summary(inSection(cards(),'cards')),sections:Object.fromEntries(Object.keys(sections).map(name=>[name,summary(inSection(cards(),name))]))}));
+  }catch{/* The home page keeps its last numbers. */}
 }
 function groupLabel(group,now=new Date()){
   const p=studyProgress(group.cards,now);
   return `${group.label} · ${p.total}장 · 오늘 완료 ${p.completedToday} · 남음 ${p.remaining}`;
 }
 function updateDecks(){
-  const decks=[...new Set(cards().map(c=>c.deck))].sort((a,b)=>a.localeCompare(b));
+  const decks=[...new Set(inSection(cards()).map(c=>c.deck))].sort((a,b)=>a.localeCompare(b));
   const groups=studyGroups(cards());
   if(!groups.some(g=>g.key===selectedGroup))selectedGroup='all';
   for(const id of ['deck-filter','review-group']){
@@ -117,7 +125,7 @@ function updateDecks(){
 function chooseGroup(key){
   if(busy)return;
   selectedGroup=key;
-  try{localStorage.setItem('saymore.cards.group.v1',key);}catch{/* The selected group still works for this visit. */}
+  try{localStorage.setItem(groupKey,key);}catch{/* The selected group still works for this visit. */}
   $('deck-filter').value=$('review-group').value=key;
   if(view==='review')startReview(unknownSession!==null);else renderLibrary();
 }
@@ -192,15 +200,15 @@ function renderLibrary(){
   // The button may still be on screen after the list was redrawn; watching it afresh makes it report that.
   listWatch?.unobserve($('list-more'));listWatch?.observe($('list-more'));
   $('list-count').textContent=store ? `${list.length}장` : '';
-  // Marked cards carry a tag, so showing them is a search for that tag across every card.
+  // Marked cards carry a tag, so showing them is a search for that tag across every card of this tab.
   $('flag-filters').replaceChildren(...Object.entries(flagKinds).flatMap(([kind,{tag,list}])=>{
-    const count=cards().filter(c=>hasFlag(c,kind)).length;if(!count)return [];
+    const count=inSection(cards()).filter(c=>hasFlag(c,kind)).length;if(!count)return [];
     const button=el('button',`${list} ${count}장`,'text-button');button.type='button';
     button.addEventListener('click',()=>{$('search').value=tag;if(selectedGroup==='all')renderLibrary();else chooseGroup('all');});
     return [button];
   }));
   $('empty-library').hidden=list.length>0;
-  $('empty-library').querySelector('h3').textContent=cards().length?'검색에 맞는 카드가 없어요.':'첫 카드를 만들어보세요.';
+  $('empty-library').querySelector('h3').textContent=inSection(cards()).length?'검색에 맞는 카드가 없어요.':section==='cards'?'첫 카드를 만들어보세요.':'아직 이 탭의 카드가 없어요.';
   controls();
 }
 function clearMediaCache(){mediaCache.clear();}
@@ -243,7 +251,7 @@ function switchView(next,force=false){
   view=next;
   for(const name of ['library','add','review'])$(`${name}-view`).hidden=name!==view;
   for(const b of document.querySelectorAll('[data-view]')){if(b.dataset.view===view)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');}
-  history.replaceState(null,'',view==='add'?'#add':view==='review'?'#review':location.pathname);
+  history.replaceState(null,'',view==='add'?'#add':view==='review'?'#review':location.pathname+location.search);   // keep ?set= so a reload stays in this tab
   if(view==='library'){updateDecks();renderLibrary();}
   if(view==='add'){updateDecks();renderPreview();controls();}
   if(view==='review')startReview();
@@ -266,7 +274,7 @@ async function loadFolder(folder,epoch){
   try{await rememberedFolder(loaded.folder);}catch{/* Permission handles are optional; folder files remain authoritative. */}
   $('reconnect').hidden=true;
   updateDecks();renderLibrary();
-  notice(`${cards().length}장의 카드와 복습 기록을 폴더에서 불러왔어요.`);
+  notice(`${inSection(cards()).length}장의 카드와 복습 기록을 폴더에서 불러왔어요.`);
   if(view==='review')await showNextReview();
 }
 async function connect(previous=false){
@@ -317,7 +325,7 @@ async function loadCloud(epoch){
   store=loaded;clearMediaCache();lastSaved='';activeCard=null;unknownSession=null;practiceIndex=practiceStart();
   rememberSnapshot();
   $('reconnect').hidden=true;updateDecks();renderLibrary();
-  notice(`${cards().length}장의 카드와 복습 기록을 Dropbox에서 불러왔어요.`+conflictNote());
+  notice(`${inSection(cards()).length}장의 카드와 복습 기록을 Dropbox에서 불러왔어요.`+conflictNote());
   if(view==='review')await showNextReview();
 }
 async function connectCloud(){
@@ -676,9 +684,23 @@ window.addEventListener('storage',async event=>{
   if(cloud.connected&&!busy&&!saving&&!dirty){const epoch=++connectionEpoch;setBusy(true);try{await loadCloud(epoch);}catch(e){notice(friendlyError(e),true);}finally{setBusy(false);}}
   else if(!cloud.connected)notice('이 브라우저의 Dropbox 연결이 해제되었어요. 다시 연결하면 저장된 기록을 읽을 수 있어요.');
 });
+if(section!=='cards'){
+  const text={form:['WORD FORMS','단어 형태','went, children, says처럼 모양이 바뀌는 단어를 문장 속에서 익혀요.'],
+    order:['WORD ORDER','문장 어순','빠진 말이 문장의 어디에 들어가는지 익혀요.']}[section];
+  document.title=`${text[1]} · Say More`;
+  document.querySelector('.intro .eyebrow').textContent=text[0];
+  document.querySelector('.intro h1').textContent=text[1];
+  document.querySelector('.intro h1+p').textContent=text[2];
+  // New cards made here would have no place in this tab; they are added from the word cards tab.
+  for(const button of document.querySelectorAll('[data-view="add"],[data-open-add]'))button.hidden=true;
+}
+for(const link of document.querySelectorAll('.site-header nav a')){
+  const current=link.dataset.section===section;
+  if(current)link.setAttribute('aria-current','page');else link.removeAttribute('aria-current');
+}
 $('browser-support').textContent='Dropbox 저장은 아이폰 Safari와 맥 Chrome에서 사용할 수 있어요. 사진·음원도 내 Dropbox에 저장해요.';
 resetEditor();renderLibrary();
-if(location.hash==='#add')switchView('add',true);else if(location.hash==='#review')switchView('review',true);
+if(location.hash==='#add'&&section==='cards')switchView('add',true);else if(location.hash==='#review')switchView('review',true);
 async function restoreConnection(){
  try{cloud=await openDropbox();if(cloud.connected){const epoch=++connectionEpoch;setBusy(true);try{await loadCloud(epoch);}finally{setBusy(false);}return;}}
  catch(e){notice(friendlyError(e),true);}

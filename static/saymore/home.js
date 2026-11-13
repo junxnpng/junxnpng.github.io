@@ -16,6 +16,15 @@
     q('cards-note').textContent = '새 카드 ' + cards.fresh + ' · 전체 ' + cards.total + ' · ' + when + ' 기준';
   }
 
+  // The word-form and word-order tabs: what is due now, from the same saved counts.
+  var rows = document.querySelectorAll('[data-home-section]');
+  for (var i = 0; i < rows.length; i++) {
+    var part = cards && cards.sections && cards.sections[rows[i].getAttribute('data-home-section')];
+    if (!part || !part.total) continue;
+    var waiting = part.fresh + part.due.filter(function (at) { return at <= Date.now(); }).length;
+    rows[i].textContent = '지금 볼 카드 ' + waiting + ' · 전체 ' + part.total;
+  }
+
   var ipa = read('saymore.ipa.progress.v1'), total = Number(read('saymore.ipa.total')) || Number(root.dataset.ipaTotal) || 0, known = 0;
   if (ipa && ipa.items) for (var id in ipa.items) if (ipa.items[id] && ipa.items[id].mastered === true) known++;
   q('ipa').textContent = known; q('ipa-total').textContent = total;

@@ -130,3 +130,24 @@ test('practice resumes at the remembered card, otherwise after what has already 
   assert.equal(groups.resumeIndex(studied.map(c=>c.reviews.length?c:rateCard(c,3,now)),undefined),0);
   assert.equal(groups.resumeIndex([],list[1].id),0);
 });
+
+test('word-form and word-order cards live in tabs of their own and never among the word cards',()=>{
+  const word=card('dog','Oxford 3000 · A1',['OX3000','A1']),own=card('mine','My own deck');
+  const form=card('went','Word forms',['FORM']),order=card('Do you speak English?','Word order',['ORDER']);
+  const all=[word,form,own,order],before=copy(all);
+  try{
+    assert.equal(groups.setSection('nonsense'),'cards');
+    const inCards=groups.studyGroups(all);
+    assert.deepEqual(inCards.flatMap(g=>g.cards.map(c=>c.answer)).filter((a,i,list)=>list.indexOf(a)===i).sort(),['dog','mine']);
+    assert.deepEqual(groups.cardsInGroup(all,'all').map(c=>c.answer),['dog','mine']);
+    assert.deepEqual(groups.inSection(all).map(c=>c.answer),['dog','mine']);
+    assert.deepEqual(groups.inSection(all,'order').map(c=>c.answer),['Do you speak English?']);
+    assert.equal(groups.setSection('form'),'form');
+    assert.deepEqual(groups.studyGroups(all).map(g=>[g.key,g.label,g.cards.map(c=>c.answer)]),[['all','단어 형태',['went']]]);
+    assert.deepEqual(groups.studyQueue(all,'all','due',now).map(c=>c.answer),['went']);
+    assert.deepEqual(groups.studyQueue(all,'level:A1','due',now),[]);
+    assert.equal(groups.setSection('order'),'order');
+    assert.deepEqual(groups.cardsInGroup(all,'all').map(c=>c.answer),['Do you speak English?']);
+    assert.deepEqual(all,before);
+  }finally{groups.setSection('cards');}
+});

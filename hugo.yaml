@@ -29,6 +29,8 @@ menu:
     - {name: IPA, url: /saymore/ipa/, weight: 10, pre: '<b class="sm-tab-glyph" aria-hidden="true">/ɪ/</b>'}
     - {name: 듣기, url: /saymore/listen/, weight: 15, pre: '<b class="sm-tab-glyph" aria-hidden="true">r·l</b>'}
     - {name: 카드, url: /saymore/cards/, weight: 20, pre: '<b class="sm-tab-glyph" aria-hidden="true">Aa</b>'}
+    - {name: 형태, url: /saymore/forms/, weight: 25, pre: '<b class="sm-tab-glyph" aria-hidden="true">-ed</b>'}
+    - {name: 문장, url: /saymore/order/, weight: 30, pre: '<b class="sm-tab-glyph" aria-hidden="true">S·V</b>'}
 
 params:
   env: production

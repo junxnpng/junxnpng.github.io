@@ -327,18 +327,18 @@ body:has(.saymore) .logo a { font-family: var(--sk-latin), var(--sk-kr); font-si
 body:has(.saymore) #menu { margin: 0 auto; gap: 2px; padding: 3px; border-radius: 999px; background: color-mix(in srgb, var(--primary) 9%, transparent); line-height: 1.4; overflow: visible; }
 body:has(.saymore) #menu li + li { margin: 0; }
 body:has(.saymore) #menu a { font-size: 14px; font-weight: 600; color: var(--primary); }
-body:has(.saymore) #menu a span { display: block; padding: 7px 20px; border: 0; border-radius: 999px; }
+body:has(.saymore) #menu a span { display: block; padding: 7px 16px; border: 0; border-radius: 999px; }
 body:has(.saymore) #menu .active { background: var(--sk-tab-bg); color: var(--sk-tab-ink); border: 0; font-weight: 600; }
 .sm-tab-glyph { display: none; }
 body:has(.saymore) .footer { font-size: 12px; }
 @media (max-width: 640px) {
   body:has(.saymore) { padding-bottom: calc(70px + env(safe-area-inset-bottom, 0px)); }
   body:has(.saymore) .header-nav .skin-picker { margin-left: auto; }
-  body:has(.saymore) #menu { position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; margin: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border-radius: 0; background: var(--entry); border-top: var(--sk-ctl-bw) solid var(--border); padding: 6px 8px calc(8px + env(safe-area-inset-bottom, 0px)); }
+  body:has(.saymore) #menu { position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; margin: 0; display: grid; grid-template-columns: repeat(6, 1fr); gap: 0; border-radius: 0; background: var(--entry); border-top: var(--sk-ctl-bw) solid var(--border); padding: 6px 8px calc(8px + env(safe-area-inset-bottom, 0px)); }
   body:has(.saymore) #menu a { font-size: 11px; color: var(--secondary); }
   body:has(.saymore) #menu a span { display: grid; justify-items: center; gap: 2px; padding: 3px 0; }
   body:has(.saymore) #menu .active { background: none; color: var(--primary); }
-  .sm-tab-glyph { display: block; font: 400 16px/1.3 var(--sk-ipa); padding: 1px 14px; border-radius: 999px; }
+  .sm-tab-glyph { display: block; font: 400 15px/1.3 var(--sk-ipa); padding: 1px 8px; border-radius: 999px; white-space: nowrap; }
   body:has(.saymore) #menu .active .sm-tab-glyph { background: var(--sk-tab-bg); color: var(--sk-tab-ink); }
   body:has(.saymore) .top-link { bottom: calc(84px + env(safe-area-inset-bottom, 0px)); }
 }
@@ -392,6 +392,8 @@ body:has(.saymore) .footer { font-size: 12px; }
 .sm-home-note .sm-sample { justify-self: center; font-size: 24px; line-height: 1.2; padding: 8px 14px; background: var(--sm-wash); border-radius: calc(var(--sk-r) * .8); }
 .sm-home-note h3 { font-size: 18px; margin: 0 0 4px; }
 .sm-home-note p { font-size: 14px; line-height: 1.7; margin: 0; }
+.sm-row-count { display: block; font-size: 12.5px; font-weight: 600; color: var(--sm-accent); }
+.sm-row-count:empty { display: none; }
 .sm-row-arrow { font-size: 20px; font-weight: 700; transition: transform .15s; }
 .sm-home-note:hover .sm-row-arrow { transform: translateX(4px); }
 .sm-learning-menu + .sm-footnote { margin-top: 30px; }

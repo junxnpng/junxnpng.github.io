@@ -3,9 +3,18 @@ import {levels,cardLevel} from './levels.mjs?v=1';
 
 const isWord=card=>card.tags.includes('FF625')||card.tags.includes('OX3000')||card.deck==='Fluent Forever · First 625';
 const unlevelled='등급 밖';
+// Word-form cards and word-order cards each have a tab of their own and never appear among the
+// word cards. The page says which tab it is showing; every list below is limited to that one.
+export const sections={form:{tag:'FORM',label:'단어 형태'},order:{tag:'ORDER',label:'문장 어순'}};
+let section='cards';
+export function setSection(value){section=Object.hasOwn(sections,value)?value:'cards';return section;}
+const sectionOf=card=>Object.keys(sections).find(name=>card.tags.includes(sections[name].tag))||'cards';
+export const inSection=(cards,name=section)=>cards.filter(card=>sectionOf(card)===name);
 const isIpa=card=>!isWord(card)&&(card.tags.includes('IPA')||/^IPA(?:\s|$)/i.test(card.deck));
 
-export function studyGroups(cards){
+export function studyGroups(every){
+  const cards=inSection(every);
+  if(section!=='cards')return [{key:'all',label:sections[section].label,section:'전체',cards}];
   const groups=[{key:'all',label:'전체 카드',section:'전체',cards}];
   const ipa=cards.filter(isIpa),words=cards.filter(isWord);
   // One group per CEFR level, in library order, which ratings and edits keep.
