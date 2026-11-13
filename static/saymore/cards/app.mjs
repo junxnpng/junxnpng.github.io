@@ -6,7 +6,7 @@ import {DropboxStore} from './dropbox-store.mjs?v=10';
 import {readSnapshot,writeSnapshot,clearSnapshot} from './snapshot-cache.mjs?v=1';
 import {MediaCache} from './media-cache.mjs?v=1';
 import {parseBundle} from './bundle.mjs?v=1';
-import {prepareImagePatch} from './image-patch.mjs?v=3';
+import {prepareImagePatch,prepareAudioPatch,patchKind} from './image-patch.mjs?v=4';
 import {openDropbox} from '../shared/dropbox.mjs?v=3';
 import {flagKinds,hasFlag,setFlag} from './image-flag.mjs?v=2';
 
@@ -377,6 +377,15 @@ async function saveCard(event){
   }catch(e){$('editor-error').textContent=friendlyError(e);$('editor-error').hidden=false;notice(friendlyError(e),true);}
   finally{setBusy(false);}
 }
+function playableMP3(url){
+  return new Promise((resolve,reject)=>{
+    const audio=new Audio();
+    const finish=valid=>{clearTimeout(timer);audio.onloadedmetadata=null;audio.onerror=null;audio.removeAttribute('src');audio.load();valid?resolve():reject(Error('MP3를 재생할 수 없어요. 정상적인 음성 파일을 선택해주세요.'));};
+    const timer=setTimeout(()=>finish(false),4000);
+    audio.onloadedmetadata=()=>finish(Number.isFinite(audio.duration)&&audio.duration>0);
+    audio.onerror=()=>finish(false);audio.preload='metadata';audio.src=url;
+  });
+}
 async function selectMedia(type,file,credit=''){
   if(!file)return;
   if(!file.size||file.size>10*1024*1024)throw Error('첨부파일은 0바이트보다 크고 10MB 이하여야 해요.');
@@ -390,13 +399,7 @@ async function selectMedia(type,file,credit=''){
   const url=URL.createObjectURL(file);draftURLs.add(url);
   if(type==='audio'){
     try{
-      await new Promise((resolve,reject)=>{
-        const audio=new Audio();
-        const finish=valid=>{clearTimeout(timer);audio.onloadedmetadata=null;audio.onerror=null;audio.removeAttribute('src');audio.load();valid?resolve():reject(Error('MP3를 재생할 수 없어요. 정상적인 음성 파일을 선택해주세요.'));};
-        const timer=setTimeout(()=>finish(false),4000);
-        audio.onloadedmetadata=()=>finish(Number.isFinite(audio.duration)&&audio.duration>0);
-        audio.onerror=()=>finish(false);audio.preload='metadata';audio.src=url;
-      });
+      await playableMP3(url);
     }catch(e){URL.revokeObjectURL(url);draftURLs.delete(url);throw e;}
   }
   const previous=draftMedia[type]?.url;if(draftURLs.has(previous)){URL.revokeObjectURL(previous);draftURLs.delete(previous);}
@@ -610,16 +613,21 @@ $('fill-image-bundle').addEventListener('click',async()=>{
   setBusy(true);
   try{
     const file=$('image-bundle-file').files[0];
-    if(file&&file.size>52428800)throw new Error('이미지 묶음 파일은 50MB 이하로 선택해 주세요.');
-    notice('이미지 묶음의 내용을 확인하고 있어요.');
+    if(file&&file.size>52428800)throw new Error('묶음 파일은 50MB 이하로 선택해 주세요.');
+    notice('묶음의 내용을 확인하고 있어요.');
     const files=await parseBundle(file?await file.text():$('bundle-data').value);
-    const patch=await prepareImagePatch(store.library,files);
-    for(const blob of Object.values(patch.uploads)){const image=await createImageBitmap(blob);image.close();}
-    const result=patch.ids.length?await store.commit(patch.next,patch.uploads,patch.ids,(done,total)=>notice(`이미지를 저장하고 확인 중… ${done} / ${total}`)):{warnings:[]};
+    // The same button fills pictures or recordings; the bundle's own list says which.
+    const audio=patchKind(files)==='audio',what=audio?'녹음을':'이미지를';
+    const patch=await (audio?prepareAudioPatch:prepareImagePatch)(store.library,files);
+    for(const blob of Object.values(patch.uploads)){
+      if(audio){const url=URL.createObjectURL(blob);try{await playableMP3(url);}finally{URL.revokeObjectURL(url);}}
+      else{const image=await createImageBitmap(blob);image.close();}
+    }
+    const result=patch.ids.length?await store.commit(patch.next,patch.uploads,patch.ids,(done,total)=>notice(`${what} 저장하고 확인 중… ${done} / ${total}`)):{warnings:[]};
     $('bundle-data').value='';$('bundle-panel').open=false;
     clearMediaCache();renderLibrary();
     $('image-bundle-file').value='';
-    saved(result,`카드 ${patch.ids.length}장에 이미지를 채웠어요. 이미 그림이 있는 ${patch.skipped}장은 유지했어요.`);
+    saved(result,audio?`카드 ${patch.ids.length}장에 녹음을 붙였어요. 이미 녹음이 있는 ${patch.skipped}장은 유지했어요.`:`카드 ${patch.ids.length}장에 이미지를 채웠어요. 이미 그림이 있는 ${patch.skipped}장은 유지했어요.`);
     if(view==='review')await showNextReview();
   }catch(e){notice(friendlyError(e),true);}finally{setBusy(false);}
 });
