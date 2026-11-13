@@ -68,7 +68,7 @@ input[type=file]::file-selector-button{border:var(--sk-ctl-bw) solid var(--sk-ct
 .study-image{background:#fff}
 .image-placeholder{font-family:var(--latin);color:var(--muted)}
 .study-body{padding:26px 26px 30px}
-.study-prompt{font-size:22px;font-weight:600}
+.study-prompt{font-size:22px;font-weight:600}.study-hint{margin-top:-4px;font-family:var(--latin);font-size:20px;font-weight:600;color:var(--red)}
 .study-answer{font-family:var(--latin);font-weight:700;letter-spacing:-.02em;font-size:52px;line-height:1.15}
 .review-workspace .study-answer{font-size:60px}
 /* Pronunciation symbols: one plain face in every skin. */

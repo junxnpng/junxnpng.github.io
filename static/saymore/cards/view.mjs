@@ -50,7 +50,12 @@ export function showCard(container, card, sources = {}, answer = false) {
     if(card.sentence)body.append(el('p',card.sentence,'study-sentence'));
     if(card.memory)body.append(el('p',card.memory,'study-memory'));
     if(card.audio?.credit)body.append(el('p',card.audio.credit,'study-credit'));
-  } else body.append(el('p',card.front||(card.type==='picture'?'사진을 보고 영어로 말해보세요.':'질문 또는 힌트를 입력해주세요.'),'study-prompt'));
+  } else {
+    // Word-form and word-order cards end with the word to use, set apart from the sentence like the hint on a paper card.
+    const cut=(card.tags||[]).some(tag=>tag==='FORM'||tag==='ORDER')?(card.front||'').lastIndexOf('\n'):-1;
+    if(cut>0&&card.front.slice(cut+1).trim())body.append(el('p',card.front.slice(0,cut),'study-prompt'),el('p',card.front.slice(cut+1),'study-hint'));
+    else body.append(el('p',card.front||(card.type==='picture'?'사진을 보고 영어로 말해보세요.':'질문 또는 힌트를 입력해주세요.'),'study-prompt'));
+  }
   if(card.image?.credit){
     if(answer)body.append(el('p',card.image.credit,'study-credit'));
     else{const credit=el('details',undefined,'study-credit');credit.append(el('summary','사진 출처'),el('p',card.image.credit));body.append(credit);}

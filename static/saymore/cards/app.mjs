@@ -1,12 +1,12 @@
 import {newCard, editCard, rateCard, correctLastReview, reviewOptions, dueCards, dateLabel, intervalLabel, ratings, overdueMs, reviewLateMs, waitLabel} from './model.mjs?v=5';
 import {studyGroups,cardsInGroup,studyQueue,studyProgress,sortCards,sortOrders,resumeIndex,unseenFirst,setSection,inSection,sections} from './study-groups.mjs?v=9';
 import {FolderStore, rememberedFolder, friendlyError} from './storage.mjs?v=5';
-import {el, showCard} from './view.mjs?v=5';
+import {el, showCard} from './view.mjs?v=6';
 import {DropboxStore} from './dropbox-store.mjs?v=10';
 import {readSnapshot,writeSnapshot,clearSnapshot} from './snapshot-cache.mjs?v=1';
 import {MediaCache} from './media-cache.mjs?v=1';
 import {parseBundle} from './bundle.mjs?v=1';
-import {prepareImagePatch,prepareAudioPatch,patchKind} from './image-patch.mjs?v=4';
+import {prepareImagePatch,prepareAudioPatch,prepareTextPatch,patchKind} from './image-patch.mjs?v=5';
 import {openDropbox} from '../shared/dropbox.mjs?v=3';
 import {flagKinds,hasFlag,setFlag} from './image-flag.mjs?v=2';
 
@@ -616,9 +616,9 @@ $('fill-image-bundle').addEventListener('click',async()=>{
     if(file&&file.size>52428800)throw new Error('묶음 파일은 50MB 이하로 선택해 주세요.');
     notice('묶음의 내용을 확인하고 있어요.');
     const files=await parseBundle(file?await file.text():$('bundle-data').value);
-    // The same button fills pictures or recordings; the bundle's own list says which.
-    const audio=patchKind(files)==='audio',what=audio?'녹음을':'이미지를';
-    const patch=await (audio?prepareAudioPatch:prepareImagePatch)(store.library,files);
+    // The same button fills pictures or recordings, or rewrites wording; the bundle's own list says which.
+    const kind=patchKind(files),audio=kind==='audio',what={audio:'녹음을',image:'이미지를',text:'바뀐 글을'}[kind];
+    const patch=await ({audio:prepareAudioPatch,image:prepareImagePatch,text:prepareTextPatch}[kind])(store.library,files);
     for(const blob of Object.values(patch.uploads)){
       if(audio){const url=URL.createObjectURL(blob);try{await playableMP3(url);}finally{URL.revokeObjectURL(url);}}
       else{const image=await createImageBitmap(blob);image.close();}
@@ -627,7 +627,7 @@ $('fill-image-bundle').addEventListener('click',async()=>{
     $('bundle-data').value='';$('bundle-panel').open=false;
     clearMediaCache();renderLibrary();
     $('image-bundle-file').value='';
-    saved(result,audio?`카드 ${patch.ids.length}장에 녹음을 붙였어요. 이미 녹음이 있는 ${patch.skipped}장은 유지했어요.`:`카드 ${patch.ids.length}장에 이미지를 채웠어요. 이미 그림이 있는 ${patch.skipped}장은 유지했어요.`);
+    saved(result,kind==='text'?`카드 ${patch.ids.length}장의 글을 바꿨어요. 이미 바뀌어 있던 ${patch.skipped}장은 그대로예요. 복습 기록은 유지했어요.`:audio?`카드 ${patch.ids.length}장에 녹음을 붙였어요. 이미 녹음이 있는 ${patch.skipped}장은 유지했어요.`:`카드 ${patch.ids.length}장에 이미지를 채웠어요. 이미 그림이 있는 ${patch.skipped}장은 유지했어요.`);
     if(view==='review')await showNextReview();
   }catch(e){notice(friendlyError(e),true);}finally{setBusy(false);}
 });
