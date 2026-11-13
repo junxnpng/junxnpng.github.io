@@ -35,9 +35,10 @@ async function prepare(kind,library,files){
 export const prepareImagePatch=(library,files)=>prepare('image',library,files);
 export const prepareAudioPatch=(library,files)=>prepare('audio',library,files);
 
-// A text patch rewrites the wording of cards that already exist: front, IPA, example and memory note only.
+// A text patch rewrites the wording of cards that already exist: front, answer, IPA, example, memory note and the
+// sentence the device voice reads. Schedule, history, tags and attachments are never touched.
 // Each item states the wording it expects to replace (`was`), so a card someone has edited since is refused, not overwritten.
-const textFields=['front','ipa','sentence','memory'];
+const textFields=['front','answer','ipa','sentence','memory','speech'];
 export async function prepareTextPatch(library,files){
   if(files.length!==1||files[0].path!==textManifest)throw Error('글 수정 묶음의 파일 구성을 확인해주세요.');
   const patch=JSON.parse(await files[0].blob.text());
@@ -47,11 +48,14 @@ export async function prepareTextPatch(library,files){
     if(!item||ids.has(item.id))throw Error('중복된 카드가 있습니다.');
     ids.add(item.id);
     const card=library.cards.find(c=>c.id===item.id);
-    if(!card||card.answer!==item.answer)throw Error('카드 번호 또는 정답이 다릅니다. 저장하지 않았어요.');
+    // A card whose answer this patch already replaced is still recognised, so applying it twice changes nothing.
+    if(!card||(card.answer!==item.answer&&card.answer!==item?.set?.answer))throw Error('카드 번호 또는 정답이 다릅니다. 저장하지 않았어요.');
     const plain=o=>o&&typeof o==='object'&&!Array.isArray(o);
     const names=plain(item.set)?Object.keys(item.set):[];
     if(!names.length||!plain(item.was)||names.length!==Object.keys(item.was).length||names.some(name=>!textFields.includes(name)||typeof item.set[name]!=='string'||typeof item.was[name]!=='string'||item.set[name]!==item.set[name].trim()))throw Error('바꿀 내용을 확인해주세요.');
     if(names.every(name=>card[name]===item.set[name])){skipped++;continue;}
+    // A recording says the old sentence; replacing the sentence under it would leave the two disagreeing.
+    if(card.audio&&names.includes('answer'))throw Error(`‘${card.answer}’ 카드에는 녹음이 붙어 있어 정답을 바꿀 수 없어요. 저장하지 않았어요.`);
     if(names.some(name=>card[name]!==item.was[name]&&card[name]!==item.set[name]))throw Error(`‘${card.answer}’ 카드는 그사이 내용이 바뀌었어요. 저장하지 않았어요.`);
     replacements.set(card.id,editCard(card,{...card,...Object.fromEntries(names.map(name=>[name,item.set[name]]))}));
   }

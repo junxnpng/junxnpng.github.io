@@ -75,4 +75,4 @@ sh scripts/check
 
 같은 버튼이 녹음 묶음도 받습니다. `audio.json`(`saymore-audio-patch` 버전 1, 항목은 `audio` 목록)과 MP3 파일이 들어 있으면 녹음이 비어 있는 카드에만 붙입니다. 합성 음성 문장(`speech`)은 그대로 두므로 카드 뒷면에 사람 녹음과 기기 합성 음성 버튼이 함께 나옵니다.
 
-글 수정 묶음(`text.json`, `saymore-text-patch` 버전 1, 항목은 `cards` 목록)도 같은 버튼으로 받습니다. 각 항목은 카드 ID·정답과 함께 바꿀 칸(`front`·`ipa`·`sentence`·`memory`)의 현재 글(`was`)과 새 글(`set`)을 적습니다. 현재 글이 `was`와 다르면 그사이 고친 카드로 보고 전체를 저장하지 않습니다. 복습 일정과 이력은 그대로입니다.
+글 수정 묶음(`text.json`, `saymore-text-patch` 버전 1, 항목은 `cards` 목록)도 같은 버튼으로 받습니다. 각 항목은 카드 ID·정답과 함께 바꿀 칸(`front`·`answer`·`ipa`·`sentence`·`memory`·`speech`)의 현재 글(`was`)과 새 글(`set`)을 적습니다. 현재 글이 `was`와 다르면 그사이 고친 카드로 보고 전체를 저장하지 않습니다. 복습 일정과 이력은 그대로입니다.

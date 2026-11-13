@@ -6,7 +6,7 @@ import {DropboxStore} from './dropbox-store.mjs?v=11';
 import {readSnapshot,writeSnapshot,clearSnapshot} from './snapshot-cache.mjs?v=1';
 import {MediaCache} from './media-cache.mjs?v=1';
 import {parseBundle} from './bundle.mjs?v=1';
-import {prepareImagePatch,prepareAudioPatch,prepareTextPatch,patchKind} from './image-patch.mjs?v=5';
+import {prepareImagePatch,prepareAudioPatch,prepareTextPatch,patchKind} from './image-patch.mjs?v=6';
 import {openDropbox} from '../shared/dropbox.mjs?v=3';
 import {flagKinds,hasFlag,setFlag} from './image-flag.mjs?v=2';
 
