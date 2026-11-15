@@ -7,7 +7,7 @@ import {readSnapshot,writeSnapshot,clearSnapshot} from './snapshot-cache.mjs?v=1
 import {MediaCache} from './media-cache.mjs?v=1';
 import {parseBundle} from './bundle.mjs?v=2';
 import {prepareImagePatch,prepareAudioPatch,prepareTextPatch,patchKind} from './image-patch.mjs?v=10';
-import {openDropbox} from '../shared/dropbox.mjs?v=7';
+import {openDropbox} from '../shared/dropbox.mjs?v=8';
 import {flagKinds,hasFlag,setFlag} from './image-flag.mjs?v=2';
 
 const $=id=>document.getElementById(id);
@@ -20,7 +20,7 @@ const supported=typeof window.showDirectoryPicker==='function';
 let cloud=null,refreshing=false;
 let selectedGroup='all',practiceIndex=0,practiceOrder=[];
 let sortOrder='default', lastGraded=null, lastListKey='';
-// New cards a day in 예정된 복습. Remembered in this browser; 0 means no limit.
+// New cards a day in 오늘 복습. Remembered in this browser; 0 means no limit.
 const newLimitKey='saymore.cards.new-per-day.v1';
 let newLimit=20;
 try{const saved=localStorage.getItem(newLimitKey);if(['0','10','20','30'].includes(saved))newLimit=Number(saved);}catch{/* The default holds for this visit. */}
@@ -86,6 +86,7 @@ function retryControls(){
   }
   const group=groups.find(g=>g.key===selectedGroup),progress=studyProgress(group?.cards||[],now,newLeft);
   $('review-settings-now').textContent=store?`${group?.label||''} · ${$('review-mode').selectedOptions[0]?.textContent.split(' · ')[0]||''}`:'';
+  $('rating-help').textContent=practice?'평가는 해도 되고 안 해도 돼요. 잘못 누른 평가는 ‘카드 목록’ 탭에서 그 카드의 ‘평가 고치기’로 고쳐요.':'모름 카드는 24시간 안에 다시 볼 수 있어요. 잘못 눌렀으면 ‘방금 평가 고치기’를 누르세요.';
   $('new-limit').value=String(newLimit);
   $('new-limit').closest('label').hidden=$('new-limit-help').hidden=practice||unknownSession!==null;
   $('new-limit-help').textContent=!store?'':newLimit?`오늘 새 카드 ${1e6-newCardsLeft(cards(),1e6,now)} / ${newLimit}장. 다 보면 복습할 카드만 나와요.`:'새 카드를 제한 없이 먼저 보여 줘요.';
@@ -116,14 +117,15 @@ function updateStats(){
   $('due-count').textContent=store ? inSection(dueCards(store.library)).filter(c=>c.schedule.state!==0).length : 0;
   // The home page shows today's count from these due dates without opening Dropbox itself.
   if(store)try{
-    const summary=list=>({total:list.length,fresh:list.filter(c=>c.schedule.state===0).length,due:list.filter(c=>c.schedule.state!==0).map(c=>Date.parse(c.schedule.due))});
-    localStorage.setItem('saymore.home.cards.v1',JSON.stringify({at:Date.now(),...summary(inSection(cards(),'cards')),sections:Object.fromEntries(Object.keys(sections).map(name=>[name,summary(inSection(cards(),name))]))}));
+    // `met` is how many cards of the tab were first answered today; with `limit` the home page can tell how many new ones are still to come.
+    const summary=list=>({total:list.length,fresh:list.filter(c=>c.schedule.state===0).length,met:newLimit?newLimit-newCardsLeft(list,newLimit):0,due:list.filter(c=>c.schedule.state!==0).map(c=>Date.parse(c.schedule.due))});
+    localStorage.setItem('saymore.home.cards.v1',JSON.stringify({at:Date.now(),limit:newLimit,...summary(inSection(cards(),'cards')),sections:Object.fromEntries(Object.keys(sections).map(name=>[name,summary(inSection(cards(),name))]))}));
   }catch{/* The home page keeps its last numbers. */}
 }
 // `newLeft` is passed in by callers that label many groups, so the library is counted once, not once a label.
 function groupLabel(group,now=new Date(),newLeft=newCardsLeft(cards(),newLimit,now)){
   const p=studyProgress(group.cards,now,newLeft);
-  return `${group.label} · ${p.total}장 · 오늘 완료 ${p.completedToday} · 남음 ${p.remaining}`;
+  return `${group.label} · ${p.total}장 · 오늘 끝냄 ${p.completedToday} · 남음 ${p.remaining}`;
 }
 function updateDecks(){
   const decks=[...new Set(inSection(cards()).map(c=>c.deck))].sort((a,b)=>a.localeCompare(b));

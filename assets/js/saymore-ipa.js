@@ -113,6 +113,13 @@
       if (activeGroup && link.getAttribute("href") === `#${activeGroup.element.id}`) link.setAttribute("aria-current", "true");
       else link.removeAttribute("aria-current");
     }
+    // The explanation that held the focus may just have been hidden (back button, a tile chosen again):
+    // move to what is open now, or to its tile, so the focus is not left on nothing.
+    const held = document.activeElement;
+    if (held?.classList?.contains("sm-card") && held.hidden) {
+      const open = selected.map(id => records.get(id)).find(record => record && !record.card.hidden);
+      (open ? open.card : records.get(held.id)?.link)?.focus({ preventScroll: true });
+    }
   }
 
   function filter() {

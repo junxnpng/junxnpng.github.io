@@ -59,7 +59,7 @@ export class DropboxClient {
     const response=await this.request('https://api.dropboxapi.com/oauth2/token',{
       method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({client_id:this.appKey,...params})
     });
-    if(!response.ok)throw Error('Dropbox 연결이 끊겼어요. ‘저장 설정’에서 ‘이 브라우저 연결 해제’를 누른 뒤 다시 연결해 주세요.');
+    if(!response.ok)throw Error('Dropbox 연결을 확인하지 못했어요. 잠시 뒤 다시 해 보고, 계속 안 되면 연결을 해제한 뒤 다시 연결해 주세요.');
     return response.json();
   }
   async accessToken() {
@@ -105,7 +105,7 @@ export class DropboxClient {
   async error(response) {
     const value=await response.json().catch(()=>({}));
     const summary=value.error_summary||'';
-    const message=response.status===401?'Dropbox 연결이 끊겼어요. ‘저장 설정’에서 ‘이 브라우저 연결 해제’를 누른 뒤 다시 연결해 주세요.':response.status===429?'Dropbox 요청이 많습니다. 잠시 뒤 다시 시도해 주세요.':response.status===507?'Dropbox 저장 공간이 부족합니다.':response.status===409&&/conflict/.test(summary)?'다른 기기에서 기록이 바뀌었습니다. 저장된 내용 다시 읽기를 눌러 주세요.':'Dropbox에서 파일을 읽거나 저장하지 못했습니다. 연결 상태와 앱 권한을 확인해 주세요.';
+    const message=response.status===401?'Dropbox 연결이 끊겼어요. ‘이 브라우저 연결 해제’를 누른 뒤 다시 연결해 주세요.':response.status===429?'Dropbox 요청이 많습니다. 잠시 뒤 다시 시도해 주세요.':response.status===507?'Dropbox 저장 공간이 부족합니다.':response.status===409&&/conflict/.test(summary)?'다른 기기에서 기록이 바뀌었습니다. 저장된 내용 다시 읽기를 눌러 주세요.':'Dropbox에서 파일을 읽거나 저장하지 못했습니다. 연결 상태와 앱 권한을 확인해 주세요.';
     return Object.assign(Error(message),{status:response.status,conflict:response.status===409&&/conflict/.test(summary),missing:response.status===409&&value.error?.path?.['.tag']==='not_found'});
   }
   async download(path) {

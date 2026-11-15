@@ -9,13 +9,21 @@
 
   function fill() {
 
+  // New cards still to come today, under the daily limit chosen on the cards page. The count of cards
+  // already met was saved with a time; on a later day none of them count.
+  var freshNow = function (part) {
+    if (!cards || !cards.limit) return part.fresh;
+    var saved = new Date(cards.at), today = new Date();
+    var met = saved.toDateString() === today.toDateString() ? (part.met || 0) : 0;
+    return Math.max(0, Math.min(part.fresh, cards.limit - met));
+  };
   // Cards: the due dates were saved when the cards page was last open, so the count is right for now.
   var cards = read('saymore.home.cards.v1');
   if (cards && Array.isArray(cards.due)) {
     var now = Date.now();
     q('due').textContent = cards.due.filter(function (at) { return at <= now; }).length;
     var when = new Intl.DateTimeFormat('ko-KR', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }).format(new Date(cards.at));
-    q('cards-note').textContent = '새 카드 ' + cards.fresh + ' · 전체 ' + cards.total + ' · ' + when + ' 기준';
+    q('cards-note').textContent = (cards.limit ? '오늘 새 카드 ' + freshNow(cards) : '새 카드 ' + cards.fresh) + ' · 전체 ' + cards.total + ' · ' + when + ' 기준';
   }
 
   // The word-form and word-order tabs: what is due now, from the same saved counts.
@@ -23,7 +31,7 @@
   for (var i = 0; i < rows.length; i++) {
     var part = cards && cards.sections && cards.sections[rows[i].getAttribute('data-home-section')];
     if (!part || !part.total) continue;
-    var waiting = part.fresh + part.due.filter(function (at) { return at <= Date.now(); }).length;
+    var waiting = freshNow(part) + part.due.filter(function (at) { return at <= Date.now(); }).length;
     rows[i].textContent = '지금 볼 카드 ' + waiting + ' · 전체 ' + part.total;
   }
 

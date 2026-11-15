@@ -102,12 +102,15 @@
 
   async function compare() {
     if (!trial) return;
-    const order = [trial.answer, 1 - trial.answer, trial.answer];
+    // The reader may move on while the three words are playing; the rest then belongs to a question that is gone.
+    const current = trial, order = [trial.answer, 1 - trial.answer, trial.answer];
     for (const index of order) {
+      if (trial !== current || $("trial").hidden) return;
       choices.forEach((button, i) => button.classList.toggle("is-speaking", i === index));
-      if (!await say(trial.pair[index].word)) break;
+      if (!await say(current.pair[index].word)) break;
       await pause(350);
     }
+    if (trial !== current) return;
     choices.forEach(button => button.classList.remove("is-speaking"));
   }
 
