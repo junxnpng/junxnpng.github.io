@@ -107,7 +107,7 @@
   });
 
   async function initializeCloud() {
-    const {openDropbox} = await import("/saymore/shared/dropbox.mjs?v=6");
+    const {openDropbox} = await import("/saymore/shared/dropbox.mjs?v=7");
     cloud = await openDropbox();
     render();
   }

@@ -1,4 +1,4 @@
-import {dueCards,unknownCards} from './model.mjs?v=6';
+import {dueCards,unknownCards} from './model.mjs?v=7';
 import {levels,cardLevel} from './levels.mjs?v=1';
 
 const isWord=card=>card.tags.includes('FF625')||card.tags.includes('OX3000')||card.deck==='Fluent Forever · First 625';
@@ -12,7 +12,17 @@ const sectionOf=card=>Object.keys(sections).find(name=>card.tags.includes(sectio
 export const inSection=(cards,name=section)=>cards.filter(card=>sectionOf(card)===name);
 const isIpa=card=>!isWord(card)&&(card.tags.includes('IPA')||/^IPA(?:\s|$)/i.test(card.deck));
 
+// The groups of one list of cards are asked for many times while a screen is drawn. The list is replaced,
+// never changed in place, whenever a card changes, so the answer can be kept for as long as the list lives.
+const grouped=new WeakMap();
 export function studyGroups(every){
+  const kept=grouped.get(every);
+  if(kept?.section===section)return kept.groups;
+  const groups=buildGroups(every);
+  if(every&&typeof every==='object')grouped.set(every,{section,groups});
+  return groups;
+}
+function buildGroups(every){
   const cards=inSection(every);
   if(section!=='cards')return [{key:'all',label:sections[section].label,section:'전체',cards}];
   const groups=[{key:'all',label:'전체 카드',section:'전체',cards}];

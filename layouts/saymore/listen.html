@@ -16,7 +16,7 @@
       <optgroup label="자음">{{ range where $data.sets "kind" "consonant" }}<option value="{{ .id }}">/{{ (index .sounds 0).symbol }}/ ↔ /{{ (index .sounds 1).symbol }}/ · {{ (index (index .pairs 0) 0).word }}–{{ (index (index .pairs 0) 1).word }}</option>{{ end }}</optgroup>
     </select>
     <button type="button" class="sm-listen-primary" data-listen-start>10문제 시작</button>
-    <p class="sm-listen-status" data-listen-status role="status" aria-live="polite">기기의 미국식 영어 합성 음성으로 들려줍니다. 소리를 켜 주세요.</p>
+    <p class="sm-listen-status" data-listen-status role="status" aria-live="polite">기기의 미국식 합성 음성으로 들려줘요. 소리를 켜 주세요.</p>
   </section>
   <section class="sm-listen-trial" data-listen-trial hidden aria-labelledby="listen-trial-title">
     <div class="sm-listen-top"><h2 id="listen-trial-title" data-listen-progress>1 / 10</h2><span data-listen-score>맞힌 문제 0</span></div>
@@ -35,7 +35,7 @@
         <button type="button" class="sm-listen-primary" data-listen-next>다음 문제 →</button>
       </div>
     </div>
-    <p class="sm-footnote">키보드: Space 다시 듣기 · 1 / 2 고르기 · Enter 다음 문제</p>
+    <p class="sm-footnote sm-keys">맥에서는 Space 다시 듣기 · 1 / 2 고르기 · Enter 다음 문제</p>
   </section>
   <section class="sm-listen-summary" data-listen-summary hidden aria-labelledby="listen-summary-title">
     <h2 id="listen-summary-title" data-listen-summary-title></h2>
@@ -44,7 +44,7 @@
   </section>
   <section class="sm-listen-stats" aria-labelledby="listen-stats-title">
     <h2 id="listen-stats-title">소리별 정답률</h2>
-    <p class="sm-footnote">이 브라우저에 저장됩니다. 정답률이 낮은 소리는 ‘전체’ 연습에서 더 자주 나옵니다.</p>
+    <p class="sm-footnote">이 브라우저에 저장돼요. 정답률이 낮은 소리는 ‘전체’ 연습에서 더 자주 나와요.</p>
     <table>
       <thead><tr><th scope="col">소리</th><th scope="col">예시</th><th scope="col">푼 문제</th><th scope="col">정답률</th><th scope="col">발음 설명</th></tr></thead>
       <tbody>

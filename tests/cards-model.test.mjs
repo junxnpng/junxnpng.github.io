@@ -219,7 +219,7 @@ test('how long a studied card waited past its date is derived from the history, 
 test('practice can record an answer before the due date, and it schedules from that moment',()=>{
   const first=rateCard(newCard(fields,now),4,now);                       // due in 8 days
   const early=new Date(now.getTime()+2*86400000);
-  assert.throws(()=>rateCard(first,3,early),/아직 복습 시간이 아니에요/);
+  assert.throws(()=>rateCard(first,3,early),/아직 복습할 때가 아니에요/);
   const answered=rateCard(first,3,early,{early:true});
   assert.equal(answered.reviews.length,2);
   assert.equal(answered.reviews[1].at,early.toISOString());

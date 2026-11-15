@@ -91,7 +91,7 @@
     });
     const heard = trial.pair[trial.answer];
     $("feedback").hidden = false; // shown first: a live region filled while hidden is not announced
-    $("result").textContent = correct ? `맞았어요. ${heard.word} ${heard.ipa}` : `아니에요. 들은 단어는 ${heard.word} ${heard.ipa} 입니다.`;
+    $("result").textContent = correct ? `맞았어요. ${heard.word} ${heard.ipa}` : `아니에요. 들은 단어는 ${heard.word} ${heard.ipa}예요.`;
     $("result").className = correct ? "is-correct" : "is-wrong";
     $("tip").textContent = trial.set.tip;
     $("score").textContent = `맞힌 문제 ${score}`;

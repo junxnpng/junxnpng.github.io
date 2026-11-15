@@ -31,7 +31,7 @@ export function showCard(container, card, sources = {}, answer = false) {
     if(sources.audio){
       audio=el('audio');audio.src=sources.audio;audio.preload='metadata';
       const button=el('button',card.speech?'▶ 사람 녹음':'▶ 발음 듣기','secondary');button.type='button';
-      button.addEventListener('click',async()=>{stopSpeech();try{audio.currentTime=0;await audio.play();}catch{button.textContent='재생할 수 없는 음성이에요';}});
+      button.addEventListener('click',async()=>{stopSpeech();try{audio.currentTime=0;await audio.play();}catch{button.textContent='재생하지 못했어요 · 다시 누르기';}});
       listen.append(button,audio);
     }
     if(card.speech){

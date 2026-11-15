@@ -77,7 +77,7 @@ export function rateCard(card, rating, now = new Date(), {retryUnknown=false, ea
   // Another device with a faster clock may have answered "later" than this one's now; the scheduler refuses to go back in time.
   if(early&&previous&&Date.parse(previous.at)>now.getTime())now=new Date(previous.at);
   const earlyUnknown=retryUnknown&&previous?.rating===1&&Date.parse(previous.at)<=now.getTime();
-  if (Date.parse(card.schedule.due) > now.getTime()&&!earlyUnknown&&!early) fail('아직 복습 시간이 아니에요. 미리 보기로 연습할 수 있어요.');
+  if (Date.parse(card.schedule.due) > now.getTime()&&!earlyUnknown&&!early) fail('아직 복습할 때가 아니에요. 지금 보려면 ‘자유 연습’을 고르세요.');
   const result = withUnknownDeadline(scheduler.next(copy(card.schedule), now, rating),rating,now);
   return {...copy(card), updatedAt:now.toISOString(), schedule:copy(result.card),
     reviews:[...copy(card.reviews), {at:now.toISOString(), rating, due:result.card.due.toISOString(), log:copy(result.log)}]};
@@ -157,8 +157,10 @@ export function waitLabel(ms) {
   return hours < 24 ? `${hours}시간` : `${Math.floor(hours/24)}일`;
 }
 
+// Made once: building a formatter for every date costs more than formatting it.
+const dateFormat=new Intl.DateTimeFormat('ko-KR',{year:'numeric',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
 export function dateLabel(value) {
-  return new Intl.DateTimeFormat('ko-KR',{year:'numeric',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}).format(new Date(value));
+  return dateFormat.format(new Date(value));
 }
 
 export function intervalLabel(value, now = new Date()) {

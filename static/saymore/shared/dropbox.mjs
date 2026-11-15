@@ -32,7 +32,7 @@ export class DropboxClient {
   // background and within eight seconds in all, so the button never waits on the network.
   async revoke(credentials=this.credentials) {
     if(!credentials?.refreshToken)return;
-    const signal=AbortSignal.timeout(8000),post=(url,options)=>this.fetch(url,{method:'POST',credentials:'omit',signal,...options});
+    const signal=AbortSignal.timeout(8000),post=(url,options)=>this.fetch(url,{method:'POST',credentials:'omit',keepalive:true,signal,...options});
     try{
       let token=credentials.expiresAt>Date.now()+10000?credentials.accessToken:null;
       if(!token){
@@ -59,7 +59,7 @@ export class DropboxClient {
     const response=await this.request('https://api.dropboxapi.com/oauth2/token',{
       method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({client_id:this.appKey,...params})
     });
-    if(!response.ok)throw Error('Dropbox 연결을 갱신하지 못했습니다. 다시 연결해 주세요.');
+    if(!response.ok)throw Error('Dropbox 연결이 끊겼어요. ‘저장 설정’에서 ‘이 브라우저 연결 해제’를 누른 뒤 다시 연결해 주세요.');
     return response.json();
   }
   async accessToken() {
@@ -90,7 +90,7 @@ export class DropboxClient {
     history.replaceState(null,'',location.pathname+location.hash);
     const transaction=validateCallback(params,JSON.parse(raw||'null'));
     const value=await this.token({grant_type:'authorization_code',code:params.get('code'),code_verifier:transaction.verifier,redirect_uri:transaction.redirect});
-    if(!value.refresh_token||!value.account_id)throw Error('Dropbox의 지속 연결 권한을 받지 못했습니다. 다시 연결해 주세요.');
+    if(!value.refresh_token||!value.account_id)throw Error('Dropbox 연결을 마치지 못했어요. 다시 연결해 주세요.');
     // Keep local progress from being silently uploaded to a different account.
     const bound=this.storage.getItem('saymore.dropbox.bound-account');
     if(bound&&bound!==value.account_id)throw Error('이 브라우저는 다른 Dropbox 계정에 연결된 적이 있습니다. 기존 계정으로 연결해 주세요.');
@@ -105,7 +105,7 @@ export class DropboxClient {
   async error(response) {
     const value=await response.json().catch(()=>({}));
     const summary=value.error_summary||'';
-    const message=response.status===401?'Dropbox 연결이 만료되었습니다. 다시 연결해 주세요.':response.status===429?'Dropbox 요청이 많습니다. 잠시 뒤 다시 시도해 주세요.':response.status===507?'Dropbox 저장 공간이 부족합니다.':response.status===409&&/conflict/.test(summary)?'다른 기기에서 기록이 바뀌었습니다. 저장된 내용 다시 읽기를 눌러 주세요.':'Dropbox에서 파일을 읽거나 저장하지 못했습니다. 연결 상태와 앱 권한을 확인해 주세요.';
+    const message=response.status===401?'Dropbox 연결이 끊겼어요. ‘저장 설정’에서 ‘이 브라우저 연결 해제’를 누른 뒤 다시 연결해 주세요.':response.status===429?'Dropbox 요청이 많습니다. 잠시 뒤 다시 시도해 주세요.':response.status===507?'Dropbox 저장 공간이 부족합니다.':response.status===409&&/conflict/.test(summary)?'다른 기기에서 기록이 바뀌었습니다. 저장된 내용 다시 읽기를 눌러 주세요.':'Dropbox에서 파일을 읽거나 저장하지 못했습니다. 연결 상태와 앱 권한을 확인해 주세요.';
     return Object.assign(Error(message),{status:response.status,conflict:response.status===409&&/conflict/.test(summary),missing:response.status===409&&value.error?.path?.['.tag']==='not_found'});
   }
   async download(path) {
