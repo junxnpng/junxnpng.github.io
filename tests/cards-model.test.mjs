@@ -239,3 +239,11 @@ test('a practice answer on a device whose clock is behind the last answer is sti
   assert.equal(again.reviews[1].at,first.reviews[0].at,'recorded at the last answer\'s time, never before it');
   assert.ok(Date.parse(again.schedule.due)>Date.parse(again.reviews[1].at));
 });
+
+test('a date label is the same each time for one instant and differs for another',()=>{
+  const at='2026-11-08T12:34:00Z';
+  assert.equal(model.dateLabel(at),model.dateLabel(new Date(at)));
+  assert.equal(model.dateLabel(at),model.dateLabel(at));
+  assert.notEqual(model.dateLabel(at),model.dateLabel('2026-11-09T12:34:00Z'));
+  assert.notEqual(model.dateLabel(at),model.dateLabel('2026-11-08T12:35:00Z'));
+});

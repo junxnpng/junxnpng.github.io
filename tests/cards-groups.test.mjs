@@ -170,3 +170,48 @@ test('a daily limit lets only so many unseen cards in front of the reviews that 
   assert.equal(groups.newCardsLeft(cards,3,new Date(2026,10,11,12)),3);
   assert.deepEqual(groups.studyProgress(cards,day,2),{total:6,remaining:3,completedToday:1,held:2,waiting:0});
 });
+
+test('the same list gives the same groups, and a list with one card changed gives fresh groups',()=>{
+  groups.setSection('cards');
+  const list=[card('dog','Oxford 3000 · A1',['OX3000','A1']),card('mine','My own deck')];
+  const first=groups.studyGroups(list);
+  assert.equal(groups.studyGroups(list),first);
+  const changed=[list[0],editCard(list[1],{...list[1],deck:'Renamed deck'})];
+  const fresh=groups.studyGroups(changed);
+  assert.notEqual(fresh,first);
+  assert.ok(fresh.some(g=>g.label==='Renamed deck'));
+  assert.equal(first.some(g=>g.label==='Renamed deck'),false);
+});
+
+test('switching tabs never returns the groups remembered for the other tab',()=>{
+  const list=[card('dog','Oxford 3000 · A1',['OX3000','A1']),card('went','Word forms',['FORM'])];
+  try{
+    groups.setSection('cards');
+    const words=groups.studyGroups(list);
+    groups.setSection('form');
+    assert.deepEqual(groups.studyGroups(list).map(g=>g.cards.map(c=>c.answer)),[['went']]);
+    groups.setSection('cards');
+    assert.deepEqual(groups.studyGroups(list),words);
+    assert.deepEqual(groups.cardsInGroup(list,'all').map(c=>c.answer),['dog']);
+  }finally{groups.setSection('cards');}
+});
+
+test('a word-form card met today does not use up the word cards\' daily limit',()=>{
+  const day=new Date(2026,10,10,12),earlier=new Date(2026,10,1,12);
+  const form=rateCard(newCard({type:'basic',front:'q',answer:'went',tags:['FORM']},earlier),3,new Date(2026,10,10,9));
+  const word=newCard({type:'basic',front:'q',answer:'dog',tags:['IPA']},earlier);
+  try{
+    groups.setSection('cards');
+    assert.equal(groups.newCardsLeft([form,word],3,day),3);
+    groups.setSection('form');
+    assert.equal(groups.newCardsLeft([form,word],3,day),2);
+  }finally{groups.setSection('cards');}
+});
+
+test('a new card first answered in practice mode counts against today\'s limit',()=>{
+  groups.setSection('cards');
+  const day=new Date(2026,10,10,12);
+  const fresh=newCard({type:'basic',front:'q',answer:'dog',tags:['IPA']},new Date(2026,10,10,8));
+  const practised=rateCard(fresh,3,new Date(2026,10,10,9),{early:true});
+  assert.equal(groups.newCardsLeft([practised],3,day),2);
+});

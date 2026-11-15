@@ -44,3 +44,9 @@ test('plain English answers link to the Cambridge US entry; IPA and long answers
   assert.deepEqual(dictionaryLinks('train station').map(l=>l.term),['train station']);
   for(const answer of ['/iː/ · sheep','Glottal stop · 성문폐쇄음','','a sentence that is far too long to be one entry','one / two / three / four'])assert.deepEqual(dictionaryLinks(answer),[]);
 });
+
+test('among voices of the same kind, one on the device comes before an online "Natural" one',()=>{
+  const v=(name,localService)=>({name,lang:'en-US',localService});
+  assert.equal(speech.usVoice([v('Microsoft Aria Online (Natural)',false),v('Microsoft Aria',true)]).name,'Microsoft Aria');
+  assert.equal(speech.usVoice([v('Other Voice (Natural)',false),v('Some Voice',true)]).name,'Some Voice');
+});

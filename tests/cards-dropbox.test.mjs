@@ -663,3 +663,61 @@ test('repairing notes rewrites only the notes that failed',async()=>{
   notes.length=0;await store.exportNotes();
   assert.equal(notes.length,3);
 });
+
+test('a library rewrite that reached Dropbox but reported a timeout loses no review, and the next answer is saved',async()=>{
+  const now=new Date('2026-11-09T00:00:00Z'),cloud=memoryCloud(manyCards(api.journalLimit+5,now));
+  const store=await api.DropboxStore.open(cloud),upload=cloud.upload.bind(cloud);
+  let lose=true;
+  cloud.upload=async(path,...args)=>{
+    const saved=await upload(path,...args);
+    if(path==='/cards/library.json'&&lose){lose=false;throw Object.assign(Error('timed out'),{name:'TimeoutError'});}
+    return saved;
+  };
+  // Answering every card at once overfills the journal, so the commit rewrites library.json.
+  await store.commit({...store.library,cards:store.library.cards.map(c=>rateCard(c,3,now))},{},[]);
+  assert.equal(lose,false,'the rewrite was attempted');
+  assert.ok(store.foldAfter>Date.now());
+  assert.ok(JSON.parse(await text(cloud,'/cards/library.json')).cards.every(c=>c.reviews.length===1),'the rewrite landed');
+  const fresh=await api.DropboxStore.open(cloud);
+  assert.ok(fresh.library.cards.every(c=>c.reviews.length===1));
+  assert.equal(fresh.conflicts,0);
+  await answerCard(store,0,4,new Date(store.library.cards[0].schedule.due));
+  const read=await api.DropboxStore.open(cloud);
+  assert.deepEqual(read.library.cards[0].reviews.map(r=>r.rating),[3,4]);
+  assert.ok(read.library.cards.slice(1).every(c=>c.reviews.length===1));
+  assert.equal(read.conflicts,0);
+});
+
+// Today a card's memory edit and an answer to the same card from two devices cannot be merged:
+// the second save is refused rather than one overwriting the other.
+test('an answer to a card whose memory another device just edited is refused, and nothing stored is lost',async()=>{
+  const now=new Date('2026-11-09T00:00:00Z'),cloud=memoryCloud(manyCards(2,now));
+  const mac=await api.DropboxStore.open(cloud),phone=await api.DropboxStore.open(cloud);
+  await mac.commit({...mac.library,cards:mac.library.cards.map((c,i)=>i?c:editCard(c,{...c,memory:'my hook'},now))},{},[]);
+  const before={library:copy(phone.library),journal:copy(phone.journal),version:phone.version};
+  await assert.rejects(answerCard(phone,0,3,now),/같은 카드/);
+  assert.deepEqual({library:phone.library,journal:phone.journal,version:phone.version},before);
+  const read=await stored(cloud);
+  assert.equal(read.cards[0].memory,'my hook');
+  assert.equal(read.cards[0].reviews.length,0);
+  assert.deepEqual(read.cards,mac.library.cards);
+});
+
+test('a paused library rewrite and the notes waiting for repair carry over when the library is read again',async()=>{
+  const now=new Date('2026-11-09T00:00:00Z'),cloud=memoryCloud(manyCards(api.journalLimit+5,now));
+  const store=await api.DropboxStore.open(cloud),upload=cloud.upload.bind(cloud),bad=store.library.cards[0].id;
+  let rewrites=0;
+  cloud.upload=async(path,...args)=>{
+    if(path==='/cards/library.json'){rewrites++;throw Object.assign(Error('timed out'),{name:'TimeoutError'});}
+    if(path===`/cards/notes/${bad}.md`)throw Error('note offline');
+    return upload(path,...args);
+  };
+  await store.commit(rewriteAll(store),{},[bad]);
+  assert.equal(rewrites,1);
+  const again=await api.DropboxStore.open(cloud,store);
+  assert.equal(again.foldAfter,store.foldAfter);
+  assert.ok(again.foldAfter>Date.now());
+  assert.deepEqual([...again.failedNotes],[bad]);
+  await answerCard(again,1,3,now);
+  assert.equal(rewrites,1,'the reopened store still waits before rewriting');
+});

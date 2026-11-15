@@ -55,3 +55,47 @@ test('native browser fetch keeps its Window receiver through the client',async()
   const result=await client.request('https://example.com/',{method:'GET'});
   assert.equal(result.status,200);
 });
+
+const signIn=expiresAt=>({appKey:'app',accountId:'account',accessToken:'test-token',refreshToken:'test-refresh',expiresAt});
+function recordingClient(respond){
+  const calls=[],writes=[],storage=memory(),setItem=storage.setItem;
+  storage.setItem=(k,v)=>{writes.push(k);return setItem(k,v);};
+  const client=new api.DropboxClient({appKey:'app',storage,fetchImpl:async(url,options)=>{calls.push({url,options});return respond(url,options);}});
+  return {client,calls,writes};
+}
+const tokenURL='https://api.dropboxapi.com/oauth2/token',revokeURL='https://api.dropboxapi.com/2/auth/token/revoke';
+
+test('revoking with a still-valid access token calls only the revoke endpoint',async()=>{
+  const {client,calls,writes}=recordingClient(()=>new Response('null',{status:200}));
+  await client.revoke(signIn(Date.now()+3600000));
+  assert.deepEqual(calls.map(c=>c.url),[revokeURL]);
+  assert.equal(calls[0].options.headers.Authorization,'Bearer test-token');
+  assert.deepEqual(writes,[]);
+});
+
+test('revoking with an expired access token fetches a fresh one first and never stores it',async()=>{
+  const {client,calls,writes}=recordingClient(url=>new Response(url===tokenURL?'{"access_token":"fresh-token","expires_in":14400}':'null',{status:200}));
+  await client.revoke(signIn(Date.now()-1000));
+  assert.deepEqual(calls.map(c=>c.url),[tokenURL,revokeURL]);
+  assert.equal(calls[1].options.headers.Authorization,'Bearer fresh-token');
+  assert.deepEqual(writes,[]);
+});
+
+test('revoking offline finishes quietly',async()=>{
+  const {client,calls}=recordingClient(()=>{throw new TypeError('Load failed');});
+  await assert.doesNotReject(client.revoke(signIn(Date.now()-1000)));
+  assert.equal(calls.length,1);
+});
+
+test('a request with a larger body is allowed more time',async()=>{
+  const timeout=AbortSignal.timeout,limits=[];
+  AbortSignal.timeout=ms=>{limits.push(ms);return timeout.call(AbortSignal,ms);};
+  try{
+    const client=new api.DropboxClient({appKey:'app',storage:memory(),fetchImpl:async()=>new Response('{}',{status:200})});
+    await client.request('https://example.com/',{method:'POST'});
+    await client.request('https://example.com/',{method:'POST',body:new Blob([new Uint8Array(1e6)])});
+    await client.request('https://example.com/',{method:'POST',body:new Blob([new Uint8Array(5e6)])});
+    assert.equal(limits.length,3);
+    assert.ok(limits[0]<limits[1]&&limits[1]<limits[2],`timeouts ${limits}`);
+  }finally{AbortSignal.timeout=timeout;}
+});
