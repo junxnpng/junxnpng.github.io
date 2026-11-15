@@ -53,7 +53,7 @@ GitHub Pages(사용자 사이트). main 푸시 → `.github/workflows/hugo.yml` 
 원본 Markdown을 수정한 뒤 저장소 루트에서 실행한다. 생성된 `content/study/`와 `data/study/`는 직접 수정하지 않는다.
 
 ```sh
-python3 scripts/import-study.py "/Users/jun/Documents/Jun's box/998_eng/basic_verbs"
+python3 scripts/import-study.py "<Obsidian 보관함>/998_eng/basic_verbs"
 python3 -m unittest discover -s tests -v
 sh scripts/check
 ```

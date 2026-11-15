@@ -1,13 +1,13 @@
 import {newCard, editCard, rateCard, correctLastReview, reviewOptions, dueCards, dateLabel, intervalLabel, ratings, overdueMs, reviewLateMs, waitLabel} from './model.mjs?v=6';
 import {studyGroups,cardsInGroup,studyQueue,studyProgress,newCardsLeft,sortCards,sortOrders,resumeIndex,unseenFirst,setSection,inSection,sections} from './study-groups.mjs?v=10';
 import {FolderStore, rememberedFolder, friendlyError} from './storage.mjs?v=7';
-import {el, showCard} from './view.mjs?v=7';
+import {el, showCard} from './view.mjs?v=8';
 import {DropboxStore} from './dropbox-store.mjs?v=12';
 import {readSnapshot,writeSnapshot,clearSnapshot} from './snapshot-cache.mjs?v=1';
 import {MediaCache} from './media-cache.mjs?v=1';
 import {parseBundle} from './bundle.mjs?v=2';
 import {prepareImagePatch,prepareAudioPatch,prepareTextPatch,patchKind} from './image-patch.mjs?v=8';
-import {openDropbox} from '../shared/dropbox.mjs?v=4';
+import {openDropbox} from '../shared/dropbox.mjs?v=5';
 import {flagKinds,hasFlag,setFlag} from './image-flag.mjs?v=2';
 
 const $=id=>document.getElementById(id);
@@ -80,12 +80,12 @@ function retryControls(){
   if(lastGraded)$('fix-last').textContent=`방금 평가 고치기 · ${lastGraded.answer.slice(0,24)} (${ratings[lastGraded.rating]})`;
   $('unknown-help').hidden=practice||!count;
   $('review-title').textContent=practice?'자유 연습':unknownSession?'모름 다시 보기':'오늘 복습';
-  const groups=studyGroups(cards()),now=new Date();
+  const groups=studyGroups(cards()),now=new Date(),newLeft=newCardsLeft(cards(),newLimit,now);
   for(const id of ['deck-filter','review-group'])for(const option of $(id).options){
-    const group=groups.find(g=>g.key===option.value);if(group)option.textContent=groupLabel(group,now);
+    const group=groups.find(g=>g.key===option.value);if(group)option.textContent=groupLabel(group,now,newLeft);
   }
-  const newLeft=newCardsLeft(cards(),newLimit,now);
   const group=groups.find(g=>g.key===selectedGroup),progress=studyProgress(group?.cards||[],now,newLeft);
+  $('review-settings-now').textContent=store?`${group?.label||''} · ${$('review-mode').selectedOptions[0]?.textContent.split(' · ')[0]||''}`:'';
   $('new-limit').value=String(newLimit);
   $('new-limit').closest('label').hidden=$('new-limit-help').hidden=practice||unknownSession!==null;
   $('new-limit-help').textContent=!store?'':newLimit?`오늘 처음 본 카드 ${1e6-newCardsLeft(cards(),1e6,now)} / ${newLimit}장. 한도를 채우면 복습 날짜가 된 카드만 나와요.${progress.held?` 이 묶음의 새 카드 ${progress.held}장은 다음 날로 넘겨요.`:''}`:'새 카드를 개수 제한 없이 먼저 보여줘요. 복습 날짜가 된 카드는 그 뒤에 나와요.';
@@ -119,19 +119,20 @@ function updateStats(){
     localStorage.setItem('saymore.home.cards.v1',JSON.stringify({at:Date.now(),...summary(inSection(cards(),'cards')),sections:Object.fromEntries(Object.keys(sections).map(name=>[name,summary(inSection(cards(),name))]))}));
   }catch{/* The home page keeps its last numbers. */}
 }
-function groupLabel(group,now=new Date()){
-  const p=studyProgress(group.cards,now,newCardsLeft(cards(),newLimit,now));
+// `newLeft` is passed in by callers that label many groups, so the library is counted once, not once a label.
+function groupLabel(group,now=new Date(),newLeft=newCardsLeft(cards(),newLimit,now)){
+  const p=studyProgress(group.cards,now,newLeft);
   return `${group.label} · ${p.total}장 · 오늘 완료 ${p.completedToday} · 남음 ${p.remaining}`;
 }
 function updateDecks(){
   const decks=[...new Set(inSection(cards()).map(c=>c.deck))].sort((a,b)=>a.localeCompare(b));
-  const groups=studyGroups(cards());
+  const groups=studyGroups(cards()),labelNow=new Date(),labelLeft=newCardsLeft(cards(),newLimit,labelNow);
   if(!groups.some(g=>g.key===selectedGroup))selectedGroup='all';
   for(const id of ['deck-filter','review-group']){
     const select=$(id);select.replaceChildren();
     for(const section of [...new Set(groups.map(g=>g.section))]){
       const optgroup=el('optgroup');optgroup.label=section;
-      for(const group of groups.filter(g=>g.section===section))optgroup.append(new Option(groupLabel(group),group.key));
+      for(const group of groups.filter(g=>g.section===section))optgroup.append(new Option(groupLabel(group,labelNow,labelLeft),group.key));
       select.append(optgroup);
     }
     select.value=selectedGroup;
@@ -606,7 +607,7 @@ $('connect-dropbox').addEventListener('click',connectCloud);
 $('disconnect-dropbox').addEventListener('click',async()=>{
   if(busy||saving)return;setBusy(true);
   try{
-    await store?.flushNotes?.();cloud?.disconnect();connectionEpoch++;
+    await store?.flushNotes?.();await cloud?.revoke?.();cloud?.disconnect();connectionEpoch++;
     if(store?.kind==='dropbox'){store=null;clearMediaCache();activeCard=null;unknownSession=null;renderLibrary();if(view==='review')showNextReview();}
     rememberedRev=null;await clearSnapshot();
     notice('이 브라우저의 연결을 해제했어요. Dropbox에 저장된 카드와 기록은 그대로 있어요.');
@@ -633,6 +634,11 @@ async function importBundle(append=false){
     if(file&&file.size>50*1024*1024)throw Error('50MB 이하의 카드 묶음을 사용해 주세요.');
     const files=await parseBundle(file?await file.text():$('bundle-data').value);
     const progress=(done,total)=>notice(`Dropbox에 저장하고 확인 중… ${done} / ${total}`);
+    // A picture or recording that cannot be opened is refused here, as when filling an empty one.
+    if(append)for(const {path,blob} of files){
+      if(/^media\/[^/]+\.mp3$/.test(path)){const url=URL.createObjectURL(blob);try{await playableMP3(url);}finally{URL.revokeObjectURL(url);}}
+      else if(/^media\/[^/]+\.(jpg|png|webp)$/.test(path)){const image=await createImageBitmap(blob);image.close();}
+    }
     const result=append ? await store.appendEntries(files,progress) : await store.importEntries(files,progress);
     $('bundle-data').value='';$('image-bundle-file').value='';$('bundle-panel').open=false;
     clearMediaCache();updateDecks();renderLibrary();
@@ -681,6 +687,8 @@ for(const id of ['deck-filter','review-group'])$(id).addEventListener('change',(
 // The page always opens in rated review: a remembered practice mode hid the answer buttons.
 try{localStorage.removeItem('saymore.cards.review-mode.v1');}catch{/* Nothing to clear. */}
 $('review-mode').value='due';
+// On a phone the settings would push the card a screen and a half down; they open with a tap.
+if(matchMedia('(max-width:660px)').matches)$('review-settings').open=false;
 $('review-mode').addEventListener('change',()=>startReview());
 $('new-limit').addEventListener('change',()=>{newLimit=Number($('new-limit').value)||0;try{localStorage.setItem(newLimitKey,String(newLimit));}catch{/* Holds for this visit. */}startReview();});
 
@@ -728,7 +736,11 @@ window.addEventListener('storage',async event=>{
   // a reason to check for changes, under the rules that keep a card being answered in place.
   if(cloud.connected&&store?.kind==='dropbox'){void refreshCloud();return;}
   if(cloud.connected&&!busy&&!saving&&!dirty){const epoch=++connectionEpoch;setBusy(true);try{await loadCloud(epoch);}catch(e){notice(friendlyError(e),true);}finally{setBusy(false);}}
-  else if(!cloud.connected)notice('이 브라우저의 Dropbox 연결이 해제되었어요. 다시 연결하면 저장된 기록을 읽을 수 있어요.');
+  else if(!cloud.connected){
+    // Disconnected from another tab or page: the copy of the cards kept in this browser goes too.
+    rememberedRev=null;void clearSnapshot().catch(()=>{});
+    notice('이 브라우저의 Dropbox 연결이 해제되었어요. 다시 연결하면 저장된 기록을 읽을 수 있어요.');
+  }
 });
 if(section!=='cards'){
   const text={form:['WORD FORMS','단어 형태','went, children, says처럼 모양이 바뀌는 단어를 문장 속에서 익혀요.'],

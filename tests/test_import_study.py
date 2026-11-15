@@ -1,4 +1,5 @@
 import json
+import os
 import subprocess
 import sys
 import tempfile
@@ -6,9 +7,11 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-SOURCE = Path("/Users/jun/Documents/Jun's box/998_eng/basic_verbs")
+# The source notes live in a private vault: name it with SAYMORE_STUDY_SOURCE to run this test.
+SOURCE = Path(os.environ.get("SAYMORE_STUDY_SOURCE", ""))
 
 
+@unittest.skipUnless(os.environ.get("SAYMORE_STUDY_SOURCE"), "set SAYMORE_STUDY_SOURCE to the basic_verbs folder")
 class ImportStudyTest(unittest.TestCase):
     def test_daily_material_survives_export_and_repeated_import(self):
         # Catches dropped senses, lost register labels, and accumulating exports.

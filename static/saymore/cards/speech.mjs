@@ -7,7 +7,8 @@ function voiceRank(voice){
   const index=natural.findIndex(n=>name.startsWith(n));
   const tier=index>=0?0:distorted.test(name)?2:1;
   const quality=/Premium|Enhanced|Natural|고품질|프리미엄/i.test(name)?0:1;
-  return [tier,quality,voice.localService?0:1,index<0?natural.length:index];
+  // A voice on the device comes before a better-sounding online one: an online voice sends the card's words to its maker.
+  return [tier,voice.localService?0:1,quality,index<0?natural.length:index];
 }
 export function usVoice(voices){
   return voices.filter(v=>/^en[-_]US$/i.test(v.lang))

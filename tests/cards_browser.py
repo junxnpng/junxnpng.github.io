@@ -18,7 +18,7 @@ with sync_playwright() as p:
     errors=[]
     page.on('pageerror',lambda e: errors.append(str(e)))
     page.goto(url)
-    page.get_by_role('button',name='폴더 연결',exact=True).click()
+    page.get_by_role('button',name='로컬 폴더 연결',exact=True).click()
     expect(page.locator('#connection')).to_contain_text('연결됨')
     page.get_by_role('button',name='카드 추가',exact=True).click()
     page.get_by_label('카드 종류',exact=True).select_option('basic')

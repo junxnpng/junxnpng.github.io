@@ -26,6 +26,12 @@ export class DropboxClient {
   get accountId() {return this.credentials?.accountId || null;}
   saveCredentials(value) {this.storage.setItem(authKey,JSON.stringify(value));}
   disconnect() {this.storage.removeItem(authKey);}
+  // Tells Dropbox to stop honouring this browser's sign-in, so a copy of the stored token is worth nothing.
+  // Best effort: disconnecting must still work offline.
+  async revoke() {
+    if(!this.credentials)return;
+    try{await this.request('https://api.dropboxapi.com/2/auth/token/revoke',{method:'POST',headers:{Authorization:`Bearer ${await this.accessToken()}`}},8000);}catch{/* The local sign-in is removed either way. */}
+  }
   // 25 seconds is plenty for a small request but not for megabytes on a phone connection:
   // an upload gets 20 more seconds per megabyte, and a download says how long it may take.
   async request(url, options, limit=25000) {

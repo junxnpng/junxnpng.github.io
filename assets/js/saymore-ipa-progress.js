@@ -107,7 +107,7 @@
   });
 
   async function initializeCloud() {
-    const {openDropbox} = await import("/saymore/shared/dropbox.mjs?v=4");
+    const {openDropbox} = await import("/saymore/shared/dropbox.mjs?v=5");
     cloud = await openDropbox();
     render();
   }
@@ -152,7 +152,8 @@
     } catch (error) { connect.disabled = false; notice(error.message, true); }
   });
   syncButton.addEventListener("click", () => void synchronize());
-  disconnect.addEventListener("click", () => {
+  disconnect.addEventListener("click", async () => {
+    await cloud?.revoke?.();
     cloud?.disconnect();
     generation++;
     render();

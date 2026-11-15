@@ -1,6 +1,6 @@
 export const el=(tag,text,className)=>{const node=document.createElement(tag);if(text!==undefined)node.textContent=text;if(className)node.className=className;return node;};
 
-import {speakUS,stopSpeech} from './speech.mjs?v=3';
+import {speakUS,stopSpeech} from './speech.mjs?v=4';
 
 // Plain English answers ("dog", "street / road", "wake up") get a link to the Cambridge US entry, where
 // the US speaker plays a dictionary recording. IPA cards and long answers are left alone.

@@ -16,7 +16,7 @@
   const status = message => { $("status").textContent = message; };
 
   // Fetched while the page is idle, so the tap on Start does not wait for it.
-  const speech = import("/saymore/cards/speech.mjs?v=3");
+  const speech = import("/saymore/cards/speech.mjs?v=4");
   speech.catch(() => {});
 
   async function loadVoice() {
