@@ -26,7 +26,7 @@
   --sk-tab-bg: #0a0a0a; --sk-tab-ink: #fff;
   --sk-rate1-bg: #fff; --sk-rate1-ink: #0a0a0a; --sk-rate2-bg: #fff; --sk-rate2-ink: #0a0a0a;
   --sk-rate3-bg: #0a0a0a; --sk-rate3-ink: #fff; --sk-rate4-bg: #fff; --sk-rate4-ink: #0a0a0a;
-  --sk-rate-edge: #b6b6b6; --sk-rate3-edge: #0a0a0a;
+  --sk-rate-edge: #8a8a8a; --sk-rate3-edge: #0a0a0a;
   color-scheme: light;
 }
 /* 드라큘라 (dracula) */

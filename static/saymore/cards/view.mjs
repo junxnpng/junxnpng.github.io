@@ -13,19 +13,25 @@ export function dictionaryLinks(answer){
   return terms.flatMap(split).map(term=>({term,url:'https://dictionary.cambridge.org/us/search/english/direct/?q='+encodeURIComponent(term.toLowerCase())}));
 }
 
+// The page is Korean; English text is marked so a screen reader reads it with an English voice.
+// Cards that explain in Korean (the IPA deck) are left as they are.
+const english=node=>{if(!/[가-힣]/.test(node.textContent))node.lang='en';return node;};
+
 export function showCard(container, card, sources = {}, answer = false) {
   stopSpeech();
   const article=el('article',undefined,'study-card');
+  // Focus is moved here when a card appears, so its text is what a screen reader reads next.
+  article.tabIndex=-1;article.setAttribute('aria-label',answer?'카드 뒷면':'카드 앞면');
   const label=el('div',undefined,'study-card-label');
   label.append(el('span',card.type==='picture'?'그림 → 단어':'앞면 → 뒷면'),el('span',answer?'뒷면':'앞면'));
   article.append(label);
   if (sources.image) {
-    const img=el('img',undefined,'study-image');img.alt='카드에 첨부한 학습 사진';img.src=sources.image;article.append(img);
+    const img=el('img',undefined,'study-image');img.alt=answer&&card.answer?`${card.answer} 그림`:'카드에 첨부한 학습 그림';img.src=sources.image;article.append(img);
   } else if (card.type==='picture') article.append(el('div','사진','image-placeholder'));
   const body=el('div',undefined,'study-body');
   if (answer) {
-    body.append(el('p',card.answer||'단어 또는 정답','study-answer'));
-    if(card.ipa)body.append(el('p',card.ipa,'study-ipa'));
+    body.append(english(el('p',card.answer||'단어 또는 정답','study-answer')));
+    if(card.ipa){const ipa=el('p',card.ipa,'study-ipa');ipa.lang='en-fonipa';body.append(ipa);}
     // A card with a recording offers both: the human recording and the device voice reading the same word.
     const listen=el('div',undefined,'study-listen');let audio=null;
     if(sources.audio){
@@ -51,14 +57,14 @@ export function showCard(container, card, sources = {}, answer = false) {
       photo.href='https://www.google.com/search?tbm=isch&q='+encodeURIComponent(links[0].term);photo.target='_blank';photo.rel='noopener noreferrer';
       pictures.append(photo);body.append(pictures);
     }
-    if(card.sentence)body.append(el('p',card.sentence,'study-sentence'));
+    if(card.sentence)body.append(english(el('p',card.sentence,'study-sentence')));
     if(card.memory)body.append(el('p',card.memory,'study-memory'));
     if(card.audio?.credit)body.append(el('p',card.audio.credit,'study-credit'));
   } else {
     // Word-form and word-order cards end with the word to use, set apart from the sentence like the hint on a paper card.
     const cut=(card.tags||[]).some(tag=>tag==='FORM'||tag==='ORDER')?(card.front||'').lastIndexOf('\n'):-1;
-    if(cut>0&&card.front.slice(cut+1).trim())body.append(el('p',card.front.slice(0,cut),'study-prompt'),el('p',card.front.slice(cut+1),'study-hint'));
-    else body.append(el('p',card.front||(card.type==='picture'?'사진을 보고 영어로 말해보세요.':'질문 또는 힌트를 입력해주세요.'),'study-prompt'));
+    if(cut>0&&card.front.slice(cut+1).trim())body.append(english(el('p',card.front.slice(0,cut),'study-prompt')),english(el('p',card.front.slice(cut+1),'study-hint')));
+    else body.append(english(el('p',card.front||(card.type==='picture'?'사진을 보고 영어로 말해보세요.':'질문 또는 힌트를 입력해주세요.'),'study-prompt')));
   }
   if(card.image?.credit){
     if(answer)body.append(el('p',card.image.credit,'study-credit'));

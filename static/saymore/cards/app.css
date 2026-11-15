@@ -105,3 +105,14 @@ code{border-radius:5px}
 @media(max-width:660px){.review-controls .new-limit,.review-controls #new-limit-help{grid-row:auto}}
 .review-settings{margin-bottom:20px}.review-settings>summary{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;cursor:pointer;font-size:14px;font-weight:650;padding:10px 2px;min-height:44px}.review-settings>summary .small{margin:0;font-weight:400}.review-settings[open]>summary{margin-bottom:8px}.review-settings .review-controls{margin-bottom:0}
 .review-settings>summary{list-style:none}.review-settings>summary::-webkit-details-marker{display:none}.review-settings>summary::before{content:"▸";content:"▸"/"";color:var(--muted)}.review-settings[open]>summary::before{content:"▾";content:"▾"/""}
+/* Review round 8 */
+.study-card:focus{outline:none}
+select{height:auto;min-height:46px}
+dialog{max-height:min(90vh,calc(100% - 24px));max-height:min(90dvh,calc(100% - 24px));overscroll-behavior:contain}
+html:has(dialog[open]){overflow:hidden}
+@media(max-width:660px){
+  html{scroll-padding-bottom:calc(80px + env(safe-area-inset-bottom,0px))}
+  .text-button,.preview-header button,.flag-image{min-height:44px;min-width:44px}
+  .storage-actions summary,.bundle-panel summary,footer summary,details.study-credit>summary{padding-block:12px}
+  #close-detail{min-height:44px}
+}

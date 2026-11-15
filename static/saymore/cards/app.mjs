@@ -1,7 +1,7 @@
 import {newCard, editCard, rateCard, correctLastReview, reviewOptions, dueCards, dateLabel, intervalLabel, ratings, overdueMs, reviewLateMs, waitLabel} from './model.mjs?v=7';
 import {studyGroups,cardsInGroup,studyQueue,studyProgress,newCardsLeft,sortCards,sortOrders,resumeIndex,unseenFirst,setSection,inSection,sections} from './study-groups.mjs?v=11';
 import {FolderStore, rememberedFolder, friendlyError} from './storage.mjs?v=8';
-import {el, showCard} from './view.mjs?v=10';
+import {el, showCard} from './view.mjs?v=11';
 import {DropboxStore} from './dropbox-store.mjs?v=13';
 import {readSnapshot,writeSnapshot,clearSnapshot} from './snapshot-cache.mjs?v=1';
 import {MediaCache} from './media-cache.mjs?v=1';
@@ -39,7 +39,7 @@ const groupKey=section==='cards'?'saymore.cards.group.v1':`saymore.cards.group.$
 const positionKey=section==='cards'?'saymore.cards.practice-position.v1':`saymore.cards.practice-position.${section}.v1`;
 try{selectedGroup=localStorage.getItem(groupKey)||'all';}catch{/* Selection is optional when browser storage is unavailable. */}
 
-function notice(message,error=false){noticeVersion++;$('notice').textContent=message;$('notice').hidden=!message;$('notice').classList.toggle('error',error);}
+function notice(message,error=false){noticeVersion++;$('notice').setAttribute('role',error?'alert':'status');$('notice').textContent=message;$('notice').hidden=!message;$('notice').classList.toggle('error',error);}
 // While an answer is being saved the review continues on the cards as they will be once it is stored.
 let saving=false, pendingCards=null;
 function cards(){return pendingCards || store?.library.cards || [];}
@@ -196,9 +196,11 @@ function cardRow(c){
   const waited=waitLabel(overdueMs(c));
   schedule.append(el('span',state,'status'),el('span',c.schedule.state===0?'바로 학습할 수 있어요':dateLabel(c.schedule.due)),el('p',`복습 ${c.reviews.length}회${waited?` · 예정일에서 ${waited} 지남`:''}`));
   const actions=el('div',undefined,'row-actions'), preview=el('button','미리 보기','text-button'), edit=el('button','수정','text-button');
+  // Read out of context, as in a list of buttons, each says which card it belongs to.
+  preview.setAttribute('aria-label',`${c.answer} 미리 보기`);edit.setAttribute('aria-label',`${c.answer} 수정`);
   preview.addEventListener('click',()=>openDetail(c.id));edit.addEventListener('click',()=>openEdit(c.id));
   actions.append(preview,edit);
-  if(c.reviews.at(-1)?.log){const fix=el('button','평가 고치기','text-button');fix.addEventListener('click',()=>openDetail(c.id,true));actions.append(fix);}
+  if(c.reviews.at(-1)?.log){const fix=el('button','평가 고치기','text-button');fix.setAttribute('aria-label',`${c.answer} 평가 고치기`);fix.addEventListener('click',()=>openDetail(c.id,true));actions.append(fix);}
   row.append(title,schedule,actions);
   return row;
 }
@@ -543,7 +545,7 @@ async function showNextReview(){
     const urls=await front;if(!current())return;
     showCard($('review-card'),card,urls,false);$('reveal').hidden=false;
     // The rating buttons that held the focus are gone; without this a keyboard or VoiceOver reader starts from the top of the page.
-    if(lostFocus())$('reveal').focus({preventScroll:true});
+    if(lostFocus())$('review-card').firstElementChild?.focus({preventScroll:true});
   }catch(e){if(!current())return;notice(friendlyError(e),true);activeCard=null;$('review-active').hidden=true;$('review-empty').hidden=false;$('review-empty-title').textContent='첨부파일을 확인해주세요.';$('next-due').textContent='카드 목록에서 해당 카드의 사진·음성을 다시 선택해주세요.';}
 }
 // True when the control the reader was on has just been hidden.
@@ -561,7 +563,7 @@ async function reveal(){
     const options=reviewOptions(activeCard);for(const b of document.querySelectorAll('[data-rating]'))b.querySelector('small').textContent=b.dataset.rating==='1'?'24시간 안':intervalLabel(options[b.dataset.rating].due);
     $('reveal').hidden=!isPractice();$('rating-area').hidden=false;
     // Not a rating button: Space pressed twice would then grade the card.
-    if(lostFocus()){$('rating-area').tabIndex=-1;$('rating-area').focus({preventScroll:true});}
+    if(lostFocus())$('review-card').firstElementChild?.focus({preventScroll:true});
   }catch(e){notice(friendlyError(e),true);}finally{setBusy(false);}
 }
 async function grade(rating){
@@ -722,7 +724,7 @@ $('review-unknown').addEventListener('click',()=>startReview(true));$('review-no
 for(const b of document.querySelectorAll('[data-rating]'))b.addEventListener('click',()=>grade(Number(b.dataset.rating)));
 $('repair-notes').addEventListener('click',async()=>{if(!store||busy)return;setBusy(true);try{const result=await store.exportNotes();$('repair-notes').hidden=result.warnings.length===0;saved(result,'읽기용 노트를 다시 저장했어요.');}catch(e){notice(friendlyError(e),true);}finally{setBusy(false);}});
 window.addEventListener('beforeunload',e=>{if(dirty||busy||saving||store?.pendingNotes){e.preventDefault();e.returnValue='';}});
-document.addEventListener('keydown',e=>{if(view!=='review'||busy||$('detail-dialog').open||/INPUT|TEXTAREA|SELECT/.test(e.target.tagName))return;if(e.code==='Space'){if(e.target.closest('button,a,summary'))return;e.preventDefault();if(!revealed||isPractice())reveal();}else if(revealed&&/^[1-4]$/.test(e.key))grade(Number(e.key));});
+document.addEventListener('keydown',e=>{if(e.metaKey||e.ctrlKey||e.altKey)return;if(view!=='review'||busy||$('detail-dialog').open||/INPUT|TEXTAREA|SELECT/.test(e.target.tagName))return;if(e.code==='Space'){if(e.target.closest('button,a,summary'))return;e.preventDefault();if(!revealed||isPractice())reveal();}else if(revealed&&/^[1-4]$/.test(e.key))grade(Number(e.key));});
 setInterval(()=>{if(store&&!busy)updateStats();rememberSnapshot();void refreshCloud();},30000);
 window.addEventListener('pageshow',()=>void refreshCloud());
 window.addEventListener('online',()=>void refreshCloud());
