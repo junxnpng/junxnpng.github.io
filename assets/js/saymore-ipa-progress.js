@@ -107,7 +107,7 @@
   });
 
   async function initializeCloud() {
-    const {openDropbox} = await import("/saymore/shared/dropbox.mjs?v=5");
+    const {openDropbox} = await import("/saymore/shared/dropbox.mjs?v=6");
     cloud = await openDropbox();
     render();
   }
@@ -152,9 +152,10 @@
     } catch (error) { connect.disabled = false; notice(error.message, true); }
   });
   syncButton.addEventListener("click", () => void synchronize());
-  disconnect.addEventListener("click", async () => {
-    await cloud?.revoke?.();
+  disconnect.addEventListener("click", () => {
+    const signedIn = cloud?.credentials;
     cloud?.disconnect();
+    void cloud?.revoke?.(signedIn);
     generation++;
     render();
     notice("이 브라우저의 Dropbox 연결을 해제했습니다. 학습 기록은 그대로 유지합니다.");

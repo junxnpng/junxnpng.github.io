@@ -1,13 +1,16 @@
 import {editCard} from './model.mjs?v=6';
+import {flagKinds} from './image-flag.mjs?v=2';
 
 // A patch fills one empty attachment slot (image or audio) on cards that already exist.
-// It never replaces an attachment and never touches a card's schedule or review history.
+// It never touches a card's schedule or review history, and replaces an attachment in one case only:
+// a picture the reader marked as not fitting (see image-flag.mjs), when the patch item says `replace`.
 const kinds={
   image:{manifest:'images.json',format:'saymore-image-patch',list:'images',path:/^media\/[0-9a-f-]{36}\.(jpg|png|webp)$/,mimes:['image/jpeg','image/png','image/webp'],
     errors:{files:'이미지 묶음의 파일 구성을 확인해주세요.',format:'이미지 묶음 형식이 아닙니다.',item:'이미지 경로와 출처를 확인해주세요.',blob:'사용할 이미지 파일이 없거나 잘못되었습니다.'}},
   audio:{manifest:'audio.json',format:'saymore-audio-patch',list:'audio',path:/^media\/[0-9a-f-]{36}\.mp3$/,mimes:['audio/mpeg'],
     errors:{files:'녹음 묶음의 파일 구성을 확인해주세요.',format:'녹음 묶음 형식이 아닙니다.',item:'녹음 경로와 출처를 확인해주세요.',blob:'사용할 녹음 파일이 없거나 잘못되었습니다.'}},
 };
+const marks=Object.values(flagKinds).map(kind=>kind.tag);
 const textManifest='text.json';
 export const patchKind=files=>files.some(file=>file.path===textManifest)?'text':Object.keys(kinds).find(kind=>files.some(file=>file.path===kinds[kind].manifest))||'image';
 
@@ -28,8 +31,11 @@ async function prepare(kind,library,files){
     paths.add(item.path);
     const blob=entries.get(item.path);
     if(!(blob instanceof Blob)||!blob.size||blob.size>10*1024*1024||!k.mimes.includes(blob.type))throw Error(k.errors.blob);
-    if(card[kind]){skipped++;continue;}
-    replacements.set(card.id,editCard(card,{...card,[kind]:{path:item.path,credit:item.credit}}));
+    // A picture is replaced only where the reader marked it as not fitting during review, and the patch asks to:
+    // the new picture goes in, the mark comes off, and the old file stays in the library folder.
+    const swap=kind==='image'&&item.replace===true&&card.image&&card.image.path!==item.path&&marks.some(tag=>card.tags.includes(tag));
+    if(card[kind]&&!swap){skipped++;continue;}
+    replacements.set(card.id,editCard(card,{...card,tags:swap?card.tags.filter(tag=>!marks.includes(tag)):card.tags,[kind]:{path:item.path,credit:item.credit}}));
     uploads[item.path]=blob;
   }
   return {next:{...library,cards:library.cards.map(c=>replacements.get(c.id)||c)},uploads,ids:[...replacements.keys()],skipped};

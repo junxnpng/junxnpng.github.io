@@ -28,9 +28,20 @@ export class DropboxClient {
   disconnect() {this.storage.removeItem(authKey);}
   // Tells Dropbox to stop honouring this browser's sign-in, so a copy of the stored token is worth nothing.
   // Best effort: disconnecting must still work offline.
-  async revoke() {
-    if(!this.credentials)return;
-    try{await this.request('https://api.dropboxapi.com/2/auth/token/revoke',{method:'POST',headers:{Authorization:`Bearer ${await this.accessToken()}`}},8000);}catch{/* The local sign-in is removed either way. */}
+  // Call it with the sign-in read before disconnect(): the browser forgets first, then Dropbox is told, in the
+  // background and within eight seconds in all, so the button never waits on the network.
+  async revoke(credentials=this.credentials) {
+    if(!credentials?.refreshToken)return;
+    const signal=AbortSignal.timeout(8000),post=(url,options)=>this.fetch(url,{method:'POST',credentials:'omit',signal,...options});
+    try{
+      let token=credentials.expiresAt>Date.now()+10000?credentials.accessToken:null;
+      if(!token){
+        // A fresh access token is needed to make the call; it is used once and not kept.
+        const response=await post('https://api.dropboxapi.com/oauth2/token',{headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({client_id:this.appKey,grant_type:'refresh_token',refresh_token:credentials.refreshToken})});
+        token=response.ok?(await response.json()).access_token:null;
+      }
+      if(token)await post('https://api.dropboxapi.com/2/auth/token/revoke',{headers:{Authorization:`Bearer ${token}`}});
+    }catch{/* The local sign-in is already gone. */}
   }
   // 25 seconds is plenty for a small request but not for megabytes on a phone connection:
   // an upload gets 20 more seconds per megabyte, and a download says how long it may take.

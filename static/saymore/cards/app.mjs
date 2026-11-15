@@ -1,13 +1,13 @@
 import {newCard, editCard, rateCard, correctLastReview, reviewOptions, dueCards, dateLabel, intervalLabel, ratings, overdueMs, reviewLateMs, waitLabel} from './model.mjs?v=6';
 import {studyGroups,cardsInGroup,studyQueue,studyProgress,newCardsLeft,sortCards,sortOrders,resumeIndex,unseenFirst,setSection,inSection,sections} from './study-groups.mjs?v=10';
 import {FolderStore, rememberedFolder, friendlyError} from './storage.mjs?v=7';
-import {el, showCard} from './view.mjs?v=8';
+import {el, showCard} from './view.mjs?v=9';
 import {DropboxStore} from './dropbox-store.mjs?v=12';
 import {readSnapshot,writeSnapshot,clearSnapshot} from './snapshot-cache.mjs?v=1';
 import {MediaCache} from './media-cache.mjs?v=1';
 import {parseBundle} from './bundle.mjs?v=2';
-import {prepareImagePatch,prepareAudioPatch,prepareTextPatch,patchKind} from './image-patch.mjs?v=8';
-import {openDropbox} from '../shared/dropbox.mjs?v=5';
+import {prepareImagePatch,prepareAudioPatch,prepareTextPatch,patchKind} from './image-patch.mjs?v=9';
+import {openDropbox} from '../shared/dropbox.mjs?v=6';
 import {flagKinds,hasFlag,setFlag} from './image-flag.mjs?v=2';
 
 const $=id=>document.getElementById(id);
@@ -523,8 +523,11 @@ async function showNextReview(){
     // A card answered 모름 is best tried again while the answer just seen is still fresh.
     const unknown=store?studyQueue(cards(),selectedGroup,'unknown').length:0;
     if(unknown){$('review-empty-title').textContent='오늘 볼 카드를 모두 봤어요.';$('next-due').textContent=`모름으로 둔 카드 ${unknown}장이 있어요. 방금 본 답이 기억에 남아 있을 때 위의 ‘모름 다시 보기’로 한 번 더 떠올려 보세요.`;return;}
+    // The limit on new cards may be why nothing is left: say so here, where the settings may be folded away.
+    const held=store&&newLimit?studyProgress(cardsInGroup(cards(),selectedGroup),new Date(),newCardsLeft(cards(),newLimit)).held:0;
+    if(held){$('review-empty-title').textContent='오늘 볼 카드를 모두 봤어요.';$('next-due').textContent=`오늘의 새 카드 ${newLimit}장을 채웠어요. 이 묶음의 새 카드 ${held}장은 내일부터 이어서 나와요. 더 보고 싶다면 위의 ‘복습 설정’에서 하루 한도를 바꾸거나 ‘자유 연습’을 고르세요.`;return;}
     const future=cardsInGroup(cards(),selectedGroup).filter(c=>Date.parse(c.schedule.due)>Date.now()).sort((a,b)=>Date.parse(a.schedule.due)-Date.parse(b.schedule.due))[0];
-    $('next-due').textContent=future?`다음 복습은 ${dateLabel(future.schedule.due)}예요. 지금 보고 싶다면 위에서 “자유 연습”을 선택하세요.`:store?'다른 묶음을 선택하거나 카드를 추가해보세요.':'연결하면 저장된 카드와 복습 날짜를 불러와요.';return;
+    $('next-due').textContent=future?`다음 복습은 ${dateLabel(future.schedule.due)}예요. 지금 보고 싶다면 위의 ‘복습 설정’에서 “자유 연습”을 선택하세요.`:store?'다른 묶음을 선택하거나 카드를 추가해보세요.':'연결하면 저장된 카드와 복습 날짜를 불러와요.';return;
   }
   const card=activeCard,front=sources(card,false);
   $('review-card').textContent='카드를 불러오는 중…';
@@ -607,7 +610,7 @@ $('connect-dropbox').addEventListener('click',connectCloud);
 $('disconnect-dropbox').addEventListener('click',async()=>{
   if(busy||saving)return;setBusy(true);
   try{
-    await store?.flushNotes?.();await cloud?.revoke?.();cloud?.disconnect();connectionEpoch++;
+    await store?.flushNotes?.();const signedIn=cloud?.credentials;cloud?.disconnect();void cloud?.revoke?.(signedIn);connectionEpoch++;
     if(store?.kind==='dropbox'){store=null;clearMediaCache();activeCard=null;unknownSession=null;renderLibrary();if(view==='review')showNextReview();}
     rememberedRev=null;await clearSnapshot();
     notice('이 브라우저의 연결을 해제했어요. Dropbox에 저장된 카드와 기록은 그대로 있어요.');
@@ -636,8 +639,10 @@ async function importBundle(append=false){
     const progress=(done,total)=>notice(`Dropbox에 저장하고 확인 중… ${done} / ${total}`);
     // A picture or recording that cannot be opened is refused here, as when filling an empty one.
     if(append)for(const {path,blob} of files){
-      if(/^media\/[^/]+\.mp3$/.test(path)){const url=URL.createObjectURL(blob);try{await playableMP3(url);}finally{URL.revokeObjectURL(url);}}
-      else if(/^media\/[^/]+\.(jpg|png|webp)$/.test(path)){const image=await createImageBitmap(blob);image.close();}
+      try{
+        if(/^media\/[^/]+\.mp3$/.test(path)){const url=URL.createObjectURL(blob);try{await playableMP3(url);}finally{URL.revokeObjectURL(url);}}
+        else if(/^media\/[^/]+\.(jpg|png|webp)$/.test(path)){const image=await createImageBitmap(blob);image.close();}
+      }catch{throw Error(`묶음 안의 ${path} 파일을 열 수 없어요. 묶음을 다시 만들어 주세요. 아무것도 저장하지 않았어요.`);}
     }
     const result=append ? await store.appendEntries(files,progress) : await store.importEntries(files,progress);
     $('bundle-data').value='';$('image-bundle-file').value='';$('bundle-panel').open=false;

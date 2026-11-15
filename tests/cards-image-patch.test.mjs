@@ -26,3 +26,22 @@ test('a text patch refuses a card edited since, an unknown field, a missing was 
 test('a text patch refuses wording with stray spaces, which would not survive saving',async()=>{const {library,item}=textFixture();await assert.rejects(prepareTextPatch(library,textFiles([{...item,set:{...item.set,front:item.set.front+' '}}])));});
 test('a text patch can replace the whole sentence of a card, and re-applying it is a no-op',async()=>{const {library,item}=textFixture();const before=structuredClone(library);const swap={id:item.id,answer:item.answer,was:{front:item.was.front,answer:item.answer,sentence:'설명',speech:item.answer},set:{front:'Can you swim?\nyou',answer:'Can you swim?',sentence:'',speech:'Can you swim?'}};const first=await prepareTextPatch(library,textFiles([swap]));const card=first.next.cards[0];assert.equal(card.answer,'Can you swim?');assert.equal(card.speech,'Can you swim?');for(const key of ['id','tags','image','audio','schedule','reviews','createdAt'])assert.deepEqual(card[key],before.cards[0][key],key);const again=await prepareTextPatch(first.next,textFiles([swap]));assert.equal(again.skipped,1);assert.equal(again.ids.length,0);const edited={...first.next,cards:[{...card,answer:'Something else'}]};await assert.rejects(prepareTextPatch(edited,textFiles([swap])));});
 test('a text patch will not replace the answer under an existing recording',async()=>{const {library,item}=textFixture();const recorded={...library,cards:[{...library.cards[0],audio:{path:'media/00000000-0000-4000-8000-000000000002.mp3',credit:'speaker'}}]};await assert.rejects(prepareTextPatch(recorded,textFiles([{id:item.id,answer:item.answer,was:{answer:item.answer},set:{answer:'Can you swim?'}}])),/녹음/);const ok=await prepareTextPatch(recorded,textFiles([item]));assert.equal(ok.ids.length,1);});
+test('a picture is replaced only on a card the reader marked, and the mark comes off',async()=>{
+  const {library,item}=fixture();
+  const old={path:'media/00000000-0000-4000-8000-000000000009.png',credit:'Old · CC0'};
+  const marked={...library,cards:[{...library.cards[0],image:old,tags:['FF625','그림교체']}]};
+  const before=structuredClone(marked);
+  // Without `replace`, and on a card that is not marked, the existing picture stays.
+  assert.equal((await prepareImagePatch(marked,files([item]))).skipped,1);
+  const plain={...marked,cards:[{...marked.cards[0],tags:['FF625']}]};
+  assert.equal((await prepareImagePatch(plain,files([{...item,replace:true}]))).skipped,1);
+  const result=await prepareImagePatch(marked,files([{...item,replace:true}]));
+  const card=result.next.cards[0];
+  assert.deepEqual(card.image,{path,credit:'Creator · CC0'});
+  assert.deepEqual(card.tags,['FF625']);
+  assert.deepEqual(card.schedule,before.cards[0].schedule);
+  assert.deepEqual(card.reviews,before.cards[0].reviews);
+  assert.deepEqual(Object.keys(result.uploads),[path]);
+  // Applying it again finds nothing marked.
+  assert.equal((await prepareImagePatch(result.next,files([{...item,replace:true}]))).skipped,1);
+});
