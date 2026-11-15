@@ -18,9 +18,10 @@ with sync_playwright() as p:
     errors=[]
     page.on('pageerror',lambda e: errors.append(str(e)))
     page.goto(url)
+    page.locator('.storage-actions details summary').click()   # the folder button sits in the folded storage settings
     page.get_by_role('button',name='로컬 폴더 연결',exact=True).click()
     expect(page.locator('#connection')).to_contain_text('연결됨')
-    page.get_by_role('button',name='카드 추가',exact=True).click()
+    page.locator('nav [data-view=add]').click()
     page.get_by_label('카드 종류',exact=True).select_option('basic')
     page.get_by_label('앞면 · 질문 또는 힌트',exact=True).fill('A hot drink')
     page.get_by_label('뒷면 · 단어 또는 정답',exact=True).fill('coffee')
