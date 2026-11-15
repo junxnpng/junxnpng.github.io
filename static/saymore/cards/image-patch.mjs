@@ -3,7 +3,7 @@ import {flagKinds} from './image-flag.mjs?v=2';
 
 // A patch fills one empty attachment slot (image or audio) on cards that already exist.
 // It never touches a card's schedule or review history, and replaces an attachment in one case only:
-// a picture the reader marked as not fitting (see image-flag.mjs), when the patch item says `replace`.
+// a picture the reader marked as not fitting (see image-flag.mjs) or on a card never studied, when the patch item says `replace`.
 const kinds={
   image:{manifest:'images.json',format:'saymore-image-patch',list:'images',path:/^media\/[0-9a-f-]{36}\.(jpg|png|webp)$/,mimes:['image/jpeg','image/png','image/webp'],
     errors:{files:'이미지 묶음의 파일 구성을 확인해주세요.',format:'이미지 묶음 형식이 아닙니다.',item:'이미지 경로와 출처를 확인해주세요.',blob:'사용할 이미지 파일이 없거나 잘못되었습니다.'}},
@@ -31,9 +31,10 @@ async function prepare(kind,library,files){
     paths.add(item.path);
     const blob=entries.get(item.path);
     if(!(blob instanceof Blob)||!blob.size||blob.size>10*1024*1024||!k.mimes.includes(blob.type))throw Error(k.errors.blob);
-    // A picture is replaced only where the reader marked it as not fitting during review, and the patch asks to:
-    // the new picture goes in, the mark comes off, and the old file stays in the library folder.
-    const swap=kind==='image'&&item.replace===true&&card.image&&card.image.path!==item.path&&marks.some(tag=>card.tags.includes(tag));
+    // A picture is replaced only when the patch asks to, and only where the reader marked it as not fitting
+    // during review or has never studied the card, so a picture already tied to a memory is left alone.
+    // The new picture goes in, any mark comes off, and the old file stays in the library folder.
+    const swap=kind==='image'&&item.replace===true&&card.image&&card.image.path!==item.path&&(marks.some(tag=>card.tags.includes(tag))||card.reviews.length===0);
     if(card[kind]&&!swap){skipped++;continue;}
     replacements.set(card.id,editCard(card,{...card,tags:swap?card.tags.filter(tag=>!marks.includes(tag)):card.tags,[kind]:{path:item.path,credit:item.credit}}));
     uploads[item.path]=blob;

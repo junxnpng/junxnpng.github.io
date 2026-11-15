@@ -144,7 +144,7 @@
     clearSearch.hidden = query.length === 0;
     empty.hidden = count !== 0;
     say(searchStatus, root.querySelector("[data-ipa-unlearned]")?.getAttribute("aria-pressed") === "true"
-      ? `복습할 항목 ${count}개가 표시됩니다. 외웠어요 체크를 해제하면 다시 복습 목록에 들어갑니다.`
+      ? `안 외운 소리 ${count}개가 표시됩니다. 외웠어요 체크를 풀면 다시 여기에 나옵니다.`
       : query
       ? `${count}개 항목을 찾았습니다. 기호를 고르면 검색을 마치고 설명이 열립니다.`
       : "모음·자음 표에서 기호를 선택하세요. 두 소리를 나란히 비교할 수도 있습니다.");

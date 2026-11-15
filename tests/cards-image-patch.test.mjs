@@ -45,3 +45,14 @@ test('a picture is replaced only on a card the reader marked, and the mark comes
   // Applying it again finds nothing marked.
   assert.equal((await prepareImagePatch(result.next,files([{...item,replace:true}]))).skipped,1);
 });
+test('a picture on a card never studied may be replaced; one that has been studied and is not marked may not',async()=>{
+  const {library,item}=fixture();
+  const old={path:'media/00000000-0000-4000-8000-000000000009.png',credit:'Old · CC0'};
+  const fresh={...newCard({type:'basic',front:'A ___',answer:'boat'}),image:old};
+  const unseen={...library,cards:[fresh]};
+  const result=await prepareImagePatch(unseen,files([{...item,id:fresh.id,replace:true}]));
+  assert.equal(result.next.cards[0].image.path,path);
+  assert.equal(result.next.cards[0].reviews.length,0);
+  const studied={...library,cards:[{...library.cards[0],image:old}]};
+  assert.equal((await prepareImagePatch(studied,files([{...item,replace:true}]))).skipped,1);
+});

@@ -28,7 +28,7 @@
       if (text) state = core.merge(state, core.parse(text));
       return true;
     } catch {
-      notice("이 브라우저의 기존 기록을 읽지 못했습니다. 백업을 확인해 주세요. 기존 저장 내용은 덮어쓰지 않습니다.", true);
+      notice("이 브라우저의 IPA 기록을 읽지 못했습니다. 저장된 내용은 덮어쓰지 않았습니다. 아래 ‘저장·백업 설정’에서 백업 파일을 불러오세요.", true);
       persistent = false;
       return false;
     }
@@ -42,7 +42,7 @@
       return true;
     } catch {
       persistent = false;
-      notice("이 브라우저에 저장하지 못했습니다. 기록 파일을 받아 두세요. 현재 탭에서는 체크가 유지됩니다.", true);
+      notice("이 브라우저에 저장하지 못했습니다. 아래 ‘저장·백업 설정’을 열고 ‘백업 파일 받기’를 눌러 두세요. 이 탭에서는 체크가 유지됩니다.", true);
       return false;
     }
   }
@@ -80,9 +80,9 @@
     checkbox.type = "checkbox";
     checkbox.dataset.ipaMastered = link.dataset.ipaSelect;
     const symbol = link.querySelector(".sm-choice-symbol").textContent;
-    checkbox.setAttribute("aria-label", `${symbol} 이 항목을 외웠어요`);
+    checkbox.setAttribute("aria-label", `${symbol} 이 소리를 외웠어요`);
     const text = document.createElement("span");
-    text.textContent = "이 항목을 외웠어요";
+    text.textContent = "이 소리를 외웠어요";
     label.append(checkbox, text);
     root.querySelector(`#${link.dataset.ipaSelect} .sm-card-heading`).after(label);
   }
@@ -95,7 +95,7 @@
     state.items[id] = { mastered: checkbox.checked, updatedAt: new Date(Math.max(Date.now(), previous + 1)).toISOString(), changeId: crypto.randomUUID() };
     const saved = saveLocal();
     render();
-    if (saved) notice(cloud?.connected ? "이 브라우저에 저장했습니다. Dropbox에 반영 중…" : "이 브라우저에 저장했습니다. 다른 기기에서도 이어 쓰려면 Dropbox를 연결하세요.");
+    if (saved) notice(cloud?.connected ? "저장했습니다 · Dropbox에 올리는 중…" : "이 브라우저에 저장했습니다.");
     if (cloud?.connected) void synchronize();
   });
   window.addEventListener("storage", event => {
@@ -134,7 +134,7 @@
           render();
         } while (rerun);
         const time = new Date().toLocaleTimeString("ko-KR", {hour: "2-digit", minute: "2-digit"});
-        notice(`Dropbox와 동기화했습니다 · ${time}${persistent ? "" : " · 이 브라우저에는 저장하지 못했습니다. 기록 파일을 받아 두세요."}`, !persistent);
+        notice(`Dropbox와 동기화했습니다 · ${time}${persistent ? "" : " · 이 브라우저에는 저장하지 못했습니다. ‘저장·백업 설정’에서 백업 파일을 받아 두세요."}`, !persistent);
       } catch (error) {
         if (thisGeneration === generation) notice(error.message || "동기화하지 못했습니다. 이 브라우저의 기록은 유지합니다.", true);
       } finally {
