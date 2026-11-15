@@ -26,7 +26,7 @@ export function showCard(container, card, sources = {}, answer = false) {
   label.append(el('span',card.type==='picture'?'그림 → 단어':'앞면 → 뒷면'),el('span',answer?'뒷면':'앞면'));
   article.append(label);
   if (sources.image) {
-    const img=el('img',undefined,'study-image');img.alt=answer?'':'카드에 첨부한 학습 그림';   // on the back the answer is printed just belowimg.src=sources.image;article.append(img);
+    const img=el('img',undefined,'study-image');img.alt=answer?'':'카드에 첨부한 학습 그림';img.src=sources.image;article.append(img);   // no alt on the back: the answer is printed just below
   } else if (card.type==='picture') article.append(el('div','사진','image-placeholder'));
   const body=el('div',undefined,'study-body');
   if (answer) {
@@ -62,7 +62,9 @@ export function showCard(container, card, sources = {}, answer = false) {
     if(card.audio?.credit)body.append(el('p',card.audio.credit,'study-credit'));
   } else {
     // Word-form and word-order cards end with the word to use, set apart from the sentence like the hint on a paper card.
-    const cut=(card.tags||[]).some(tag=>tag==='FORM'||tag==='ORDER')?(card.front||'').lastIndexOf('\n'):-1;
+    // The editor's preview passes the tag box as typed, a string; saved cards carry a list.
+    const tags=Array.isArray(card.tags)?card.tags:String(card.tags||'').split(/[\s,]+/);
+    const cut=tags.some(tag=>tag==='FORM'||tag==='ORDER')?(card.front||'').lastIndexOf('\n'):-1;
     if(cut>0&&card.front.slice(cut+1).trim())body.append(english(el('p',card.front.slice(0,cut),'study-prompt')),english(el('p',card.front.slice(cut+1),'study-hint')));
     else body.append(english(el('p',card.front||(card.type==='picture'?'사진을 보고 영어로 말해보세요.':'질문 또는 힌트를 입력해주세요.'),'study-prompt')));
   }

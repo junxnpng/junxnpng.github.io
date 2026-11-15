@@ -1,7 +1,7 @@
 import {newCard, editCard, rateCard, correctLastReview, reviewOptions, dueCards, dateLabel, intervalLabel, ratings, overdueMs, reviewLateMs, waitLabel} from './model.mjs?v=7';
 import {studyGroups,cardsInGroup,studyQueue,studyProgress,newCardsLeft,sortCards,sortOrders,resumeIndex,unseenFirst,setSection,inSection,sections} from './study-groups.mjs?v=11';
 import {FolderStore, rememberedFolder, friendlyError} from './storage.mjs?v=8';
-import {el, showCard} from './view.mjs?v=12';
+import {el, showCard} from './view.mjs?v=13';
 import {DropboxStore} from './dropbox-store.mjs?v=13';
 import {readSnapshot,writeSnapshot,clearSnapshot} from './snapshot-cache.mjs?v=1';
 import {MediaCache} from './media-cache.mjs?v=1';
@@ -20,6 +20,7 @@ const supported=typeof window.showDirectoryPicker==='function';
 let cloud=null,refreshing=false;
 let selectedGroup='all',practiceIndex=0,practiceOrder=[];
 let sortOrder='default', lastGraded=null, lastListKey='';
+let cameToReview=location.hash==='#review';
 // New cards a day in 오늘 복습. Remembered in this browser; 0 means no limit.
 const newLimitKey='saymore.cards.new-per-day.v1';
 let newLimit=20;
@@ -544,6 +545,8 @@ async function showNextReview(){
   try{
     const urls=await front;if(!current())return;
     showCard($('review-card'),card,urls,false);$('reveal').hidden=false;
+    // Arriving from the home page's "복습 시작": bring the card up past the storage box, once.
+    if(cameToReview){cameToReview=false;$('review-view').scrollIntoView({block:'start'});}
     // The rating buttons that held the focus are gone; without this a keyboard or VoiceOver reader starts from the top of the page.
     if(lostFocus())$('review-card').firstElementChild?.focus({preventScroll:true});
   }catch(e){if(!current())return;notice(friendlyError(e),true);activeCard=null;$('review-active').hidden=true;$('review-empty').hidden=false;$('review-empty-title').textContent='첨부파일을 확인해주세요.';$('next-due').textContent='카드 목록에서 해당 카드의 사진·음성을 다시 선택해주세요.';}
