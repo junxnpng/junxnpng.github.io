@@ -6,9 +6,9 @@
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' blob: data:; media-src 'self' blob:; connect-src 'self' https://api.dropboxapi.com https://content.dropboxapi.com; object-src 'none'; base-uri 'self'; form-action 'none'">
   <title>내 단어 카드 · Say More</title>
-  <link rel="icon" href="/saymore/icons/speech.svg"><link rel="stylesheet" href="../skin.css?v=3"><link rel="stylesheet" href="./app.css?v=r9">
+  <link rel="icon" href="/saymore/icons/speech.svg"><link rel="stylesheet" href="../skin.css?v=3"><link rel="stylesheet" href="./app.css?v=r12">
   <script src="../skin.js?v=2"></script>
-  <script type="module" src="./app.mjs?v=r11"></script>
+  <script type="module" src="./app.mjs?v=r12"></script>
 </head>
 <body>
 <div class="shell">
@@ -44,7 +44,7 @@
 
     <section id="review-view" aria-labelledby="review-title" hidden>
       <div class="section-heading"><div><h2 id="review-title">오늘 복습</h2><p id="review-progress" class="small"></p></div><span id="review-deck" class="deck-label"></span></div>
-      <details id="review-settings" class="review-settings" open><summary><span>복습 설정</span><span id="review-settings-now" class="small"></span></summary>
+      <details id="review-settings" class="review-settings"><summary><span>복습 설정</span><span id="review-settings-now" class="small"></span></summary>
       <div class="review-controls">
         <label>복습할 묶음<select id="review-group" aria-describedby="review-group-help"><option value="all">전체 카드</option></select></label>
         <label>학습 방식<select id="review-mode" aria-describedby="review-mode-help"><option value="due">오늘 복습</option><option value="practice">자유 연습</option><option value="resume">이어서 연습</option></select></label>

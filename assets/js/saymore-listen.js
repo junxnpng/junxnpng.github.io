@@ -13,7 +13,7 @@
 
   function readStore() { try { return localStorage.getItem(KEY) || ""; } catch { return ""; } }
   function writeStore() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch { /* private mode: keep this round in memory */ } }
-  const status = message => { $("status").textContent = message; };
+  const status = (message, error = false) => { $("status").textContent = message; if (error) $("status").dataset.state = "error"; else delete $("status").dataset.state; };
 
   // Fetched while the page is idle, so the tap on Start does not wait for it.
   const speech = import("/saymore/cards/speech.mjs?v=5");
@@ -130,7 +130,7 @@
     try { if (!voice && window.speechSynthesis) window.speechSynthesis.speak(new SpeechSynthesisUtterance("")); } catch { /* no speech on this device */ }
     try { if (!voice) voice = await loadVoice(); } catch { voice = null; }
     $("start").disabled = false;
-    if (!voice) { status("미국식 영어 음성을 찾지 못했어요. 기기 설정에서 영어(미국) 음성을 설치한 뒤 다시 시도해 주세요."); return; }
+    if (!voice) { status("미국식 영어 음성을 찾지 못했어요. 기기 설정에서 영어(미국) 음성을 설치한 뒤 다시 시도해 주세요.", true); return; }
     status(`음성: ${voice.name} · 기기 합성 음성`);
     done = 0; score = 0; trial = null;
     $("summary").hidden = true;

@@ -54,7 +54,7 @@ export function showCard(container, card, sources = {}, answer = false) {
       body.append(line);
       // Fluent Forever's picture game: look at what the word shows in real photographs.
       const pictures=el('p',undefined,'study-dictionary'),photo=el('a','Google 이미지에서 그림 보기 ↗');
-      photo.href='https://www.google.com/search?tbm=isch&q='+encodeURIComponent(links[0].term);photo.target='_blank';photo.rel='noopener noreferrer';
+      photo.href='https://www.google.com/search?tbm=isch&q='+encodeURIComponent(String(card.answer).split(' / ')[0].trim());photo.target='_blank';photo.rel='noopener noreferrer';
       pictures.append(photo);body.append(pictures);
     }
     if(card.sentence)body.append(english(el('p',card.sentence,'study-sentence')));

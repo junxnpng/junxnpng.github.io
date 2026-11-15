@@ -1,7 +1,7 @@
 import {newCard, editCard, rateCard, correctLastReview, reviewOptions, dueCards, dateLabel, intervalLabel, ratings, overdueMs, reviewLateMs, waitLabel} from './model.mjs?v=7';
 import {studyGroups,cardsInGroup,studyQueue,studyProgress,newCardsLeft,sortCards,sortOrders,resumeIndex,unseenFirst,setSection,inSection,sections} from './study-groups.mjs?v=11';
 import {FolderStore, rememberedFolder, friendlyError} from './storage.mjs?v=8';
-import {el, showCard} from './view.mjs?v=13';
+import {el, showCard} from './view.mjs?v=14';
 import {DropboxStore} from './dropbox-store.mjs?v=13';
 import {readSnapshot,writeSnapshot,clearSnapshot} from './snapshot-cache.mjs?v=1';
 import {MediaCache} from './media-cache.mjs?v=1';
@@ -705,8 +705,6 @@ for(const id of ['deck-filter','review-group'])$(id).addEventListener('change',(
 // The page always opens in rated review: a remembered practice mode hid the answer buttons.
 try{localStorage.removeItem('saymore.cards.review-mode.v1');}catch{/* Nothing to clear. */}
 $('review-mode').value='due';
-// On a phone the settings would push the card a screen and a half down; they open with a tap.
-if(matchMedia('(max-width:660px)').matches)$('review-settings').open=false;
 $('review-mode').addEventListener('change',()=>startReview());
 $('new-limit').addEventListener('change',()=>{newLimit=Number($('new-limit').value)||0;try{localStorage.setItem(newLimitKey,String(newLimit));}catch{/* Holds for this visit. */}startReview();});
 
