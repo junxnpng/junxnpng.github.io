@@ -1,7 +1,7 @@
 import {newCard, editCard, rateCard, correctLastReview, reviewOptions, dueCards, dateLabel, intervalLabel, ratings, overdueMs, reviewLateMs, waitLabel} from './model.mjs?v=7';
 import {studyGroups,cardsInGroup,studyQueue,studyProgress,newCardsLeft,sortCards,sortOrders,resumeIndex,unseenFirst,setSection,inSection,sections} from './study-groups.mjs?v=11';
 import {FolderStore, rememberedFolder, friendlyError} from './storage.mjs?v=8';
-import {el, showCard} from './view.mjs?v=11';
+import {el, showCard} from './view.mjs?v=12';
 import {DropboxStore} from './dropbox-store.mjs?v=13';
 import {readSnapshot,writeSnapshot,clearSnapshot} from './snapshot-cache.mjs?v=1';
 import {MediaCache} from './media-cache.mjs?v=1';
@@ -39,7 +39,7 @@ const groupKey=section==='cards'?'saymore.cards.group.v1':`saymore.cards.group.$
 const positionKey=section==='cards'?'saymore.cards.practice-position.v1':`saymore.cards.practice-position.${section}.v1`;
 try{selectedGroup=localStorage.getItem(groupKey)||'all';}catch{/* Selection is optional when browser storage is unavailable. */}
 
-function notice(message,error=false){noticeVersion++;$('notice').setAttribute('role',error?'alert':'status');$('notice').textContent=message;$('notice').hidden=!message;$('notice').classList.toggle('error',error);}
+function notice(message,error=false){noticeVersion++;$('notice').textContent=message;$('notice').hidden=!message;$('notice').classList.toggle('error',error);}
 // While an answer is being saved the review continues on the cards as they will be once it is stored.
 let saving=false, pendingCards=null;
 function cards(){return pendingCards || store?.library.cards || [];}

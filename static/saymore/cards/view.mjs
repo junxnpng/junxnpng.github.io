@@ -26,7 +26,7 @@ export function showCard(container, card, sources = {}, answer = false) {
   label.append(el('span',card.type==='picture'?'그림 → 단어':'앞면 → 뒷면'),el('span',answer?'뒷면':'앞면'));
   article.append(label);
   if (sources.image) {
-    const img=el('img',undefined,'study-image');img.alt=answer&&card.answer?`${card.answer} 그림`:'카드에 첨부한 학습 그림';img.src=sources.image;article.append(img);
+    const img=el('img',undefined,'study-image');img.alt=answer?'':'카드에 첨부한 학습 그림';   // on the back the answer is printed just belowimg.src=sources.image;article.append(img);
   } else if (card.type==='picture') article.append(el('div','사진','image-placeholder'));
   const body=el('div',undefined,'study-body');
   if (answer) {

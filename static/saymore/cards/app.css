@@ -109,7 +109,7 @@ code{border-radius:5px}
 .study-card:focus{outline:none}
 select{height:auto;min-height:46px}
 dialog{max-height:min(90vh,calc(100% - 24px));max-height:min(90dvh,calc(100% - 24px));overscroll-behavior:contain}
-html:has(dialog[open]){overflow:hidden}
+html{scrollbar-gutter:stable}html:has(dialog[open]){overflow:hidden}
 @media(max-width:660px){
   html{scroll-padding-bottom:calc(80px + env(safe-area-inset-bottom,0px))}
   .text-button,.preview-header button,.flag-image{min-height:44px;min-width:44px}
