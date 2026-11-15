@@ -1,12 +1,12 @@
 import {newCard, editCard, rateCard, correctLastReview, reviewOptions, dueCards, dateLabel, intervalLabel, ratings, overdueMs, reviewLateMs, waitLabel} from './model.mjs?v=5';
 import {studyGroups,cardsInGroup,studyQueue,studyProgress,sortCards,sortOrders,resumeIndex,unseenFirst,setSection,inSection,sections} from './study-groups.mjs?v=9';
-import {FolderStore, rememberedFolder, friendlyError} from './storage.mjs?v=5';
+import {FolderStore, rememberedFolder, friendlyError} from './storage.mjs?v=6';
 import {el, showCard} from './view.mjs?v=6';
 import {DropboxStore} from './dropbox-store.mjs?v=11';
 import {readSnapshot,writeSnapshot,clearSnapshot} from './snapshot-cache.mjs?v=1';
 import {MediaCache} from './media-cache.mjs?v=1';
-import {parseBundle} from './bundle.mjs?v=1';
-import {prepareImagePatch,prepareAudioPatch,prepareTextPatch,patchKind} from './image-patch.mjs?v=6';
+import {parseBundle} from './bundle.mjs?v=2';
+import {prepareImagePatch,prepareAudioPatch,prepareTextPatch,patchKind} from './image-patch.mjs?v=7';
 import {openDropbox} from '../shared/dropbox.mjs?v=3';
 import {flagKinds,hasFlag,setFlag} from './image-flag.mjs?v=2';
 
@@ -22,7 +22,15 @@ let selectedGroup='all',practiceIndex=0,practiceOrder=[];
 let sortOrder='default', lastGraded=null;
 try{const saved=localStorage.getItem('saymore.cards.sort.v1');if(Object.hasOwn(sortOrders,saved||''))sortOrder=saved;}catch{/* Sorting still works for this visit. */}
 // The same page serves three tabs: word cards, and with ?set=form or ?set=order the cards of that tab alone.
-const section=setSection(new URLSearchParams(location.search).get('set'));
+// Dropbox sends the reader back to the bare address, so the tab they left from is kept across the sign-in.
+const returnKey='saymore.cards.auth-set.v1';
+const arrived=new URLSearchParams(location.search);
+let askedSet=arrived.get('set');
+try{if(!askedSet&&(arrived.has('code')||arrived.has('error')))askedSet=sessionStorage.getItem(returnKey);sessionStorage.removeItem(returnKey);}catch{/* The word-card tab opens instead. */}
+const section=setSection(askedSet);
+// Dropbox's sign-in strips the address down; put the tab back so a reload opens the same one.
+// Only after openDropbox(), which reads the sign-in code from the address first.
+function keepSet(){if(section!=='cards'&&!new URLSearchParams(location.search).has('set'))history.replaceState(null,'',`${location.pathname}?set=${section}${location.hash}`);}
 const groupKey=section==='cards'?'saymore.cards.group.v1':`saymore.cards.group.${section}.v1`;
 const positionKey=section==='cards'?'saymore.cards.practice-position.v1':`saymore.cards.practice-position.${section}.v1`;
 try{selectedGroup=localStorage.getItem(groupKey)||'all';}catch{/* Selection is optional when browser storage is unavailable. */}
@@ -55,7 +63,7 @@ function controls(){
   $('reload').hidden=!store;
   $('connection').textContent=online ? 'Dropbox 연결됨' : store ? `${store.folder.name} 폴더 연결됨` : '저장소 연결 전';
   $('connection').classList.toggle('connected',Boolean(store));
-  $('connect').textContent=store ? '다른 폴더 연결':'폴더 연결';
+  $('connect').textContent=store&&store.kind!=='dropbox' ? '다른 폴더 연결':'로컬 폴더 연결';
   $('storage-copy').textContent=store ? `카드·복습 날짜·전체 기록을 ${online?'Dropbox 전용 폴더':'선택한 폴더'}에 저장해요.${lastSaved ? ' 마지막 저장 '+lastSaved : ''}` : '같은 Dropbox 계정을 연결하면 아이폰과 맥에서 이어서 공부할 수 있어요.';
   retryControls();
 }
@@ -73,7 +81,7 @@ function retryControls(){
     const group=groups.find(g=>g.key===option.value);if(group)option.textContent=groupLabel(group,now);
   }
   const group=groups.find(g=>g.key===selectedGroup),progress=studyProgress(group?.cards||[],now);
-  $('review-group-help').textContent=store?`${group?.label||'선택한 묶음'} · 전체 ${progress.total}장 · 오늘 완료 ${progress.completedToday}장 · 지금 남음 ${progress.remaining}장 · 다음 복습 대기 ${progress.waiting}장. 오늘 완료는 오늘 평가한 뒤 정기 복습에서 빠진 카드예요. ‘모름’은 원할 때 따로 다시 볼 수 있어요.`:'Dropbox를 연결하면 등급별 단어 묶음(A1–B2)과 IPA 묶음을 고를 수 있어요.';
+  $('review-group-help').textContent=store?`${group?.label||'선택한 묶음'} · 전체 ${progress.total}장 · 오늘 완료 ${progress.completedToday}장 · 지금 남음 ${progress.remaining}장 · 다음 복습 대기 ${progress.waiting}장. 오늘 완료는 오늘 평가한 뒤 정기 복습에서 빠진 카드예요. ‘모름’은 원할 때 따로 다시 볼 수 있어요.`:section==='cards'?'Dropbox를 연결하면 등급별 단어 묶음(A1–B2)과 IPA 묶음을 고를 수 있어요.':'Dropbox를 연결하면 이 탭의 카드와 복습 날짜를 불러와요.';
   const remembered=store&&cardsInGroup(cards(),selectedGroup).some(c=>c.id===practicePositions()[selectedGroup]);
   $('review-mode-help').textContent=$('review-mode').value==='resume'?(remembered?'지난번에 멈춘 카드부터 이어서 봐요. 한 번도 안 한 카드가 먼저 나와요.':'이 묶음에서 기억해 둔 위치가 아직 없어서, 한 번도 복습하지 않은 첫 카드부터 시작해요.')+' 평가하면 기록과 다음 날짜가 저장되고, 평가 없이 넘겨도 돼요.':practice?'복습 날짜와 상관없이 묶음 전체를 봐요. 한 번도 안 한 카드가 먼저 나오고, 그다음 이미 본 카드가 나와요. 평가하면 기록과 다음 날짜가 저장되고, 평가 없이 넘겨도 돼요.':'한 번도 안 한 카드를 먼저, 그다음 복습 날짜가 된 카드를 오래 기다린 것부터 보여줘요. 정답 확인 후 평가하면 기록과 다음 날짜가 저장돼요.';
 }
@@ -192,7 +200,7 @@ function appendRows(count=60){
 function renderLibrary(){
   updateStats();
   const q=$('search').value.trim().toLocaleLowerCase();
-  const list=sortCards(cardsInGroup(cards(),selectedGroup),sortOrder).filter(c=>!q||[c.answer,c.front,c.sentence,c.memory,c.deck,...c.tags].join(' ').toLocaleLowerCase().includes(q));
+  const list=sortCards(cardsInGroup(cards(),selectedGroup),sortOrder).filter(c=>!q||[c.answer,c.front,c.ipa,c.sentence,c.memory,c.deck,...c.tags].join(' ').toLocaleLowerCase().includes(q));
   // A long list is drawn a screenful at a time: the rest is added as the reader reaches the end.
   // Redrawing after a save shows as many rows as were on screen, so the reader keeps their place.
   const shown=Math.max(60,$('card-list').children.length);
@@ -208,7 +216,7 @@ function renderLibrary(){
     return [button];
   }));
   $('empty-library').hidden=list.length>0;
-  $('empty-library').querySelector('h3').textContent=inSection(cards()).length?'검색에 맞는 카드가 없어요.':section==='cards'?'첫 카드를 만들어보세요.':'아직 이 탭의 카드가 없어요.';
+  $('empty-library').querySelector('h3').textContent=inSection(cards()).length?(q&&selectedGroup!=='all'?'선택한 묶음 안에는 검색에 맞는 카드가 없어요. 묶음을 ‘전체’로 바꾸면 모든 카드에서 찾아요.':'검색에 맞는 카드가 없어요.'):section==='cards'?'첫 카드를 만들어보세요.':'아직 이 탭의 카드가 없어요.';
   controls();
 }
 function clearMediaCache(){mediaCache.clear();}
@@ -334,9 +342,9 @@ async function connectCloud(){
   if(dirty)resetEditor();
   const epoch=++connectionEpoch;setBusy(true);
   try{
-    cloud=await openDropbox();
+    cloud=await openDropbox();keepSet();
     localStorage.setItem('saymore.cards.storage','dropbox');
-    if(!cloud.connected){setBusy(false);await cloud.authorize();return;}
+    if(!cloud.connected){setBusy(false);try{if(section==='cards')sessionStorage.removeItem(returnKey);else sessionStorage.setItem(returnKey,section);}catch{/* Returns to the word-card tab. */}await cloud.authorize();return;}
     const hadStore=Boolean(store);
     await loadCloud(epoch);
     if(hadStore&&view==='add')resetEditor();
@@ -433,7 +441,10 @@ async function openEdit(id){
   dirty=false;setBusy(false);switchView('add',true);$('answer').focus();
 }
 async function openDetail(id,toFix=false){
-  if(busy)return;detailCard=cards().find(c=>c.id===id);if(!detailCard)return;
+  if(busy)return;
+  // An answer still on its way to Dropbox may yet fail; the card shown here must be the stored one.
+  if(saving){notice('방금 평가를 저장하고 있어요. 저장이 끝난 뒤 다시 눌러 주세요.');return;}
+  detailCard=cards().find(c=>c.id===id);if(!detailCard)return;
   detailBack=false;
   try{showCard($('detail-card'),detailCard,await sources(detailCard),false);}catch(e){notice(friendlyError(e),true);return;}
   $('detail-flip').textContent='뒷면 보기';
@@ -458,6 +469,8 @@ function renderHistory(){
 async function fixRating(rating){
   if(busy||saving||!store||!detailCard)return;
   const current=cards().find(c=>c.id===detailCard.id);if(!current)return;
+  // Correcting changes the latest review. If the card on screen shows a different one, an older review would be rewritten.
+  if(current.reviews.at(-1)?.at!==detailCard.reviews.at(-1)?.at){$('detail-dialog').close();notice('이 카드의 기록이 그사이 바뀌었어요. 카드를 다시 열어 확인해 주세요.',true);return;}
   setBusy(true);renderHistory();
   try{
     const updated=correctLastReview(current,rating);
@@ -507,8 +520,12 @@ async function showNextReview(){
   try{
     const urls=await front;if(!current())return;
     showCard($('review-card'),card,urls,false);$('reveal').hidden=false;
+    // The rating buttons that held the focus are gone; without this a keyboard or VoiceOver reader starts from the top of the page.
+    if(lostFocus())$('reveal').focus({preventScroll:true});
   }catch(e){if(!current())return;notice(friendlyError(e),true);activeCard=null;$('review-active').hidden=true;$('review-empty').hidden=false;$('review-empty-title').textContent='첨부파일을 확인해주세요.';$('next-due').textContent='카드 목록에서 해당 카드의 사진·음성을 다시 선택해주세요.';}
 }
+// True when the control the reader was on has just been hidden.
+function lostFocus(){const at=document.activeElement;return !at||at===document.body||(at.closest?.('#review-active')&&at.getClientRects().length===0);}
 async function reveal(){
   if(busy||!activeCard)return;
   setBusy(true);
@@ -521,6 +538,8 @@ async function reveal(){
     }
     const options=reviewOptions(activeCard);for(const b of document.querySelectorAll('[data-rating]'))b.querySelector('small').textContent=b.dataset.rating==='1'?'1일 내 언제든':intervalLabel(options[b.dataset.rating].due);
     $('reveal').hidden=!isPractice();$('rating-area').hidden=false;
+    // Not a rating button: Space pressed twice would then grade the card.
+    if(lostFocus()){$('rating-area').tabIndex=-1;$('rating-area').focus({preventScroll:true});}
   }catch(e){notice(friendlyError(e),true);}finally{setBusy(false);}
 }
 async function grade(rating){
@@ -554,8 +573,11 @@ async function grade(rating){
     if(store===owner){
       lastGraded=previousGraded;sessionCount--;if(wasUnknown)unknownSession.add(updated.id);
       if(practice){practiceIndex=previousIndex;rememberPractice(updated.id);}
-      notice(`${friendlyError(e)} 방금 평가한 ‘${updated.answer.slice(0,40)}’ 카드는 저장되지 않아 다시 보여드려요.`,true);
+      // Another device answered this card first: read its answer now, not at the next half-minute check.
+      const clash=/다른 기기에서도 바뀌었어요/.test(e?.message||'');
+      notice(clash?`‘${updated.answer.slice(0,40)}’ 카드가 다른 기기에서 먼저 바뀌었어요. 방금 평가는 저장하지 않았고, 최신 기록을 다시 읽어요.`:`${friendlyError(e)} 방금 평가한 ‘${updated.answer.slice(0,40)}’ 카드는 저장되지 않아 다시 보여드려요.`,true);
       await showNextReview();
+      if(clash)void refreshCloud();
     }
   }finally{controls();}
 }
@@ -665,7 +687,7 @@ $('practice-previous').addEventListener('click',()=>movePractice(-1));$('practic
 $('review-unknown').addEventListener('click',()=>startReview(true));$('review-normal').addEventListener('click',()=>startReview());
 for(const b of document.querySelectorAll('[data-rating]'))b.addEventListener('click',()=>grade(Number(b.dataset.rating)));
 $('repair-notes').addEventListener('click',async()=>{if(!store||busy)return;setBusy(true);try{const result=await store.exportNotes();$('repair-notes').hidden=result.warnings.length===0;saved(result,'읽기용 노트를 다시 저장했어요.');}catch(e){notice(friendlyError(e),true);}finally{setBusy(false);}});
-window.addEventListener('beforeunload',e=>{if(dirty||busy){e.preventDefault();e.returnValue='';}});
+window.addEventListener('beforeunload',e=>{if(dirty||busy||saving||store?.pendingNotes){e.preventDefault();e.returnValue='';}});
 document.addEventListener('keydown',e=>{if(view!=='review'||busy||$('detail-dialog').open||/INPUT|TEXTAREA|SELECT/.test(e.target.tagName))return;if(e.code==='Space'){if(e.target.closest('button,a,summary'))return;e.preventDefault();if(!revealed||isPractice())reveal();}else if(revealed&&/^[1-4]$/.test(e.key))grade(Number(e.key));});
 setInterval(()=>{if(store&&!busy)updateStats();rememberSnapshot();void refreshCloud();},30000);
 window.addEventListener('pageshow',()=>void refreshCloud());
@@ -689,6 +711,9 @@ void checkForUpdate();
 window.addEventListener('storage',async event=>{
   if(event.key!=='saymore.dropbox.auth.v1'||!cloud)return;
   controls();
+  // A token renewed by another tab rewrites the same key. With the library already open, that is only
+  // a reason to check for changes, under the rules that keep a card being answered in place.
+  if(cloud.connected&&store?.kind==='dropbox'){void refreshCloud();return;}
   if(cloud.connected&&!busy&&!saving&&!dirty){const epoch=++connectionEpoch;setBusy(true);try{await loadCloud(epoch);}catch(e){notice(friendlyError(e),true);}finally{setBusy(false);}}
   else if(!cloud.connected)notice('이 브라우저의 Dropbox 연결이 해제되었어요. 다시 연결하면 저장된 기록을 읽을 수 있어요.');
 });
@@ -710,7 +735,7 @@ $('browser-support').textContent='Dropbox 저장은 아이폰 Safari와 맥 Chro
 resetEditor();renderLibrary();
 if(location.hash==='#add'&&section==='cards')switchView('add',true);else if(location.hash==='#review')switchView('review',true);
 async function restoreConnection(){
- try{cloud=await openDropbox();if(cloud.connected){const epoch=++connectionEpoch;setBusy(true);try{await loadCloud(epoch);}finally{setBusy(false);}return;}}
+ try{cloud=await openDropbox();keepSet();if(cloud.connected){const epoch=++connectionEpoch;setBusy(true);try{await loadCloud(epoch);}finally{setBusy(false);}return;}}
  catch(e){notice(friendlyError(e),true);}
  if(supported)rememberedFolder().then(async folder=>{
   if(!folder||connectionEpoch)return;cachedFolder=folder;

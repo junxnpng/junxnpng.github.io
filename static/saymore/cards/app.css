@@ -98,3 +98,6 @@ code{border-radius:5px}
 .list-tools,.flag-filters{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:6px 14px}
 .list-more{display:block;margin:14px auto 0}
 .list-more[hidden]{display:none}
+/* iPhone Safari zooms the page when a field with text under 16px takes focus, and does not zoom back. */
+@media(max-width:660px){input:not([type=file]),select,textarea,.credit-field input,.bundle-panel textarea{font-size:16px}}
+#rating-area:focus{outline:none}

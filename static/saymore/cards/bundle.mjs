@@ -1,6 +1,7 @@
 export async function parseBundle(text){
   if(typeof text!=='string'||text.length>50*1024*1024)throw Error('50MB 이하의 카드 백업을 사용해 주세요.');
-  const bundle=JSON.parse(text);
+  let bundle;
+  try{bundle=JSON.parse(text);}catch{throw Error(text.trim()?'SayMore 카드 백업 형식이 아닙니다.':'가져올 내용을 붙여넣거나 파일을 선택해 주세요.');}
   if(bundle?.format!=='saymore-card-bundle'||bundle.version!==1||!Array.isArray(bundle.files)||!bundle.files.length||bundle.files.length>5000)throw Error('SayMore 카드 백업 형식이 아닙니다.');
   const paths=new Set(),files=[];
   for(const entry of bundle.files){

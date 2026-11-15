@@ -11,10 +11,12 @@ const kinds={
 const textManifest='text.json';
 export const patchKind=files=>files.some(file=>file.path===textManifest)?'text':Object.keys(kinds).find(kind=>files.some(file=>file.path===kinds[kind].manifest))||'image';
 
+const manifest=(text,message)=>{try{return JSON.parse(text);}catch{throw Error(message);}};
+
 async function prepare(kind,library,files){
   const k=kinds[kind],entries=new Map(files.map(file=>[file.path,file.blob]));
   if(entries.size!==files.length||!entries.has(k.manifest)||entries.has(textManifest)||Object.values(kinds).some(other=>other!==k&&entries.has(other.manifest)))throw Error(k.errors.files);
-  const patch=JSON.parse(await entries.get(k.manifest).text());
+  const patch=manifest(await entries.get(k.manifest).text(),k.errors.format);
   if(patch.format!==k.format||patch.version!==1||!Array.isArray(patch[k.list])||!patch[k.list].length)throw Error(k.errors.format);
   const ids=new Set(),paths=new Set(),uploads={},replacements=new Map();let skipped=0;
   for(const item of patch[k.list]){
@@ -41,7 +43,7 @@ export const prepareAudioPatch=(library,files)=>prepare('audio',library,files);
 const textFields=['front','answer','ipa','sentence','memory','speech'];
 export async function prepareTextPatch(library,files){
   if(files.length!==1||files[0].path!==textManifest)throw Error('글 수정 묶음의 파일 구성을 확인해주세요.');
-  const patch=JSON.parse(await files[0].blob.text());
+  const patch=manifest(await files[0].blob.text(),'글 수정 묶음 형식이 아닙니다.');
   if(patch.format!=='saymore-text-patch'||patch.version!==1||!Array.isArray(patch.cards)||!patch.cards.length)throw Error('글 수정 묶음 형식이 아닙니다.');
   const ids=new Set(),replacements=new Map();let skipped=0;
   for(const item of patch.cards){

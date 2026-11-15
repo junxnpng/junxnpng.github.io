@@ -7,6 +7,8 @@
   var read = function (key) { try { return JSON.parse(localStorage.getItem(key) || 'null'); } catch (e) { return null; } };
   var bar = function (name, share) { q(name).style.width = Math.round(Math.max(0, Math.min(1, share)) * 100) + '%'; };
 
+  function fill() {
+
   // Cards: the due dates were saved when the cards page was last open, so the count is right for now.
   var cards = read('saymore.home.cards.v1');
   if (cards && Array.isArray(cards.due)) {
@@ -37,4 +39,8 @@
     q('listen-note').textContent = attempts + '문제 풂';
     bar('listen-bar', correct / attempts);
   }
+  }
+  fill();
+  // Going back to this page restores it as it was; the numbers may have moved since.
+  window.addEventListener('pageshow', function (event) { if (event.persisted) fill(); });
 })();

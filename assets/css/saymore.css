@@ -276,7 +276,7 @@
 }
 .sm-listen-setup { display: grid; grid-template-columns: 1fr auto; gap: 10px 14px; align-items: end; padding: 20px; border: 1px solid var(--border); border-radius: 10px; background: var(--entry); margin: 22px 0; }
 .sm-listen-setup label { grid-column: 1 / -1; font-size: 13px; font-weight: 600; }
-.sm-listen-setup select { font: inherit; font-size: 15px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--theme); color: var(--primary); min-width: 0; }
+.sm-listen-setup select { font: inherit; font-size: 16px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--theme); color: var(--primary); min-width: 0; }
 .sm-listen-status { grid-column: 1 / -1; font-size: 12px; color: var(--secondary); margin: 0; }
 .saymore [data-listen-trial] button, .sm-listen-summary button, .sm-listen-setup button { font: inherit; cursor: pointer; border-radius: 8px; border: 1px solid var(--border); background: var(--entry); color: var(--primary); padding: 11px 16px; }
 .saymore button.sm-listen-primary { background: var(--sk-fill); border-color: var(--sk-btn-edge); color: var(--sk-on-fill); font-weight: 600; }

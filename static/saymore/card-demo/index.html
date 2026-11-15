@@ -109,7 +109,7 @@
             </div>
           </div>
         </article>
-        <div class="bottom"><button id="edit" class="text-button">카드에 내 기억 더하기</button><a href="https://junxnpng.github.io/saymore/ipa/#ipa-03" target="_blank" rel="noopener">/ɑː/ 발음 도움말 ↗</a></div>
+        <div class="bottom"><button id="edit" class="text-button">카드에 내 기억 더하기</button><a href="https://junxnpng.github.io/saymore/ipa/#ipa-3" target="_blank" rel="noopener">/ɑː/ 발음 도움말 ↗</a></div>
       </section>
       <aside class="sidebar">
         <section class="side-panel"><h2>내 맥에 저장하기</h2><div class="status-label"><span id="connection-dot" class="status-dot"></span><span id="connection-label">연습 모드</span></div><p id="storage-copy">지금은 이 탭에서만 연습 중이에요. 옵시디언 안의 예시 폴더를 연결하면 카드와 복습 기록을 파일로 저장해요.</p><button id="connect" class="primary wide">옵시디언 폴더 연결</button><button id="save" class="secondary wide" hidden>변경 내용 저장</button><p id="support" class="small"></p></section>
@@ -355,7 +355,7 @@
       if (folder) await save(); else notice('카드에 적용했어요. 폴더를 연결하기 전에는 이 탭에서만 유지돼요.');
     } catch (error) { $('editor-error').textContent = explainError(error); $('editor-error').hidden = false; }
   });
-  window.addEventListener('beforeunload', event => { if (dirty) { event.preventDefault(); event.returnValue = ''; } });
+  window.addEventListener('beforeunload', event => { if (dirty && folder) { event.preventDefault(); event.returnValue = ''; } });
   if (typeof window.showDirectoryPicker !== 'function') $('support').textContent = '연습은 이 브라우저에서도 가능해요. 폴더 저장은 맥의 Chrome 또는 Edge를 사용해주세요.';
   else $('support').textContent = '보관함을 선택하면 SayMore/coffee-예시 폴더를 사용해요. 예시 폴더를 바로 선택해도 돼요.';
   refresh();

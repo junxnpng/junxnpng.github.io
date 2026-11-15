@@ -124,7 +124,8 @@
       for (const cluster of group.clusters) {
         cluster.hidden = ![...cluster.querySelectorAll(".sm-choice")].some(choice => !choice.hidden);
       }
-      group.element.hidden = matches === 0;
+      // A sound that was just ticked off stays open under the filter, so its group must stay too.
+      group.element.hidden = matches === 0 && !(group === activeGroup && selected.length);
       count += matches;
     }
     clearSearch.hidden = query.length === 0;

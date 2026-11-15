@@ -4,11 +4,12 @@ Say More — Fluent Forever의 발음 우선 학습에서 영감을 받은 개�
 
 ## 구조
 
-- `/` — Say More 메인. 학습 메뉴에서 IPA와 단어 카드로 진입한다. 화면은 `layouts/home.html`.
+- `/` — Say More 메인. 학습 메뉴에서 IPA·듣기 훈련·단어 카드·단어 형태·문장 어순으로 진입한다. 화면은 `layouts/home.html`.
 - `/saymore/ipa/` — 미국식 IPA 발음 가이드. 기존 주소를 유지한다.
 - `/saymore/listen/` — 최소 대립쌍 듣기 테스트. 문항은 `data/saymore/minimal_pairs.json`, 화면은 `layouts/saymore/listen.html`, 로직은 `assets/js/saymore-listen-core.js`(순수 함수)와 `saymore-listen.js`. 기기의 미국식 합성 음성으로 들려주고 소리별 정답률을 브라우저 `localStorage`에 저장한다. 정답률이 낮은 소리를 더 자주 낸다.
 - `/saymore/card-demo/` — 사진·발음·예문으로 연습하고 옵시디언 폴더에 저장하는 coffee 카드 예시. 소스와 사용법은 `examples/coffee-card/`.
-- `/saymore/cards/` — 여러 카드 추가·수정·미리 보기·FSRS 복습. 카드와 일정은 선택한 옵시디언 보관함의 `SayMore/카드`에 저장한다. 사용법·저장 형식·검증은 `static/saymore/cards/README.md`.
+- `/saymore/cards/` — 여러 카드 추가·수정·미리 보기·FSRS 복습. 카드와 일정의 정본은 연결한 Dropbox 앱 폴더의 `/cards/library.json`(과 최근 변경을 담는 `journal.json`)이다. 맥 Chrome·Edge에서는 로컬 폴더에 저장할 수도 있다. 사용법·저장 형식·검증은 `static/saymore/cards/README.md`.
+- `/saymore/forms/` · `/saymore/order/` — 단어 형태 카드와 문장 어순 카드. 각각 `/saymore/cards/?set=form`, `?set=order`로 연결한다.
 - `/saymore/` — 메인 `/`으로 연결하는 이전 주소.
 - `content/saymore/` — 공개 콘텐츠. Hugo에서 콘텐츠 루트로 사용한다.
 - `data/saymore/ipa.json` · `layouts/saymore/` · `assets/css/saymore.css` — 발음 설명 데이터, 가이드 화면, 스타일.
@@ -47,7 +48,7 @@ GitHub Pages(사용자 사이트). main 푸시 → `.github/workflows/hugo.yml` 
 
 `#vowel-chart`에는 Iowa State University의 공개 교재에 실린 General American 단모음·이중모음 차트(CC BY-SA 4.0)를 싣는다. 원도는 Mr KEBAB·Moxfyre·Angr, 단모음 방향 이름은 Abbey Elder의 편집이다. 교재의 이미지를 추가 수정 없이 보관하며 출처와 해시는 `static/saymore/images/sources.json`에 기록한다. 차트의 ɛ/e와 이 페이지의 /e/eɪ/를 혼동하지 않도록 대응표를 제공하고, 링크는 기존 발음 항목을 연다. 차트는 대표 위치의 참고도이며 실제 혀의 해부학적 좌표나 모든 미국 화자의 발음을 뜻하지 않는다.
 
-`/study/basic-verbs/`는 하루 20–21개 뜻을 카드로 보여준다. 예문 펼치기, 티어·검색 필터, 미완료 복습과 날짜별 진행률을 제공한다. 완료 기록은 브라우저 `localStorage`에 항목별로 저장되며 기기 간 동기화하지 않는다. 같은 브라우저의 다른 탭과 뒤로가기로 복원된 페이지는 최신 기록을 다시 읽는다. 이전 버전의 완료 기록도 유지한다. 사이트와 저장소의 학습 자료는 공개된다.
+**현재 미공개.** `hugo.yaml`이 `content/saymore`만 콘텐츠로 쓰므로 아래 `/study/basic-verbs/`는 빌드에 들어가지 않는다. 자료와 화면 코드(`layouts/study/`, `assets/js/study.js`, `assets/css/study.css`)는 보관만 한다. 공개하면 `/study/basic-verbs/`는 하루 20–21개 뜻을 카드로 보여준다. 예문 펼치기, 티어·검색 필터, 미완료 복습과 날짜별 진행률을 제공한다. 완료 기록은 브라우저 `localStorage`에 항목별로 저장되며 기기 간 동기화하지 않는다. 같은 브라우저의 다른 탭과 뒤로가기로 복원된 페이지는 최신 기록을 다시 읽는다. 이전 버전의 완료 기록도 유지한다. 저장소의 학습 자료는 공개된다.
 
 원본 Markdown을 수정한 뒤 저장소 루트에서 실행한다. 생성된 `content/study/`와 `data/study/`는 직접 수정하지 않는다.
 

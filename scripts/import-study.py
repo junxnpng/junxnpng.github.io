@@ -24,7 +24,8 @@ def parse_day(path):
                 raise ValueError(f'{path.name}: missing definition or tier for {item_id}')
             pattern, sources, examples, notes = '', '', [], []
             for line in detail.splitlines():
-                line = line.strip()
+                # The vault marks examples already practised with a task box: "- [x] 예문 …".
+                line = re.sub(r'^- \[[ xX]\] ', '- ', line.strip())
                 if not line or line == definition.group(0) or '미국 회화 티어:' in line:
                     continue
                 if line.startswith('- 문형:'):

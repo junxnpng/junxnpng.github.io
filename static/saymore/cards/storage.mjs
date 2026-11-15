@@ -155,6 +155,9 @@ export function rememberedFolder(value) {
 }
 
 export function friendlyError(e) {
+  if (e.name === 'TimeoutError') return '응답이 너무 늦어 멈췄어요. 인터넷 연결을 확인한 뒤 다시 시도해 주세요.';
+  // What fetch throws when the network is gone: "Load failed" in Safari, "Failed to fetch" in Chrome.
+  if (e instanceof TypeError && /load failed|failed to fetch|networkerror/i.test(e.message)) return '인터넷에 연결하지 못했어요. 연결을 확인한 뒤 다시 시도해 주세요.';
   if (e.name === 'AbortError') return '폴더 선택을 취소했어요. 입력한 내용은 화면에 남아 있어요.';
   if (e.name === 'NotAllowedError' || e.name === 'SecurityError') return '폴더 쓰기 권한이 필요해요. 폴더를 다시 연결해주세요. 저장 전의 입력은 화면에 남아 있어요.';
   if (e.name === 'NoModificationAllowedError') return '다른 창에서 파일을 저장 중이에요. 잠시 뒤 다시 저장해주세요.';

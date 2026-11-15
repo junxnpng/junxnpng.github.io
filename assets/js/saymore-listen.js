@@ -15,10 +15,14 @@
   function writeStore() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch { /* private mode: keep this round in memory */ } }
   const status = message => { $("status").textContent = message; };
 
+  // Fetched while the page is idle, so the tap on Start does not wait for it.
+  const speech = import("/saymore/cards/speech.mjs?v=2");
+  speech.catch(() => {});
+
   async function loadVoice() {
     const synth = window.speechSynthesis;
     if (!synth || !window.SpeechSynthesisUtterance) return null;
-    const { usVoice } = await import("/saymore/cards/speech.mjs?v=2");
+    const { usVoice } = await speech;
     if (!usVoice(synth.getVoices())) {
       await new Promise(resolve => {
         const finish = () => { clearTimeout(timer); resolve(); };
@@ -86,14 +90,14 @@
       button.classList.toggle("is-wrong", i === index && !correct);
     });
     const heard = trial.pair[trial.answer];
+    $("feedback").hidden = false; // shown first: a live region filled while hidden is not announced
     $("result").textContent = correct ? `맞았어요. ${heard.word} ${heard.ipa}` : `아니에요. 들은 단어는 ${heard.word} ${heard.ipa} 입니다.`;
     $("result").className = correct ? "is-correct" : "is-wrong";
     $("tip").textContent = trial.set.tip;
     $("score").textContent = `맞힌 문제 ${score}`;
     $("next").textContent = done >= ROUND ? "결과 보기" : "다음 문제 →";
-    $("feedback").hidden = false;
-    if (correct) $("next").focus({ preventScroll: true });
-    else compare();
+    $("next").focus({ preventScroll: true }); // Enter then means the next question, right or wrong
+    if (!correct) compare();
   }
 
   async function compare() {
@@ -118,7 +122,10 @@
 
   async function start() {
     $("start").disabled = true;
-    if (!voice) voice = await loadVoice();
+    // iPhone Safari only lets a page speak from inside a tap. The voice list may take a moment,
+    // so an empty utterance spoken now keeps the first word from being dropped.
+    try { if (!voice && window.speechSynthesis) window.speechSynthesis.speak(new SpeechSynthesisUtterance("")); } catch { /* no speech on this device */ }
+    try { if (!voice) voice = await loadVoice(); } catch { voice = null; }
     $("start").disabled = false;
     if (!voice) { status("미국식 영어 음성을 찾지 못했어요. 기기 설정에서 영어(미국) 음성을 설치한 뒤 다시 시도해 주세요."); return; }
     status(`음성: ${voice.name} · 기기 합성 음성`);
@@ -137,9 +144,10 @@
   $("set").addEventListener("change", () => { if (!$("trial").hidden) start(); });
   document.addEventListener("keydown", event => {
     if ($("trial").hidden || event.metaKey || event.ctrlKey || event.altKey || event.target?.matches?.("select, input, textarea")) return;
+    const onControl = Boolean(event.target?.closest?.("button, a, summary")); // Enter and Space belong to the focused control
     if (event.key === "1" || event.key === "2") { event.preventDefault(); answer(Number(event.key) - 1); }
-    else if (event.key === " ") { event.preventDefault(); trial && say(trial.pair[trial.answer].word); }
-    else if (event.key === "Enter" && answered) { event.preventDefault(); $("next").click(); }
+    else if (event.key === " " && !onControl) { event.preventDefault(); trial && say(trial.pair[trial.answer].word); }
+    else if (event.key === "Enter" && answered && !onControl) { event.preventDefault(); $("next").click(); }
   });
   window.addEventListener("pagehide", () => window.speechSynthesis?.cancel());
   renderStats();

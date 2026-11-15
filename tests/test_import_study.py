@@ -27,7 +27,8 @@ class ImportStudyTest(unittest.TestCase):
             self.assertEqual(days[-1]["items"][-1]["id"], "KEEP-B028")
             first = cards[0]
             self.assertEqual(first["definition"], "Receive something — 받다")
-            self.assertEqual(first["examples"], ["예문 [직접 작성]: Did you get my message?"])
+            self.assertEqual(first["examples"][0], "예문 [직접 작성]: Did you get my message?")
+            self.assertFalse(any("[x]" in e or "[ ]" in e for c in cards for e in c["examples"]), "task boxes stay in the vault")
             self.assertIn("get N (from sb)", first["pattern"])
             self.assertIn("oxfordlearnersdictionaries.com", first["sources"])
             take = next(card for card in cards if card["id"] == "TAKE-B001")
