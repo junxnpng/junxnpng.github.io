@@ -15,6 +15,8 @@ export function usVoice(voices){
     .sort((a,b)=>{for(let i=0;i<a.rank.length;i++)if(a.rank[i]!==b.rank[i])return a.rank[i]-b.rank[i];return 0;})[0]?.voice||null;
 }
 export function stopSpeech(){if(typeof window!=='undefined'&&window.speechSynthesis)window.speechSynthesis.cancel();}
+// Safari fills its voice list only after it is first asked; ask now so the first tap can speak at once.
+try{globalThis.speechSynthesis?.getVoices();}catch{/* No speech on this device. */}
 export async function speakUS(text,status){
   const synth=window.speechSynthesis;
   if(!synth||!window.SpeechSynthesisUtterance){status('이 브라우저는 합성 음성을 지원하지 않아요');return;}

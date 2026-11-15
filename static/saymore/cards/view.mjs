@@ -1,6 +1,6 @@
 export const el=(tag,text,className)=>{const node=document.createElement(tag);if(text!==undefined)node.textContent=text;if(className)node.className=className;return node;};
 
-import {speakUS,stopSpeech} from './speech.mjs?v=2';
+import {speakUS,stopSpeech} from './speech.mjs?v=3';
 
 // Plain English answers ("dog", "street / road", "wake up") get a link to the Cambridge US entry, where
 // the US speaker plays a dictionary recording. IPA cards and long answers are left alone.
@@ -46,6 +46,10 @@ export function showCard(container, card, sources = {}, answer = false) {
       const line=el('p',undefined,'study-dictionary');line.append('Cambridge 사전에서 듣기: ');
       links.forEach(({term,url},i)=>{const link=el('a',`${term} ↗`);link.href=url;link.target='_blank';link.rel='noopener noreferrer';if(i)line.append(' · ');line.append(link);});
       body.append(line);
+      // Fluent Forever's picture game: look at what the word shows in real photographs.
+      const pictures=el('p',undefined,'study-dictionary'),photo=el('a','Google 이미지에서 그림 보기 ↗');
+      photo.href='https://www.google.com/search?tbm=isch&q='+encodeURIComponent(links[0].term);photo.target='_blank';photo.rel='noopener noreferrer';
+      pictures.append(photo);body.append(pictures);
     }
     if(card.sentence)body.append(el('p',card.sentence,'study-sentence'));
     if(card.memory)body.append(el('p',card.memory,'study-memory'));

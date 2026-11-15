@@ -1,13 +1,13 @@
-import {newCard, editCard, rateCard, correctLastReview, reviewOptions, dueCards, dateLabel, intervalLabel, ratings, overdueMs, reviewLateMs, waitLabel} from './model.mjs?v=5';
-import {studyGroups,cardsInGroup,studyQueue,studyProgress,sortCards,sortOrders,resumeIndex,unseenFirst,setSection,inSection,sections} from './study-groups.mjs?v=9';
-import {FolderStore, rememberedFolder, friendlyError} from './storage.mjs?v=6';
-import {el, showCard} from './view.mjs?v=6';
-import {DropboxStore} from './dropbox-store.mjs?v=11';
+import {newCard, editCard, rateCard, correctLastReview, reviewOptions, dueCards, dateLabel, intervalLabel, ratings, overdueMs, reviewLateMs, waitLabel} from './model.mjs?v=6';
+import {studyGroups,cardsInGroup,studyQueue,studyProgress,newCardsLeft,sortCards,sortOrders,resumeIndex,unseenFirst,setSection,inSection,sections} from './study-groups.mjs?v=10';
+import {FolderStore, rememberedFolder, friendlyError} from './storage.mjs?v=7';
+import {el, showCard} from './view.mjs?v=7';
+import {DropboxStore} from './dropbox-store.mjs?v=12';
 import {readSnapshot,writeSnapshot,clearSnapshot} from './snapshot-cache.mjs?v=1';
 import {MediaCache} from './media-cache.mjs?v=1';
 import {parseBundle} from './bundle.mjs?v=2';
-import {prepareImagePatch,prepareAudioPatch,prepareTextPatch,patchKind} from './image-patch.mjs?v=7';
-import {openDropbox} from '../shared/dropbox.mjs?v=3';
+import {prepareImagePatch,prepareAudioPatch,prepareTextPatch,patchKind} from './image-patch.mjs?v=8';
+import {openDropbox} from '../shared/dropbox.mjs?v=4';
 import {flagKinds,hasFlag,setFlag} from './image-flag.mjs?v=2';
 
 const $=id=>document.getElementById(id);
@@ -20,6 +20,10 @@ const supported=typeof window.showDirectoryPicker==='function';
 let cloud=null,refreshing=false;
 let selectedGroup='all',practiceIndex=0,practiceOrder=[];
 let sortOrder='default', lastGraded=null;
+// New cards a day in 예정된 복습. Remembered in this browser; 0 means no limit.
+const newLimitKey='saymore.cards.new-per-day.v1';
+let newLimit=20;
+try{const saved=localStorage.getItem(newLimitKey);if(['0','10','20','30'].includes(saved))newLimit=Number(saved);}catch{/* The default holds for this visit. */}
 try{const saved=localStorage.getItem('saymore.cards.sort.v1');if(Object.hasOwn(sortOrders,saved||''))sortOrder=saved;}catch{/* Sorting still works for this visit. */}
 // The same page serves three tabs: word cards, and with ?set=form or ?set=order the cards of that tab alone.
 // Dropbox sends the reader back to the bare address, so the tab they left from is kept across the sign-in.
@@ -80,7 +84,11 @@ function retryControls(){
   for(const id of ['deck-filter','review-group'])for(const option of $(id).options){
     const group=groups.find(g=>g.key===option.value);if(group)option.textContent=groupLabel(group,now);
   }
-  const group=groups.find(g=>g.key===selectedGroup),progress=studyProgress(group?.cards||[],now);
+  const newLeft=newCardsLeft(cards(),newLimit,now);
+  const group=groups.find(g=>g.key===selectedGroup),progress=studyProgress(group?.cards||[],now,newLeft);
+  $('new-limit').value=String(newLimit);
+  $('new-limit').closest('label').hidden=$('new-limit-help').hidden=practice||unknownSession!==null;
+  $('new-limit-help').textContent=!store?'':newLimit?`오늘 처음 본 카드 ${1e6-newCardsLeft(cards(),1e6,now)} / ${newLimit}장. 한도를 채우면 복습 날짜가 된 카드만 나와요.${progress.held?` 이 묶음의 새 카드 ${progress.held}장은 다음 날로 넘겨요.`:''}`:'새 카드를 개수 제한 없이 먼저 보여줘요. 복습 날짜가 된 카드는 그 뒤에 나와요.';
   $('review-group-help').textContent=store?`${group?.label||'선택한 묶음'} · 전체 ${progress.total}장 · 오늘 완료 ${progress.completedToday}장 · 지금 남음 ${progress.remaining}장 · 다음 복습 대기 ${progress.waiting}장. 오늘 완료는 오늘 평가한 뒤 정기 복습에서 빠진 카드예요. ‘모름’은 원할 때 따로 다시 볼 수 있어요.`:section==='cards'?'Dropbox를 연결하면 등급별 단어 묶음(A1–B2)과 IPA 묶음을 고를 수 있어요.':'Dropbox를 연결하면 이 탭의 카드와 복습 날짜를 불러와요.';
   const remembered=store&&cardsInGroup(cards(),selectedGroup).some(c=>c.id===practicePositions()[selectedGroup]);
   $('review-mode-help').textContent=$('review-mode').value==='resume'?(remembered?'지난번에 멈춘 카드부터 이어서 봐요. 한 번도 안 한 카드가 먼저 나와요.':'이 묶음에서 기억해 둔 위치가 아직 없어서, 한 번도 복습하지 않은 첫 카드부터 시작해요.')+' 평가하면 기록과 다음 날짜가 저장되고, 평가 없이 넘겨도 돼요.':practice?'복습 날짜와 상관없이 묶음 전체를 봐요. 한 번도 안 한 카드가 먼저 나오고, 그다음 이미 본 카드가 나와요. 평가하면 기록과 다음 날짜가 저장되고, 평가 없이 넘겨도 돼요.':'한 번도 안 한 카드를 먼저, 그다음 복습 날짜가 된 카드를 오래 기다린 것부터 보여줘요. 정답 확인 후 평가하면 기록과 다음 날짜가 저장돼요.';
@@ -112,7 +120,7 @@ function updateStats(){
   }catch{/* The home page keeps its last numbers. */}
 }
 function groupLabel(group,now=new Date()){
-  const p=studyProgress(group.cards,now);
+  const p=studyProgress(group.cards,now,newCardsLeft(cards(),newLimit,now));
   return `${group.label} · ${p.total}장 · 오늘 완료 ${p.completedToday} · 남음 ${p.remaining}`;
 }
 function updateDecks(){
@@ -351,7 +359,8 @@ async function connectCloud(){
   }catch(e){notice(friendlyError(e),true);}finally{setBusy(false);}
 }
 async function refreshCloud(){
-  if(refreshing||busy||saving||dirty||store?.pendingNotes||(view==='review'&&revealed)||document.hidden||store?.kind!=='dropbox'||!cloud?.connected)return;
+  // An open card preview plays its picture and sound from the cache a refresh would empty.
+  if(refreshing||busy||saving||dirty||store?.pendingNotes||(view==='review'&&revealed)||$('detail-dialog').open||document.hidden||store?.kind!=='dropbox'||!cloud?.connected)return;
   refreshing=true;
   const previous=store,epoch=connectionEpoch;
   let applied=false;
@@ -485,7 +494,7 @@ async function showNextReview(){
   const request=++reviewRequest,owner=store,practice=isPractice();
   const queue=!store?[]:unknownSession?
     studyQueue(cards(),selectedGroup,'unknown').filter(c=>unknownSession.has(c.id)):
-    practice?practiceCards():studyQueue(cards(),selectedGroup,'due');
+    practice?practiceCards():studyQueue(cards(),selectedGroup,'due',new Date(),newLimit);
   const remaining=practice?queue.slice(practiceIndex):queue;
   activeCard=remaining[0]||null;revealed=false;
   flagControl();
@@ -510,6 +519,9 @@ async function showNextReview(){
       $('next-due').textContent=remaining?'아직 모르는 카드는 원할 때 다시 꺼내보세요. 24시간이 지나면 오늘 복습에도 포함돼요.':'다음 복습 날짜를 예약했어요. “오늘 복습으로”에서 다른 카드도 공부할 수 있어요.';return;
     }
     $('review-empty-title').textContent=store?'지금 복습할 카드가 없어요.':'먼저 Dropbox를 연결해주세요.';
+    // A card answered 모름 is best tried again while the answer just seen is still fresh.
+    const unknown=store?studyQueue(cards(),selectedGroup,'unknown').length:0;
+    if(unknown){$('review-empty-title').textContent='오늘 볼 카드를 모두 봤어요.';$('next-due').textContent=`모름으로 둔 카드 ${unknown}장이 있어요. 방금 본 답이 기억에 남아 있을 때 위의 ‘모름 다시 보기’로 한 번 더 떠올려 보세요.`;return;}
     const future=cardsInGroup(cards(),selectedGroup).filter(c=>Date.parse(c.schedule.due)>Date.now()).sort((a,b)=>Date.parse(a.schedule.due)-Date.parse(b.schedule.due))[0];
     $('next-due').textContent=future?`다음 복습은 ${dateLabel(future.schedule.due)}예요. 지금 보고 싶다면 위에서 “자유 연습”을 선택하세요.`:store?'다른 묶음을 선택하거나 카드를 추가해보세요.':'연결하면 저장된 카드와 복습 날짜를 불러와요.';return;
   }
@@ -670,6 +682,7 @@ for(const id of ['deck-filter','review-group'])$(id).addEventListener('change',(
 try{localStorage.removeItem('saymore.cards.review-mode.v1');}catch{/* Nothing to clear. */}
 $('review-mode').value='due';
 $('review-mode').addEventListener('change',()=>startReview());
+$('new-limit').addEventListener('change',()=>{newLimit=Number($('new-limit').value)||0;try{localStorage.setItem(newLimitKey,String(newLimit));}catch{/* Holds for this visit. */}startReview();});
 
 $('card-form').addEventListener('input',()=>{dirty=true;renderPreview();});$('card-form').addEventListener('submit',saveCard);
 $('card-form').addEventListener('keydown',e=>{if((e.metaKey||e.ctrlKey)&&e.key==='Enter'){e.preventDefault();if(!busy&&store)$('card-form').requestSubmit(editedId?$('save-list'):$('save-next'));}});

@@ -1,4 +1,4 @@
-import {dueCards,unknownCards} from './model.mjs?v=5';
+import {dueCards,unknownCards} from './model.mjs?v=6';
 import {levels,cardLevel} from './levels.mjs?v=1';
 
 const isWord=card=>card.tags.includes('FF625')||card.tags.includes('OX3000')||card.deck==='Fluent Forever · First 625';
@@ -33,22 +33,34 @@ export function unseenFirst(cards){return [...cards.filter(c=>!c.reviews.length)
 
 export function cardsInGroup(cards,key){return studyGroups(cards).find(group=>group.key===key)?.cards||[];}
 
-export function studyQueue(cards,key,mode='due',now=new Date()){
+// New cards a day: how many more cards of this tab may be met for the first time today. A card counts
+// from its first answer, whichever group or device it was answered in. No limit: Infinity.
+export function newCardsLeft(cards,limit,now=new Date()){
+  if(!(limit>0))return Infinity;
+  const start=new Date(now);start.setHours(0,0,0,0);
+  const met=inSection(cards).filter(c=>{const first=Date.parse(c.reviews[0]?.at);return first>=start.getTime()&&first<=now.getTime();}).length;
+  return Math.max(0,limit-met);
+}
+
+export function studyQueue(cards,key,mode='due',now=new Date(),newLimit=0){
   const selected=cardsInGroup(cards,key);
   if(mode==='practice')return selected;
   if(mode==='unknown')return unknownCards({cards:selected});
-  return dueCards({cards:selected},now);
+  // Thousands of unseen cards would otherwise stand in front of every review that has come due.
+  let left=newCardsLeft(cards,newLimit,now);
+  return dueCards({cards:selected},now).filter(c=>c.schedule.state!==0||left-->0);
 }
 
-export function studyProgress(cards,now=new Date()){
+// `newLeft` is what newCardsLeft allows; unseen cards beyond it are `held` for another day, not remaining.
+export function studyProgress(cards,now=new Date(),newLeft=Infinity){
   const start=new Date(now);start.setHours(0,0,0,0);
-  let remaining=0,completedToday=0;
+  let remaining=0,completedToday=0,held=0,left=newLeft;
   for(const card of cards){
-    if(Date.parse(card.schedule.due)<=now.getTime()){remaining++;continue;}
+    if(Date.parse(card.schedule.due)<=now.getTime()){if(card.schedule.state!==0||left-->0)remaining++;else held++;continue;}
     const reviewed=Date.parse(card.reviews.at(-1)?.at);
     if(reviewed>=start.getTime()&&reviewed<=now.getTime())completedToday++;
   }
-  return {total:cards.length,remaining,completedToday,waiting:cards.length-remaining-completedToday};
+  return {total:cards.length,remaining,completedToday,held,waiting:cards.length-remaining-completedToday-held};
 }
 
 export const sortOrders={default:'기본 순서',newest:'최근에 만든 순',oldest:'오래전에 만든 순',reviewedNewest:'최근에 복습한 순',reviewedOldest:'오래전에 복습한 순',dueSoonest:'복습 예정일 빠른 순'};

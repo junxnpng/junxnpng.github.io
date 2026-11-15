@@ -3,8 +3,8 @@
 <link rel="stylesheet" href="{{ $style.RelPermalink }}" integrity="{{ $style.Data.Integrity }}">
 {{ end }}
 {{ if or (eq .Type "saymore") (eq .Kind "404") }}
-<link rel="stylesheet" href="{{ "saymore/skin.css" | relURL }}?v=1">
-<script src="{{ "saymore/skin.js" | relURL }}?v=1"></script>
+<link rel="stylesheet" href="{{ "saymore/skin.css" | relURL }}?v=2">
+<script src="{{ "saymore/skin.js" | relURL }}?v=2"></script>
 {{ $style := resources.Get "css/saymore.css" | minify | fingerprint }}
 <link rel="stylesheet" href="{{ $style.RelPermalink }}" integrity="{{ $style.Data.Integrity }}">
 {{ end }}

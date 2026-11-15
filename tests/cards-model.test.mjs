@@ -229,3 +229,13 @@ test('practice can record an answer before the due date, and it schedules from t
   // A mis-pressed early answer can be corrected like any other.
   assert.equal(model.correctLastReview(answered,1).reviews[1].rating,1);
 });
+
+test('a practice answer on a device whose clock is behind the last answer is still recorded',()=>{
+  const first=rateCard(newCard(fields,now),3,new Date('2026-11-09T00:10:00Z'));
+  const behind=new Date('2026-11-09T00:08:00Z');                       // two minutes before that answer
+  assert.doesNotThrow(()=>reviewOptions(first,behind));
+  const again=rateCard(first,3,behind,{early:true});
+  assert.equal(again.reviews.length,2);
+  assert.equal(again.reviews[1].at,first.reviews[0].at,'recorded at the last answer\'s time, never before it');
+  assert.ok(Date.parse(again.schedule.due)>Date.parse(again.reviews[1].at));
+});

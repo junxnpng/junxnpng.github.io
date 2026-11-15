@@ -1,4 +1,4 @@
-import {copy, newLibrary, parseLibrary, renderNote} from './model.mjs?v=5';
+import {copy, newLibrary, parseLibrary, renderNote} from './model.mjs?v=6';
 
 const stateFile = 'library.json';
 const mediaPattern = /^media\/[0-9a-f-]{36}\.(jpg|png|webp|mp3)$/;

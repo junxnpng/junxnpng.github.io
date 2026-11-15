@@ -1,4 +1,4 @@
-import {copy,newLibrary,parseLibrary,renderNote} from './model.mjs?v=5';
+import {copy,newLibrary,parseLibrary,renderNote} from './model.mjs?v=6';
 const prefix='/cards';
 const mediaPattern=/^media\/[0-9a-f-]{36}\.(jpg|png|webp|mp3)$/;
 const same=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
@@ -32,6 +32,7 @@ export function mergeLibraries(base,local,remote){
 // device's answer at any point without losing anything: each journal entry lists the versions of the
 // card it came from, and it is applied only on top of one of those.
 const libraryPath=`${prefix}/library.json`,journalPath=`${prefix}/journal.json`;
+export const foldRetryMs=10*60*1000;
 export const journalLimit=80;      // changed cards the journal may hold before it is folded into the snapshot
 export const historyLimit=100;     // ...or versions of one card, when the same few cards are answered over and over
 const backupEveryMs=7*864e5;       // a copy of the snapshot is kept at most once a week
@@ -136,6 +137,8 @@ export class DropboxStore{
     this.cloud=cloud;this.kind='dropbox';this.folder={name:'Dropbox'};this.writing=false;this.foreign=false;
     this.directoriesReady=null;this.preparedBackups=new Map();this.noteQueue=Promise.resolve();this.pendingNotes=0;
     this.checkedRaw=undefined;
+    // A rewrite of the library file that failed is not tried again before this time; notes that failed wait here for repair.
+    this.foldAfter=0;this.failedNotes=new Set();
     this._adopt({base:library,raw,rev,hash,journalRev,...applyJournal(library,journal)});
   }
   _adopt({base,raw,rev,hash,journal,journalRev,library}){
@@ -175,6 +178,7 @@ export class DropboxStore{
     const state=await DropboxStore.read(cloud,known);
     const store=new DropboxStore(cloud,state.base,state.raw,state.rev,state.hash);
     store._adopt(state);
+    if(known instanceof DropboxStore){store.foldAfter=known.foldAfter;store.failedNotes=known.failedNotes;}
     return store;
   }
   // True when another device has saved since this store was read. Two small requests, no download.
@@ -260,7 +264,9 @@ export class DropboxStore{
         // The change is saved at this point. Folding the journal into the snapshot is upkeep: if it
         // cannot be done now (offline, backup failed, another device got there first) the next save tries again.
         const long=this.journal.entries.some(e=>e.parents.length>historyLimit)||this.journal.removed.some(r=>r.parents.length>historyLimit);
-        if(!this.foreign&&(this.upgrade||long||this.journal.entries.length+this.journal.removed.length>journalLimit))await this._fold().catch(()=>{});
+        if(!this.foreign&&(this.upgrade||long||this.journal.entries.length+this.journal.removed.length>journalLimit)&&!(Date.now()<this.foldAfter))
+          // Megabytes on a slow connection can time out. Trying again on every answer would hold each one up, so wait a while.
+          await this._fold().catch(error=>{if(error?.name==='TimeoutError'||error instanceof TypeError)this.foldAfter=Date.now()+foldRetryMs;});
       }
       const notes=this.queueNotes(changedIds,()=>onProgress(++done,total));
       return deferNotes?{warnings:[],notes}:await notes;
@@ -284,11 +290,15 @@ export class DropboxStore{
       // Dropbox's revision check makes a separate read unnecessary unless another device wrote first.
       try{saved=await this.cloud.upload(journalPath,serializeJournal(merged,state?state.rev:this.rev,updated),{rev:journalRev});}
       catch(error){
-        if(!error.conflict||attempt===2)throw error;
-        state=await DropboxStore.read(this.cloud,this);
+        // A timeout or a dropped connection does not say whether the write arrived. Read again, as after a
+        // conflict: if it did arrive there is nothing left to write, and the answer is not asked for twice.
+        const unsure=error?.name==='TimeoutError'||error instanceof TypeError||(error?.status>=500&&error.status!==507);
+        if(!(error?.conflict||unsure)||attempt===2)throw error;
+        try{state=await DropboxStore.read(this.cloud,this);}catch(readError){throw unsure?error:readError;}
         if(state.raw===null)throw Error('Dropbox의 보관함 파일이 없어졌습니다. 기존 기록을 새 파일로 덮어쓰지 않았습니다.');
         merged=mergeLibraries(this.library,next,state.library);
         change=delta(state.library,merged);before=state.library;journal=state.journal;journalRev=state.journalRev;
+        if(!change.cards.length&&!change.removed.length){this._adopt(state);this.foreign=false;return;}   // already stored
         continue;
       }
       const base=state||this;
@@ -326,7 +336,8 @@ export class DropboxStore{
         const previous=await this.cloud.download(path);
         const note=renderNote(card,previous?await previous.text():'');
         await this.cloud.upload(path,note,{rev:previous?.metadata.rev||null});
-      }catch(error){warnings.push({id,message:error.message});}
+        this.failedNotes.delete(id);
+      }catch(error){this.failedNotes.add(id);warnings.push({id,message:error.message});}
       onProgress();
     });
     return {warnings};
@@ -338,7 +349,8 @@ export class DropboxStore{
     return this.noteQueue;
   }
   async flushNotes(){await this.noteQueue;}
-  async exportNotes(){return this.queueNotes(this.library.cards.map(c=>c.id));}
+  // Repairs the notes that failed; with none waiting, rewrites every note.
+  async exportNotes(){return this.queueNotes(this.failedNotes.size?[...this.failedNotes]:this.library.cards.map(c=>c.id));}
 
   async appendEntries(files,onProgress=()=>{}){
     if(this.writing)throw Error('저장 중입니다. 잠시 기다려 주세요.');

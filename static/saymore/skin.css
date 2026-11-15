@@ -20,9 +20,9 @@
   --sk-accent: #0a0a0a; --sk-fill: #0a0a0a; --sk-on-fill: #fff; --sk-fill-deep: #333;
   --sk-mark: #e6ff5c; --sk-mark-ink: #10141a;
   --sk-red: #a93229; --sk-amber: #875200; --sk-green: #196b4b; --sk-good-wash: #e4efea; --sk-bad-wash: #f6e6e5;
-  --sk-field: #fff; --sk-field-line: #b6b6b6;
+  --sk-field: #fff; --sk-field-line: #8a8a8a;
   --sk-r: 10px; --sk-bw: 1px; --sk-edge: var(--sk-line); --sk-shadow: none;
-  --sk-ctl-bw: 1px; --sk-ctl-edge: #b6b6b6; --sk-btn-edge: var(--sk-fill); --sk-shadow-sm: none;
+  --sk-ctl-bw: 1px; --sk-ctl-edge: #8a8a8a; --sk-btn-edge: var(--sk-fill); --sk-shadow-sm: none;
   --sk-tab-bg: #0a0a0a; --sk-tab-ink: #fff;
   --sk-rate1-bg: #fff; --sk-rate1-ink: #0a0a0a; --sk-rate2-bg: #fff; --sk-rate2-ink: #0a0a0a;
   --sk-rate3-bg: #0a0a0a; --sk-rate3-ink: #fff; --sk-rate4-bg: #fff; --sk-rate4-ink: #0a0a0a;
@@ -37,7 +37,7 @@
   --sk-mark: #ff79c6; --sk-mark-ink: #10141a;
   --sk-red: #ffc6c6; --sk-amber: #ffc98f; --sk-green: #50fa7b; --sk-good-wash: #46625f; --sk-bad-wash: #6a4a56;
   --sk-field: #21222c; --sk-field-line: #8c8e97;
-  --sk-edge: transparent; --sk-ctl-edge: #8c8e97;
+  --sk-edge: transparent; --sk-ctl-edge: #a2a4ad;
   --sk-tab-bg: #bd93f9; --sk-tab-ink: #10141a;
   --sk-rate1-bg: #ff5555; --sk-rate1-ink: #10141a; --sk-rate2-bg: #ffb86c; --sk-rate2-ink: #10141a;
   --sk-rate3-bg: #50fa7b; --sk-rate3-ink: #10141a; --sk-rate4-bg: #8be9fd; --sk-rate4-ink: #10141a;
@@ -51,7 +51,7 @@
   --sk-bg: #fff36b; --sk-surface: #fff; --sk-ink: #000; --sk-muted: #4d4d4d; --sk-line: #000; --sk-wash: #ffe8f2;
   --sk-accent: #b3376c; --sk-fill: #ff4f9a; --sk-on-fill: #000; --sk-fill-deep: #ff75b0;
   --sk-mark: #7df3a0; --sk-mark-ink: #10141a;
-  --sk-red: #c0392f; --sk-amber: #9b5d00; --sk-green: #1c7a55; --sk-good-wash: #ddebe6; --sk-bad-wash: #f6e1e0;
+  --sk-red: #a8302a; --sk-amber: #9b5d00; --sk-green: #1c7a55; --sk-good-wash: #ddebe6; --sk-bad-wash: #f6e1e0;
   --sk-field: #fff; --sk-field-line: #000;
   --sk-r: 14px; --sk-bw: 3px; --sk-edge: #000; --sk-shadow: 5px 5px 0 #000;
   --sk-ctl-bw: 2px; --sk-ctl-edge: #000; --sk-btn-edge: #000; --sk-shadow-sm: 3px 3px 0 #000;
@@ -77,3 +77,4 @@
 .skin-swatch[data-swatch="mono"] { background: linear-gradient(135deg, #fff 50%, #0a0a0a 50%); }
 .skin-swatch[data-swatch="dracula"] { background: linear-gradient(135deg, #282a36 50%, #bd93f9 50%); }
 .skin-swatch[data-swatch="pop"] { background: linear-gradient(135deg, #fff36b 50%, #ff4f9a 50%); }
+@media (max-width: 660px) { .skin-button, .skin-menu button { min-height: 44px; } }

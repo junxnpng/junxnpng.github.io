@@ -55,12 +55,17 @@
       open(false); button.focus();
     });
     menu.addEventListener('keydown', function (event) {
-      if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp') return;
       var items = Array.prototype.slice.call(menu.querySelectorAll('button'));
+      if (event.key === 'Home' || event.key === 'End') { items[event.key === 'Home' ? 0 : items.length - 1].focus(); event.preventDefault(); return; }
+      if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp') return;
       var next = items.indexOf(document.activeElement) + (event.key === 'ArrowDown' ? 1 : -1);
       items[(next + items.length) % items.length].focus(); event.preventDefault();
     });
     document.addEventListener('click', function (event) { if (!menu.hidden && !picker.contains(event.target)) open(false); });
+    // Tabbing out of the menu closes it, so it is not left open behind the reader.
+    picker.addEventListener('focusout', function (event) { if (!menu.hidden && event.relatedTarget && !picker.contains(event.relatedTarget)) open(false); });
+    // The theme marks the current page with a class only; say it to screen readers too.
+    Array.prototype.forEach.call(document.querySelectorAll('#menu a .active'), function (mark) { var link = mark.closest('a'); if (link) link.setAttribute('aria-current', 'page'); });
     document.addEventListener('keydown', function (event) { if (event.key === 'Escape' && !menu.hidden) { open(false); button.focus(); } });
     // Another tab changed the skin: follow it.
     window.addEventListener('storage', function (event) {

@@ -587,3 +587,79 @@ test('a new card may reuse a picture an existing card holds, without sending the
   await assert.rejects(store.appendEntries([{path:'library.json',blob:new Blob([JSON.stringify(more)])}]));
   assert.equal(store.library.cards.length,2);
 });
+
+test('an answer that reached Dropbox but reported a timeout is not answered twice or mistaken for a clash',async()=>{
+  const now=new Date('2026-11-09T00:00:00Z'),library=newLibrary(now);
+  library.cards=[newCard(fields('one'),now),newCard(fields('two'),now)];
+  const cloud=memoryCloud(library),store=await api.DropboxStore.open(cloud);
+  const upload=cloud.upload.bind(cloud);let lose=true,journalWrites=0;
+  cloud.upload=async(path,...args)=>{
+    const saved=await upload(path,...args);
+    if(path==='/cards/journal.json'){journalWrites++;if(lose){lose=false;throw Object.assign(Error('timed out'),{name:'TimeoutError'});}}
+    return saved;
+  };
+  const next=copy(store.library);next.cards[0]=rateCard(next.cards[0],3,new Date('2026-11-09T00:01:00Z'));
+  await store.commit(next,{},[],undefined,{deferNotes:true});
+  assert.equal(journalWrites,1,'the write that landed is recognised, not repeated');
+  assert.equal(store.library.cards[0].reviews.length,1);
+  assert.equal((await stored(cloud)).cards[0].reviews.length,1);
+  // The next answer goes through on top of it.
+  const later=copy(store.library);later.cards[1]=rateCard(later.cards[1],4,new Date('2026-11-09T00:02:00Z'));
+  await store.commit(later,{},[],undefined,{deferNotes:true});
+  const saved=await stored(cloud);
+  assert.deepEqual(saved.cards.map(c=>c.reviews.length),[1,1]);
+});
+
+test('a network failure that did not reach Dropbox still fails, and nothing is stored',async()=>{
+  const now=new Date('2026-11-09T00:00:00Z'),library=newLibrary(now);
+  library.cards=[newCard(fields('one'),now)];
+  const cloud=memoryCloud(library),store=await api.DropboxStore.open(cloud);
+  cloud.upload=async()=>{throw new TypeError('Load failed');};
+  const next=copy(store.library);next.cards[0]=rateCard(next.cards[0],3,new Date('2026-11-09T00:01:00Z'));
+  await assert.rejects(store.commit(next,{},[],undefined,{deferNotes:true}),/Load failed/);
+  assert.equal(store.library.cards[0].reviews.length,0);
+  assert.equal((await stored(cloud)).cards[0].reviews.length,0);
+});
+
+test('a rewrite of the library file that fails is not attempted again on every answer',async()=>{
+  const now=new Date('2026-11-09T00:00:00Z'),library=newLibrary(now);
+  library.cards=Array.from({length:api.journalLimit+4},(_,i)=>newCard(fields(`card ${i}`),now));
+  const cloud=memoryCloud(library),store=await api.DropboxStore.open(cloud);
+  const upload=cloud.upload.bind(cloud);let rewrites=0;
+  cloud.upload=async(path,...args)=>{
+    if(path==='/cards/library.json'){rewrites++;throw Object.assign(Error('timed out'),{name:'TimeoutError'});}
+    return upload(path,...args);
+  };
+  for(let i=0;i<api.journalLimit+4;i++){
+    const next=copy(store.library);next.cards[i]=rateCard(next.cards[i],3,new Date('2026-11-09T00:01:00Z'));
+    await store.commit(next,{},[],undefined,{deferNotes:true});
+  }
+  assert.equal(rewrites,1,'one failed rewrite, then a pause');
+  assert.equal((await stored(cloud)).cards.filter(c=>c.reviews.length===1).length,api.journalLimit+4,'every answer is still stored');
+  // Once the pause is over the rewrite is tried again.
+  store.foldAfter=0;cloud.upload=upload;
+  const next=copy(store.library);next.cards[0]=editCard(next.cards[0],{...next.cards[0],memory:'again'});
+  await store.commit(next,{},[],undefined,{deferNotes:true});
+  assert.equal(store.journal.entries.length,0);
+  assert.equal((await stored(cloud)).cards[0].memory,'again');
+});
+
+test('repairing notes rewrites only the notes that failed',async()=>{
+  const now=new Date('2026-11-09T00:00:00Z'),library=newLibrary(now);
+  library.cards=[newCard(fields('one'),now),newCard(fields('two'),now),newCard(fields('three'),now)];
+  const cloud=memoryCloud(library),store=await api.DropboxStore.open(cloud);
+  const upload=cloud.upload.bind(cloud),bad=library.cards[1].id;let fail=true;const notes=[];
+  cloud.upload=async(path,...args)=>{
+    if(path.includes('/notes/')){notes.push(path);if(fail&&path.includes(bad))throw Error('note offline');}
+    return upload(path,...args);
+  };
+  const next=copy(store.library);next.cards=next.cards.map(c=>editCard(c,{...c,memory:'x'}));
+  const result=await store.commit(next,{},next.cards.map(c=>c.id));
+  assert.equal(result.warnings.length,1);
+  fail=false;notes.length=0;
+  assert.deepEqual(await store.exportNotes(),{warnings:[]});
+  assert.deepEqual(notes,[`/cards/notes/${bad}.md`]);
+  // With nothing left to repair, the button rewrites every note, as before.
+  notes.length=0;await store.exportNotes();
+  assert.equal(notes.length,3);
+});

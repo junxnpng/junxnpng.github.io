@@ -58,6 +58,9 @@ export function editCard(card, fields, now = new Date()) {
 }
 
 export function reviewOptions(card, now = new Date()) {
+  // The last answer may carry a later time than this device's clock; see rateCard.
+  const last=Date.parse(card.reviews.at(-1)?.at);
+  if(last>now.getTime())now=new Date(last);
   const options = scheduler.repeat(copy(card.schedule), now);
   return Object.fromEntries([1,2,3,4].map(rating => [rating,{due:withUnknownDeadline(options[rating],rating,now).card.due.toISOString()}]));
 }
@@ -71,6 +74,8 @@ function withUnknownDeadline(result,rating,now){
 export function rateCard(card, rating, now = new Date(), {retryUnknown=false, early=false}={}) {
   if (![1,2,3,4].includes(rating)) fail('답변을 선택해주세요.');
   const previous=card.reviews.at(-1);
+  // Another device with a faster clock may have answered "later" than this one's now; the scheduler refuses to go back in time.
+  if(early&&previous&&Date.parse(previous.at)>now.getTime())now=new Date(previous.at);
   const earlyUnknown=retryUnknown&&previous?.rating===1&&Date.parse(previous.at)<=now.getTime();
   if (Date.parse(card.schedule.due) > now.getTime()&&!earlyUnknown&&!early) fail('아직 복습 시간이 아니에요. 미리 보기로 연습할 수 있어요.');
   const result = withUnknownDeadline(scheduler.next(copy(card.schedule), now, rating),rating,now);

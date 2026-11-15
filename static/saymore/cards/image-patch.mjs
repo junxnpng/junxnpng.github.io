@@ -1,4 +1,4 @@
-import {editCard} from './model.mjs?v=5';
+import {editCard} from './model.mjs?v=6';
 
 // A patch fills one empty attachment slot (image or audio) on cards that already exist.
 // It never replaces an attachment and never touches a card's schedule or review history.

@@ -26,9 +26,13 @@ export class DropboxClient {
   get accountId() {return this.credentials?.accountId || null;}
   saveCredentials(value) {this.storage.setItem(authKey,JSON.stringify(value));}
   disconnect() {this.storage.removeItem(authKey);}
-  async request(url, options) {
+  // 25 seconds is plenty for a small request but not for megabytes on a phone connection:
+  // an upload gets 20 more seconds per megabyte, and a download says how long it may take.
+  async request(url, options, limit=25000) {
+    const body=options?.body,size=typeof body==='string'?body.length*3:body instanceof Blob?body.size:0;   // a Korean character is three bytes
+    const timeout=limit+Math.ceil(size/1e6)*20000;
     for(let attempt=0;attempt<3;attempt++){
-      const response=await this.fetch(url,{...options,credentials:'omit',signal:AbortSignal.timeout(25000)});
+      const response=await this.fetch(url,{...options,credentials:'omit',signal:AbortSignal.timeout(timeout)});
       if(response.status!==429||attempt===2)return response;
       const delay=Math.min(4000,Math.max(1000,(Number(response.headers.get('Retry-After'))||1)*1000));
       await new Promise(resolve=>setTimeout(resolve,delay));
@@ -89,7 +93,7 @@ export class DropboxClient {
   }
   async download(path) {
     this.path(path);
-    const response=await this.request('https://content.dropboxapi.com/2/files/download',{method:'POST',headers:{Authorization:`Bearer ${await this.accessToken()}`,'Dropbox-API-Arg':headerJSON({path})}});
+    const response=await this.request('https://content.dropboxapi.com/2/files/download',{method:'POST',headers:{Authorization:`Bearer ${await this.accessToken()}`,'Dropbox-API-Arg':headerJSON({path})}},90000);
     if(!response.ok){const error=await this.error(response);if(error.missing)return null;throw error;}
     const metadata=JSON.parse(response.headers.get('Dropbox-API-Result')||'null');
     if(!metadata?.rev)throw Error('Dropbox 파일 버전을 확인하지 못했습니다. 기존 파일을 변경하지 않았습니다.');

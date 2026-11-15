@@ -58,18 +58,24 @@
   // The floating "top" button: while an explanation is open it first returns to the tile that was
   // picked, so the next sound is one tap away. With the tile already on screen it goes to the top.
   const topLink = document.getElementById("top-link");
-  topLink?.addEventListener("click", event => {
+  // Caught on the window first: the theme's own handler would also scroll to the top and wipe the
+  // sound from the address, which a reload or a shared link needs.
+  window.addEventListener("click", event => {
+    if (!topLink || !event.target.closest?.("#top-link")) return;
     const record = records.get(selected[0]);
     if (!record) return;
     const box = record.choice.getBoundingClientRect();
     if (box.top >= 0 && box.bottom <= innerHeight) return;
-    event.preventDefault();
+    event.preventDefault(); event.stopImmediatePropagation();
     record.choice.scrollIntoView({
       behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth",
       block: "center"
     });
     record.link.focus({ preventScroll: true });
-  });
+  }, true);
+
+  // A status line is read aloud when its text is set; setting the same words again would repeat them.
+  const say = (element, text) => { if (element.textContent !== text) element.textContent = text; };
 
   function render() {
     if (topLink) {
@@ -85,10 +91,10 @@
       group.container.classList.toggle("sm-compare-view", pair);
       group.compare.setAttribute("aria-pressed", String(active && comparing));
       group.close.hidden = ids.length === 0;
-      group.status.textContent = active && comparing
+      say(group.status, active && comparing
         ? `비교할 기호를 두 개 고르세요. ${ids.length}/2 선택됨`
         : ids.length ? `${records.get(ids[0]).label} 설명을 보고 있습니다.`
-          : "기호를 고르면 이 표 아래에 설명이 열립니다.";
+          : "기호를 고르면 이 표 아래에 설명이 열립니다.");
       for (const record of group.items) {
         const shown = ids.includes(record.card.id);
         record.card.hidden = !shown;
@@ -130,11 +136,11 @@
     }
     clearSearch.hidden = query.length === 0;
     empty.hidden = count !== 0;
-    searchStatus.textContent = root.querySelector("[data-ipa-unlearned]")?.getAttribute("aria-pressed") === "true"
+    say(searchStatus, root.querySelector("[data-ipa-unlearned]")?.getAttribute("aria-pressed") === "true"
       ? `복습할 항목 ${count}개가 표시됩니다. 외웠어요 체크를 해제하면 다시 복습 목록에 들어갑니다.`
       : query
       ? `${count}개 항목을 찾았습니다. 기호를 고르면 검색을 마치고 설명이 열립니다.`
-      : "모음·자음 표에서 기호를 선택하세요. 두 소리를 나란히 비교할 수도 있습니다.";
+      : "모음·자음 표에서 기호를 선택하세요. 두 소리를 나란히 비교할 수도 있습니다.");
     root.querySelector("#extra-practice").hidden = query.length > 0;
   }
 
@@ -162,7 +168,11 @@
     else selected = [selected[0], id];
     render();
     if (!fromHash) updateURL(selected.includes(id) ? id : selected[0] || activeGroup.element.id);
-    if (scroll && (!comparing || selected.length === 2)) scrollTo(record.card.hidden ? activeGroup.element : record.card);
+    if (scroll && (!comparing || selected.length === 2)) {
+      scrollTo(record.card.hidden ? activeGroup.element : record.card);
+      // The explanation opens below a table of tiles; move there so a screen reader does not have to pass them all.
+      if (!record.card.hidden && !fromHash) record.card.focus({ preventScroll: true });
+    }
   }
 
   function openParents(element) {
