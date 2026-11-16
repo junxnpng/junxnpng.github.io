@@ -32,10 +32,29 @@ function buildGroups(every){
     const list=words.filter(c=>(cardLevel(c)||unlevelled)===level);
     if(list.length)groups.push({key:`level:${level}`,label:level===unlevelled?'등급 밖 (숫자·문법 용어 등)':level,section:'단어',cards:list});
   }
+  const weak=words.filter(firstWeak);
+  if(weak.length)groups.push({key:'first-weak',label:'처음에 모름·어려움',section:'단어',cards:weak});
   if(ipa.length)groups.push({key:'ipa',label:'IPA',section:'IPA',cards:ipa});
   const own=cards.filter(c=>!isIpa(c)&&!isWord(c));
   for(const deck of [...new Set(own.map(c=>c.deck))].sort())groups.push({key:`deck:${deck}`,label:deck,section:'내 덱',cards:own.filter(c=>c.deck===deck)});
   return groups;
+}
+
+// A word counts as "not known at first" by its first answer: 모름 or 어려움. If that first answer was
+// corrected, the corrected rating counts. Nothing is stored for this; it is read from the review history each time.
+export const firstWeak=card=>[1,2].includes(card.reviews[0]?.rating);
+
+// How the word cards of each level were answered the first time they were seen: one row a level,
+// then the words outside the levels, then all of them. IPA, word-form and word-order cards are left out.
+export function levelSummary(every){
+  const words=inSection(every,'cards').filter(isWord);
+  const row=(label,list)=>{
+    const first=[0,0,0,0];
+    for(const c of list){const r=c.reviews[0]?.rating;if(r>=1&&r<=4)first[r-1]++;}
+    return {label,total:list.length,seen:list.filter(c=>c.reviews.length).length,first};
+  };
+  const rows=[...levels,unlevelled].map(level=>row(level,words.filter(c=>(cardLevel(c)||unlevelled)===level))).filter(r=>r.total);
+  return rows.length?[...rows,row('합계',words)]:[];
 }
 
 // Practice order: cards never reviewed first, then the rest; each part keeps the library order.

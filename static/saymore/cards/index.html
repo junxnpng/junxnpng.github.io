@@ -6,9 +6,9 @@
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' blob: data:; media-src 'self' blob:; connect-src 'self' https://api.dropboxapi.com https://content.dropboxapi.com; object-src 'none'; base-uri 'self'; form-action 'none'">
   <title>내 단어 카드 · Say More</title>
-  <link rel="icon" href="/saymore/icons/speech.svg"><link rel="stylesheet" href="../skin.css?v=3"><link rel="stylesheet" href="./app.css?v=r12b">
+  <link rel="icon" href="/saymore/icons/speech.svg"><link rel="stylesheet" href="../skin.css?v=3"><link rel="stylesheet" href="./app.css?v=r13">
   <script src="../skin.js?v=2"></script>
-  <script type="module" src="./app.mjs?v=r14"></script>
+  <script type="module" src="./app.mjs?v=r15"></script>
 </head>
 <body>
 <div class="shell">
@@ -23,6 +23,7 @@
     <section id="library-view" aria-labelledby="library-title">
       <div class="section-heading"><h2 id="library-title">모아둔 카드</h2><div class="list-tools"><span id="flag-filters" class="flag-filters"></span><span id="list-count" class="small"></span></div></div>
       <div class="filters study-filters"><label class="search">단어·태그 찾기<input id="search" type="search" placeholder="단어, 예문, 태그로 검색"></label><label>학습할 묶음<select id="deck-filter"><option value="all">전체 카드</option></select></label><label>목록 순서<select id="sort-order"></select></label></div>
+      <details id="level-summary" class="level-summary" hidden><summary>등급별로 처음에 몰랐던 단어</summary><div id="level-summary-table" class="level-summary-table"></div><p class="small">처음 평가한 답으로 셌어요. 나중에 다시 맞혀도 바뀌지 않아요. ‘본 카드’ 비율은 전체 대비, ‘처음’ 칸의 비율은 본 카드 대비예요. 처음에 ‘모름’이나 ‘어려움’이었던 단어는 학습할 묶음의 ‘처음에 모름·어려움’에서 모아 볼 수 있어요. IPA·형태·문장 카드는 빼고 셌어요.</p><button id="level-summary-open" class="secondary" type="button">처음에 모름·어려움 단어 보기</button></details>
       <div id="card-list" class="card-list"></div><button id="list-more" class="secondary list-more" type="button" hidden>더 보기</button>
       <div id="empty-library" class="empty"><p class="empty-symbol" aria-hidden="true">Aa</p><h3>첫 카드를 만들어보세요.</h3><p>사진이나 질문을 앞면에, 떠올릴 단어를 뒷면에 담아요.</p><button class="primary" data-open-add>새 카드 만들기</button><a href="/saymore/card-demo/">coffee 예시 먼저 보기 ↗</a></div>
     </section>

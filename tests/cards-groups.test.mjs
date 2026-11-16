@@ -215,3 +215,18 @@ test('a new card first answered in practice mode counts against today\'s limit',
   const practised=rateCard(fresh,3,new Date(2026,10,10,9),{early:true});
   assert.equal(groups.newCardsLeft([practised],3,day),2);
 });
+
+test('the first answer of each word card gives the level summary and the first-weak group',()=>{
+  const a1=Array.from({length:6},(_,i)=>card(`a ${i}`,'Oxford 3000 · A1',['OX3000','A1']));
+  const b1=card('b','Oxford 3000 · B1',['OX3000','B1']),ipa=rateCard(card('sound','IPA 01 · 모음',['IPA']),1,now);
+  const form=rateCard(card('went','Sentence · Word forms',['FORM']),1,now);
+  const later=new Date(now.getTime()+3*864e5);
+  a1[0]=rateCard(a1[0],1,now);a1[1]=rateCard(rateCard(a1[1],2,now),4,later,{early:true});a1[2]=rateCard(a1[2],3,now);a1[3]=rateCard(rateCard(a1[3],4,now),1,later,{early:true});
+  const input=[...a1,b1,ipa,form];
+  const rows=groups.levelSummary(input);
+  assert.deepEqual(rows.map(r=>r.label),['A1','B1','합계']);
+  assert.deepEqual(rows[0],{label:'A1',total:6,seen:4,first:[1,1,1,1]});
+  assert.deepEqual(rows[2],{label:'합계',total:7,seen:4,first:[1,1,1,1]});
+  assert.deepEqual(groups.cardsInGroup(input,'first-weak').map(c=>c.answer),['a 0','a 1']);
+  assert.equal(groups.studyGroups([b1]).some(g=>g.key==='first-weak'),false);
+});

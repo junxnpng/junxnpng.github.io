@@ -1,5 +1,5 @@
 import {newCard, editCard, rateCard, correctLastReview, reviewOptions, dueCards, dateLabel, intervalLabel, ratings, overdueMs, reviewLateMs, waitLabel} from './model.mjs?v=8';
-import {studyGroups,cardsInGroup,studyQueue,studyProgress,newCardsLeft,sortCards,sortOrders,resumeIndex,unseenFirst,setSection,inSection,sections} from './study-groups.mjs?v=12';
+import {studyGroups,cardsInGroup,studyQueue,studyProgress,newCardsLeft,sortCards,sortOrders,resumeIndex,unseenFirst,setSection,inSection,sections,levelSummary} from './study-groups.mjs?v=13';
 import {FolderStore, rememberedFolder, friendlyError} from './storage.mjs?v=9';
 import {el, showCard} from './view.mjs?v=15';
 import {DropboxStore} from './dropbox-store.mjs?v=14';
@@ -59,7 +59,7 @@ function controls(){
   $('bundle-data').disabled=busy;
   $('image-bundle-file').disabled=busy;
   $('import-bundle').disabled=$('append-bundle').disabled=busy||!online;
-  for(const id of ['deck-filter','review-group','review-mode'])$(id).disabled=busy;
+  for(const id of ['deck-filter','review-group','review-mode','level-summary-open'])$(id).disabled=busy;
   $('practice-previous').disabled=busy||practiceIndex===0;
   $('practice-next').disabled=busy||!activeCard;
   $('save-help').textContent=store ? `저장하면 카드와 복습 일정이 ${online?'Dropbox':'선택한 폴더'}에 남아요.` : '먼저 위의 Dropbox 연결을 눌러주세요. 입력한 내용은 그대로 남아요.';
@@ -214,6 +214,24 @@ function appendRows(count=60){
   $('list-more').hidden=!listRest.length;
   $('list-more').textContent=`더 보기 · 남은 ${listRest.length}장`;
 }
+// The word cards of each level, counted by their first answer. Only the word tab has levels.
+function renderLevelSummary(){
+  const rows=store&&section==='cards'?levelSummary(cards()):[];
+  $('level-summary').hidden=!rows.some(r=>r.seen);
+  if($('level-summary').hidden)return;
+  const pct=(n,of)=>!of?'–':n&&n*100/of<1?'1% 미만':`${Math.round(n*100/of)}%`;
+  const table=el('table'),head=el('tr');
+  head.append(...['등급','전체','본 카드',...[1,2,3,4].map(r=>`처음 ${ratings[r]}`)].map(text=>{const th=el('th',text);th.scope='col';return th;}));
+  table.createCaption().textContent='등급별 처음 답';table.append(el('thead'),el('tbody'));table.tHead.append(head);
+  for(const r of rows){
+    const tr=el('tr',undefined,r.label==='합계'?'total':undefined),th=el('th',r.label);th.scope='row';
+    // Each first answer is shown with its share of the cards seen in that level.
+    tr.append(th,el('td',String(r.total)),el('td',`${r.seen} (${pct(r.seen,r.total)})`),...r.first.map(n=>el('td',`${n} (${pct(n,r.seen)})`)));
+    table.tBodies[0].append(tr);
+  }
+  $('level-summary-table').replaceChildren(table);
+  $('level-summary-open').hidden=!studyGroups(cards()).some(g=>g.key==='first-weak')||selectedGroup==='first-weak';
+}
 function renderLibrary(){
   updateStats();
   const q=$('search').value.trim().toLocaleLowerCase();
@@ -228,6 +246,7 @@ function renderLibrary(){
   // The button may still be on screen after the list was redrawn; watching it afresh makes it report that.
   listWatch?.unobserve($('list-more'));listWatch?.observe($('list-more'));
   $('list-count').textContent=store ? `${list.length}장` : '';
+  renderLevelSummary();
   // Marked cards carry a tag, so showing them is a search for that tag across every card of this tab.
   $('flag-filters').replaceChildren(...Object.entries(flagKinds).flatMap(([kind,{tag,list}])=>{
     const count=inSection(cards()).filter(c=>hasFlag(c,kind)).length;if(!count)return [];
@@ -704,6 +723,7 @@ listWatch?.observe($('list-more'));
 $('sort-order').addEventListener('change',()=>{sortOrder=$('sort-order').value;try{localStorage.setItem('saymore.cards.sort.v1',sortOrder);}catch{/* The order still applies for this visit. */}renderLibrary();});
 $('fix-last').addEventListener('click',()=>lastGraded&&openDetail(lastGraded.id,true));
 for(const id of ['deck-filter','review-group'])$(id).addEventListener('change',()=>chooseGroup($(id).value));
+$('level-summary-open').addEventListener('click',()=>{if(busy)return;$('search').value='';chooseGroup('first-weak');$('deck-filter').scrollIntoView({block:'center'});$('deck-filter').focus({preventScroll:true});});
 // The page always opens in rated review: a remembered practice mode hid the answer buttons.
 try{localStorage.removeItem('saymore.cards.review-mode.v1');}catch{/* Nothing to clear. */}
 $('review-mode').value='due';
