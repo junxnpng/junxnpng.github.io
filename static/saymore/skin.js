@@ -51,7 +51,12 @@
       var item = event.target.closest('button'); if (!item) return;
       current = find(item.dataset.skinChoice) || current;
       apply(current); mark();
-      try { localStorage.setItem(KEY, current.id); } catch (e) { /* The skin still applies for this visit. */ }
+      try {
+        localStorage.setItem(KEY, current.id);
+        // The time of the choice lets other devices take it over through Dropbox (see shared/sync.mjs).
+        var at = JSON.parse(localStorage.getItem('saymore.settings.at.v1') || '{}') || {};
+        at[KEY] = new Date().toISOString(); localStorage.setItem('saymore.settings.at.v1', JSON.stringify(at));
+      } catch (e) { /* The skin still applies for this visit. */ }
       open(false); button.focus();
     });
     menu.addEventListener('keydown', function (event) {

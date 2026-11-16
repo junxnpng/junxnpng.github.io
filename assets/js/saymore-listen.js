@@ -10,6 +10,31 @@
   const choices = [...root.querySelectorAll("[data-listen-choice]")];
   let state = core.parse(readStore());
   let voice = null, trial = null, answered = false, done = 0, score = 0, speaking = 0;
+  // Other browsers' answers (the phone, the computer) come from Dropbox and are added to this browser's own.
+  // `state` holds only this browser's answers, which is what it sends; `seen()` is what is shown and weighed.
+  let others = {}, sync = null, cloud = null, shareTimer = null;
+  const seen = () => (sync ? { ...state, sets: sync.sumSets([state.sets, others]) } : state);
+  async function share(write = true) {
+    try {
+      if (!sync) {
+        if (!localStorage.getItem("saymore.dropbox.auth.v1")) return;
+        const [dropbox, shared] = await Promise.all([import("/saymore/shared/dropbox.mjs?v=8"), import("/saymore/shared/sync.mjs?v=2")]);
+        cloud = await dropbox.openDropbox();
+        sync = shared; others = shared.otherListenSets();
+      }
+      if (!cloud?.connected) return;
+      const result = await sync.syncListen(cloud, state.sets, { write });
+      if (result) {
+        others = result.others;
+        // This browser's entry in Dropbox may hold more answers than storage here (storage cleared, private window).
+        // Counts only grow; answers given while the sync was running are kept.
+        const sets = sync.maxSets(state.sets, result.own);
+        if (JSON.stringify(sets) !== JSON.stringify(state.sets)) { state = { ...state, sets }; writeStore(); }
+      }
+      renderStats();
+    } catch { /* This browser's answers are kept here and sent next time. */ }
+  }
+  const shareSoon = () => { clearTimeout(shareTimer); shareTimer = setTimeout(() => void share(), 8000); };
 
   function readStore() { try { return localStorage.getItem(KEY) || ""; } catch { return ""; } }
   function writeStore() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch { /* private mode: keep this round in memory */ } }
@@ -48,7 +73,7 @@
   function renderStats() {
     for (const set of sets) {
       const row = root.querySelector(`[data-listen-row="${set.id}"]`);
-      const item = state.sets[set.id];
+      const item = seen().sets[set.id];
       row.querySelector("[data-listen-attempts]").textContent = item?.attempts || 0;
       row.querySelector("[data-listen-accuracy]").textContent = item?.attempts ? `${Math.round(100 * item.correct / item.attempts)}%` : "–";
       row.classList.toggle("is-weak", Boolean(item && item.attempts >= 5 && item.correct / item.attempts < 0.8));
@@ -61,7 +86,7 @@
   }
 
   function showTrial() {
-    trial = core.nextTrial(activeSets(), state, trial);
+    trial = core.nextTrial(activeSets(), seen(), trial);
     answered = false;
     $("progress").textContent = `${done + 1} / ${ROUND}`;
     $("score").textContent = `맞힌 문제 ${score}`;
@@ -83,7 +108,7 @@
     const correct = index === trial.answer;
     done++; if (correct) score++;
     state = core.record(state, trial.set.id, correct);
-    writeStore(); renderStats();
+    writeStore(); renderStats(); shareSoon();
     choices.forEach((button, i) => {
       button.disabled = true;
       button.classList.toggle("is-correct", i === trial.answer);
@@ -154,4 +179,5 @@
   });
   window.addEventListener("pagehide", () => window.speechSynthesis?.cancel());
   renderStats();
+  void share();
 })();

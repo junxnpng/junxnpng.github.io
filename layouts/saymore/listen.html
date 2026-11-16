@@ -60,7 +60,7 @@
       </tbody>
     </table>
   </section>
-  <p class="sm-footnote">Fluent Forever 3장의 최소 대립쌍 훈련을 따랐습니다. 음성은 기기에 설치된 영어(미국) 합성 음성이며 녹음이 아닙니다. 기기에 따라 소리가 조금 다를 수 있습니다.</p>
+  <p class="sm-footnote">Fluent Forever 3장의 최소 대립쌍 훈련을 따랐습니다. 음성은 기기에 설치된 영어(미국) 합성 음성이며 녹음이 아닙니다. 아이폰과 맥처럼 기기가 다르면 목소리도 달라요. 정답률은 Dropbox를 연결한 모든 기기의 답을 합쳐 보여 줍니다.</p>
   <script type="application/json" id="listen-data">{{ $data | jsonify | safeJS }}</script>
 </article>
 {{ $script := slice (resources.Get "js/saymore-listen-core.js") (resources.Get "js/saymore-listen.js") | resources.Concat "js/saymore-listen-bundle.js" | minify | fingerprint }}

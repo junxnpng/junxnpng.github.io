@@ -1,7 +1,7 @@
 {{ define "main" }}
 <article class="saymore sm-home" lang="ko">
   <h1 class="sm-sr-only">Say More</h1>
-  {{/* Numbers are filled in by static/saymore/home.js from what this browser has saved. */}}
+  {{/* Numbers are filled in by static/saymore/home.js from this browser and, when connected, from Dropbox. */}}
   <section class="sm-today" aria-label="나의 진도" data-home-progress data-ipa-total="67">
     <a class="sm-today-box sm-today-main" href="{{ "saymore/cards/#review" | relURL }}">
       <span class="sm-today-label">오늘 복습할 카드</span>
@@ -59,5 +59,6 @@
   </section>
   <p class="sm-footnote">Fluent Forever의 발음 우선 학습에서 영감을 받은 개인 학습 공간이에요.</p>
 </article>
-<script defer src="{{ "saymore/home.js" | relURL }}?v=4"></script>
+{{ $core := resources.Get "js/saymore-progress-core.js" | minify | fingerprint }}<script defer src="{{ $core.RelPermalink }}" integrity="{{ $core.Data.Integrity }}"></script>
+<script defer src="{{ "saymore/home.js" | relURL }}?v=8"></script>
 {{ end }}

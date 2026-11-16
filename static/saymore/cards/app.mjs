@@ -9,6 +9,7 @@ import {parseBundle} from './bundle.mjs?v=2';
 import {prepareImagePatch,prepareAudioPatch,prepareTextPatch,patchKind} from './image-patch.mjs?v=14';
 import {openDropbox} from '../shared/dropbox.mjs?v=8';
 import {flagKinds,hasFlag,setFlag,pictureMark,memoryQuestion,memoryTags,hasHangul} from './image-flag.mjs?v=4';
+import {setSetting,syncSettings,settingKeys} from '../shared/sync.mjs?v=2';
 
 const $=id=>document.getElementById(id);
 let store=null, cachedFolder=null, view='library', busy=false, dirty=false, editedId=null, previewBack=false;
@@ -21,10 +22,44 @@ let cloud=null,refreshing=false;
 let selectedGroup='all',practiceIndex=0,practiceOrder=[];
 let sortOrder='default', lastGraded=null, lastListKey='';
 let cameToReview=location.hash==='#review';
-// New cards a day in 오늘 복습. Remembered in this browser; 0 means no limit.
+// New cards a day in 오늘 복습; 0 means no limit. Shared with other devices through Dropbox.
 const newLimitKey='saymore.cards.new-per-day.v1';
 let newLimit=20;
 try{const saved=localStorage.getItem(newLimitKey);if(['0','10','20','30'].includes(saved))newLimit=Number(saved);}catch{/* The default holds for this visit. */}
+// Settings that decide what the review shows (the daily limit, the chosen group, where practice stopped,
+// the list order) are shared through Dropbox, so the phone and the computer start from the same card.
+// Each change is saved here at once with its time and sent to Dropbox a moment later; see shared/sync.mjs.
+function useLimit(value){newLimit=value;setSetting(newLimitKey,String(value));shareSoon();}
+let shareTimer=null,sharing=null,shareAgain=false,forceNext=false;
+function shareSoon(ms=2000){clearTimeout(shareTimer);shareTimer=setTimeout(()=>void shareSettings(),ms);}
+// One sync at a time; a change made while one runs is sent by one more round right after it.
+async function shareSettings(options={}){
+  if(store?.kind!=='dropbox'||!cloud?.connected)return;
+  if(sharing){shareAgain=true;if(options.force)forceNext=true;return sharing;}
+  sharing=(async()=>{
+    try{do{shareAgain=false;const force=Boolean(options.force||forceNext);forceNext=false;const changed=await syncSettings(cloud);if(changed.length)applySettings(changed,{...options,force});}while(shareAgain);}
+    catch{/* This browser's settings hold; the next change or visit tries again. */}
+    finally{sharing=null;}
+  })();
+  return sharing;
+}
+// Settings changed on another device (or another tab) are taken over here. A review under way keeps its
+// group until its card is answered; `force` is for loading, before anything is drawn.
+let pendingGroup=false;
+function applySettings(changed,{redraw=true,force=false}={}){
+  try{const saved=localStorage.getItem(newLimitKey);if(['0','10','20','30'].includes(saved))newLimit=Number(saved);}catch{/* Unchanged. */}
+  try{const saved=localStorage.getItem('saymore.cards.sort.v1');if(Object.hasOwn(sortOrders,saved||''))sortOrder=saved;$('sort-order').value=sortOrder;}catch{/* Unchanged. */}
+  let groupChanged=false;
+  if((changed.includes(groupKey)||pendingGroup)&&(force||(!busy&&!(view==='review'&&activeCard)))){
+    pendingGroup=false;
+    let next=selectedGroup;try{next=localStorage.getItem(groupKey)||'all';}catch{/* Unchanged. */}
+    groupChanged=next!==selectedGroup;selectedGroup=next;
+  }else if(changed.includes(groupKey))pendingGroup=true;
+  if(!redraw||busy)return;
+  updateDecks();updateStats();controls();
+  if(view==='library')renderLibrary();
+  else if(view==='review'&&!activeCard){if(groupChanged)startReview(unknownSession!==null);else void showNextReview();}
+}
 try{const saved=localStorage.getItem('saymore.cards.sort.v1');if(Object.hasOwn(sortOrders,saved||''))sortOrder=saved;}catch{/* Sorting still works for this visit. */}
 // The same page serves three tabs: word cards, and with ?set=form or ?set=order the cards of that tab alone.
 // Dropbox sends the reader back to the bare address, so the tab they left from is kept across the sign-in.
@@ -110,7 +145,7 @@ function practiceStart(){
   practiceOrder=store?unseenFirst(cardsInGroup(cards(),selectedGroup)).map(c=>c.id):[];
   return store&&$('review-mode').value==='resume'?resumeIndex(practiceCards(),practicePositions()[selectedGroup]):0;
 }
-function rememberPractice(cardId){try{const all=practicePositions();if(cardId)all[selectedGroup]=cardId;else delete all[selectedGroup];localStorage.setItem(positionKey,JSON.stringify(all));}catch{/* The position still holds for this visit. */}}
+function rememberPractice(cardId){const all=practicePositions();if(cardId)all[selectedGroup]=cardId;else delete all[selectedGroup];setSetting(positionKey,JSON.stringify(all));shareSoon(5000);}
 function setBusy(value){busy=value;controls();}
 function updateStats(){
   const mine=inSection(cards());
@@ -123,7 +158,10 @@ function updateStats(){
   if(store)try{
     // `met` is how many cards of the tab were first answered today; with `limit` the home page can tell how many new ones are still to come.
     const summary=list=>({total:list.length,fresh:list.filter(c=>c.schedule.state===0).length,met:newLimit?newLimit-newCardsLeft(list,newLimit):0,due:list.filter(c=>c.schedule.state!==0).map(c=>Date.parse(c.schedule.due))});
-    localStorage.setItem('saymore.home.cards.v1',JSON.stringify({at:Date.now(),limit:newLimit,...summary(inSection(cards(),'cards')),sections:Object.fromEntries(Object.keys(sections).map(name=>[name,summary(inSection(cards(),name))]))}));
+    const counts={limit:newLimit,...summary(inSection(cards(),'cards')),sections:Object.fromEntries(Object.keys(sections).map(name=>[name,summary(inSection(cards(),name))]))};
+    // Only a real change is recorded (and shared): drawing the page again must not look like news to other devices.
+    const before=JSON.parse(localStorage.getItem('saymore.home.cards.v1')||'null');
+    if(!before||JSON.stringify({...before,at:0})!==JSON.stringify({...counts,at:0})){setSetting('saymore.home.cards.v1',JSON.stringify({...counts,at:Date.now()}));shareSoon(20000);}
   }catch{/* The home page keeps its last numbers. */}
 }
 // `newLeft` is passed in by callers that label many groups, so the library is counted once, not once a label.
@@ -149,7 +187,7 @@ function updateDecks(){
 function chooseGroup(key){
   if(busy)return;
   selectedGroup=key;
-  try{localStorage.setItem(groupKey,key);}catch{/* The selected group still works for this visit. */}
+  setSetting(groupKey,key);shareSoon();
   $('deck-filter').value=$('review-group').value=key;
   if(view==='review')startReview(unknownSession!==null);else renderLibrary();
 }
@@ -418,7 +456,12 @@ async function loadCloud(epoch){
   await store?.flushNotes?.();
   const loaded=await DropboxStore.open(cloud,store?.kind==='dropbox'?store:await readSnapshot());
   if(epoch!==connectionEpoch)return;
-  store=loaded;clearMediaCache();lastSaved='';activeCard=null;unknownSession=null;practiceIndex=practiceStart();
+  store=loaded;clearMediaCache();lastSaved='';activeCard=null;unknownSession=null;
+  // Settings from other devices first, so the group, the order and the first card are theirs too.
+  // At most a few seconds: a slow answer is taken over later, the usual way.
+  await Promise.race([shareSettings({redraw:false,force:true}),new Promise(resolve=>setTimeout(resolve,3000))]);
+  if(epoch!==connectionEpoch)return;
+  practiceIndex=practiceStart();
   rememberSnapshot();
   $('reconnect').hidden=true;updateDecks();renderLibrary();
   notice(`${inSection(cards()).length}장의 카드와 복습 기록을 Dropbox에서 불러왔어요.`+conflictNote());
@@ -456,7 +499,6 @@ async function refreshCloud(){
     store=next;rememberSnapshot();clearMediaCache();updateDecks();renderLibrary();
     if(view==='review')await showNextReview();
     if(view==='memory')await showMemory();
-  if(view==='memory')await showMemory();
     notice('다른 기기에서 저장한 최신 기록을 불러왔어요.'+conflictNote());
   }catch(e){notice(friendlyError(e),true);}finally{refreshing=false;if(applied)setBusy(false);}
 }
@@ -574,6 +616,11 @@ async function fixRating(rating){
   }catch(e){notice(friendlyError(e),true);}finally{setBusy(false);renderHistory();}
 }
 async function showNextReview(){
+  // A group chosen on another device while a card was on screen takes over before the next card.
+  if(pendingGroup&&!busy&&view==='review'){
+    pendingGroup=false;let next=selectedGroup;try{next=localStorage.getItem(groupKey)||'all';}catch{/* Unchanged. */}
+    if(next!==selectedGroup){selectedGroup=next;updateDecks();startReview(unknownSession!==null);return;}
+  }
   const request=++reviewRequest,owner=store,practice=isPractice();
   const queue=!store?[]:unknownSession?
     studyQueue(cards(),selectedGroup,'unknown').filter(c=>unknownSession.has(c.id)):
@@ -710,7 +757,6 @@ $('import-folder').addEventListener('change',async event=>{
     notice(`카드 ${result.cards}장, 파일 ${result.files}개를 Dropbox에 옮겨 검증했어요. 원본 폴더는 그대로 남겨두었습니다.`);
     if(view==='review')await showNextReview();
     if(view==='memory')await showMemory();
-  if(view==='memory')await showMemory();
   }catch(e){notice(friendlyError(e),true);}finally{event.target.value='';setBusy(false);}
 });
 async function importBundle(append=false){
@@ -737,7 +783,6 @@ async function importBundle(append=false){
     else notice(`카드 ${result.cards}장, 파일 ${result.files}개를 Dropbox에 옮겨 검증했어요. 원본은 그대로 유지합니다.`);
     if(view==='review')await showNextReview();
     if(view==='memory')await showMemory();
-  if(view==='memory')await showMemory();
   }catch(e){notice(friendlyError(e),true);}finally{setBusy(false);}
 }
 $('fill-image-bundle').addEventListener('click',async()=>{
@@ -763,7 +808,6 @@ $('fill-image-bundle').addEventListener('click',async()=>{
     saved(result,kind==='text'?`카드 ${patch.ids.length}장의 글을 바꿨어요. 이미 바뀌어 있던 ${patch.skipped}장은 그대로예요. 복습 기록은 유지했어요.`:audio?`카드 ${patch.ids.length}장에 녹음을 붙였어요. 이미 녹음이 있는 ${patch.skipped}장은 유지했어요.`:`카드 ${patch.ids.length}장에 이미지를 채웠어요. 이미 그림이 있는 ${patch.skipped}장은 유지했어요.`);
     if(view==='review')await showNextReview();
     if(view==='memory')await showMemory();
-  if(view==='memory')await showMemory();
   }catch(e){notice(friendlyError(e),true);}finally{setBusy(false);}
 });
 $('import-bundle').addEventListener('click',()=>importBundle(false));
@@ -778,7 +822,7 @@ for(const [value,label] of Object.entries(sortOrders)){const option=el('option',
 $('sort-order').value=sortOrder;
 $('list-more').addEventListener('click',()=>appendRows());
 listWatch?.observe($('list-more'));
-$('sort-order').addEventListener('change',()=>{sortOrder=$('sort-order').value;try{localStorage.setItem('saymore.cards.sort.v1',sortOrder);}catch{/* The order still applies for this visit. */}renderLibrary();});
+$('sort-order').addEventListener('change',()=>{sortOrder=$('sort-order').value;setSetting('saymore.cards.sort.v1',sortOrder);shareSoon();renderLibrary();});
 $('fix-last').addEventListener('click',()=>lastGraded&&openDetail(lastGraded.id,true));
 for(const id of ['deck-filter','review-group'])$(id).addEventListener('change',()=>chooseGroup($(id).value));
 $('memory-form').addEventListener('submit',event=>saveMemory(event));
@@ -789,7 +833,7 @@ $('level-summary-open').addEventListener('click',()=>{if(busy)return;$('search')
 try{localStorage.removeItem('saymore.cards.review-mode.v1');}catch{/* Nothing to clear. */}
 $('review-mode').value='due';
 $('review-mode').addEventListener('change',()=>startReview());
-$('new-limit').addEventListener('change',()=>{newLimit=Number($('new-limit').value)||0;try{localStorage.setItem(newLimitKey,String(newLimit));}catch{/* Holds for this visit. */}startReview();});
+$('new-limit').addEventListener('change',()=>{useLimit(Number($('new-limit').value)||0);startReview();});
 
 $('card-form').addEventListener('input',()=>{dirty=true;renderPreview();});$('card-form').addEventListener('submit',saveCard);
 $('card-form').addEventListener('keydown',e=>{if((e.metaKey||e.ctrlKey)&&e.key==='Enter'){e.preventDefault();if(!busy&&store)$('card-form').requestSubmit(editedId?$('save-list'):$('save-next'));}});
@@ -826,7 +870,9 @@ async function checkForUpdate(){
     location.reload();
   }catch{/* Offline or blocked storage: keep using the loaded version. */}
 }
-document.addEventListener('visibilitychange',()=>{if(!document.hidden){void refreshCloud();void checkForUpdate();}});
+// Another tab of this site changed a shared setting.
+window.addEventListener('storage',event=>{if(settingKeys.includes(event.key)&&event.key!=='saymore.home.cards.v1')applySettings([event.key]);});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden){void refreshCloud();void checkForUpdate();if(!busy&&!saving)void shareSettings();}});
 void checkForUpdate();
 window.addEventListener('storage',async event=>{
   if(event.key!=='saymore.dropbox.auth.v1'||!cloud)return;
