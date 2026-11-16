@@ -6,9 +6,9 @@ import {DropboxStore} from './dropbox-store.mjs?v=14';
 import {readSnapshot,writeSnapshot,clearSnapshot} from './snapshot-cache.mjs?v=1';
 import {MediaCache} from './media-cache.mjs?v=1';
 import {parseBundle} from './bundle.mjs?v=2';
-import {prepareImagePatch,prepareAudioPatch,prepareTextPatch,patchKind} from './image-patch.mjs?v=13';
+import {prepareImagePatch,prepareAudioPatch,prepareTextPatch,patchKind} from './image-patch.mjs?v=14';
 import {openDropbox} from '../shared/dropbox.mjs?v=8';
-import {flagKinds,hasFlag,setFlag} from './image-flag.mjs?v=3';
+import {flagKinds,hasFlag,setFlag,pictureMark,memoryQuestion,memoryTags,hasHangul} from './image-flag.mjs?v=4';
 
 const $=id=>document.getElementById(id);
 let store=null, cachedFolder=null, view='library', busy=false, dirty=false, editedId=null, previewBack=false;
@@ -47,6 +47,7 @@ function cards(){return pendingCards || store?.library.cards || [];}
 function controls(){
   for(const button of document.querySelectorAll(view==='library'?'button':'button:not(#card-list button)'))button.disabled=busy;
   for(const input of $('card-form').querySelectorAll('input,textarea,select'))input.disabled=busy;
+  $('memory-text').disabled=busy;
   $('connect').disabled=busy||!supported;
   $('save-next').disabled=$('save-list').disabled=busy||!store;
   $('save-next').hidden=Boolean(editedId);
@@ -114,6 +115,8 @@ function setBusy(value){busy=value;controls();}
 function updateStats(){
   const mine=inSection(cards());
   $('total-count').textContent=mine.length;
+  const toRemember=mine.filter(c=>hasFlag(c,'remember')).length;
+  $('memory-tab').textContent=toRemember?`기억 만들기 · ${toRemember}`:'기억 만들기';
   $('new-count').textContent=mine.filter(c=>c.schedule.state===0).length;
   $('due-count').textContent=store ? inSection(dueCards(store.library)).filter(c=>c.schedule.state!==0).length : 0;
   // The home page shows today's count from these due dates without opening Dropbox itself.
@@ -158,13 +161,13 @@ function flagControl(){
   $('flag-row').hidden=!activeCard||!revealed;
   for(const button of $('flag-row').querySelectorAll('button')){
     const kind=button.dataset.flag,on=Boolean(activeCard&&hasFlag(activeCard,kind));
-    button.hidden=kind==='missing'?picture:!picture||(kind==='sentence'&&!activeCard?.sentence);
+    button.hidden=kind==='remember'?false:kind==='missing'?picture:!picture||(kind==='sentence'&&!activeCard?.sentence);
     button.setAttribute('aria-pressed',String(on));button.textContent=flagKinds[kind][on?'on':'off'];
     button.disabled=busy||saving||!store;
   }
 }
 async function toggleFlag(kind){
-  if(busy||saving||!store||!activeCard||Boolean(activeCard.image)===(kind==='missing'))return;
+  if(busy||saving||!store||!activeCard||(kind in pictureMark&&Boolean(activeCard.image)!==pictureMark[kind]))return;
   const owner=store,before=activeCard;let updated;
   try{updated=setFlag(before,kind,!hasFlag(before,kind));}catch(e){notice(friendlyError(e),true);return;}
   const next=cards().map(c=>c.id===updated.id?updated:c);
@@ -176,7 +179,7 @@ async function toggleFlag(kind){
     const result=await commit;
     pendingCards=null;saving=false;
     if(store===owner){
-      saved(result,hasFlag(updated,kind)?`‘${updated.answer.slice(0,40)}’ 카드에 표시했어요. 카드 목록에서 모아 볼 수 있어요.`:'표시를 지웠어요.',{review:true});
+      saved(result,hasFlag(updated,kind)?(kind==='remember'?`‘${updated.answer.slice(0,40)}’ 카드를 따로 외울 단어로 표시했어요. ‘기억 만들기’에서 기억을 적을 수 있어요.`:`‘${updated.answer.slice(0,40)}’ 카드에 표시했어요. 카드 목록에서 모아 볼 수 있어요.`):'표시를 지웠어요.',{review:true});
       const savedNotice=noticeVersion;
       const reportNotes=notes=>{if(store===owner)noteWarnings(notes,noticeVersion===savedNotice);};
       if(result.notes)void result.notes.then(reportNotes,error=>reportNotes({warnings:[{message:error.message}]}));
@@ -214,6 +217,48 @@ function appendRows(count=60){
   $('list-more').hidden=!listRest.length;
   $('list-more').textContent=`더 보기 · 남은 ${listRest.length}장`;
 }
+// The memory page: the cards marked to remember, one at a time, with one question and a box for a memory.
+// The memory goes in the card's own `memory` field, which the back of the card already shows.
+const memorySkipped=new Set();let memoryCard=null,memoryRequest=0;
+const memoryQueue=()=>inSection(cards()).filter(c=>hasFlag(c,'remember'));
+async function showMemory(focus=false){
+  const request=++memoryRequest,queue=memoryQueue();
+  if(queue.length&&queue.every(c=>memorySkipped.has(c.id)))memorySkipped.clear();
+  const keep=memoryCard&&queue.find(c=>c.id===memoryCard.id&&!memorySkipped.has(c.id));
+  memoryCard=keep||queue.find(c=>!memorySkipped.has(c.id))||null;
+  $('memory-progress').textContent=store?`남은 카드 ${queue.length}장`:'';
+  $('memory-active').hidden=!memoryCard;$('memory-empty').hidden=Boolean(memoryCard);
+  $('memory-empty-title').textContent=store?'따로 외울 단어가 없어요.':'Dropbox를 연결하면 표시한 카드가 보여요.';
+  $('memory-error').hidden=true;
+  if(!memoryCard){if(focus&&view==='memory')$('memory-empty-title').focus({preventScroll:true});return;}
+  const card=memoryCard;
+  if(!keep){$('memory-text').value=card.memory||'';}
+  $('memory-question').textContent=memoryQuestion(card.answer);
+  let urls={};try{urls=await sources(card,true);}catch{/* The card is shown without its picture. */}
+  if(request!==memoryRequest||memoryCard!==card)return;
+  showCard($('memory-card'),card,urls,true);
+  if(focus)$('memory-text').focus({preventScroll:true});
+}
+async function saveMemory(event,{unmark=false}={}){
+  event?.preventDefault();
+  if(!store||!memoryCard)return;
+  if(busy||saving){notice('앞의 저장이 끝난 뒤 다시 눌러 주세요.');return;}
+  const text=$('memory-text').value.trim(),before=cards().find(c=>c.id===memoryCard.id);
+  // The card is read again from the library: another device may have answered it meanwhile.
+  if(!before||!hasFlag(before,'remember')){notice('이 카드는 다른 곳에서 바뀌어 목록에서 빠졌어요.');memoryCard=null;await showMemory(true);return;}
+  if(!unmark&&!text){$('memory-error').textContent='떠오르는 것을 한 줄이라도 적어 주세요. 지금 떠오르지 않으면 ‘나중에 적기’를 누르세요.';$('memory-error').hidden=false;return;}
+  if(!unmark&&hasHangul(text)){$('memory-error').textContent='카드에는 한글을 넣지 않아요. 영어나 이름으로 적어 주세요.';$('memory-error').hidden=false;return;}
+  let updated;
+  try{updated=unmark?setFlag(before,'remember',false):editCard(before,{...before,memory:text,tags:memoryTags(before)});}
+  catch(e){$('memory-error').textContent=friendlyError(e);$('memory-error').hidden=false;return;}
+  setBusy(true);
+  try{
+    const result=await store.commit({...store.library,cards:cards().map(c=>c.id===updated.id?updated:c)},{},[updated.id]);
+    memoryCard=null;saved(result,unmark?`‘${updated.answer.slice(0,40)}’ 카드의 표시를 풀었어요.`:`‘${updated.answer.slice(0,40)}’ 카드에 기억을 저장했어요. 복습할 때 뒷면에 나와요.`,{review:true});
+  }catch(e){$('memory-error').textContent=`${friendlyError(e)} 저장되지 않았어요.`;$('memory-error').hidden=false;}
+  finally{setBusy(false);}
+  if(!memoryCard)await showMemory(true);
+}
 // The word cards of each level, counted by their first answer. Only the word tab has levels.
 function renderLevelSummary(){
   const rows=store&&section==='cards'?levelSummary(cards()):[];
@@ -235,7 +280,9 @@ function renderLevelSummary(){
 function renderLibrary(){
   updateStats();
   const q=$('search').value.trim().toLocaleLowerCase();
-  const list=sortCards(cardsInGroup(cards(),selectedGroup),sortOrder).filter(c=>!q||[c.answer,c.front,c.ipa,c.sentence,c.memory,c.deck,...c.tags].join(' ').toLocaleLowerCase().includes(q));
+  // "#tag" finds the cards that carry exactly that tag; anything else is searched in the card's text.
+  const tagOnly=/^#\S+$/.test(q)?q.slice(1):null;
+  const list=sortCards(cardsInGroup(cards(),selectedGroup),sortOrder).filter(c=>!q||(tagOnly!==null?c.tags.some(t=>t.toLocaleLowerCase()===tagOnly):[c.answer,c.front,c.ipa,c.sentence,c.memory,c.deck,...c.tags].join(' ').toLocaleLowerCase().includes(q)));
   // A long list is drawn a screenful at a time: the rest is added as the reader reaches the end.
   // Redrawing after a save shows as many rows as were on screen, so the reader keeps their place.
   // A new search, order or group starts again from one screenful.
@@ -251,7 +298,7 @@ function renderLibrary(){
   $('flag-filters').replaceChildren(...Object.entries(flagKinds).flatMap(([kind,{tag,list}])=>{
     const count=inSection(cards()).filter(c=>hasFlag(c,kind)).length;if(!count)return [];
     const button=el('button',`${list} ${count}장`,'text-button');button.type='button';
-    button.addEventListener('click',()=>{$('search').value=tag;if(selectedGroup==='all')renderLibrary();else chooseGroup('all');});
+    button.addEventListener('click',()=>{$('search').value='#'+tag;if(selectedGroup==='all')renderLibrary();else chooseGroup('all');});
     return [button];
   }));
   $('empty-library').hidden=list.length>0;
@@ -296,12 +343,13 @@ function switchView(next,force=false){
   if(!force&&view==='add'&&dirty&&next!=='add'&&!confirm('아직 저장하지 않은 입력이 있어요. 입력을 지우고 이동할까요?'))return false;
   if(next!=='add'&&view==='add'&&dirty)resetEditor();
   view=next;
-  for(const name of ['library','add','review'])$(`${name}-view`).hidden=name!==view;
+  for(const name of ['library','add','review','memory'])$(`${name}-view`).hidden=name!==view;
   for(const b of document.querySelectorAll('[data-view]')){if(b.dataset.view===view)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');}
-  history.replaceState(null,'',view==='add'?'#add':view==='review'?'#review':location.pathname+location.search);   // keep ?set= so a reload stays in this tab
+  history.replaceState(null,'',view==='add'?'#add':view==='review'?'#review':view==='memory'?'#memory':location.pathname+location.search);   // keep ?set= so a reload stays in this tab
   if(view==='library'){updateDecks();renderLibrary();}
   if(view==='add'){updateDecks();renderPreview();controls();}
   if(view==='review')startReview();
+  if(view==='memory'){memorySkipped.clear();void showMemory(true);}
   return true;
 }
 function startReview(unknown=false,restart=false){
@@ -323,6 +371,7 @@ async function loadFolder(folder,epoch){
   updateDecks();renderLibrary();
   notice(`${inSection(cards()).length}장의 카드와 복습 기록을 폴더에서 불러왔어요.`);
   if(view==='review')await showNextReview();
+  if(view==='memory')await showMemory();
 }
 async function connect(previous=false){
   if(busy||saving||!supported)return;
@@ -374,6 +423,7 @@ async function loadCloud(epoch){
   $('reconnect').hidden=true;updateDecks();renderLibrary();
   notice(`${inSection(cards()).length}장의 카드와 복습 기록을 Dropbox에서 불러왔어요.`+conflictNote());
   if(view==='review')await showNextReview();
+  if(view==='memory')await showMemory();
 }
 async function connectCloud(){
   if(busy||saving)return;
@@ -405,6 +455,8 @@ async function refreshCloud(){
     applied=true;setBusy(true);
     store=next;rememberSnapshot();clearMediaCache();updateDecks();renderLibrary();
     if(view==='review')await showNextReview();
+    if(view==='memory')await showMemory();
+  if(view==='memory')await showMemory();
     notice('다른 기기에서 저장한 최신 기록을 불러왔어요.'+conflictNote());
   }catch(e){notice(friendlyError(e),true);}finally{refreshing=false;if(applied)setBusy(false);}
 }
@@ -657,6 +709,8 @@ $('import-folder').addEventListener('change',async event=>{
     clearMediaCache();updateDecks();renderLibrary();
     notice(`카드 ${result.cards}장, 파일 ${result.files}개를 Dropbox에 옮겨 검증했어요. 원본 폴더는 그대로 남겨두었습니다.`);
     if(view==='review')await showNextReview();
+    if(view==='memory')await showMemory();
+  if(view==='memory')await showMemory();
   }catch(e){notice(friendlyError(e),true);}finally{event.target.value='';setBusy(false);}
 });
 async function importBundle(append=false){
@@ -682,6 +736,8 @@ async function importBundle(append=false){
     if(append)saved(result,`새 카드 ${result.added}장을 추가했어요. 중복 ${result.skipped}장은 건너뛰었고 기존 카드와 복습 기록은 유지했어요.`);
     else notice(`카드 ${result.cards}장, 파일 ${result.files}개를 Dropbox에 옮겨 검증했어요. 원본은 그대로 유지합니다.`);
     if(view==='review')await showNextReview();
+    if(view==='memory')await showMemory();
+  if(view==='memory')await showMemory();
   }catch(e){notice(friendlyError(e),true);}finally{setBusy(false);}
 }
 $('fill-image-bundle').addEventListener('click',async()=>{
@@ -706,6 +762,8 @@ $('fill-image-bundle').addEventListener('click',async()=>{
     $('image-bundle-file').value='';
     saved(result,kind==='text'?`카드 ${patch.ids.length}장의 글을 바꿨어요. 이미 바뀌어 있던 ${patch.skipped}장은 그대로예요. 복습 기록은 유지했어요.`:audio?`카드 ${patch.ids.length}장에 녹음을 붙였어요. 이미 녹음이 있는 ${patch.skipped}장은 유지했어요.`:`카드 ${patch.ids.length}장에 이미지를 채웠어요. 이미 그림이 있는 ${patch.skipped}장은 유지했어요.`);
     if(view==='review')await showNextReview();
+    if(view==='memory')await showMemory();
+  if(view==='memory')await showMemory();
   }catch(e){notice(friendlyError(e),true);}finally{setBusy(false);}
 });
 $('import-bundle').addEventListener('click',()=>importBundle(false));
@@ -723,6 +781,9 @@ listWatch?.observe($('list-more'));
 $('sort-order').addEventListener('change',()=>{sortOrder=$('sort-order').value;try{localStorage.setItem('saymore.cards.sort.v1',sortOrder);}catch{/* The order still applies for this visit. */}renderLibrary();});
 $('fix-last').addEventListener('click',()=>lastGraded&&openDetail(lastGraded.id,true));
 for(const id of ['deck-filter','review-group'])$(id).addEventListener('change',()=>chooseGroup($(id).value));
+$('memory-form').addEventListener('submit',event=>saveMemory(event));
+$('memory-unmark').addEventListener('click',()=>saveMemory(null,{unmark:true}));
+$('memory-skip').addEventListener('click',()=>{if(busy||!memoryCard)return;if(memoryQueue().length<2){notice('남은 카드가 이 한 장이에요. 떠오를 때 적거나 표시만 풀어 주세요.');return;}memorySkipped.add(memoryCard.id);memoryCard=null;void showMemory(true);});
 $('level-summary-open').addEventListener('click',()=>{if(busy)return;$('search').value='';chooseGroup('first-weak');$('deck-filter').scrollIntoView({block:'center'});$('deck-filter').focus({preventScroll:true});});
 // The page always opens in rated review: a remembered practice mode hid the answer buttons.
 try{localStorage.removeItem('saymore.cards.review-mode.v1');}catch{/* Nothing to clear. */}
@@ -796,7 +857,7 @@ for(const link of document.querySelectorAll('.site-header nav a')){
 }
 $('browser-support').textContent='Dropbox 저장은 아이폰 Safari와 맥 Chrome에서 사용할 수 있어요. 사진·음원도 내 Dropbox에 저장해요.';
 resetEditor();renderLibrary();
-if(location.hash==='#add'&&section==='cards')switchView('add',true);else if(location.hash==='#review')switchView('review',true);
+if(location.hash==='#add'&&section==='cards')switchView('add',true);else if(location.hash==='#review')switchView('review',true);else if(location.hash==='#memory')switchView('memory',true);
 async function restoreConnection(){
  try{cloud=await openDropbox();keepSet();if(cloud.connected){const epoch=++connectionEpoch;setBusy(true);try{await loadCloud(epoch);}finally{setBusy(false);}return;}}
  catch(e){notice(friendlyError(e),true);}

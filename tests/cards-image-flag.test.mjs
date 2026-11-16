@@ -60,3 +60,16 @@ test('a card without a picture can be marked as needing one, with its own tag',(
   assert.deepEqual(marked.reviews,bare.reviews);
   assert.deepEqual(setFlag(marked,'missing',false).tags,['OX3000']);
 });
+
+test('a word to remember is a mark like the others, and writing its memory swaps it for MY-LINK',async()=>{
+  const m=await import('../static/saymore/cards/image-flag.mjs');
+  const card={tags:['OX3000','A1'],schedule:{due:'x'},reviews:[{rating:1}]};
+  const marked=m.setFlag(card,'remember',true);
+  assert.equal(m.hasFlag(marked,'remember'),true);
+  assert.deepEqual(marked.reviews,card.reviews);
+  assert.deepEqual(m.memoryTags(marked),['OX3000','A1','MY-LINK']);
+  assert.deepEqual(m.memoryTags({tags:['MY-LINK','REMEMBER']}),['MY-LINK']);
+  assert.equal(m.memoryQuestion('dog'),'What does dog remind you of?');
+  assert.equal(m.hasHangul('my dog Coco'),false);assert.equal(m.hasHangul('우리 집 dog'),true);
+  assert.ok(!('remember' in m.pictureMark));
+});
