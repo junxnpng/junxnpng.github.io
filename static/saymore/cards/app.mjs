@@ -1,12 +1,12 @@
-import {newCard, editCard, rateCard, correctLastReview, reviewOptions, dueCards, dateLabel, intervalLabel, ratings, overdueMs, reviewLateMs, waitLabel} from './model.mjs?v=7';
-import {studyGroups,cardsInGroup,studyQueue,studyProgress,newCardsLeft,sortCards,sortOrders,resumeIndex,unseenFirst,setSection,inSection,sections} from './study-groups.mjs?v=11';
-import {FolderStore, rememberedFolder, friendlyError} from './storage.mjs?v=8';
-import {el, showCard} from './view.mjs?v=14';
-import {DropboxStore} from './dropbox-store.mjs?v=13';
+import {newCard, editCard, rateCard, correctLastReview, reviewOptions, dueCards, dateLabel, intervalLabel, ratings, overdueMs, reviewLateMs, waitLabel} from './model.mjs?v=8';
+import {studyGroups,cardsInGroup,studyQueue,studyProgress,newCardsLeft,sortCards,sortOrders,resumeIndex,unseenFirst,setSection,inSection,sections} from './study-groups.mjs?v=12';
+import {FolderStore, rememberedFolder, friendlyError} from './storage.mjs?v=9';
+import {el, showCard} from './view.mjs?v=15';
+import {DropboxStore} from './dropbox-store.mjs?v=14';
 import {readSnapshot,writeSnapshot,clearSnapshot} from './snapshot-cache.mjs?v=1';
 import {MediaCache} from './media-cache.mjs?v=1';
 import {parseBundle} from './bundle.mjs?v=2';
-import {prepareImagePatch,prepareAudioPatch,prepareTextPatch,patchKind} from './image-patch.mjs?v=12';
+import {prepareImagePatch,prepareAudioPatch,prepareTextPatch,patchKind} from './image-patch.mjs?v=13';
 import {openDropbox} from '../shared/dropbox.mjs?v=8';
 import {flagKinds,hasFlag,setFlag} from './image-flag.mjs?v=3';
 
@@ -244,7 +244,7 @@ function clearDraft(){for(const url of draftURLs)URL.revokeObjectURL(url);draftU
 function source(path){return mediaCache.source(path);}
 async function sources(card,withAudio=true){
   const urls={};
-  await Promise.all((withAudio?['image','audio']:['image']).map(async type=>{if(card[type])urls[type]=await source(card[type].path);}));
+  await Promise.all((withAudio?['image','audio','wordAudio']:['image']).map(async type=>{if(card[type])urls[type]=await source(card[type].path);}));
   return urls;
 }
 function prepareReview(queue){

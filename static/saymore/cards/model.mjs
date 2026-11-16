@@ -45,8 +45,13 @@ function normalize(fields) {
   return {type:fields.type, deck:text(fields.deck,'덱',120) || '첫 100단어', front, answer,
     ipa:text(fields.ipa,'IPA',300), sentence:text(fields.sentence,'예문'), memory:text(fields.memory,'나의 기억'),
     tags:[...new Set(tags.map(t=>t.trim()).filter(Boolean))], image, audio,
-    ...(fields.speech===undefined?{}:{speech:text(fields.speech,'합성 음성 문장',300)})};
+    ...(fields.speech===undefined?{}:{speech:text(fields.speech,'합성 음성 문장',300)}),
+    // A second recording: the example word said aloud, beside the recording of the sound on its own.
+    ...(fields.wordAudio?{wordAudio:media(fields.wordAudio,'audio')}:{})};
 }
+
+// Every file a card points to. Stores use it to check that an attachment a card names is really there.
+export const attachmentPaths = card => [card.image?.path, card.audio?.path, card.wordAudio?.path].filter(Boolean);
 
 export function newCard(fields, now = new Date()) {
   return {id:crypto.randomUUID(), ...normalize(fields), createdAt:now.toISOString(), updatedAt:now.toISOString(),
@@ -178,6 +183,7 @@ export function renderNote(card, previous = '') {
   if (card.image) lines.push(`![학습 사진](../${card.image.path})`,'',escapeMD(card.image.credit),'');
   lines.push('## 뒷면',escapeMD(card.answer),'',escapeMD(card.ipa),'');
   if (card.audio) lines.push(`![[${card.audio.path.slice(6)}]]`,'',escapeMD(card.audio.credit),'');
+  if (card.wordAudio) lines.push(`단어 녹음: ![[${card.wordAudio.path.slice(6)}]]`,'',escapeMD(card.wordAudio.credit),'');
   if (card.speech) lines.push(`미국식 기기 합성 음성: ${escapeMD(card.speech)}`,'');
   if (card.sentence) lines.push('## 예문',escapeMD(card.sentence),'');
   if (card.memory) lines.push('## 나의 기억',escapeMD(card.memory),'');

@@ -33,20 +33,27 @@ export function showCard(container, card, sources = {}, answer = false) {
     body.append(english(el('p',card.answer||'단어 또는 정답','study-answer')));
     if(card.ipa){const ipa=el('p',card.ipa,'study-ipa');ipa.lang='en-fonipa';body.append(ipa);}
     // A card with a recording offers both: the human recording and the device voice reading the same word.
-    const listen=el('div',undefined,'study-listen');let audio=null;
+    const listen=el('div',undefined,'study-listen');let audio=null,word=null;
     if(sources.audio){
       audio=el('audio');audio.src=sources.audio;audio.preload='metadata';
-      const button=el('button',card.speech?'▶ 사람 녹음':'▶ 발음 듣기','secondary');button.type='button';
-      button.addEventListener('click',async()=>{stopSpeech();try{audio.currentTime=0;await audio.play();}catch{button.textContent='재생하지 못했어요 · 다시 누르기';}});
+      const button=el('button',sources.wordAudio?'▶ 기호 소리':card.speech?'▶ 사람 녹음':'▶ 발음 듣기','secondary');button.type='button';
+      button.addEventListener('click',async()=>{stopSpeech();word?.pause();try{audio.currentTime=0;await audio.play();}catch{button.textContent='재생하지 못했어요 · 다시 누르기';}});
       listen.append(button,audio);
+    }
+    // Some cards carry two recordings: the sound on its own, and the example word said by a speaker.
+    if(sources.wordAudio){
+      word=el('audio');word.src=sources.wordAudio;word.preload='metadata';
+      const button=el('button','▶ 단어 소리','secondary');button.type='button';
+      button.addEventListener('click',async()=>{stopSpeech();audio?.pause();try{word.currentTime=0;await word.play();}catch{button.textContent='재생하지 못했어요 · 다시 누르기';}});
+      listen.append(button,word);
     }
     if(card.speech){
       const button=el('button','▶ 미국식 기기 합성 음성','secondary');button.type='button';
-      button.addEventListener('click',()=>{audio?.pause();speakUS(card.speech,message=>{button.textContent=message;});});
+      button.addEventListener('click',()=>{audio?.pause();word?.pause();speakUS(card.speech,message=>{button.textContent=message;});});
       listen.append(button);
     }
     if(listen.childElementCount)body.append(listen);
-    if(card.speech)body.append(el('p',sources.audio?'왼쪽은 사람이 녹음한 소리, 오른쪽은 기기가 읽는 합성 음성이에요.':'녹음이 아닌 기기 합성 음성이에요.','study-credit'));
+    if(card.speech)body.append(el('p',sources.audio&&sources.wordAudio?'마지막 버튼은 기기가 읽는 합성 음성이에요.':sources.audio?'왼쪽은 사람이 녹음한 소리, 오른쪽은 기기가 읽는 합성 음성이에요.':'녹음이 아닌 기기 합성 음성이에요.','study-credit'));
     const links=dictionaryLinks(card.answer);
     if(links.length){
       const line=el('p',undefined,'study-dictionary');line.append('Cambridge 사전에서 듣기: ');
@@ -60,6 +67,7 @@ export function showCard(container, card, sources = {}, answer = false) {
     if(card.sentence)body.append(english(el('p',card.sentence,'study-sentence')));
     if(card.memory)body.append(el('p',card.memory,'study-memory'));
     if(card.audio?.credit)body.append(el('p',card.audio.credit,'study-credit'));
+    if(card.wordAudio?.credit)body.append(el('p',`단어 소리: ${card.wordAudio.credit}`,'study-credit'));
   } else {
     // Word-form and word-order cards end with the word to use, set apart from the sentence like the hint on a paper card.
     // The editor's preview passes the tag box as typed, a string; saved cards carry a list.

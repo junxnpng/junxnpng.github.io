@@ -1,4 +1,4 @@
-import {dueCards,unknownCards} from './model.mjs?v=7';
+import {dueCards,unknownCards} from './model.mjs?v=8';
 import {levels,cardLevel} from './levels.mjs?v=1';
 
 const isWord=card=>card.tags.includes('FF625')||card.tags.includes('OX3000')||card.deck==='Fluent Forever · First 625';

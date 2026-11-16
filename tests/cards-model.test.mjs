@@ -247,3 +247,21 @@ test('a date label is the same each time for one instant and differs for another
   assert.notEqual(model.dateLabel(at),model.dateLabel('2026-11-09T12:34:00Z'));
   assert.notEqual(model.dateLabel(at),model.dateLabel('2026-11-08T12:35:00Z'));
 });
+
+test('a card may carry a second recording of the example word, and keeps it through answers and edits',()=>{
+  const sound={path:'media/00000000-0000-4000-8000-00000000000a.mp3',credit:'symbol demo'};
+  const word={path:'media/00000000-0000-4000-8000-00000000000b.mp3',credit:'word · CC BY-SA'};
+  const card=newCard({...fields,audio:sound,wordAudio:word},now);
+  assert.deepEqual(card.wordAudio,word);
+  assert.deepEqual(model.attachmentPaths(card),[sound.path,word.path]);
+  const library={...newLibrary(now),cards:[card]};
+  assert.deepEqual(parseLibrary(JSON.stringify(library)).cards[0].wordAudio,word,'a library holding it reads back');
+  const rated=rateCard(card,3,now);
+  assert.deepEqual(rated.wordAudio,word);
+  // The editor knows nothing of the second recording; saving its fields must not drop it.
+  const {wordAudio,...fromEditor}=rated;
+  assert.deepEqual(editCard(rated,{...fromEditor,memory:'note'}).wordAudio,word);
+  assert.match(renderNote(rated),/단어 녹음/);
+  assert.equal('wordAudio' in newCard(fields,now),false,'cards without one stay as they were');
+  assert.throws(()=>newCard({...fields,wordAudio:{path:'media/00000000-0000-4000-8000-00000000000b.png',credit:'x'}},now));
+});

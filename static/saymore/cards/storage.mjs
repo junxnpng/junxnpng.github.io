@@ -1,4 +1,4 @@
-import {copy, newLibrary, parseLibrary, renderNote} from './model.mjs?v=7';
+import {copy, newLibrary, parseLibrary, renderNote, attachmentPaths} from './model.mjs?v=8';
 
 const stateFile = 'library.json';
 const mediaPattern = /^media\/[0-9a-f-]{36}\.(jpg|png|webp|mp3)$/;
@@ -66,7 +66,7 @@ export class FolderStore {
       if (next.id !== this.library.id || next.revision !== this.library.revision) throw conflict();
       if (await readText(this.folder,stateFile) !== this.raw) throw conflict();
       const snapshot = parseLibrary(JSON.stringify({...copy(next), revision:next.revision+1, updatedAt:new Date().toISOString()}));
-      const refs = new Set(snapshot.cards.flatMap(c=>[c.image?.path,c.audio?.path].filter(Boolean)));
+      const refs = new Set(snapshot.cards.flatMap(attachmentPaths));
       for (const [path,blob] of Object.entries(uploads)) {
         if (!refs.has(path) || !mediaPattern.test(path) || !(blob instanceof Blob) || !blob.size || blob.size > 10*1024*1024) throw Error('저장할 첨부파일을 확인해주세요.');
       }

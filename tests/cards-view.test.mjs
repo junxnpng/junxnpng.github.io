@@ -43,3 +43,17 @@ test('English text is marked as English and Korean explanations are not',()=>{
   showCard(box,{...card,sentence:'앞쪽 높은 모음입니다.'},{},true);
   assert.equal(all(box,item=>item.className==='study-sentence')[0].lang,undefined);
 });
+
+test('a card with two recordings offers the sound and the word as separate buttons',()=>{
+  const box=node('div');
+  const two={...card,audio:{path:'media/a.mp3',credit:'symbol demo'},wordAudio:{path:'media/b.mp3',credit:'word · CC BY-SA'}};
+  showCard(box,two,{audio:'blob:sound',wordAudio:'blob:word'},true);
+  const buttons=all(box,item=>item.tag==='button').map(item=>item.textContent);
+  assert.deepEqual(buttons.filter(text=>text.startsWith('▶')),['▶ 기호 소리','▶ 단어 소리','▶ 미국식 기기 합성 음성']);
+  assert.deepEqual(all(box,item=>item.tag==='audio').map(item=>item.src),['blob:sound','blob:word']);
+  // With one recording the labels stay as before, and nothing is offered on the front.
+  showCard(box,{...card,audio:two.audio},{audio:'blob:sound'},true);
+  assert.ok(all(box,item=>item.tag==='button').some(item=>item.textContent==='▶ 사람 녹음'));
+  showCard(box,two,{audio:'blob:sound',wordAudio:'blob:word'},false);
+  assert.equal(all(box,item=>item.tag==='audio').length,0);
+});

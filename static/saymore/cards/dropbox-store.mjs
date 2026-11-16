@@ -1,4 +1,4 @@
-import {copy,newLibrary,parseLibrary,renderNote} from './model.mjs?v=7';
+import {copy,newLibrary,parseLibrary,renderNote,attachmentPaths} from './model.mjs?v=8';
 const prefix='/cards';
 const mediaPattern=/^media\/[0-9a-f-]{36}\.(jpg|png|webp|mp3)$/;
 const same=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
@@ -250,13 +250,13 @@ export class DropboxStore{
       parseLibrary(JSON.stringify({...next,cards:change.cards}));
       if(new Set(next.cards.map(c=>c.id)).size!==next.cards.length)throw Error('같은 번호의 카드가 두 장 있습니다. 저장하지 않았어요.');
       if(meta(next)!==meta(this.library))throw Error('보관함 설정은 이 화면에서 바꿀 수 없습니다. 저장하지 않았어요.');
-      const refs=new Set(next.cards.flatMap(c=>[c.image?.path,c.audio?.path].filter(Boolean)));
+      const refs=new Set(next.cards.flatMap(attachmentPaths));
       for(const [path,blob]of Object.entries(uploads))if(!refs.has(path)||!mediaPattern.test(path)||!(blob instanceof Blob)||!blob.size||blob.size>10*1024*1024)throw Error('저장할 첨부파일을 확인해 주세요.');
       await this.directories();
       let done=0;
       const total=Object.keys(uploads).length+new Set(changedIds).size;
       await eachLimited(Object.entries(uploads),async([path,blob])=>{await this.immutable(path,blob);onProgress(++done,total);});
-      const oldRefs=new Set(this.library.cards.flatMap(c=>[c.image?.path,c.audio?.path].filter(Boolean)));
+      const oldRefs=new Set(this.library.cards.flatMap(attachmentPaths));
       for(const path of refs)if(!oldRefs.has(path)&&!uploads[path])await this.readMedia(path);
       if(this.raw===null)await this._create(next);
       else{
@@ -363,9 +363,9 @@ export class DropboxStore{
     const incoming=parseLibrary(await entries.get('library.json').text());
     const existing=new Set(this.library.cards.map(c=>c.id));
     const added=incoming.cards.filter(c=>!existing.has(c.id));
-    const refs=new Set(added.flatMap(c=>[c.image?.path,c.audio?.path].filter(Boolean)));
+    const refs=new Set(added.flatMap(attachmentPaths));
     // A new card may reuse a picture or recording that a card already in the library holds; that file is not sent again.
-    const held=new Set(this.library.cards.flatMap(c=>[c.image?.path,c.audio?.path].filter(Boolean)));
+    const held=new Set(this.library.cards.flatMap(attachmentPaths));
     for(const path of refs)if(entries.has(path)?entries.get(path).size>10*1024*1024:!held.has(path))throw Error('새 덱의 첨부파일이 없거나 너무 큽니다. 기존 카드는 그대로 유지합니다.');
     if(!added.length)return {added:0,skipped:incoming.cards.length,warnings:[]};
     const uploads=Object.fromEntries([...refs].filter(path=>entries.has(path)).map(path=>[path,entries.get(path)]));
@@ -393,7 +393,7 @@ export class DropboxStore{
     const source=entries.get('library.json');
     if(!source)throw Error('선택한 폴더에 library.json이 없습니다.');
     const raw=await source.text(),library=parseLibrary(raw);
-    const refs=new Set(library.cards.flatMap(c=>[c.image?.path,c.audio?.path].filter(Boolean)));
+    const refs=new Set(library.cards.flatMap(attachmentPaths));
     for(const path of refs)if(!entries.has(path)||entries.get(path).size>10*1024*1024)throw Error('카드에 연결된 첨부파일이 없거나 너무 큽니다. 원본 폴더를 확인해 주세요.');
     if(entries.has('library.backup.json'))parseLibrary(await entries.get('library.backup.json').text());
     // Compared with what is really stored: the library file with any journal applied.

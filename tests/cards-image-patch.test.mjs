@@ -64,3 +64,21 @@ test('filling the picture of a card marked as having none clears that mark and n
   assert.equal(result.next.cards[0].image.path,path);
   assert.deepEqual(result.next.cards[0].reviews,marked.cards[0].reviews);
 });
+test('a recording patch can fill the example-word slot beside the first recording, once',async()=>{
+  const {library,item}=audioFixture();
+  const first=await prepareAudioPatch(library,audioFiles([item]));
+  const withSound=first.next;
+  const wordPath='media/00000000-0000-4000-8000-000000000003.mp3';
+  const wordFiles=[{path:'audio.json',blob:new Blob([JSON.stringify({format:'saymore-audio-patch',version:1,audio:[{...item,path:wordPath,slot:'word',credit:'word · CC BY-SA'}]})])},{path:wordPath,blob:new Blob(['mp3'],{type:'audio/mpeg'})}];
+  const before=structuredClone(withSound);
+  const result=await prepareAudioPatch(withSound,wordFiles);
+  const card=result.next.cards[0];
+  assert.deepEqual(card.wordAudio,{path:wordPath,credit:'word · CC BY-SA'});
+  assert.deepEqual(card.audio,before.cards[0].audio,'the first recording is untouched');
+  assert.deepEqual(card.reviews,before.cards[0].reviews);
+  assert.deepEqual(Object.keys(result.uploads),[wordPath]);
+  assert.equal((await prepareAudioPatch(result.next,wordFiles)).skipped,1);
+  // An unknown slot name is refused rather than quietly filling the first slot.
+  const odd=[{path:'audio.json',blob:new Blob([JSON.stringify({format:'saymore-audio-patch',version:1,audio:[{...item,path:wordPath,slot:'other'}]})])},wordFiles[1]];
+  await assert.rejects(prepareAudioPatch(library,odd));
+});

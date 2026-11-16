@@ -1,4 +1,4 @@
-import {editCard} from './model.mjs?v=7';
+import {editCard} from './model.mjs?v=8';
 import {flagKinds} from './image-flag.mjs?v=3';
 
 // A patch fills one empty attachment slot (image or audio) on cards that already exist.
@@ -35,10 +35,13 @@ async function prepare(kind,library,files){
     // during review or has never studied the card, so a picture already tied to a memory is left alone.
     // The new picture goes in, any mark comes off, and the old file stays in the library folder.
     const swap=kind==='image'&&item.replace===true&&card.image&&card.image.path!==item.path&&(marks.some(tag=>card.tags.includes(tag))||card.reviews.length===0);
-    if(card[kind]&&!swap){skipped++;continue;}
+    // A recording patch may name the second slot: `slot:'word'` fills the example-word recording, beside the first.
+    const field=kind==='audio'&&item.slot==='word'?'wordAudio':kind;
+    if(item.slot!==undefined&&field===kind)throw Error(k.errors.item);
+    if(card[field]&&!swap){skipped++;continue;}
     // Any mark about the picture is answered by the new one: "does not fit" on a swap, "no picture" on a fill.
     const tags=kind==='image'?card.tags.filter(tag=>tag!==flagKinds.missing.tag&&!(swap&&marks.includes(tag))):card.tags;
-    replacements.set(card.id,editCard(card,{...card,tags,[kind]:{path:item.path,credit:item.credit}}));
+    replacements.set(card.id,editCard(card,{...card,tags,[field]:{path:item.path,credit:item.credit}}));
     uploads[item.path]=blob;
   }
   return {next:{...library,cards:library.cards.map(c=>replacements.get(c.id)||c)},uploads,ids:[...replacements.keys()],skipped};
@@ -66,7 +69,7 @@ export async function prepareTextPatch(library,files){
     if(!names.length||!plain(item.was)||names.length!==Object.keys(item.was).length||names.some(name=>!textFields.includes(name)||typeof item.set[name]!=='string'||typeof item.was[name]!=='string'||item.set[name]!==item.set[name].trim()))throw Error('바꿀 내용을 확인해주세요.');
     if(names.every(name=>card[name]===item.set[name])){skipped++;continue;}
     // A recording says the old sentence; replacing the sentence under it would leave the two disagreeing.
-    if(card.audio&&names.includes('answer'))throw Error(`‘${card.answer}’ 카드에는 녹음이 붙어 있어 정답을 바꿀 수 없어요. 저장하지 않았어요.`);
+    if((card.audio||card.wordAudio)&&names.includes('answer'))throw Error(`‘${card.answer}’ 카드에는 녹음이 붙어 있어 정답을 바꿀 수 없어요. 저장하지 않았어요.`);
     if(names.some(name=>card[name]!==item.was[name]&&card[name]!==item.set[name]))throw Error(`‘${card.answer}’ 카드는 그사이 내용이 바뀌었어요. 저장하지 않았어요.`);
     replacements.set(card.id,editCard(card,{...card,...Object.fromEntries(names.map(name=>[name,item.set[name]]))}));
   }
