@@ -6,9 +6,9 @@ import {DropboxStore} from './dropbox-store.mjs?v=13';
 import {readSnapshot,writeSnapshot,clearSnapshot} from './snapshot-cache.mjs?v=1';
 import {MediaCache} from './media-cache.mjs?v=1';
 import {parseBundle} from './bundle.mjs?v=2';
-import {prepareImagePatch,prepareAudioPatch,prepareTextPatch,patchKind} from './image-patch.mjs?v=11';
+import {prepareImagePatch,prepareAudioPatch,prepareTextPatch,patchKind} from './image-patch.mjs?v=12';
 import {openDropbox} from '../shared/dropbox.mjs?v=8';
-import {flagKinds,hasFlag,setFlag} from './image-flag.mjs?v=2';
+import {flagKinds,hasFlag,setFlag} from './image-flag.mjs?v=3';
 
 const $=id=>document.getElementById(id);
 let store=null, cachedFolder=null, view='library', busy=false, dirty=false, editedId=null, previewBack=false;
@@ -150,19 +150,21 @@ function chooseGroup(key){
   $('deck-filter').value=$('review-group').value=key;
   if(view==='review')startReview(unknownSession!==null);else renderLibrary();
 }
-// The marks under a review card: the picture does not fit the word, or does not fit the sentence.
-// Each is saved at once, like an answer. The sentence mark appears once the back, with its sentence, is showing.
+// The marks under a review card: the picture does not fit the word, or the sentence, or there is no picture.
+// Each is saved at once, like an answer. They are offered on the back only, where the word and the sentence
+// can be read against the picture; the front stays free of anything but the question.
 function flagControl(){
-  $('flag-row').hidden=!activeCard?.image;
+  const picture=Boolean(activeCard?.image);
+  $('flag-row').hidden=!activeCard||!revealed;
   for(const button of $('flag-row').querySelectorAll('button')){
     const kind=button.dataset.flag,on=Boolean(activeCard&&hasFlag(activeCard,kind));
-    button.hidden=kind==='sentence'&&!(activeCard?.sentence&&revealed);
+    button.hidden=kind==='missing'?picture:!picture||(kind==='sentence'&&!activeCard?.sentence);
     button.setAttribute('aria-pressed',String(on));button.textContent=flagKinds[kind][on?'on':'off'];
     button.disabled=busy||saving||!store;
   }
 }
 async function toggleFlag(kind){
-  if(busy||saving||!store||!activeCard?.image)return;
+  if(busy||saving||!store||!activeCard||Boolean(activeCard.image)===(kind==='missing'))return;
   const owner=store,before=activeCard;let updated;
   try{updated=setFlag(before,kind,!hasFlag(before,kind));}catch(e){notice(friendlyError(e),true);return;}
   const next=cards().map(c=>c.id===updated.id?updated:c);

@@ -1,9 +1,11 @@
-// "This picture does not fit" marks, made during review. Each kind is kept as an ordinary tag, so marked
+// "This picture does not fit" and "this card has no picture" marks, made during review on the back of a card. Each kind is kept as an ordinary tag, so marked
 // cards can be searched, show up in the notes, and travel with every backup. Marking changes nothing
 // else on the card: the schedule and the review history are carried over as they are.
 export const flagKinds={
   word:{tag:'그림교체',off:'그림 ↔ 단어가 안 맞아요',on:'✓ 그림 ↔ 단어 안 맞음 · 취소',list:'그림 ↔ 단어 안 맞는 카드'},
-  sentence:{tag:'문장불일치',off:'그림 ↔ 문장이 안 맞아요',on:'✓ 그림 ↔ 문장 안 맞음 · 취소',list:'그림 ↔ 문장 안 맞는 카드'}
+  sentence:{tag:'문장불일치',off:'그림 ↔ 문장이 안 맞아요',on:'✓ 그림 ↔ 문장 안 맞음 · 취소',list:'그림 ↔ 문장 안 맞는 카드'},
+  // For a card that has no picture at all: a request for one.
+  missing:{tag:'그림없음',off:'그림이 없어요',on:'✓ 그림 없음 표시 · 취소',list:'그림 없는 카드'}
 };
 export const hasFlag=(card,kind)=>card.tags.includes(flagKinds[kind].tag);
 export function setFlag(card,kind,on,now=new Date()){

@@ -1,5 +1,5 @@
 import {editCard} from './model.mjs?v=7';
-import {flagKinds} from './image-flag.mjs?v=2';
+import {flagKinds} from './image-flag.mjs?v=3';
 
 // A patch fills one empty attachment slot (image or audio) on cards that already exist.
 // It never touches a card's schedule or review history, and replaces an attachment in one case only:
@@ -10,7 +10,7 @@ const kinds={
   audio:{manifest:'audio.json',format:'saymore-audio-patch',list:'audio',path:/^media\/[0-9a-f-]{36}\.mp3$/,mimes:['audio/mpeg'],
     errors:{files:'녹음 묶음의 파일 구성을 확인해주세요.',format:'녹음 묶음 형식이 아닙니다.',item:'녹음 경로와 출처를 확인해주세요.',blob:'사용할 녹음 파일이 없거나 잘못되었습니다.'}},
 };
-const marks=Object.values(flagKinds).map(kind=>kind.tag);
+const marks=[flagKinds.word.tag,flagKinds.sentence.tag];
 const textManifest='text.json';
 export const patchKind=files=>files.some(file=>file.path===textManifest)?'text':Object.keys(kinds).find(kind=>files.some(file=>file.path===kinds[kind].manifest))||'image';
 
@@ -36,7 +36,9 @@ async function prepare(kind,library,files){
     // The new picture goes in, any mark comes off, and the old file stays in the library folder.
     const swap=kind==='image'&&item.replace===true&&card.image&&card.image.path!==item.path&&(marks.some(tag=>card.tags.includes(tag))||card.reviews.length===0);
     if(card[kind]&&!swap){skipped++;continue;}
-    replacements.set(card.id,editCard(card,{...card,tags:swap?card.tags.filter(tag=>!marks.includes(tag)):card.tags,[kind]:{path:item.path,credit:item.credit}}));
+    // Any mark about the picture is answered by the new one: "does not fit" on a swap, "no picture" on a fill.
+    const tags=kind==='image'?card.tags.filter(tag=>tag!==flagKinds.missing.tag&&!(swap&&marks.includes(tag))):card.tags;
+    replacements.set(card.id,editCard(card,{...card,tags,[kind]:{path:item.path,credit:item.credit}}));
     uploads[item.path]=blob;
   }
   return {next:{...library,cards:library.cards.map(c=>replacements.get(c.id)||c)},uploads,ids:[...replacements.keys()],skipped};

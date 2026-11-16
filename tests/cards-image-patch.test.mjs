@@ -56,3 +56,11 @@ test('a picture on a card never studied may be replaced; one that has been studi
   const studied={...library,cards:[{...library.cards[0],image:old}]};
   assert.equal((await prepareImagePatch(studied,files([{...item,replace:true}]))).skipped,1);
 });
+test('filling the picture of a card marked as having none clears that mark and no other tag',async()=>{
+  const {library,item}=fixture();
+  const marked={...library,cards:[{...library.cards[0],tags:['OX3000','그림없음']}]};
+  const result=await prepareImagePatch(marked,files([item]));
+  assert.deepEqual(result.next.cards[0].tags,['OX3000']);
+  assert.equal(result.next.cards[0].image.path,path);
+  assert.deepEqual(result.next.cards[0].reviews,marked.cards[0].reviews);
+});

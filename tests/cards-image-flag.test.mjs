@@ -49,3 +49,14 @@ test('the picture–word and picture–sentence marks are separate and can both 
   assert.equal(hasFlag(onlySentence,'sentence'),true);
   assert.equal(model.parseLibrary(JSON.stringify({...model.newLibrary(),cards:[both]})).cards.length,1);
 });
+
+test('a card without a picture can be marked as needing one, with its own tag',()=>{
+  const start=new Date('2026-11-01T09:00:00Z');
+  const bare=model.rateCard(model.newCard({type:'basic',deck:'Oxford 3000 · B2',front:'She is ___ of lying.',answer:'suspect',tags:['OX3000']},start),3,start);
+  const marked=setFlag(bare,'missing',true);
+  assert.deepEqual(marked.tags,['OX3000',flagKinds.missing.tag]);
+  assert.equal(hasFlag(marked,'missing'),true);
+  assert.equal(hasFlag(marked,'word'),false,'it is a mark of its own, not a picture-does-not-fit mark');
+  assert.deepEqual(marked.reviews,bare.reviews);
+  assert.deepEqual(setFlag(marked,'missing',false).tags,['OX3000']);
+});
