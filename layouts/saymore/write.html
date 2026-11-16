@@ -1,0 +1,38 @@
+{{ define "main" }}
+<article class="saymore sm-write" lang="ko">
+  <nav class="sm-breadcrumb" aria-label="학습 경로"><a href="{{ "" | relURL }}">Say More</a><span aria-hidden="true">/</span><span>쓰기</span></nav>
+  <header class="sm-page-header">
+    <p class="sm-eyebrow">OUTPUT · WRITE, GET CORRECTED, MAKE CARDS</p>
+    <h1>내 문장 만들기</h1>
+    <p class="sm-lead">아는 단어로 직접 써 보면 무엇을 말하지 못하는지 바로 드러나요. 목표는 잘 쓰는 것이 아니라 틀리는 거예요.</p>
+  </header>
+  <section class="sm-write-steps" aria-labelledby="write-steps-title">
+    <h2 id="write-steps-title">오늘 세 문장만</h2>
+    <ol>
+      <li><strong>쓰기.</strong> 아래 주제 중 하나로 영어 세 문장을 써요. 사전은 막힐 때만 찾아요.</li>
+      <li><strong>교정받기.</strong> 아래 요청문과 함께 ChatGPT나 Claude에 붙여 넣어요.</li>
+      <li><strong>카드 만들기.</strong> 고쳐진 문장에서 틀린 곳을 <a href="{{ "saymore/cards/" | relURL }}#add">카드 추가</a>로 옮겨요. 형태가 틀렸으면 태그에 <code>FORM</code>, 순서가 틀렸거나 말이 빠졌으면 <code>ORDER</code>를 적으면 단어 형태·문장 어순 탭에 들어가요. 몰랐던 단어는 태그 없이 넣어요.</li>
+    </ol>
+  </section>
+  <section class="sm-write-topics" aria-labelledby="write-topics-title">
+    <h2 id="write-topics-title">쓸 주제</h2>
+    <ul lang="en">
+      <li>What did I do today?</li>
+      <li>What am I going to do this weekend?</li>
+      <li>What am I working on these days?</li>
+      <li>Something I ate, watched, or read recently.</li>
+      <li>Something that annoyed me this week.</li>
+    </ul>
+    <p class="sm-footnote">정말 좋아하는 주제 하나를 정해 질릴 때까지 그 주제로만 쓰면 단어가 서로 엮여서 더 잘 남아요.</p>
+  </section>
+  <section class="sm-write-request" aria-labelledby="write-request-title">
+    <h2 id="write-request-title">교정 요청문</h2>
+    <pre lang="en"><code>Correct my English below the way a native speaker of American English would say it.
+For each sentence, show: my sentence, the corrected sentence, and one short line on what changed.
+Do not rewrite sentences that are already natural. Do not translate into Korean.
+
+(my sentences here)</code></pre>
+  </section>
+  <p class="sm-footnote">Fluent Forever 5장의 자기 주도적 글쓰기를 따랐어요. 글 쓰는 칸과 교정 결과를 카드로 바꾸는 기능은 아직 없어요. 지금은 카드 추가 화면에서 직접 옮겨요.</p>
+</article>
+{{ end }}
