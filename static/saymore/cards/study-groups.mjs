@@ -1,5 +1,6 @@
 import {dueCards,unknownCards} from './model.mjs?v=8';
 import {levels,cardLevel} from './levels.mjs?v=1';
+import {flagKinds} from './image-flag.mjs?v=5';
 
 const isWord=card=>card.tags.includes('FF625')||card.tags.includes('OX3000')||card.deck==='Fluent Forever · First 625';
 const unlevelled='등급 밖';
@@ -24,7 +25,10 @@ export function studyGroups(every){
 }
 function buildGroups(every){
   const cards=inSection(every);
-  if(section!=='cards')return [{key:'all',label:sections[section].label,section:'전체',cards}];
+  // Cards marked during review to hear again later. Listed even when empty, so taking the mark off the last
+  // one does not move a review going on in this group to another group.
+  const listen={key:'listen',label:flagKinds.listen.list,section:'표시',cards:cards.filter(c=>c.tags.includes(flagKinds.listen.tag))};
+  if(section!=='cards')return [{key:'all',label:sections[section].label,section:'전체',cards},listen];
   const groups=[{key:'all',label:'전체 카드',section:'전체',cards}];
   const ipa=cards.filter(isIpa),words=cards.filter(isWord);
   // One group per CEFR level, in library order, which ratings and edits keep.
@@ -37,6 +41,7 @@ function buildGroups(every){
   if(ipa.length)groups.push({key:'ipa',label:'IPA',section:'IPA',cards:ipa});
   const own=cards.filter(c=>!isIpa(c)&&!isWord(c));
   for(const deck of [...new Set(own.map(c=>c.deck))].sort())groups.push({key:`deck:${deck}`,label:deck,section:'내 덱',cards:own.filter(c=>c.deck===deck)});
+  groups.push(listen);
   return groups;
 }
 

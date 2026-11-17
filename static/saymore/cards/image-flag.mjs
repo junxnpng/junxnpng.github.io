@@ -9,6 +9,8 @@ export const flagKinds={
   // A word to make a memory for. Any way of choosing such words (a button on the back today, later perhaps
   // a count of 모름 answers or a pick from the summary) puts this tag on the card; the memory page lists them.
   remember:{tag:'REMEMBER',off:'따로 외울 단어로 표시',on:'✓ 따로 외울 단어 · 취소',list:'따로 외울 카드'},
+  // A word whose sound is to be checked later, when the recording can be played aloud. Review collects them in a group of their own.
+  listen:{tag:'LISTEN-LATER',off:'발음 나중에 듣기',on:'✓ 발음 나중에 듣기 · 취소',list:'발음 나중에 들을 카드'},
   // Set when a memory is written on the memory page, so those cards can be listed together.
   linked:{tag:'MY-LINK',list:'내 기억을 적은 카드'}
 };

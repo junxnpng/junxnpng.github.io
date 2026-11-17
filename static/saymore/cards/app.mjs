@@ -1,5 +1,5 @@
 import {newCard, editCard, rateCard, correctLastReview, reviewOptions, dueCards, dateLabel, intervalLabel, ratings, overdueMs, reviewLateMs, waitLabel} from './model.mjs?v=8';
-import {studyGroups,cardsInGroup,studyQueue,studyProgress,newCardsLeft,sortCards,sortOrders,resumeIndex,unseenFirst,setSection,inSection,sections,levelSummary} from './study-groups.mjs?v=13';
+import {studyGroups,cardsInGroup,studyQueue,studyProgress,newCardsLeft,sortCards,sortOrders,resumeIndex,unseenFirst,setSection,inSection,sections,levelSummary} from './study-groups.mjs?v=14';
 import {FolderStore, rememberedFolder, friendlyError} from './storage.mjs?v=9';
 import {el, showCard} from './view.mjs?v=15';
 import {DropboxStore} from './dropbox-store.mjs?v=14';
@@ -8,7 +8,7 @@ import {MediaCache} from './media-cache.mjs?v=1';
 import {parseBundle} from './bundle.mjs?v=2';
 import {prepareImagePatch,prepareAudioPatch,prepareTextPatch,patchKind} from './image-patch.mjs?v=14';
 import {openDropbox} from '../shared/dropbox.mjs?v=8';
-import {flagKinds,hasFlag,setFlag,pictureMark,memoryQuestion,memoryTags,hasHangul} from './image-flag.mjs?v=4';
+import {flagKinds,hasFlag,setFlag,pictureMark,memoryQuestion,memoryTags,hasHangul} from './image-flag.mjs?v=5';
 import {setSetting,syncSettings,settingKeys} from '../shared/sync.mjs?v=2';
 
 const $=id=>document.getElementById(id);
@@ -19,7 +19,7 @@ const mediaCache=new MediaCache(path=>store.readMedia(path));
 const inputs=['front','answer','ipa','speech','sentence','memory','tags'];
 const supported=typeof window.showDirectoryPicker==='function';
 let cloud=null,refreshing=false;
-let selectedGroup='all',practiceIndex=0,practiceOrder=[];
+let selectedGroup='all',practiceIndex=0,practiceOrder=[],practiceGroup=null;
 let sortOrder='default', lastGraded=null, lastListKey='';
 let cameToReview=location.hash==='#review';
 // New cards a day in 오늘 복습; 0 means no limit. Shared with other devices through Dropbox.
@@ -137,11 +137,15 @@ function isPractice(){return ['practice','resume'].includes($('review-mode').val
 function practicePositions(){try{const value=JSON.parse(localStorage.getItem(positionKey));return value&&typeof value==='object'?value:{};}catch{return {};}}
 // Practice shows cards never reviewed first. The order is fixed when practice starts, so a card that
 // gets rated on the way does not jump behind the others and shift every position after it.
+// For the same reason a card that leaves the group on the way (its "hear later" mark taken off) keeps its
+// place until practice starts again; otherwise the card after it would slide back and be skipped.
 function practiceCards(list=cards()){
-  const byId=new Map(cardsInGroup(list,selectedGroup).map(c=>[c.id,c])),known=new Set(practiceOrder);
-  return [...practiceOrder.map(id=>byId.get(id)).filter(Boolean),...[...byId.values()].filter(c=>!known.has(c.id))];
+  const inGroup=cardsInGroup(list,selectedGroup),known=new Set(practiceOrder);
+  const byId=new Map((practiceGroup===selectedGroup?inSection(list):inGroup).map(c=>[c.id,c]));
+  return [...practiceOrder.map(id=>byId.get(id)).filter(Boolean),...inGroup.filter(c=>!known.has(c.id))];
 }
 function practiceStart(){
+  practiceGroup=selectedGroup;
   practiceOrder=store?unseenFirst(cardsInGroup(cards(),selectedGroup)).map(c=>c.id):[];
   return store&&$('review-mode').value==='resume'?resumeIndex(practiceCards(),practicePositions()[selectedGroup]):0;
 }
@@ -199,7 +203,7 @@ function flagControl(){
   $('flag-row').hidden=!activeCard||!revealed;
   for(const button of $('flag-row').querySelectorAll('button')){
     const kind=button.dataset.flag,on=Boolean(activeCard&&hasFlag(activeCard,kind));
-    button.hidden=kind==='remember'?false:kind==='missing'?picture:!picture||(kind==='sentence'&&!activeCard?.sentence);
+    button.hidden=kind==='remember'||kind==='listen'?false:kind==='missing'?picture:!picture||(kind==='sentence'&&!activeCard?.sentence);
     button.setAttribute('aria-pressed',String(on));button.textContent=flagKinds[kind][on?'on':'off'];
     button.disabled=busy||saving||!store;
   }
@@ -217,7 +221,7 @@ async function toggleFlag(kind){
     const result=await commit;
     pendingCards=null;saving=false;
     if(store===owner){
-      saved(result,hasFlag(updated,kind)?(kind==='remember'?`‘${updated.answer.slice(0,40)}’ 카드를 따로 외울 단어로 표시했어요. ‘기억 만들기’에서 기억을 적을 수 있어요.`:`‘${updated.answer.slice(0,40)}’ 카드에 표시했어요. 카드 목록에서 모아 볼 수 있어요.`):'표시를 지웠어요.',{review:true});
+      saved(result,hasFlag(updated,kind)?(kind==='remember'?`‘${updated.answer.slice(0,40)}’ 카드를 따로 외울 단어로 표시했어요. ‘기억 만들기’에서 기억을 적을 수 있어요.`:kind==='listen'?`‘${updated.answer.slice(0,40)}’ 카드를 발음 나중에 듣기로 표시했어요. 복습 묶음 ‘${flagKinds.listen.list}’에서 모아 볼 수 있어요.`:`‘${updated.answer.slice(0,40)}’ 카드에 표시했어요. 카드 목록에서 모아 볼 수 있어요.`):'표시를 지웠어요.',{review:true});
       const savedNotice=noticeVersion;
       const reportNotes=notes=>{if(store===owner)noteWarnings(notes,noticeVersion===savedNotice);};
       if(result.notes)void result.notes.then(reportNotes,error=>reportNotes({warnings:[{message:error.message}]}));

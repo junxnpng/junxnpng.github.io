@@ -19,7 +19,7 @@ test('word cards are grouped by CEFR level only, followed by one IPA group',()=>
   const input=[dog,...a1.slice(0,50),...ipa,...b2,number,...a1.slice(50)],before=copy(input);
   const all=groups.studyGroups(input),keys=all.map(g=>g.key);
   assert.equal(keys.some(k=>k.startsWith('words:')),false);
-  assert.deepEqual(keys,['all','level:A1','level:B2','level:등급 밖','ipa']);
+  assert.deepEqual(keys,['all','level:A1','level:B2','level:등급 밖','ipa','listen']);
   const of=key=>all.find(g=>g.key===key).cards;
   assert.deepEqual(of('level:A1').map(c=>c.id),[dog,...a1].map(c=>c.id));
   assert.equal(of('level:A1')[0].answer,'dog');
@@ -71,7 +71,7 @@ test('all IPA cards share one group, personal decks are selectable, and an unkno
   const cards=[vowel,consonant,custom];
   const options=groups.studyGroups(cards);
   const own=options.find(g=>g.label===custom.deck);
-  assert.deepEqual(options.map(g=>g.key),['all','ipa',own.key]);
+  assert.deepEqual(options.map(g=>g.key),['all','ipa',own.key,'listen']);
   assert.deepEqual(groups.cardsInGroup(cards,'ipa').map(c=>c.answer),['vowel','consonant']);
   assert.deepEqual(groups.cardsInGroup(cards,own.key).map(c=>c.answer),['custom']);
   assert.deepEqual(groups.studyQueue(cards,'words:99','due',now),[]);
@@ -143,7 +143,7 @@ test('word-form and word-order cards live in tabs of their own and never among t
     assert.deepEqual(groups.inSection(all).map(c=>c.answer),['dog','mine']);
     assert.deepEqual(groups.inSection(all,'order').map(c=>c.answer),['Do you speak English?']);
     assert.equal(groups.setSection('form'),'form');
-    assert.deepEqual(groups.studyGroups(all).map(g=>[g.key,g.label,g.cards.map(c=>c.answer)]),[['all','단어 형태',['went']]]);
+    assert.deepEqual(groups.studyGroups(all).map(g=>[g.key,g.label,g.cards.map(c=>c.answer)]),[['all','단어 형태',['went']],['listen','발음 나중에 들을 카드',[]]]);
     assert.deepEqual(groups.studyQueue(all,'all','due',now).map(c=>c.answer),['went']);
     assert.deepEqual(groups.studyQueue(all,'level:A1','due',now),[]);
     assert.equal(groups.setSection('order'),'order');
@@ -189,7 +189,7 @@ test('switching tabs never returns the groups remembered for the other tab',()=>
     groups.setSection('cards');
     const words=groups.studyGroups(list);
     groups.setSection('form');
-    assert.deepEqual(groups.studyGroups(list).map(g=>g.cards.map(c=>c.answer)),[['went']]);
+    assert.deepEqual(groups.studyGroups(list).map(g=>g.cards.map(c=>c.answer)),[['went'],[]]);
     groups.setSection('cards');
     assert.deepEqual(groups.studyGroups(list),words);
     assert.deepEqual(groups.cardsInGroup(list,'all').map(c=>c.answer),['dog']);
@@ -229,4 +229,16 @@ test('the first answer of each word card gives the level summary and the first-w
   assert.deepEqual(rows[2],{label:'합계',total:7,seen:4,first:[1,1,1,1]});
   assert.deepEqual(groups.cardsInGroup(input,'first-weak').map(c=>c.answer),['a 0','a 1']);
   assert.equal(groups.studyGroups([b1]).some(g=>g.key==='first-weak'),false);
+});
+
+test('cards marked to hear later form a group of their own in every tab, listed even when empty',()=>{
+  const plain=card('cat','Mine'),marked=card('dog','Mine',['LISTEN-LATER']),form=card('ran','Mine',['FORM','LISTEN-LATER']);
+  groups.setSection('cards');
+  const list=[plain,marked,form];
+  assert.deepEqual(groups.cardsInGroup(list,'listen').map(c=>c.answer),['dog']);
+  assert.deepEqual(groups.cardsInGroup([plain],'listen'),[]);
+  assert.ok(groups.studyGroups([plain]).some(g=>g.key==='listen'));
+  groups.setSection('form');
+  assert.deepEqual(groups.cardsInGroup([...list],'listen').map(c=>c.answer),['ran']);
+  groups.setSection('cards');
 });
