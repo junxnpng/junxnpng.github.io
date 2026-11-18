@@ -1,5 +1,5 @@
 import {newCard, editCard, rateCard, correctLastReview, reviewOptions, dueCards, dateLabel, intervalLabel, ratings, overdueMs, reviewLateMs, waitLabel} from './model.mjs?v=8';
-import {studyGroups,cardsInGroup,studyQueue,studyProgress,newCardsLeft,sortCards,sortOrders,resumeIndex,unseenFirst,setSection,inSection,sections,levelSummary} from './study-groups.mjs?v=15';
+import {studyGroups,cardsInGroup,studyQueue,studyProgress,sortCards,sortOrders,resumeIndex,unseenFirst,setSection,inSection,sections,levelSummary} from './study-groups.mjs?v=16';
 import {FolderStore, rememberedFolder, friendlyError} from './storage.mjs?v=9';
 import {el, showCard} from './view.mjs?v=15';
 import {DropboxStore} from './dropbox-store.mjs?v=14';
@@ -9,7 +9,7 @@ import {parseBundle} from './bundle.mjs?v=2';
 import {prepareImagePatch,prepareAudioPatch,prepareTextPatch,patchKind} from './image-patch.mjs?v=15';
 import {openDropbox} from '../shared/dropbox.mjs?v=8';
 import {flagKinds,hasFlag,setFlag,pictureMark,memoryQuestion,memoryTags,hasHangul} from './image-flag.mjs?v=6';
-import {setSetting,syncSettings,settingKeys} from '../shared/sync.mjs?v=2';
+import {setSetting,syncSettings,settingKeys} from '../shared/sync.mjs?v=3';
 
 const $=id=>document.getElementById(id);
 let store=null, cachedFolder=null, view='library', busy=false, dirty=false, editedId=null, previewBack=false;
@@ -22,14 +22,9 @@ let cloud=null,refreshing=false;
 let selectedGroup='all',practiceIndex=0,practiceOrder=[],practiceGroup=null;
 let sortOrder='default', lastGraded=null, lastListKey='';
 let cameToReview=location.hash==='#review';
-// New cards a day in 오늘 복습; 0 means no limit. Shared with other devices through Dropbox.
-const newLimitKey='saymore.cards.new-per-day.v1';
-let newLimit=20;
-try{const saved=localStorage.getItem(newLimitKey);if(['0','10','20','30'].includes(saved))newLimit=Number(saved);}catch{/* The default holds for this visit. */}
-// Settings that decide what the review shows (the daily limit, the chosen group, where practice stopped,
+// Settings that decide what the review shows (the chosen group, where practice stopped,
 // the list order) are shared through Dropbox, so the phone and the computer start from the same card.
 // Each change is saved here at once with its time and sent to Dropbox a moment later; see shared/sync.mjs.
-function useLimit(value){newLimit=value;setSetting(newLimitKey,String(value));shareSoon();}
 let shareTimer=null,sharing=null,shareAgain=false,forceNext=false;
 function shareSoon(ms=2000){clearTimeout(shareTimer);shareTimer=setTimeout(()=>void shareSettings(),ms);}
 // One sync at a time; a change made while one runs is sent by one more round right after it.
@@ -47,7 +42,6 @@ async function shareSettings(options={}){
 // group until its card is answered; `force` is for loading, before anything is drawn.
 let pendingGroup=false;
 function applySettings(changed,{redraw=true,force=false}={}){
-  try{const saved=localStorage.getItem(newLimitKey);if(['0','10','20','30'].includes(saved))newLimit=Number(saved);}catch{/* Unchanged. */}
   try{const saved=localStorage.getItem('saymore.cards.sort.v1');if(Object.hasOwn(sortOrders,saved||''))sortOrder=saved;$('sort-order').value=sortOrder;}catch{/* Unchanged. */}
   let groupChanged=false;
   if((changed.includes(groupKey)||pendingGroup)&&(force||(!busy&&!(view==='review'&&activeCard)))){
@@ -55,10 +49,14 @@ function applySettings(changed,{redraw=true,force=false}={}){
     let next=selectedGroup;try{next=localStorage.getItem(groupKey)||'all';}catch{/* Unchanged. */}
     groupChanged=next!==selectedGroup;selectedGroup=next;
   }else if(changed.includes(groupKey))pendingGroup=true;
+  let modeChanged=false;
+  if(changed.includes(modeKey)&&!isPractice()&&!unknownSession&&(force||(!busy&&!(view==='review'&&activeCard)))){
+    const next=savedMode();modeChanged=next!==$('review-mode').value;$('review-mode').value=next;
+  }
   if(!redraw||busy)return;
   updateDecks();updateStats();controls();
   if(view==='library')renderLibrary();
-  else if(view==='review'&&!activeCard){if(groupChanged)startReview(unknownSession!==null);else void showNextReview();}
+  else if(view==='review'&&!activeCard){if(groupChanged||modeChanged)startReview(unknownSession!==null);else void showNextReview();}
 }
 try{const saved=localStorage.getItem('saymore.cards.sort.v1');if(Object.hasOwn(sortOrders,saved||''))sortOrder=saved;}catch{/* Sorting still works for this visit. */}
 // The same page serves three tabs: word cards, and with ?set=form or ?set=order the cards of that tab alone.
@@ -73,6 +71,11 @@ const section=setSection(askedSet);
 function keepSet(){if(section!=='cards'&&!new URLSearchParams(location.search).has('set'))history.replaceState(null,'',`${location.pathname}?set=${section}${location.hash}`);}
 const groupKey=section==='cards'?'saymore.cards.group.v1':`saymore.cards.group.${section}.v1`;
 const positionKey=section==='cards'?'saymore.cards.practice-position.v1':`saymore.cards.practice-position.${section}.v1`;
+// The rated way of reviewing chosen last (오늘 복습 or 안 본 카드만), shared like the group. Practice is never
+// remembered: the page opens with the rating buttons.
+const modeKey=section==='cards'?'saymore.cards.review-mode.v2':`saymore.cards.review-mode.${section}.v2`;
+const ratedModes=['due','unseen'];
+const savedMode=()=>{try{const value=localStorage.getItem(modeKey);return ratedModes.includes(value)?value:'due';}catch{return 'due';}};
 try{selectedGroup=localStorage.getItem(groupKey)||'all';}catch{/* Selection is optional when browser storage is unavailable. */}
 
 function notice(message,error=false){noticeVersion++;$('notice').textContent=message;$('notice').hidden=!message;$('notice').classList.toggle('error',error);}
@@ -113,26 +116,26 @@ function retryControls(){
   $('review-unknown').hidden=practice||!count||Boolean(unknownSession&&activeCard);
   $('review-unknown').textContent=`모름 다시 보기 · ${count}장`;
   $('review-normal').hidden=practice||unknownSession===null;
+  $('review-normal').textContent=savedMode()==='unseen'?'안 본 카드만으로':'오늘 복습으로';
   $('fix-last').hidden=practice||!lastGraded||!cards().some(c=>c.id===lastGraded.id);
   if(lastGraded)$('fix-last').textContent=`← 방금 평가 고치기 · ${lastGraded.answer.slice(0,12)} (${ratings[lastGraded.rating]})`;
   $('unknown-help').hidden=practice||!count;
-  $('review-title').textContent=practice?'자유 연습':unknownSession?'모름 다시 보기':'오늘 복습';
-  const groups=studyGroups(cards()),now=new Date(),newLeft=newCardsLeft(cards(),newLimit,now);
+  $('review-title').textContent=practice?'자유 연습':unknownSession?'모름 다시 보기':unseenOnly()?'안 본 카드만':'오늘 복습';
+  const groups=studyGroups(cards()),now=new Date();
   for(const id of ['deck-filter','review-group'])for(const option of $(id).options){
-    const group=groups.find(g=>g.key===option.value);if(group)option.textContent=groupLabel(group,now,newLeft);
+    const group=groups.find(g=>g.key===option.value);if(group)option.textContent=groupLabel(group,now);
   }
-  const group=groups.find(g=>g.key===selectedGroup),progress=studyProgress(group?.cards||[],now,newLeft);
+  const group=groups.find(g=>g.key===selectedGroup),progress=studyProgress(group?.cards||[],now);
   $('review-settings-now').textContent=store?`${group?.label||''} · ${$('review-mode').selectedOptions[0]?.textContent.split(' · ')[0]||''}`:'';
   $('rating-help').textContent=practice?'평가는 해도 되고 안 해도 돼요. 잘못 누른 평가는 ‘카드 목록’ 탭에서 그 카드의 ‘평가 고치기’로 고쳐요.':'모름 카드는 24시간 안에 다시 볼 수 있어요. 잘못 눌렀으면 ‘방금 평가 고치기’를 누르세요.';
-  $('new-limit').value=String(newLimit);
-  $('new-limit').closest('label').hidden=$('new-limit-help').hidden=practice||unknownSession!==null;
-  $('new-limit-help').textContent=!store?'':newLimit?`오늘 새 카드 ${1e6-newCardsLeft(cards(),1e6,now)} / ${newLimit}장. 다 보면 복습할 카드만 나와요.`:'새 카드를 제한 없이 먼저 보여 줘요.';
-  $('review-group-help').textContent=store?`전체 ${progress.total}장 · 지금 남음 ${progress.remaining}장 · 오늘 끝냄 ${progress.completedToday}장 · 나중에 ${progress.waiting+progress.held}장`:section==='cards'?'Dropbox를 연결하면 등급별 단어 묶음(A1–B2)과 IPA 묶음을 고를 수 있어요.':'Dropbox를 연결하면 이 탭의 카드와 복습 날짜를 불러와요.';
+  $('review-group-help').textContent=store?`전체 ${progress.total}장 · 지금 남음 ${progress.remaining}장 · 오늘 끝냄 ${progress.completedToday}장 · 나중에 ${progress.waiting}장`:section==='cards'?'Dropbox를 연결하면 등급별 단어 묶음(A1–B2)과 IPA 묶음을 고를 수 있어요.':'Dropbox를 연결하면 이 탭의 카드와 복습 날짜를 불러와요.';
   const rememberedId=practicePositions()[selectedGroup];
   const remembered=store&&cardsInGroup(cards(),selectedGroup).some(c=>c.id===rememberedId);
-  $('review-mode-help').textContent=$('review-mode').value==='resume'?(remembered?'지난번에 멈춘 카드부터 봐요.':'기억해 둔 위치가 없어서 아직 안 본 첫 카드부터 봐요.')+' 평가는 해도 되고 안 해도 돼요.':practice?'날짜와 상관없이 묶음 전체를 봐요. 평가는 해도 되고 안 해도 돼요.':'새 카드 먼저, 그다음 복습할 때가 된 카드가 나와요.';
+  const unseenLeft=store?studyQueue(cards(),selectedGroup,'unseen').length:0;
+  $('review-mode-help').textContent=unseenOnly()?(unseenLeft?`이 묶음에서 아직 안 본 카드 ${unseenLeft}장만 차례로 나와요. 복습할 때가 된 카드는 나오지 않아요.`:'이 묶음에는 안 본 카드가 없어요.'):$('review-mode').value==='resume'?(remembered?'지난번에 멈춘 카드부터 봐요.':'기억해 둔 위치가 없어서 아직 안 본 첫 카드부터 봐요.')+' 평가는 해도 되고 안 해도 돼요.':practice?'날짜와 상관없이 묶음 전체를 봐요. 평가는 해도 되고 안 해도 돼요.':'복습할 때가 된 카드 먼저, 그다음 아직 안 본 카드가 나와요.';
 }
 function isPractice(){return ['practice','resume'].includes($('review-mode').value);}
+function unseenOnly(){return $('review-mode').value==='unseen'&&!unknownSession;}
 // Free practice remembers the card last shown in each group so "이어서 연습" can continue from it.
 function practicePositions(){try{const value=JSON.parse(localStorage.getItem(positionKey));return value&&typeof value==='object'?value:{};}catch{return {};}}
 // Practice shows cards never reviewed first. The order is fixed when practice starts, so a card that
@@ -160,28 +163,27 @@ function updateStats(){
   $('due-count').textContent=store ? inSection(dueCards(store.library)).filter(c=>c.schedule.state!==0).length : 0;
   // The home page shows today's count from these due dates without opening Dropbox itself.
   if(store)try{
-    // `met` is how many cards of the tab were first answered today; with `limit` the home page can tell how many new ones are still to come.
-    const summary=list=>({total:list.length,fresh:list.filter(c=>c.schedule.state===0).length,met:newLimit?newLimit-newCardsLeft(list,newLimit):0,due:list.filter(c=>c.schedule.state!==0).map(c=>Date.parse(c.schedule.due))});
-    const counts={limit:newLimit,...summary(inSection(cards(),'cards')),sections:Object.fromEntries(Object.keys(sections).map(name=>[name,summary(inSection(cards(),name))]))};
+    // Unseen cards (`fresh`) and the due dates of seen ones: the home page adds them up as what is left to do.
+    const summary=list=>({total:list.length,fresh:list.filter(c=>c.schedule.state===0).length,due:list.filter(c=>c.schedule.state!==0).map(c=>Date.parse(c.schedule.due))});
+    const counts={...summary(inSection(cards(),'cards')),sections:Object.fromEntries(Object.keys(sections).map(name=>[name,summary(inSection(cards(),name))]))};
     // Only a real change is recorded (and shared): drawing the page again must not look like news to other devices.
     const before=JSON.parse(localStorage.getItem('saymore.home.cards.v1')||'null');
     if(!before||JSON.stringify({...before,at:0})!==JSON.stringify({...counts,at:0})){setSetting('saymore.home.cards.v1',JSON.stringify({...counts,at:Date.now()}));shareSoon(20000);}
   }catch{/* The home page keeps its last numbers. */}
 }
-// `newLeft` is passed in by callers that label many groups, so the library is counted once, not once a label.
-function groupLabel(group,now=new Date(),newLeft=newCardsLeft(cards(),newLimit,now)){
-  const p=studyProgress(group.cards,now,newLeft);
+function groupLabel(group,now=new Date()){
+  const p=studyProgress(group.cards,now);
   return `${group.label} · ${p.total}장 · 오늘 끝냄 ${p.completedToday} · 남음 ${p.remaining}`;
 }
 function updateDecks(){
   const decks=[...new Set(inSection(cards()).map(c=>c.deck))].sort((a,b)=>a.localeCompare(b));
-  const groups=studyGroups(cards()),labelNow=new Date(),labelLeft=newCardsLeft(cards(),newLimit,labelNow);
+  const groups=studyGroups(cards()),labelNow=new Date();
   if(!groups.some(g=>g.key===selectedGroup))selectedGroup='all';
   for(const id of ['deck-filter','review-group']){
     const select=$(id);select.replaceChildren();
     for(const section of [...new Set(groups.map(g=>g.section))]){
       const optgroup=el('optgroup');optgroup.label=section;
-      for(const group of groups.filter(g=>g.section===section))optgroup.append(new Option(groupLabel(group,labelNow,labelLeft),group.key));
+      for(const group of groups.filter(g=>g.section===section))optgroup.append(new Option(groupLabel(group,labelNow),group.key));
       select.append(optgroup);
     }
     select.value=selectedGroup;
@@ -628,7 +630,7 @@ async function showNextReview(){
   const request=++reviewRequest,owner=store,practice=isPractice();
   const queue=!store?[]:unknownSession?
     studyQueue(cards(),selectedGroup,'unknown').filter(c=>unknownSession.has(c.id)):
-    practice?practiceCards():studyQueue(cards(),selectedGroup,'due',new Date(),newLimit);
+    practice?practiceCards():studyQueue(cards(),selectedGroup,unseenOnly()?'unseen':'due',new Date());
   const remaining=practice?queue.slice(practiceIndex):queue;
   activeCard=remaining[0]||null;revealed=false;
   flagControl();
@@ -640,7 +642,7 @@ async function showNextReview(){
   $('practice-previous').disabled=busy||practiceIndex===0;
   $('practice-next').disabled=busy||!activeCard;
   const waiting=activeCard?waitLabel(overdueMs(activeCard)):'';
-  $('review-progress').textContent=(practice?`연습 ${Math.min(practiceIndex+1,queue.length)} / ${queue.length}장`:`이번에 복습한 카드 ${sessionCount}장`)+(activeCard?(activeCard.reviews.length?` · 이 카드: 지난 복습 ${dateLabel(activeCard.reviews.at(-1).at)}${waiting?`, 예정일에서 ${waiting} 지남`:''}`:' · 이 카드: 처음 보는 카드'):'');
+  $('review-progress').textContent=(practice?`연습 ${Math.min(practiceIndex+1,queue.length)} / ${queue.length}장`:unseenOnly()?`안 본 카드 ${queue.length}장 남음 · 이번에 본 카드 ${sessionCount}장`:`이번에 복습한 카드 ${sessionCount}장`)+(activeCard?(activeCard.reviews.length?` · 이 카드: 지난 복습 ${dateLabel(activeCard.reviews.at(-1).at)}${waiting?`, 예정일에서 ${waiting} 지남`:''}`:' · 이 카드: 처음 보는 카드'):'');
   $('review-deck').textContent=studyGroups(cards()).find(g=>g.key===selectedGroup)?.label||'';
   if(!activeCard){
     if(practice&&store){
@@ -652,13 +654,14 @@ async function showNextReview(){
       $('review-empty-title').textContent=remaining?'모아둔 모름 카드를 한 번씩 모두 봤어요.':'모름 카드가 남아 있지 않아요.';
       $('next-due').textContent=remaining?'아직 모르는 카드는 원할 때 다시 꺼내보세요. 24시간이 지나면 오늘 복습에도 포함돼요.':'다음 복습 날짜를 예약했어요. “오늘 복습으로”에서 다른 카드도 공부할 수 있어요.';return;
     }
+    if(unseenOnly()&&store){
+      $('review-empty-title').textContent='안 본 카드가 없어요.';
+      $('next-due').textContent=sessionCount?`이번에 ${sessionCount}장을 처음 봤어요. 이 묶음의 카드를 모두 한 번 이상 봤어요. 복습할 카드는 ‘복습 설정’에서 “오늘 복습”을 고르면 나와요.`:'이 묶음의 카드를 모두 한 번 이상 봤어요. 복습할 카드는 ‘복습 설정’에서 “오늘 복습”을 고르면 나와요.';return;
+    }
     $('review-empty-title').textContent=store?'지금 복습할 카드가 없어요.':'먼저 Dropbox를 연결해주세요.';
     // A card answered 모름 is best tried again while the answer just seen is still fresh.
     const unknown=store?studyQueue(cards(),selectedGroup,'unknown').length:0;
     if(unknown){$('review-empty-title').textContent='오늘 볼 카드를 모두 봤어요.';$('next-due').textContent=`모름 카드 ${unknown}장이 있어요. 지금 위의 ‘모름 다시 보기’로 한 번 더 떠올려 보세요.`;return;}
-    // The limit on new cards may be why nothing is left: say so here, where the settings may be folded away.
-    const held=store&&newLimit?studyProgress(cardsInGroup(cards(),selectedGroup),new Date(),newCardsLeft(cards(),newLimit)).held:0;
-    if(held){$('review-empty-title').textContent='오늘 볼 카드를 모두 봤어요.';$('next-due').textContent=`오늘의 새 카드 ${newLimit}장을 채웠어요. 이 묶음의 새 카드 ${held}장은 내일부터 이어서 나와요. 더 보고 싶다면 위의 ‘복습 설정’에서 하루 한도를 바꾸거나 ‘자유 연습’을 고르세요.`;return;}
     const future=cardsInGroup(cards(),selectedGroup).filter(c=>Date.parse(c.schedule.due)>Date.now()).sort((a,b)=>Date.parse(a.schedule.due)-Date.parse(b.schedule.due))[0];
     $('next-due').textContent=future?`다음 복습은 ${dateLabel(future.schedule.due)}예요. 지금 보고 싶다면 위의 ‘복습 설정’에서 “자유 연습”을 선택하세요.`:store?'다른 묶음을 선택하거나 카드를 추가해보세요.':'연결하면 저장된 카드와 복습 날짜를 불러와요.';return;
   }
@@ -833,11 +836,10 @@ $('memory-form').addEventListener('submit',event=>saveMemory(event));
 $('memory-unmark').addEventListener('click',()=>saveMemory(null,{unmark:true}));
 $('memory-skip').addEventListener('click',()=>{if(busy||!memoryCard)return;if(memoryQueue().length<2){notice('남은 카드가 이 한 장이에요. 떠오를 때 적거나 표시만 풀어 주세요.');return;}memorySkipped.add(memoryCard.id);memoryCard=null;void showMemory(true);});
 $('level-summary-open').addEventListener('click',()=>{if(busy)return;$('search').value='';chooseGroup('first-weak');$('deck-filter').scrollIntoView({block:'center'});$('deck-filter').focus({preventScroll:true});});
-// The page always opens in rated review: a remembered practice mode hid the answer buttons.
+// The page always opens in a rated mode: a remembered practice mode hid the answer buttons.
 try{localStorage.removeItem('saymore.cards.review-mode.v1');}catch{/* Nothing to clear. */}
-$('review-mode').value='due';
-$('review-mode').addEventListener('change',()=>startReview());
-$('new-limit').addEventListener('change',()=>{useLimit(Number($('new-limit').value)||0);startReview();});
+$('review-mode').value=savedMode();
+$('review-mode').addEventListener('change',()=>{const mode=$('review-mode').value;if(ratedModes.includes(mode)&&mode!==savedMode()){setSetting(modeKey,mode);shareSoon();}startReview();});
 
 $('card-form').addEventListener('input',()=>{dirty=true;renderPreview();});$('card-form').addEventListener('submit',saveCard);
 $('card-form').addEventListener('keydown',e=>{if((e.metaKey||e.ctrlKey)&&e.key==='Enter'){e.preventDefault();if(!busy&&store)$('card-form').requestSubmit(editedId?$('save-list'):$('save-next'));}});
@@ -852,7 +854,7 @@ $('close-detail').addEventListener('click',()=>$('detail-dialog').close());
 $('detail-flip').addEventListener('click',async()=>{if(!detailCard)return;try{detailBack=!detailBack;showCard($('detail-card'),detailCard,await sources(detailCard),detailBack);$('detail-flip').textContent=detailBack?'앞면 보기':'뒷면 보기';}catch(e){notice(friendlyError(e),true);}});
 $('reveal').addEventListener('click',reveal);$('check-due').addEventListener('click',()=>isPractice()?startReview(false,true):showNextReview());
 $('practice-previous').addEventListener('click',()=>movePractice(-1));$('practice-next').addEventListener('click',()=>movePractice(1));
-$('review-unknown').addEventListener('click',()=>startReview(true));$('review-normal').addEventListener('click',()=>startReview());
+$('review-unknown').addEventListener('click',()=>startReview(true));$('review-normal').addEventListener('click',()=>{$('review-mode').value=savedMode();startReview();});
 for(const b of document.querySelectorAll('[data-rating]'))b.addEventListener('click',()=>grade(Number(b.dataset.rating)));
 $('repair-notes').addEventListener('click',async()=>{if(!store||busy)return;setBusy(true);try{const result=await store.exportNotes();$('repair-notes').hidden=result.warnings.length===0;saved(result,'읽기용 노트를 다시 저장했어요.');}catch(e){notice(friendlyError(e),true);}finally{setBusy(false);}});
 window.addEventListener('beforeunload',e=>{if(dirty||busy||saving||store?.pendingNotes){e.preventDefault();e.returnValue='';}});

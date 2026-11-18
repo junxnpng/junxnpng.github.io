@@ -4,8 +4,10 @@
 //   /listen-progress.json  listening counts per browser; every browser shows the sum of them all.
 
 // The settings that follow the user from device to device. Values are kept as the strings localStorage holds.
-export const settingKeys=['saymore.cards.new-per-day.v1','saymore.cards.sort.v1','saymore.skin','saymore.home.cards.v1',
-  ...['','.form','.order'].flatMap(s=>[`saymore.cards.group${s}.v1`,`saymore.cards.practice-position${s}.v1`])];
+// The daily limit on new cards (saymore.cards.new-per-day.v1) is gone; an older page may still write it, and
+// it is carried along untouched in `extra` like any other key this version does not use.
+export const settingKeys=['saymore.cards.sort.v1','saymore.skin','saymore.home.cards.v1',
+  ...['','.form','.order'].flatMap(s=>[`saymore.cards.group${s}.v1`,`saymore.cards.practice-position${s}.v1`,`saymore.cards.review-mode${s}.v2`])];
 const metaKey='saymore.settings.at.v1',settingsPath='/settings.json';
 const epoch='1970-01-01T00:00:00.000Z';
 const local={

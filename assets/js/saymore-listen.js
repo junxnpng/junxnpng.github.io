@@ -18,7 +18,7 @@
     try {
       if (!sync) {
         if (!localStorage.getItem("saymore.dropbox.auth.v1")) return;
-        const [dropbox, shared] = await Promise.all([import("/saymore/shared/dropbox.mjs?v=8"), import("/saymore/shared/sync.mjs?v=2")]);
+        const [dropbox, shared] = await Promise.all([import("/saymore/shared/dropbox.mjs?v=8"), import("/saymore/shared/sync.mjs?v=3")]);
         cloud = await dropbox.openDropbox();
         sync = shared; others = shared.otherListenSets();
       }

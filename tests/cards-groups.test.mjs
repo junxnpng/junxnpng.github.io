@@ -87,7 +87,7 @@ test('progress partitions cards into due, reviewed today, and future without dou
   const repeated=rateCard(unknown,4,localNow,{retryUnknown:true});
   const waiting=rateCard(newCard({type:'basic',front:'?',answer:'waiting'},yesterday),4,yesterday);
   const input=[fresh,done,repeated,waiting],before=copy(input);
-  assert.deepEqual(groups.studyProgress(input,localNow),{total:4,remaining:1,completedToday:2,held:0,waiting:1});
+  assert.deepEqual(groups.studyProgress(input,localNow),{total:4,remaining:1,completedToday:2,waiting:1});
   assert.deepEqual(input,before);
 });
 
@@ -95,9 +95,9 @@ test('progress uses the local calendar day and returns a card to remaining when 
   assert.equal(typeof groups.studyProgress,'function');
   const beforeMidnight=new Date(2026,10,9,23,55),afterMidnight=new Date(2026,10,10,0,5);
   const c=rateCard(newCard({type:'basic',front:'?',answer:'forgotten'},beforeMidnight),1,beforeMidnight);
-  assert.deepEqual(groups.studyProgress([c],afterMidnight),{total:1,remaining:0,completedToday:0,held:0,waiting:1});
-  assert.deepEqual(groups.studyProgress([c],new Date(c.schedule.due)),{total:1,remaining:1,completedToday:0,held:0,waiting:0});
-  assert.deepEqual(groups.studyProgress([],afterMidnight),{total:0,remaining:0,completedToday:0,held:0,waiting:0});
+  assert.deepEqual(groups.studyProgress([c],afterMidnight),{total:1,remaining:0,completedToday:0,waiting:1});
+  assert.deepEqual(groups.studyProgress([c],new Date(c.schedule.due)),{total:1,remaining:1,completedToday:0,waiting:0});
+  assert.deepEqual(groups.studyProgress([],afterMidnight),{total:0,remaining:0,completedToday:0,waiting:0});
 });
 
 test('the card list can be ordered by creation or review time without changing the library',()=>{
@@ -152,23 +152,45 @@ test('word-form and word-order cards live in tabs of their own and never among t
   }finally{groups.setSection('cards');}
 });
 
-test('a daily limit lets only so many unseen cards in front of the reviews that are due',()=>{
+test('reviews that have come due go first, then every unseen card; there is no daily limit',()=>{
   groups.setSection('cards');
   const day=new Date(2026,10,10,12),earlier=new Date(2026,10,1,12);
   const make=answer=>newCard({type:'basic',deck:'IPA 01',front:'q',answer,tags:['IPA']},earlier);
-  const due=rateCard(make('due'),3,earlier);                                  // came due days ago
-  const metToday=rateCard(make('met today'),3,new Date(2026,10,10,9));        // first answer today
-  const fresh=['a','b','c','d'].map(make);
-  const cards=[...fresh,due,metToday];
-  const queue=limit=>groups.studyQueue(cards,'all','due',day,limit).map(c=>c.answer);
-  assert.deepEqual(queue(0),['a','b','c','d','due'],'no limit: as before');
-  assert.deepEqual(queue(3),['a','b','due'],'one of the three was already met today');
-  assert.deepEqual(queue(1),['due'],'the limit is used up: reviews only');
-  assert.equal(groups.newCardsLeft(cards,3,day),2);
-  assert.equal(groups.newCardsLeft(cards,0,day),Infinity);
-  // Yesterday's first answers do not count against today.
-  assert.equal(groups.newCardsLeft(cards,3,new Date(2026,10,11,12)),3);
-  assert.deepEqual(groups.studyProgress(cards,day,2),{total:6,remaining:3,completedToday:1,held:2,waiting:0});
+  const longWait=rateCard(make('long wait'),3,earlier);                        // came due days ago
+  const shortWait=rateCard(make('short wait'),3,new Date(2026,10,3,12));
+  const metToday=rateCard(make('met today'),3,new Date(2026,10,10,9));        // answered today, next review ahead
+  const fresh=Array.from({length:40},(_,i)=>make('new '+i));
+  const cards=[fresh[0],shortWait,...fresh.slice(1),longWait,metToday],before=copy(cards);
+  const queue=groups.studyQueue(cards,'all','due',day).map(c=>c.answer);
+  assert.deepEqual(queue.slice(0,2),['long wait','short wait'],'due reviews first, longest wait first');
+  assert.deepEqual(queue.slice(2),fresh.map(c=>c.answer),'then all unseen cards, in library order');
+  assert.equal(queue.includes('met today'),false);
+  assert.deepEqual(groups.studyProgress(cards,day),{total:43,remaining:42,completedToday:1,waiting:0});
+  assert.deepEqual(cards,before);
+});
+
+test('안 본 카드만 shows only never-answered cards of the group, and a rated card leaves it',()=>{
+  groups.setSection('cards');
+  const day=new Date(2026,10,10,12),earlier=new Date(2026,10,1,12);
+  const make=(answer,tags=['IPA'])=>newCard({type:'basic',deck:'IPA 01',front:'q',answer,tags},earlier);
+  const due=rateCard(make('due'),3,earlier),fresh=[make('a'),make('b')],other=make('other',['FORM']);
+  const cards=[due,fresh[0],other,fresh[1]];
+  assert.deepEqual(groups.studyQueue(cards,'all','unseen',day).map(c=>c.answer),['a','b'],'no due card, no other tab');
+  const rated=[due,rateCard(fresh[0],1,day),other,fresh[1]];
+  assert.deepEqual(groups.studyQueue(rated,'all','unseen',day).map(c=>c.answer),['b']);
+  assert.deepEqual(groups.studyQueue([due],'all','unseen',day),[]);
+});
+
+test('remaining is unseen plus due, whatever the due date of an unseen card says',()=>{
+  const day=new Date(2026,10,10,12);
+  const unseenLater={...newCard({type:'basic',front:'q',answer:'later'},day)};
+  unseenLater.schedule={...unseenLater.schedule,due:new Date(2026,10,20).toISOString()};
+  const waiting=rateCard(newCard({type:'basic',front:'q',answer:'waiting'},new Date(2026,10,9,12)),4,new Date(2026,10,9,12));
+  assert.equal(groups.toDo(unseenLater,day),true);
+  assert.equal(groups.toDo(waiting,day),false);
+  assert.deepEqual(groups.studyProgress([unseenLater,waiting],day),{total:2,remaining:1,completedToday:0,waiting:1});
+  assert.deepEqual(groups.studyQueue([unseenLater,waiting],'all','due',day).map(c=>c.answer),['later']);
+  assert.equal(groups.newCardsLeft,undefined,'the daily limit is gone');
 });
 
 test('the same list gives the same groups, and a list with one card changed gives fresh groups',()=>{
@@ -194,26 +216,6 @@ test('switching tabs never returns the groups remembered for the other tab',()=>
     assert.deepEqual(groups.studyGroups(list),words);
     assert.deepEqual(groups.cardsInGroup(list,'all').map(c=>c.answer),['dog']);
   }finally{groups.setSection('cards');}
-});
-
-test('a word-form card met today does not use up the word cards\' daily limit',()=>{
-  const day=new Date(2026,10,10,12),earlier=new Date(2026,10,1,12);
-  const form=rateCard(newCard({type:'basic',front:'q',answer:'went',tags:['FORM']},earlier),3,new Date(2026,10,10,9));
-  const word=newCard({type:'basic',front:'q',answer:'dog',tags:['IPA']},earlier);
-  try{
-    groups.setSection('cards');
-    assert.equal(groups.newCardsLeft([form,word],3,day),3);
-    groups.setSection('form');
-    assert.equal(groups.newCardsLeft([form,word],3,day),2);
-  }finally{groups.setSection('cards');}
-});
-
-test('a new card first answered in practice mode counts against today\'s limit',()=>{
-  groups.setSection('cards');
-  const day=new Date(2026,10,10,12);
-  const fresh=newCard({type:'basic',front:'q',answer:'dog',tags:['IPA']},new Date(2026,10,10,8));
-  const practised=rateCard(fresh,3,new Date(2026,10,10,9),{early:true});
-  assert.equal(groups.newCardsLeft([practised],3,day),2);
 });
 
 test('the first answer of each word card gives the level summary and the first-weak group',()=>{

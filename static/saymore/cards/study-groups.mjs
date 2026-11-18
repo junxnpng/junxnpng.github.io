@@ -67,34 +67,32 @@ export function unseenFirst(cards){return [...cards.filter(c=>!c.reviews.length)
 
 export function cardsInGroup(cards,key){return studyGroups(cards).find(group=>group.key===key)?.cards||[];}
 
-// New cards a day: how many more cards of this tab may be met for the first time today. A card counts
-// from its first answer, whichever group or device it was answered in. No limit: Infinity.
-export function newCardsLeft(cards,limit,now=new Date()){
-  if(!(limit>0))return Infinity;
-  const start=new Date(now);start.setHours(0,0,0,0);
-  const met=inSection(cards).filter(c=>{const first=Date.parse(c.reviews[0]?.at);return first>=start.getTime()&&first<=now.getTime();}).length;
-  return Math.max(0,limit-met);
-}
+// What is left to do: every card never seen, and every seen card whose review has come due.
+// There is no daily limit on new cards; instead the reviews that have come due go first (longest wait
+// first), so thousands of unseen cards never stand in front of them. Unseen cards follow in library order.
+const unseen=card=>card.schedule.state===0;
+export const toDo=(card,now=new Date())=>unseen(card)||Date.parse(card.schedule.due)<=now.getTime();
 
-export function studyQueue(cards,key,mode='due',now=new Date(),newLimit=0){
+export function studyQueue(cards,key,mode='due',now=new Date()){
   const selected=cardsInGroup(cards,key);
   if(mode==='practice')return selected;
   if(mode==='unknown')return unknownCards({cards:selected});
-  // Thousands of unseen cards would otherwise stand in front of every review that has come due.
-  let left=newCardsLeft(cards,newLimit,now);
-  return dueCards({cards:selected},now).filter(c=>c.schedule.state!==0||left-->0);
+  // 안 본 카드만: only cards never answered, in library order; once rated a card leaves this list.
+  if(mode==='unseen')return selected.filter(unseen);
+  return [...dueCards({cards:selected},now).filter(c=>!unseen(c)),...selected.filter(unseen)];
 }
 
-// `newLeft` is what newCardsLeft allows; unseen cards beyond it are `held` for another day, not remaining.
-export function studyProgress(cards,now=new Date(),newLeft=Infinity){
+// remaining: cards to do now (toDo); completedToday: the others answered today; waiting: seen cards whose
+// next review is still ahead.
+export function studyProgress(cards,now=new Date()){
   const start=new Date(now);start.setHours(0,0,0,0);
-  let remaining=0,completedToday=0,held=0,left=newLeft;
+  let remaining=0,completedToday=0;
   for(const card of cards){
-    if(Date.parse(card.schedule.due)<=now.getTime()){if(card.schedule.state!==0||left-->0)remaining++;else held++;continue;}
+    if(toDo(card,now)){remaining++;continue;}
     const reviewed=Date.parse(card.reviews.at(-1)?.at);
     if(reviewed>=start.getTime()&&reviewed<=now.getTime())completedToday++;
   }
-  return {total:cards.length,remaining,completedToday,held,waiting:cards.length-remaining-completedToday-held};
+  return {total:cards.length,remaining,completedToday,waiting:cards.length-remaining-completedToday};
 }
 
 export const sortOrders={default:'기본 순서',newest:'최근에 만든 순',oldest:'오래전에 만든 순',reviewedNewest:'최근에 복습한 순',reviewedOldest:'오래전에 복습한 순',dueSoonest:'복습 예정일 빠른 순'};

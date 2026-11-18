@@ -14,11 +14,11 @@ const as=(browser,fn)=>async(...args)=>{globalThis.localStorage=browser;return f
 
 test('the newest change of each setting wins on every device, and values set before times were kept give way',async()=>{
   const cloud=dropbox(),phone=store(),mac=store();
-  mac.setItem('saymore.cards.new-per-day.v1','30');          // set long ago, no time recorded
-  globalThis.localStorage=phone;sync.setSetting('saymore.cards.new-per-day.v1','10',new Date('2026-11-16T10:00:00Z'));
+  mac.setItem('saymore.cards.sort.v1','oldest');          // set long ago, no time recorded
+  globalThis.localStorage=phone;sync.setSetting('saymore.cards.sort.v1','newest',new Date('2026-11-16T10:00:00Z'));
   assert.deepEqual(await as(phone,sync.syncSettings)(cloud),[]);
-  assert.deepEqual(await as(mac,sync.syncSettings)(cloud),['saymore.cards.new-per-day.v1']);
-  assert.equal(mac.getItem('saymore.cards.new-per-day.v1'),'10');
+  assert.deepEqual(await as(mac,sync.syncSettings)(cloud),['saymore.cards.sort.v1']);
+  assert.equal(mac.getItem('saymore.cards.sort.v1'),'newest');
   globalThis.localStorage=mac;sync.setSetting('saymore.cards.group.v1','level:B1',new Date('2026-11-16T11:00:00Z'));
   await as(mac,sync.syncSettings)(cloud);
   assert.deepEqual(await as(phone,sync.syncSettings)(cloud),['saymore.cards.group.v1']);
@@ -87,4 +87,21 @@ test('a browser that cannot keep its id reads the other counts but never adds an
   const result=await as(a,sync.syncListen)(cloud,{'ship-sheep':{attempts:3,correct:2}});
   assert.deepEqual(result.others,{});
   assert.equal(cloud.files.get('/listen-progress.json'),undefined);
+});
+
+test('the old daily new-card limit written by an older page is kept in the file but never applied here',async()=>{
+  const cloud=dropbox(),a=store();
+  cloud.files.set('/settings.json',{rev:'r0',text:JSON.stringify({format:'saymore-settings',version:1,items:{'saymore.cards.new-per-day.v1':{value:'10',at:'2030-01-01T00:00:00Z'}}})});
+  a.setItem('saymore.cards.new-per-day.v1','30');
+  globalThis.localStorage=a;sync.setSetting('saymore.skin','dracula',new Date('2026-11-18T10:00:00Z'));
+  assert.deepEqual(await as(a,sync.syncSettings)(cloud),[]);
+  assert.equal(a.getItem('saymore.cards.new-per-day.v1'),'30','not taken over');
+  assert.equal(sync.settingKeys.includes('saymore.cards.new-per-day.v1'),false);
+  const items=JSON.parse(cloud.files.get('/settings.json').text).items;
+  assert.equal(items['saymore.cards.new-per-day.v1'].value,'10','left untouched for older pages');
+  assert.equal(items['saymore.skin'].value,'dracula');
+});
+
+test('the rated review mode of each tab is shared like the group',()=>{
+  for(const s of ['','.form','.order'])assert.ok(sync.settingKeys.includes(`saymore.cards.review-mode${s}.v2`));
 });

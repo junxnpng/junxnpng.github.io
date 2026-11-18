@@ -101,8 +101,6 @@ code{border-radius:5px}
 /* iPhone Safari zooms the page when a field with text under 16px takes focus, and does not zoom back. */
 @media(max-width:660px){input:not([type=file]),select,textarea,.credit-field input,.bundle-panel textarea{font-size:16px}}
 #rating-area:focus{outline:none}
-.review-controls .new-limit{grid-column:1/-1;display:flex;align-items:center;gap:12px;flex-wrap:wrap}.review-controls .new-limit select{width:auto;margin-top:0;min-width:130px}.review-controls #new-limit-help{grid-column:1/-1}
-@media(max-width:660px){.review-controls .new-limit,.review-controls #new-limit-help{grid-row:auto}}
 .review-settings{margin-bottom:20px}.review-settings>summary{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;cursor:pointer;font-size:14px;font-weight:650;padding:10px 2px;min-height:44px}.review-settings>summary .small{margin:0;font-weight:400}.review-settings[open]>summary{margin-bottom:8px}.review-settings .review-controls{margin-bottom:0}
 .review-settings>summary{list-style:none}.review-settings>summary::-webkit-details-marker{display:none}.review-settings>summary::before{content:"▸";content:"▸"/"";color:var(--muted)}.review-settings[open]>summary::before{content:"▾";content:"▾"/""}
 /* Review round 8 */

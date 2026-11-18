@@ -10,23 +10,18 @@
 
   function fill(ipaOverride) {
 
-  // New cards still to come today, under the daily limit chosen on the cards page. The count of cards
-  // already met was saved with a time; on a later day none of them count.
-  var freshNow = function (part) {
-    if (!cards || !cards.limit) return part.fresh;
-    var saved = new Date(cards.at), today = new Date();
-    var met = saved.toDateString() === today.toDateString() ? (part.met || 0) : 0;
-    return Math.max(0, Math.min(part.fresh, cards.limit - met));
-  };
+  // What is left to do: every card never seen (`fresh`) plus every seen card whose review has come due.
+  // There is no daily limit on new cards; a `limit` saved by an older copy of the cards page is ignored.
+  var left = function (part, now) { return (Number(part.fresh) || 0) + part.due.filter(function (at) { return at <= now; }).length; };
   // Cards: the due dates were saved when the cards page was last open, so the count is right for now.
   var cards = read('saymore.home.cards.v1');
   // The counts may come from another device through Dropbox; anything malformed is left out.
   if (cards && (!Array.isArray(cards.due) || !isFinite(new Date(cards.at)))) cards = null;
   if (cards && Array.isArray(cards.due)) {
     var now = Date.now();
-    q('due').textContent = cards.due.filter(function (at) { return at <= now; }).length;
+    q('due').textContent = left(cards, now);
     var when = new Intl.DateTimeFormat('ko-KR', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }).format(new Date(cards.at));
-    q('cards-note').textContent = (cards.limit ? '오늘 새 카드 ' + freshNow(cards) : '새 카드 ' + cards.fresh) + ' · 전체 ' + cards.total + ' · ' + when + ' 기준';
+    q('cards-note').textContent = '안 본 카드 ' + cards.fresh + ' · 복습할 카드 ' + (left(cards, now) - cards.fresh) + ' · 전체 ' + cards.total + ' · ' + when + ' 기준';
   }
 
   // The word-form and word-order tabs: what is due now, from the same saved counts.
@@ -34,7 +29,7 @@
   for (var i = 0; i < rows.length; i++) {
     var part = cards && cards.sections && cards.sections[rows[i].getAttribute('data-home-section')];
     if (!part || !part.total || !Array.isArray(part.due)) continue;
-    var waiting = freshNow(part) + part.due.filter(function (at) { return at <= Date.now(); }).length;
+    var waiting = left(part, Date.now());
     rows[i].textContent = '지금 볼 카드 ' + waiting + ' · 전체 ' + part.total;
   }
 
@@ -56,12 +51,12 @@
   fill();
   // What other devices did is in Dropbox, not in this browser. When this browser is connected, the small files
   // are read: the IPA record is merged into the one kept here (as the IPA page would), the shared settings
-  // bring the newest card counts and daily limit, and the listening counts of other browsers are added.
+  // bring the newest card counts, and the listening counts of other browsers are added.
   // Nothing on this page changes them, so the IPA and listening records are only read here.
   function fromCloud() {
     try { if (!localStorage.getItem('saymore.dropbox.auth.v1')) return; } catch (e) { return; }
     var cloud, sync;
-    Promise.all([import('/saymore/shared/dropbox.mjs?v=8'), import('/saymore/shared/sync.mjs?v=2')]).then(function (m) {
+    Promise.all([import('/saymore/shared/dropbox.mjs?v=8'), import('/saymore/shared/sync.mjs?v=3')]).then(function (m) {
       sync = m[1];
       return m[0].openDropbox();
     }).then(function (c) {
