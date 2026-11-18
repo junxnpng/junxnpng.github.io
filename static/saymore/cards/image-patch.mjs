@@ -1,4 +1,4 @@
-import {editCard} from './model.mjs?v=8';
+import {editCard} from './model.mjs?v=9';
 import {flagKinds} from './image-flag.mjs?v=6';
 
 // A patch fills one empty attachment slot (image or audio) on cards that already exist.

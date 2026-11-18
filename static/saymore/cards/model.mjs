@@ -62,17 +62,60 @@ export function editCard(card, fields, now = new Date()) {
   return {...copy(card), ...normalize(fields), updatedAt:now.toISOString()};
 }
 
+// When a card comes back follows Anki's default scheduler (SM-2), the way Fluent Forever uses Anki:
+// small gaps at first that grow by the card's ease, and back to a day after a card is forgotten.
+// Nothing new is stored. The ease is replayed from the answers, the current gap is the last answer's
+// time to the date it set, and lateness is measured from that date. FSRS still updates its own fields
+// and the log that lets the last answer be corrected, and the library keeps its FSRS settings, so an
+// older copy of the app (a phone not yet reloaded) still opens the library and can rate any card.
+const sm2={startEase:2.5,minEase:1.3,easyBonus:1.3,hardFactor:1.2,maxDays:36500,
+  newDays:{2:1,3:1,4:4},relearnDays:{2:1,3:1,4:2},easeChange:{1:-0.2,2:-0.15,3:0,4:0.15}};
+// An answer changes the ease only when it is given to a card in review: not on a card's first answer,
+// and not on the answer that follows a 모름 (Anki leaves the ease alone while a card is (re)learning).
+export function cardEase(reviews){
+  let ease=sm2.startEase;
+  reviews.forEach((r,i)=>{if(i>0&&reviews[i-1].rating!==1)ease=Math.max(sm2.minEase,Math.round((ease+sm2.easeChange[r.rating])*100)/100);});
+  return ease;
+}
+// Whole days until the card comes back after answering it with rating 2–4 at `now`; `reviews` are the
+// answers given before this one. 모름 always means 24 hours (see dueAfter).
+export function nextDays(reviews,rating,now){
+  const last=reviews.at(-1);
+  // A card counts as still being learned until it has been remembered once: never answered, only 모름
+  // so far, or (in libraries from the old minute steps) last given a gap shorter than a day.
+  const due=Date.parse(last?.due),span=due-Date.parse(last?.at);
+  if(!last||reviews.every(r=>r.rating===1)||(last.rating!==1&&span<day))return sm2.newDays[rating];
+  if(last.rating===1)return sm2.relearnDays[rating];
+  const ease=cardEase(reviews),gap=Math.round(span/day);
+  const limit=days=>Math.min(sm2.maxDays,Math.max(1,Math.round(days)));
+  if(now.getTime()<due){
+    // Answered before its date (free practice). Anki's early review: grow from the days actually waited,
+    // never shrink a remembered card, and keep a 어려움 to at least 60% of the gap; 쉬움 earns half its bonus.
+    const waited=Math.max(0,Math.floor((now.getTime()-Date.parse(last.at))/day));
+    const [factor,floor,bonus]={2:[sm2.hardFactor,sm2.hardFactor/2,1],3:[ease,1,1],4:[ease,1,(1+sm2.easyBonus)/2]}[rating];
+    return limit(Math.max(gap*floor,Math.max(waited*factor,1))*bonus);
+  }
+  const late=Math.floor((now.getTime()-due)/day);
+  const hard=limit(Math.max(gap*sm2.hardFactor,gap+1));
+  const good=limit(Math.max((gap+late/2)*ease,hard+1));
+  const easy=limit(Math.max((gap+late)*ease*sm2.easyBonus,good+1));
+  return {2:hard,3:good,4:easy}[rating];
+}
+function dueAfter(reviews,rating,now){
+  const days=rating===1?1:nextDays(reviews,rating,now);
+  return {due:new Date(now.getTime()+days*day),days};
+}
+function scheduled(result,reviews,rating,now){
+  const {due,days}=dueAfter(reviews,rating,now);
+  result.card.due=due;result.card.scheduled_days=days;
+  return result;
+}
+
 export function reviewOptions(card, now = new Date()) {
   // The last answer may carry a later time than this device's clock; see rateCard.
   const last=Date.parse(card.reviews.at(-1)?.at);
   if(last>now.getTime())now=new Date(last);
-  const options = scheduler.repeat(copy(card.schedule), now);
-  return Object.fromEntries([1,2,3,4].map(rating => [rating,{due:withUnknownDeadline(options[rating],rating,now).card.due.toISOString()}]));
-}
-
-function withUnknownDeadline(result,rating,now){
-  if(rating===1){result.card.due=new Date(now.getTime()+day);result.card.scheduled_days=1;}
-  return result;
+  return Object.fromEntries([1,2,3,4].map(rating => [rating,{due:dueAfter(card.reviews,rating,now).due.toISOString()}]));
 }
 
 // `early` records an answer before the card is due; practice modes use it so every mode can be answered.
@@ -83,7 +126,7 @@ export function rateCard(card, rating, now = new Date(), {retryUnknown=false, ea
   if(early&&previous&&Date.parse(previous.at)>now.getTime())now=new Date(previous.at);
   const earlyUnknown=retryUnknown&&previous?.rating===1&&Date.parse(previous.at)<=now.getTime();
   if (Date.parse(card.schedule.due) > now.getTime()&&!earlyUnknown&&!early) fail('아직 복습할 때가 아니에요. 지금 보려면 ‘자유 연습’을 고르세요.');
-  const result = withUnknownDeadline(scheduler.next(copy(card.schedule), now, rating),rating,now);
+  const result = scheduled(scheduler.next(copy(card.schedule), now, rating),card.reviews,rating,now);
   return {...copy(card), updatedAt:now.toISOString(), schedule:copy(result.card),
     reviews:[...copy(card.reviews), {at:now.toISOString(), rating, due:result.card.due.toISOString(), log:copy(result.log)}]};
 }
@@ -98,7 +141,7 @@ export function correctLastReview(card, rating, now = new Date()) {
   if (last.rating === rating) return copy(card);
   const at = new Date(last.at);
   const before = scheduler.rollback(copy(card.schedule), copy(last.log));
-  const result = withUnknownDeadline(scheduler.next(before, at, rating), rating, at);
+  const result = scheduled(scheduler.next(before, at, rating), card.reviews.slice(0,-1), rating, at);
   return {...copy(card), updatedAt:now.toISOString(), schedule:copy(result.card),
     reviews:[...copy(card.reviews.slice(0,-1)), {at:last.at, rating, due:result.card.due.toISOString(), log:copy(result.log),
       correctedFrom:last.correctedFrom ?? last.rating, correctedAt:now.toISOString()}]};

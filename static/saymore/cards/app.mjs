@@ -1,4 +1,4 @@
-import {newCard, editCard, rateCard, correctLastReview, reviewOptions, dueCards, dateLabel, intervalLabel, ratings, overdueMs, reviewLateMs, waitLabel} from './model.mjs?v=8';
+import {newCard, editCard, rateCard, correctLastReview, reviewOptions, dueCards, dateLabel, intervalLabel, ratings, overdueMs, reviewLateMs, waitLabel} from './model.mjs?v=9';
 import {studyGroups,cardsInGroup,studyQueue,studyProgress,sortCards,sortOrders,resumeIndex,unseenFirst,setSection,inSection,sections,levelSummary} from './study-groups.mjs?v=16';
 import {FolderStore, rememberedFolder, friendlyError} from './storage.mjs?v=9';
 import {el, showCard} from './view.mjs?v=15';

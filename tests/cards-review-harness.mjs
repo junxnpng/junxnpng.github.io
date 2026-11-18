@@ -1,6 +1,6 @@
 // Manual browser regression fixture. Copy beside a built cards/index.html and replace
 // that HTML's app.mjs script with this module. Serve only on loopback; no real Dropbox calls.
-import {newLibrary,newCard,rateCard} from './model.mjs?v=8';
+import {newLibrary,newCard,rateCard} from './model.mjs?v=9';
 if(!['localhost','127.0.0.1'].includes(location.hostname))throw Error('Local test fixture only');
 const groupedFixture=new URLSearchParams(location.search).has('groups');
 const nativeFetch=globalThis.fetch.bind(globalThis),key=groupedFixture?'saymore.review-groups-test.library':'saymore.review-speed-test.library';

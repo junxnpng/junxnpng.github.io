@@ -8,7 +8,7 @@ Say More — Fluent Forever의 발음 우선 학습에서 영감을 받은 개�
 - `/saymore/ipa/` — 미국식 IPA 발음 가이드. 기존 주소를 유지한다.
 - `/saymore/listen/` — 최소 대립쌍 듣기 테스트. 문항은 `data/saymore/minimal_pairs.json`, 화면은 `layouts/saymore/listen.html`, 로직은 `assets/js/saymore-listen-core.js`(순수 함수)와 `saymore-listen.js`. 기기의 미국식 합성 음성으로 들려주고 소리별 정답률을 브라우저 `localStorage`에 저장한다. 정답률이 낮은 소리를 더 자주 낸다.
 - `/saymore/card-demo/` — 사진·발음·예문으로 연습하고 옵시디언 폴더에 저장하는 coffee 카드 예시. 소스와 사용법은 `examples/coffee-card/`.
-- `/saymore/cards/` — 여러 카드 추가·수정·미리 보기·FSRS 복습. 카드와 일정의 정본은 연결한 Dropbox 앱 폴더의 `/cards/library.json`(과 최근 변경을 담는 `journal.json`)이다. 맥 Chrome·Edge에서는 로컬 폴더에 저장할 수도 있다. 사용법·저장 형식·검증은 `static/saymore/cards/README.md`.
+- `/saymore/cards/` — 여러 카드 추가·수정·미리 보기·Anki 기본 방식(SM-2) 간격의 복습. 카드와 일정의 정본은 연결한 Dropbox 앱 폴더의 `/cards/library.json`(과 최근 변경을 담는 `journal.json`)이다. 맥 Chrome·Edge에서는 로컬 폴더에 저장할 수도 있다. 사용법·저장 형식·검증은 `static/saymore/cards/README.md`.
 - `/saymore/forms/` · `/saymore/order/` — 단어 형태 카드와 문장 어순 카드. 각각 `/saymore/cards/?set=form`, `?set=order`로 연결한다.
 - `/saymore/` — 메인 `/`으로 연결하는 이전 주소.
 - `content/saymore/` — 공개 콘텐츠. Hugo에서 콘텐츠 루트로 사용한다.
@@ -71,13 +71,13 @@ python3 tests/study_persistence.py http://127.0.0.1:1313
 
 ## Dropbox 학습 기록
 
-IPA의 외운 상태와 단어장 카드·첨부파일·FSRS 전체 복습 기록은 같은 Dropbox 앱 연결을 사용한다. 각 브라우저에서 같은 계정을 한 번 연결한다. 앱은 App folder 범위이며 공개 식별자만 `static/saymore/sync-config.json`에 둔다. 앱 비밀은 사용하지 않고 OAuth PKCE로 연결한다. 브라우저의 지속 연결 정보는 해당 기기의 localStorage에만 저장되며 Git·백업 내보내기에는 포함하지 않는다.
+IPA의 외운 상태와 단어장 카드·첨부파일·전체 복습 기록은 같은 Dropbox 앱 연결을 사용한다. 각 브라우저에서 같은 계정을 한 번 연결한다. 앱은 App folder 범위이며 공개 식별자만 `static/saymore/sync-config.json`에 둔다. 앱 비밀은 사용하지 않고 OAuth PKCE로 연결한다. 브라우저의 지속 연결 정보는 해당 기기의 localStorage에만 저장되며 Git·백업 내보내기에는 포함하지 않는다.
 
 - `/ipa-progress.json`: 항목 ID별 외운 상태·변경 시각. 읽은 Dropbox revision으로만 갱신하고 충돌 시 다시 읽어 합친다. 체크 해제도 기록하여 과거 백업이 외운 상태를 되살리지 않게 한다.
 - `/cards/library.json`: 카드 정본. 카드 ID·스케줄·복습 이력을 유지한다. 서로 다른 카드의 변경은 합치며 같은 카드에 동시 변경이 생기면 저장을 중단하고 입력을 화면에 남긴다. 첨부파일을 먼저 올리고 정본을 마지막에 갱신한다.
 - `/cards/media`, `/cards/notes`, `/cards/backups`: 비공개 첨부파일, 읽기용 노트, 수정 전 정본. 기존 폴더 가져오기는 파일을 다시 내려받아 원본과 비교하고 원본을 삭제하지 않는다.
 
-웹페이지는 다시 열기·화면 복귀·30초 간격으로 변경을 확인한다. 단어장 저장은 온라인에서 수행하며 저장 실패 시 입력을 유지한다. IPA 체크는 먼저 브라우저에 저장하고 연결이 복구되면 합친다. ‘외웠어요’ 표시와 FSRS 복습 상태는 별개다.
+웹페이지는 다시 열기·화면 복귀·30초 간격으로 변경을 확인한다. 단어장 저장은 온라인에서 수행하며 저장 실패 시 입력을 유지한다. IPA 체크는 먼저 브라우저에 저장하고 연결이 복구되면 합친다. ‘외웠어요’ 표시와 카드 복습 상태는 별개다.
 
 카드 복습 화면은 현재 정본의 백업과 다음 카드의 첨부파일을 미리 준비한다. 백업은 Dropbox가 서버에서 정본을 복사해 만들며(`copy_v2`), 정본은 줄바꿈 없는 JSON으로 저장해 평가 한 번에 올리는 양을 정본 한 번으로 줄였다. 평가를 누르면 다음 카드를 바로 보여주고 저장은 뒤에서 진행한다. 저장이 끝나기 전에는 다음 평가를 받지 않으며, 저장에 실패하면 알리고 그 카드를 다시 보여준다. 저장은 Dropbox revision을 검사하고 충돌하면 최신 내용을 읽어 합친다. 읽기용 Markdown 노트는 순서대로 뒤에서 갱신한다. 노트 갱신 실패는 복습 기록 저장과 구분해 알리고 ‘노트 다시 저장’으로 복구한다. 복습 중에는 숨겨진 전체 카드 목록을 다시 그리지 않는다.
 

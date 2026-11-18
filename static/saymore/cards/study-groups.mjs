@@ -1,4 +1,4 @@
-import {dueCards,unknownCards} from './model.mjs?v=8';
+import {dueCards,unknownCards} from './model.mjs?v=9';
 import {levels,cardLevel} from './levels.mjs?v=1';
 import {flagKinds} from './image-flag.mjs?v=6';
 

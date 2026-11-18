@@ -24,7 +24,7 @@
 
 ```text
 SayMore/카드/
-  library.json          카드 내용 + 다음 복습 날짜 + FSRS 상태 + 전체 복습 이력
+  library.json          카드 내용 + 다음 복습 날짜 + 복습 상태 + 전체 복습 이력
   library.backup.json   직전의 정상 저장본
   notes/<카드 ID>.md    옵시디언에서 읽는 카드·일정·최근 복습 기록
   media/<파일 ID>.*     사진과 MP3
@@ -40,9 +40,16 @@ SayMore/카드/
 
 ## 학습 방식
 
-ts-fsrs **5.4.2**, **FSRS-6**, desired retention **0.9**, fuzz off를 사용하며 분 단위 학습 단계는 끕니다. **어려움·알맞음·쉬움**은 라이브러리의 장기 스케줄러로 일 단위 간격을 계산합니다. 새 카드의 첫 평가는 각각 2일·3일·8일이며 이후에는 기억 상태에 따라 달라집니다.
+복습 간격은 Fluent Forever 책이 쓰는 **Anki 기본 방식(SM-2)**을 따릅니다. 간격을 작게 시작해서 카드의 ease(처음 2.5, 최소 1.3)만큼 곱해 늘리고, 잊으면 하루부터 다시 시작합니다. 무작위 흔들기(fuzz)는 없어서 버튼 아래 날짜와 저장되는 날짜가 같습니다. 간격은 일 단위로 반올림하고 최대 36,500일입니다.
 
-**모름**은 SayMore의 별도 정책으로, FSRS의 실패 평가로 기억 상태를 갱신하고 다음 정기 복습을 24시간 후로 정합니다. 그 전에는 **모름 다시 보기**에서 자발적으로 재도전할 수 있습니다. 예정일 전의 평가는 이 모드의 모름 카드와 자유 연습·이어서 연습에서 허용하며 실제 평가 시각과 결과를 기록합니다. 이 설정은 Fluent Forever의 공식 고정 간격표를 복제한 것이 아닙니다. [Anki의 학습 단계 안내](https://docs.ankiweb.net/manual/deck-options#learning-and-relearning-steps)도 같은 날의 학습 단계를 최소화하는 방향을 설명합니다.
+- **새 카드:** 모름 24시간 안, 어려움·알맞음 1일, 쉬움 4일.
+- **복습 카드:** 늦은 날수를 d라 하면 어려움 = 간격×1.2(ease −0.15), 알맞음 = (간격+d/2)×ease, 쉬움 = (간격+d)×ease×1.3(ease +0.15). 어려움 < 알맞음 < 쉬움이 되도록 각각 앞의 것보다 최소 1일 깁니다. 제때 알맞음만 누르면 1·3·8·20·50·125일입니다.
+- **모름:** 24시간 안에 다시 나옵니다. 복습 카드였다면 ease −0.20이고, 그 뒤 어려움·알맞음은 1일, 쉬움은 2일로 다시 시작합니다. 아직 한 번도 기억하지 못한 카드는 그 뒤에도 새 카드와 같은 간격입니다. 처음 보는 카드나 다시 익히는 중인 카드의 답은 ease를 바꾸지 않습니다.
+- **예정일 전 평가(자유 연습):** Anki의 이른 복습처럼 실제로 기다린 날수에서 늘립니다. 알맞음·쉬움은 지금 간격보다 줄지 않고(쉬움은 ×1.15), 어려움은 지금 간격의 60% 아래로 줄지 않습니다.
+
+ease와 지금 간격은 따로 저장하지 않고 복습 기록에서 구합니다. ease는 답을 처음부터 다시 따라가며 계산하고, 간격은 마지막 평가 시각부터 그 평가가 정한 날짜까지입니다. 그래서 이 방식으로 바꾸기 전 날짜가 잡힌 카드도 그 날짜는 그대로 두고 다음 평가부터 이어집니다. ease는 바꾸기 전의 답까지 모두 따라가 구하므로, 예전에 어려움을 자주 누른 카드는 처음부터 ease가 낮습니다. 예전 분 단위 학습 단계에 머물러 있던 카드는 새 카드처럼 1일·4일부터 시작합니다. 저장 형식은 바꾸지 않았습니다. ts-fsrs(FSRS-6) 상태와 기록도 계속 갱신하는데, 날짜 계산에는 쓰지 않고 방금 누른 평가를 고칠 때와 아직 새로 고치지 않은 기기의 옛 앱이 보관함을 열 때 씁니다.
+
+**모름 다시 보기**에서는 24시간이 되기 전에도 모름 카드에 다시 답할 수 있습니다. 예정일 전의 평가는 이 모드의 모름 카드와 자유 연습·이어서 연습에서 허용하며 실제 평가 시각과 결과를 기록합니다.
 
 이전 1분·10분 설정의 보관함은 설정만 호환 처리합니다. 카드 ID·이미 예약된 날짜·복습 횟수·과거 기록은 바꾸지 않으며 새 평가부터 새 정책을 적용합니다. 읽기만으로 원본 파일을 다시 쓰지 않고, 다음 저장 시 이전 정본을 백업한 뒤 새 설정을 함께 저장합니다. 모름 목록은 마지막 평가가 1인 카드에서 계산하므로 다른 기기에서도 이어집니다.
 
@@ -53,7 +60,7 @@ ts-fsrs **5.4.2**, **FSRS-6**, desired retention **0.9**, fuzz off를 사용하�
 ## 출처와 라이선스
 
 - 인터페이스 참고: [Anki Adding/Editing](https://docs.ankiweb.net/manual/editing), [Studying](https://docs.ankiweb.net/manual/studying).
-- 복습: [ts-fsrs](https://github.com/open-spaced-repetition/ts-fsrs), MIT. 원본 라이선스는 `vendor/ts-fsrs.LICENSE`에 있습니다.
+- 복습 상태 기록: [ts-fsrs](https://github.com/open-spaced-repetition/ts-fsrs), MIT. 원본 라이선스는 `vendor/ts-fsrs.LICENSE`에 있습니다.
 - 예시 사진: [A small cup of coffee](https://commons.wikimedia.org/wiki/File:A_small_cup_of_coffee.JPG), Julius Schorzman, [CC BY-SA 2.0](https://creativecommons.org/licenses/by-sa/2.0/), 원본 그대로.
 - 예시 음성: [En-us-coffee](https://commons.wikimedia.org/wiki/File:En-us-coffee.ogg), Dvortygirl, [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/), Wikimedia의 MP3 변환본.
 - 예시 IPA: [Wiktionary coffee](https://en.wiktionary.org/wiki/coffee#Pronunciation)의 /ˈkɑfi/ 음성에 사이트의 장음 표기를 적용한 /ˈkɑː.fi/. 미국식 /ɔ/도 사용됩니다.

@@ -52,7 +52,7 @@ test('unsupported scheduling settings are still rejected instead of silently cha
 test('unknown cards can be revisited on demand and automatically become due in 24 hours',()=>{
   const card=rateCard(newCard(fields,now),1,now);
   const other=rateCard(newCard({...fields,deck:'다른 덱'},now),1,now);
-  const known=rateCard(newCard(fields,now),3,now);
+  const known=rateCard(newCard(fields,now),4,now);                       // 쉬움: four days
   const library={...newLibrary(now),cards:[card,other,known]};
   assert.equal(card.schedule.due,'2026-11-09T12:00:00.000Z');
   assert.equal(card.schedule.scheduled_days,1);
@@ -189,10 +189,10 @@ test('due review shows never-studied cards first, then the longest-waiting answe
   const at=d=>new Date(`2026-11-${d}T12:00:00Z`);
   const make=answer=>newCard({...fields,answer},at('01'));
   const fresh1=make('fresh1'),fresh2=make('fresh2');
-  const oldest=rateCard(make('oldest'),4,at('02'));     // answered 2 Nov, due 10 Nov
-  const middle=rateCard(make('middle'),3,at('07'));     // answered 7 Nov, due 10 Nov
-  const recent=rateCard(make('recent'),2,at('08'));     // answered 8 Nov, due 10 Nov
-  const notYet=rateCard(make('notYet'),4,at('09'));     // due 17 Nov
+  const oldest=rateCard(make('oldest'),4,at('02'));     // answered 2 Nov, due 6 Nov
+  const middle=rateCard(make('middle'),3,at('07'));     // answered 7 Nov, due 8 Nov
+  const recent=rateCard(make('recent'),2,at('08'));     // answered 8 Nov, due 9 Nov
+  const notYet=rateCard(make('notYet'),4,at('09'));     // due 13 Nov
   const library={...newLibrary(at('01')),cards:[recent,fresh1,notYet,oldest,fresh2,middle]};
   const before=JSON.stringify(library);
   assert.deepEqual(dueCards(library,at('11')).map(c=>c.answer),['fresh1','fresh2','oldest','middle','recent']);
@@ -201,13 +201,13 @@ test('due review shows never-studied cards first, then the longest-waiting answe
 
 test('how long a studied card waited past its date is derived from the history, not stored',()=>{
   const at=(d,h='12')=>new Date(`2026-11-${d}T${h}:00:00Z`);
-  const first=rateCard(newCard(fields,at('01')),3,at('01'));          // due 4 Nov
+  const first=rateCard(newCard(fields,at('01')),4,at('01'));          // due 5 Nov
   assert.equal(model.overdueMs(newCard(fields,at('01')),at('20')),0);  // never studied: nothing is overdue
-  assert.equal(model.overdueMs(first,at('03')),0);
-  assert.equal(model.waitLabel(model.overdueMs(first,at('04','17'))),'5시간');
-  assert.equal(model.waitLabel(model.overdueMs(first,at('09'))),'5일');
+  assert.equal(model.overdueMs(first,at('04')),0);
+  assert.equal(model.waitLabel(model.overdueMs(first,at('05','17'))),'5시간');
+  assert.equal(model.waitLabel(model.overdueMs(first,at('10'))),'5일');
   assert.equal(model.waitLabel(30*60000),'');
-  const late=rateCard(first,3,at('09'));
+  const late=rateCard(first,3,at('10'));
   assert.equal(model.waitLabel(model.reviewLateMs(late,1)),'5일');
   assert.equal(model.reviewLateMs(late,0),0);
   assert.deepEqual(Object.keys(late.reviews[1]).sort(),['at','due','log','rating']);
@@ -217,7 +217,7 @@ test('how long a studied card waited past its date is derived from the history, 
 });
 
 test('practice can record an answer before the due date, and it schedules from that moment',()=>{
-  const first=rateCard(newCard(fields,now),4,now);                       // due in 8 days
+  const first=rateCard(newCard(fields,now),4,now);                       // due in 4 days
   const early=new Date(now.getTime()+2*86400000);
   assert.throws(()=>rateCard(first,3,early),/아직 복습할 때가 아니에요/);
   const answered=rateCard(first,3,early,{early:true});
@@ -264,4 +264,117 @@ test('a card may carry a second recording of the example word, and keeps it thro
   assert.match(renderNote(rated),/단어 녹음/);
   assert.equal('wordAudio' in newCard(fields,now),false,'cards without one stay as they were');
   assert.throws(()=>newCard({...fields,wordAudio:{path:'media/00000000-0000-4000-8000-00000000000b.png',credit:'x'}},now));
+});
+
+// Anki's default scheduler (SM-2), as the cards now use it.
+const days=(card,at)=>(Date.parse(card.schedule.due)-at.getTime())/86400000;
+const gaps=card=>card.reviews.map(r=>(Date.parse(r.due)-Date.parse(r.at))/86400000);
+const onTime=(card,rating)=>rateCard(card,rating,new Date(card.schedule.due));
+
+test('a new card comes back in 1 day (어려움·알맞음) or 4 days (쉬움), and 모름 within 24 hours',()=>{
+  const card=newCard(fields,now),options=reviewOptions(card,now);
+  assert.deepEqual([1,2,3,4].map(r=>(Date.parse(options[r].due)-now.getTime())/86400000),[1,1,1,4]);
+  for(const r of [1,2,3,4])assert.equal(rateCard(card,r,now).schedule.due,options[r].due);
+});
+
+test('answering 알맞음 on time grows the gap by the ease of 2.5: 1, 3, 8, 20, 50, 125 days',()=>{
+  let card=newCard(fields,now);card=rateCard(card,3,now);
+  for(let i=0;i<5;i++)card=onTime(card,3);
+  assert.deepEqual(gaps(card),[1,3,8,20,50,125]);
+  assert.equal(model.cardEase(card.reviews),2.5);
+  parseLibrary(JSON.stringify({...newLibrary(now),cards:[card]}));
+});
+
+test('on a card in review 어려움 < 알맞음 < 쉬움, and the ease moves with each answer',()=>{
+  let card=onTime(rateCard(newCard(fields,now),3,now),3);              // gap 3, ease 2.5
+  const at=new Date(card.schedule.due),o=reviewOptions(card,at);
+  assert.deepEqual([2,3,4].map(r=>(Date.parse(o[r].due)-at.getTime())/86400000),[4,8,10]); // 3×1.2→4 (≥gap+1), 3×2.5→8, 3×2.5×1.3→10
+  const hard=rateCard(card,2,at),easy=rateCard(card,4,at);
+  assert.equal(model.cardEase(hard.reviews),2.35);
+  assert.equal(model.cardEase(easy.reviews),2.65);
+  // The ease never falls below 1.3.
+  let low=card;for(let i=0;i<20;i++)low=onTime(low,2);
+  assert.equal(model.cardEase(low.reviews),1.3);
+});
+
+test('a late answer counts half the extra days for 알맞음 and all of them for 쉬움',()=>{
+  const card=onTime(rateCard(newCard(fields,now),3,now),3);            // gap 3
+  const at=new Date(Date.parse(card.schedule.due)+4*86400000),o=reviewOptions(card,at);
+  assert.deepEqual([2,3,4].map(r=>(Date.parse(o[r].due)-at.getTime())/86400000),[4,13,23]); // (3+2)×2.5=12.5→13, (3+4)×2.5×1.3=22.75→23
+});
+
+test('forgetting lowers the ease by 0.2 and starts the gaps again from one day',()=>{
+  let card=onTime(onTime(rateCard(newCard(fields,now),3,now),3),3);  // gaps 1,3,8
+  const forgot=onTime(card,1);
+  assert.equal(days(forgot,new Date(forgot.reviews.at(-1).at)),1);
+  assert.equal(model.cardEase(forgot.reviews),2.3);
+  const at=new Date(forgot.schedule.due),o=reviewOptions(forgot,at);
+  assert.deepEqual([2,3,4].map(r=>(Date.parse(o[r].due)-at.getTime())/86400000),[1,1,2]);
+  // Forgetting it again while relearning does not lower the ease a second time.
+  assert.equal(model.cardEase(onTime(forgot,1).reviews),2.3);
+  const back=onTime(onTime(forgot,3),3);                              // relearned: 1 day, then 1×2.3 lifted above 어려움's 2
+  assert.deepEqual(gaps(back).slice(-2),[1,3]);
+});
+
+test('a card scheduled by the old FSRS settings keeps its date and continues from that gap',()=>{
+  const old=card=>{const at=new Date(card.reviews.at(-1)?.due??now),result=oldScheduler.next(card.schedule,at,3);
+    return {...card,schedule:JSON.parse(JSON.stringify(result.card)),reviews:[...card.reviews,{at:at.toISOString(),rating:3,due:result.card.due.toISOString(),log:JSON.parse(JSON.stringify(result.log))}]};};
+  let card=newCard(fields,now);for(let i=0;i<5;i++)card=old(card);
+  const loaded=parseLibrary(JSON.stringify({...newLibrary(now),scheduler:legacyMetadata,cards:[card]})).cards[0];
+  assert.deepEqual(loaded.schedule,card.schedule);
+  const gap=gaps(card).at(-1),at=new Date(card.schedule.due);
+  assert.ok(gap>20,`old gap ${gap}`);
+  const next=rateCard(loaded,3,at);
+  assert.equal(days(next,at),Math.round(Math.round(gap)*2.5));
+  assert.deepEqual(next.reviews.slice(0,-1),card.reviews);
+});
+
+test('practice before the date follows Anki early review: never shrinks 알맞음, grows from days waited',()=>{
+  const card=onTime(onTime(rateCard(newCard(fields,now),3,now),3),3);  // gap 8, answered at its date
+  const last=Date.parse(card.reviews.at(-1).at);
+  const sameDay=new Date(last+3600000),o=reviewOptions(card,sameDay);
+  assert.deepEqual([2,3,4].map(r=>(Date.parse(o[r].due)-sameDay.getTime())/86400000),[5,8,9]); // 8×0.6→5, 8, 8×1.15→9
+  const fiveDays=new Date(last+5*86400000),p=reviewOptions(card,fiveDays);
+  assert.deepEqual([2,3,4].map(r=>(Date.parse(p[r].due)-fiveDays.getTime())/86400000),[6,13,14]); // 5×1.2, 5×2.5=12.5→13, ×1.15→14
+  const answered=rateCard(card,3,fiveDays,{early:true});
+  assert.equal(answered.schedule.due,p[3].due);
+  assert.equal(model.cardEase(answered.reviews),2.5);
+  assert.equal(model.cardEase(rateCard(card,2,fiveDays,{early:true}).reviews),2.35);
+});
+
+test('correcting the last answer gives the same date as pressing the intended button',()=>{
+  const card=onTime(onTime(rateCard(newCard(fields,now),3,now),3),3);
+  const at=new Date(card.schedule.due);
+  for(const [pressed,meant] of [[2,3],[3,4],[1,3],[4,1],[3,2]]){
+    const fixed=model.correctLastReview(rateCard(card,pressed,at),meant),right=rateCard(card,meant,at);
+    assert.equal(fixed.schedule.due,right.schedule.due);
+    assert.equal(fixed.reviews.at(-1).due,right.reviews.at(-1).due);
+    assert.equal(fixed.schedule.reps,right.schedule.reps);
+    assert.equal(model.cardEase(fixed.reviews),model.cardEase(right.reviews));
+    parseLibrary(JSON.stringify({...newLibrary(now),cards:[fixed]}));
+  }
+  const early=new Date(Date.parse(card.reviews.at(-1).at)+2*86400000);
+  assert.equal(model.correctLastReview(rateCard(card,2,early,{early:true}),3).schedule.due,rateCard(card,3,early,{early:true}).schedule.due);
+});
+
+test('gaps stop at 36,500 days',()=>{
+  let card=rateCard(newCard(fields,now),4,now);
+  for(let i=0;i<12;i++)card=onTime(card,4);
+  assert.equal(gaps(card).at(-1),36500);
+});
+
+test('a new card that was only ever 모름 is still learning: 쉬움 then gives 4 days, not the relearning 2',()=>{
+  const once=rateCard(newCard(fields,now),1,now),at=new Date(once.schedule.due);
+  assert.equal(days(rateCard(once,4,at),at),4);
+  const twice=onTime(once,1),at2=new Date(twice.schedule.due);
+  assert.equal(days(rateCard(twice,4,at2),at2),4);
+});
+
+test('an old card last given a minute step is still learning, however late it is answered',()=>{
+  const minute=oldScheduler.next(newCard(fields,now).schedule,now,3);
+  const card={...newCard(fields,now),schedule:JSON.parse(JSON.stringify(minute.card)),reviews:[{at:now.toISOString(),rating:3,due:minute.card.due.toISOString(),log:JSON.parse(JSON.stringify(minute.log))}]};
+  assert.ok(Date.parse(card.schedule.due)-now.getTime()<86400000);
+  const late=new Date(now.getTime()+30*86400000);
+  assert.equal(days(rateCard(card,3,late),late),1);
+  assert.equal(days(rateCard(card,4,late),late),4);
 });
