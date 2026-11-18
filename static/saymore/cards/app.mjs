@@ -198,8 +198,26 @@ function chooseGroup(key){
   if(view==='review')startReview(unknownSession!==null);else renderLibrary();
 }
 // The marks under a review card: the picture does not fit the word, or the sentence, or there is no picture.
-// Each is saved at once, like an answer. They are offered on the back only, where the word and the sentence
-// can be read against the picture; the front stays free of anything but the question.
+// They are offered on the back only, where the word and the sentence can be read against the picture; the
+// front stays free of anything but the question.
+// A mark shows at once and is saved with the answer that follows, in the same save, so marking a card costs
+// no more waiting than answering it. A card left without an answer (next card in practice, another group or
+// view, the page hidden) has its marks saved on their own at that moment.
+let staged=null;   // {id, kinds: Map(kind -> on)}: marks shown on the card on screen and not yet saved
+// Puts staged marks on a copy of `card` (the version on screen, or the latest saved one). A mark about the
+// picture is left out when the picture it judged is no longer there (or has appeared) in that version.
+function applyMarks(card,kinds){
+  let out=card;
+  for(const [kind,on] of kinds){
+    if(on&&kind in pictureMark&&Boolean(out.image)!==pictureMark[kind])continue;
+    if(hasFlag(out,kind)!==on)out=setFlag(out,kind,on);
+  }
+  return out;
+}
+function withStaged(card){
+  if(!staged||!card||card.id!==staged.id)return card;
+  try{return applyMarks(card,staged.kinds);}catch{return card;}
+}
 function flagControl(){
   const picture=Boolean(activeCard?.image);
   $('flag-row').hidden=!activeCard||!revealed;
@@ -207,23 +225,42 @@ function flagControl(){
     const kind=button.dataset.flag,on=Boolean(activeCard&&hasFlag(activeCard,kind));
     button.hidden=kind==='remember'||kind==='listen'?false:kind==='awkward'?!activeCard?.sentence:kind==='missing'?picture:!picture||(kind==='sentence'&&!activeCard?.sentence);
     button.setAttribute('aria-pressed',String(on));button.textContent=flagKinds[kind][on?'on':'off'];
-    button.disabled=busy||saving||!store;
+    button.disabled=busy||!store;
   }
 }
-async function toggleFlag(kind){
-  if(busy||saving||!store||!activeCard||(kind in pictureMark&&Boolean(activeCard.image)!==pictureMark[kind]))return;
-  const owner=store,before=activeCard;let updated;
-  try{updated=setFlag(before,kind,!hasFlag(before,kind));}catch(e){notice(friendlyError(e),true);return;}
-  const next=cards().map(c=>c.id===updated.id?updated:c);
+function toggleFlag(kind){
+  if(busy||!store||!activeCard||(kind in pictureMark&&Boolean(activeCard.image)!==pictureMark[kind]))return;
+  if(staged&&staged.id!==activeCard.id)void flushStaged();
+  let updated;
+  try{updated=setFlag(activeCard,kind,!hasFlag(activeCard,kind));}catch(e){notice(friendlyError(e),true);return;}
+  if(!staged)staged={id:updated.id,answer:updated.answer,kinds:new Map()};
+  staged.kinds.set(kind,hasFlag(updated,kind));
   // The card on screen becomes the marked one, so an answer given next is recorded on top of it.
-  saving=true;pendingCards=next;activeCard=updated;
-  const commit=store.commit({...store.library,cards:next},{},[updated.id],undefined,{deferNotes:true});
-  notice('표시를 저장하고 있어요…');controls();
+  activeCard=updated;flagControl();
+  notice(`${hasFlag(updated,kind)?'표시했어요':'표시를 지웠어요'} · ${isPractice()?'다음 카드로 넘어가면 저장돼요.':'평가하면 함께 저장돼요.'}`);
+}
+// Saves marks left without an answer. It waits for any save under way in this window (store.commit allows
+// one at a time) and puts the marks on the latest saved version of the card.
+const lostMarks=answer=>`‘${answer.slice(0,40)}’ 카드의 표시는 저장되지 않았어요.`;
+async function flushStaged(){
+  const marks=staged;if(!marks)return;
+  staged=null;
+  while(saving||busy||store?.writing)await new Promise(resolve=>setTimeout(resolve,100));
+  const owner=store,base=store?.library.cards.find(c=>c.id===marks.id);
+  if(!owner||!base){notice(`${lostMarks(marks.answer)} 카드를 찾지 못했거나 연결이 끊겼어요.`,true);return;}
+  let updated;
+  try{updated=applyMarks(base,marks.kinds);}catch(e){notice(`${friendlyError(e)} ${lostMarks(base.answer)}`,true);return;}
+  if(updated===base)return;
+  const next=owner.library.cards.map(c=>c.id===updated.id?updated:c);
+  // An error shown just before (a rating that was not saved) stays on screen; this success does not cover it.
+  const errorShown=$('notice').classList.contains('error');
+  saving=true;pendingCards=next;controls();
   try{
-    const result=await commit;
+    const result=await owner.commit({...owner.library,cards:next},{},[updated.id],undefined,{deferNotes:true});
     pendingCards=null;saving=false;
     if(store===owner){
-      saved(result,hasFlag(updated,kind)?(kind==='remember'?`‘${updated.answer.slice(0,40)}’ 카드를 따로 외울 단어로 표시했어요. ‘기억 만들기’에서 기억을 적을 수 있어요.`:kind==='listen'?`‘${updated.answer.slice(0,40)}’ 카드를 발음 나중에 듣기로 표시했어요. 복습 묶음 ‘${flagKinds.listen.list}’에서 모아 볼 수 있어요.`:`‘${updated.answer.slice(0,40)}’ 카드에 표시했어요. 카드 목록에서 모아 볼 수 있어요.`):'표시를 지웠어요.',{review:true});
+      if(errorShown){lastSaved=dateLabel(new Date().toISOString());updateStats();}
+      else saved(result,`‘${updated.answer.slice(0,40)}’ 카드의 표시를 저장했어요.`,{review:true});
       const savedNotice=noticeVersion;
       const reportNotes=notes=>{if(store===owner)noteWarnings(notes,noticeVersion===savedNotice);};
       if(result.notes)void result.notes.then(reportNotes,error=>reportNotes({warnings:[{message:error.message}]}));
@@ -231,10 +268,17 @@ async function toggleFlag(kind){
   }catch(e){
     pendingCards=null;saving=false;
     if(store===owner){
-      if(activeCard===updated)activeCard=before;
-      notice(`${friendlyError(e)} 표시는 저장되지 않았어요.`,true);
+      // The card shows its saved marks again, plus any mark made on it since.
+      if(activeCard?.id===updated.id){activeCard=withStaged(store.library.cards.find(c=>c.id===updated.id)||activeCard);flagControl();}
+      const clash=/다른 기기에서도 바뀌었어요/.test(e?.message||'');
+      notice(`${friendlyError(e)} ${lostMarks(updated.answer)}`,true);
+      if(clash)void refreshCloud();
     }
-  }finally{controls();}
+  }finally{
+    controls();
+    // Lists drawn while the save was waiting show the cards before it.
+    if(store===owner){if(view==='memory')void showMemory();else if(view==='library')renderLibrary();}
+  }
 }
 let listRest=[];
 const listWatch='IntersectionObserver' in window?new IntersectionObserver(entries=>{if(entries.some(e=>e.isIntersecting)&&listRest.length)appendRows();},{rootMargin:'600px'}):null;
@@ -386,6 +430,7 @@ function switchView(next,force=false){
   if(busy)return false;
   if(!force&&view==='add'&&dirty&&next!=='add'&&!confirm('아직 저장하지 않은 입력이 있어요. 입력을 지우고 이동할까요?'))return false;
   if(next!=='add'&&view==='add'&&dirty)resetEditor();
+  if(view==='review'&&next!=='review')void flushStaged();
   view=next;
   for(const name of ['library','add','review','memory'])$(`${name}-view`).hidden=name!==view;
   for(const b of document.querySelectorAll('[data-view]')){if(b.dataset.view===view)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');}
@@ -632,7 +677,8 @@ async function showNextReview(){
     studyQueue(cards(),selectedGroup,'unknown').filter(c=>unknownSession.has(c.id)):
     practice?practiceCards():studyQueue(cards(),selectedGroup,unseenOnly()?'unseen':'due',new Date());
   const remaining=practice?queue.slice(practiceIndex):queue;
-  activeCard=remaining[0]||null;revealed=false;
+  activeCard=withStaged(remaining[0]||null);revealed=false;
+  if(staged&&staged.id!==activeCard?.id)void flushStaged();
   flagControl();
   retryControls();$('check-due').hidden=unknownSession!==null;
   $('check-due').textContent=practice?'처음부터 다시 연습':'다시 확인';
@@ -699,8 +745,11 @@ async function reveal(){
 async function grade(rating){
   if(busy||saving||!store||!activeCard||!revealed)return;
   const owner=store,previousGraded=lastGraded,retry=unknownSession!==null,practice=isPractice(),previousIndex=practiceIndex;
+  // Marks just made on this card go into the same save as the answer.
+  const marked=staged?.id===activeCard.id;
   let updated;
   try{updated=rateCard(activeCard,rating,new Date(),{retryUnknown:retry,early:practice});}catch(e){notice(friendlyError(e),true);return;}
+  if(marked)staged=null;
   const next=cards().map(c=>c.id===updated.id?updated:c);
   // Saving a megabyte to Dropbox takes a second or more. Move on to the next card at once; the next
   // answer waits until this one is stored, and a failed save brings this card back.
@@ -729,7 +778,7 @@ async function grade(rating){
       if(practice){practiceIndex=previousIndex;rememberPractice(updated.id);}
       // Another device answered this card first: read its answer now, not at the next half-minute check.
       const clash=/다른 기기에서도 바뀌었어요/.test(e?.message||'');
-      notice(clash?`‘${updated.answer.slice(0,40)}’ 카드가 다른 기기에서 먼저 바뀌었어요. 방금 평가는 저장하지 않았고, 최신 기록을 다시 읽어요.`:`${friendlyError(e)} 방금 평가한 ‘${updated.answer.slice(0,40)}’ 카드는 저장되지 않아 다시 보여드려요.`,true);
+      notice(clash?`‘${updated.answer.slice(0,40)}’ 카드가 다른 기기에서 먼저 바뀌었어요. 방금 평가는 저장하지 않았고, 최신 기록을 다시 읽어요.`:`${friendlyError(e)} 방금 평가한 ‘${updated.answer.slice(0,40)}’ 카드는 ${marked?'표시와 함께 ':''}저장되지 않아 다시 보여드려요.`,true);
       await showNextReview();
       if(clash)void refreshCloud();
     }
@@ -857,7 +906,7 @@ $('practice-previous').addEventListener('click',()=>movePractice(-1));$('practic
 $('review-unknown').addEventListener('click',()=>startReview(true));$('review-normal').addEventListener('click',()=>{$('review-mode').value=savedMode();startReview();});
 for(const b of document.querySelectorAll('[data-rating]'))b.addEventListener('click',()=>grade(Number(b.dataset.rating)));
 $('repair-notes').addEventListener('click',async()=>{if(!store||busy)return;setBusy(true);try{const result=await store.exportNotes();$('repair-notes').hidden=result.warnings.length===0;saved(result,'읽기용 노트를 다시 저장했어요.');}catch(e){notice(friendlyError(e),true);}finally{setBusy(false);}});
-window.addEventListener('beforeunload',e=>{if(dirty||busy||saving||store?.pendingNotes){e.preventDefault();e.returnValue='';}});
+window.addEventListener('beforeunload',e=>{if(staged)void flushStaged();if(dirty||busy||saving||staged||store?.pendingNotes){e.preventDefault();e.returnValue='';}});
 document.addEventListener('keydown',e=>{if(e.metaKey||e.ctrlKey||e.altKey)return;if(view!=='review'||busy||$('detail-dialog').open||/INPUT|TEXTAREA|SELECT/.test(e.target.tagName))return;if(e.code==='Space'){if(e.target.closest('button,a,summary'))return;e.preventDefault();if(!revealed||isPractice())reveal();}else if(revealed&&/^[1-4]$/.test(e.key))grade(Number(e.key));});
 setInterval(()=>{if(store&&!busy)updateStats();rememberSnapshot();void refreshCloud();},30000);
 window.addEventListener('pageshow',()=>void refreshCloud());
@@ -878,7 +927,7 @@ async function checkForUpdate(){
 }
 // Another tab of this site changed a shared setting.
 window.addEventListener('storage',event=>{if(settingKeys.includes(event.key)&&event.key!=='saymore.home.cards.v1')applySettings([event.key]);});
-document.addEventListener('visibilitychange',()=>{if(!document.hidden){void refreshCloud();void checkForUpdate();if(!busy&&!saving)void shareSettings();}});
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&staged)void flushStaged();if(!document.hidden){void refreshCloud();void checkForUpdate();if(!busy&&!saving)void shareSettings();}});
 void checkForUpdate();
 window.addEventListener('storage',async event=>{
   if(event.key!=='saymore.dropbox.auth.v1'||!cloud)return;
