@@ -1,14 +1,14 @@
 import {newCard, editCard, rateCard, correctLastReview, reviewOptions, dueCards, dateLabel, intervalLabel, ratings, overdueMs, reviewLateMs, waitLabel} from './model.mjs?v=8';
-import {studyGroups,cardsInGroup,studyQueue,studyProgress,newCardsLeft,sortCards,sortOrders,resumeIndex,unseenFirst,setSection,inSection,sections,levelSummary} from './study-groups.mjs?v=14';
+import {studyGroups,cardsInGroup,studyQueue,studyProgress,newCardsLeft,sortCards,sortOrders,resumeIndex,unseenFirst,setSection,inSection,sections,levelSummary} from './study-groups.mjs?v=15';
 import {FolderStore, rememberedFolder, friendlyError} from './storage.mjs?v=9';
 import {el, showCard} from './view.mjs?v=15';
 import {DropboxStore} from './dropbox-store.mjs?v=14';
 import {readSnapshot,writeSnapshot,clearSnapshot} from './snapshot-cache.mjs?v=1';
 import {MediaCache} from './media-cache.mjs?v=1';
 import {parseBundle} from './bundle.mjs?v=2';
-import {prepareImagePatch,prepareAudioPatch,prepareTextPatch,patchKind} from './image-patch.mjs?v=14';
+import {prepareImagePatch,prepareAudioPatch,prepareTextPatch,patchKind} from './image-patch.mjs?v=15';
 import {openDropbox} from '../shared/dropbox.mjs?v=8';
-import {flagKinds,hasFlag,setFlag,pictureMark,memoryQuestion,memoryTags,hasHangul} from './image-flag.mjs?v=5';
+import {flagKinds,hasFlag,setFlag,pictureMark,memoryQuestion,memoryTags,hasHangul} from './image-flag.mjs?v=6';
 import {setSetting,syncSettings,settingKeys} from '../shared/sync.mjs?v=2';
 
 const $=id=>document.getElementById(id);
@@ -203,7 +203,7 @@ function flagControl(){
   $('flag-row').hidden=!activeCard||!revealed;
   for(const button of $('flag-row').querySelectorAll('button')){
     const kind=button.dataset.flag,on=Boolean(activeCard&&hasFlag(activeCard,kind));
-    button.hidden=kind==='remember'||kind==='listen'?false:kind==='missing'?picture:!picture||(kind==='sentence'&&!activeCard?.sentence);
+    button.hidden=kind==='remember'||kind==='listen'?false:kind==='awkward'?!activeCard?.sentence:kind==='missing'?picture:!picture||(kind==='sentence'&&!activeCard?.sentence);
     button.setAttribute('aria-pressed',String(on));button.textContent=flagKinds[kind][on?'on':'off'];
     button.disabled=busy||saving||!store;
   }

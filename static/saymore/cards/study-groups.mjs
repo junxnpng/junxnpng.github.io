@@ -1,6 +1,6 @@
 import {dueCards,unknownCards} from './model.mjs?v=8';
 import {levels,cardLevel} from './levels.mjs?v=1';
-import {flagKinds} from './image-flag.mjs?v=5';
+import {flagKinds} from './image-flag.mjs?v=6';
 
 const isWord=card=>card.tags.includes('FF625')||card.tags.includes('OX3000')||card.deck==='Fluent Forever · First 625';
 const unlevelled='등급 밖';

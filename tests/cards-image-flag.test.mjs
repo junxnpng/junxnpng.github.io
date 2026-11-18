@@ -61,6 +61,17 @@ test('a card without a picture can be marked as needing one, with its own tag',(
   assert.deepEqual(setFlag(marked,'missing',false).tags,['OX3000']);
 });
 
+test('an awkward sentence is a mark of its own, kept apart from the picture marks',()=>{
+  const card=studied(),marked=setFlag(card,'awkward',true);
+  assert.equal(flagKinds.awkward.tag,'문장어색');
+  assert.deepEqual(marked.tags,['FF625','문장어색']);
+  assert.equal(hasFlag(marked,'sentence'),false);
+  assert.deepEqual(marked.schedule,card.schedule);
+  assert.deepEqual(marked.reviews,card.reviews);
+  assert.deepEqual(setFlag(setFlag(marked,'sentence',true),'awkward',false).tags,['FF625',flagKinds.sentence.tag]);
+  assert.equal(new Set(Object.values(flagKinds).map(k=>k.tag)).size,Object.keys(flagKinds).length,'every mark has its own tag');
+});
+
 test('a word to remember is a mark like the others, and writing its memory swaps it for MY-LINK',async()=>{
   const m=await import('../static/saymore/cards/image-flag.mjs');
   const card={tags:['OX3000','A1'],schedule:{due:'x'},reviews:[{rating:1}]};

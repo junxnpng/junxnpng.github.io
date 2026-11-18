@@ -4,6 +4,8 @@
 export const flagKinds={
   word:{tag:'그림교체',off:'그림 ↔ 단어가 안 맞아요',on:'✓ 그림 ↔ 단어 안 맞음 · 취소',list:'그림 ↔ 단어 안 맞는 카드'},
   sentence:{tag:'문장불일치',off:'그림 ↔ 문장이 안 맞아요',on:'✓ 그림 ↔ 문장 안 맞음 · 취소',list:'그림 ↔ 문장 안 맞는 카드'},
+  // The example sentence itself reads oddly (wording, logic, or a blank that fits many words); offered on any card with a sentence.
+  awkward:{tag:'문장어색',off:'문장이 어색해요',on:'✓ 문장 어색함 · 취소',list:'문장이 어색한 카드'},
   // For a card that has no picture at all: a request for one.
   missing:{tag:'그림없음',off:'그림이 없어요',on:'✓ 그림 없음 표시 · 취소',list:'그림 없는 카드'},
   // A word to make a memory for. Any way of choosing such words (a button on the back today, later perhaps
