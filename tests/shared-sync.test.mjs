@@ -104,4 +104,5 @@ test('the old daily new-card limit written by an older page is kept in the file 
 
 test('the rated review mode of each tab is shared like the group',()=>{
   for(const s of ['','.form','.order'])assert.ok(sync.settingKeys.includes(`saymore.cards.review-mode${s}.v2`));
+  for(const s of ['','.form','.order'])assert.ok(sync.settingKeys.includes(`saymore.cards.review-order${s}.v1`),'the order of 오늘 복습 too');
 });

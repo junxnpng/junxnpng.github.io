@@ -115,7 +115,8 @@ test('the card list can be ordered by creation or review time without changing t
   assert.equal(order('dueSoonest'),'bcad');
   assert.equal(order('unknown-order'),'abcd');
   assert.deepEqual(input,before);
-  assert.deepEqual(Object.keys(groups.sortOrders),['default','newest','oldest','reviewedNewest','reviewedOldest','dueSoonest']);
+  assert.equal(order('unseenFirst'),'adbc','never-reviewed cards first, each part in library order');
+  assert.deepEqual(Object.keys(groups.sortOrders),['default','unseenFirst','newest','oldest','reviewedNewest','reviewedOldest','dueSoonest']);
 });
 
 test('practice resumes at the remembered card, otherwise after what has already been studied',()=>{
@@ -166,6 +167,31 @@ test('reviews that have come due go first, then every unseen card; there is no d
   assert.deepEqual(queue.slice(2),fresh.map(c=>c.answer),'then all unseen cards, in library order');
   assert.equal(queue.includes('met today'),false);
   assert.deepEqual(groups.studyProgress(cards,day),{total:43,remaining:42,completedToday:1,waiting:0});
+  assert.deepEqual(cards,before);
+});
+
+test('안 본 카드 먼저 puts every unseen card before the due reviews; the same cards, the same remaining count',()=>{
+  groups.setSection('cards');
+  const day=new Date(2026,10,10,12),earlier=new Date(2026,10,1,12);
+  const make=answer=>newCard({type:'basic',deck:'IPA 01',front:'q',answer,tags:['IPA']},earlier);
+  const longWait=rateCard(make('long wait'),3,earlier),shortWait=rateCard(make('short wait'),3,new Date(2026,10,3,12));
+  const metToday=rateCard(make('met today'),3,new Date(2026,10,10,9));
+  const cards=[make('a'),shortWait,make('b'),longWait,metToday,make('c')],before=copy(cards);
+  const dueFirst=groups.studyQueue(cards,'all','due',day,'dueFirst').map(c=>c.answer);
+  const unseenFirst=groups.studyQueue(cards,'all','due',day,'unseenFirst').map(c=>c.answer);
+  assert.deepEqual(dueFirst,['long wait','short wait','a','b','c']);
+  assert.deepEqual(groups.studyQueue(cards,'all','due',day).map(c=>c.answer),dueFirst,'복습할 카드 먼저 is the default');
+  assert.deepEqual(unseenFirst,['a','b','c','long wait','short wait'],'unseen in library order, then longest wait first');
+  assert.equal(groups.studyProgress(cards,day).remaining,unseenFirst.length);
+  // A card rated in this order leaves the unseen part; a 모름 answer comes back behind the unseen cards once due.
+  const rated=cards.map(c=>c.answer==='a'?rateCard(c,1,day):c);
+  const later=new Date(day.getTime()+25*3600e3);
+  const next=groups.studyQueue(rated,'all','due',later,'unseenFirst').map(c=>c.answer);
+  assert.deepEqual(next.slice(0,2),['b','c']);
+  assert.ok(next.includes('a')&&next.indexOf('a')>1);
+  assert.deepEqual(groups.studyQueue(cards,'all','unseen',day,'dueFirst'),groups.studyQueue(cards,'all','unseen',day,'unseenFirst'),'other modes ignore the order');
+  assert.deepEqual(groups.studyQueue(cards,'all','practice',day,'unseenFirst'),groups.studyQueue(cards,'all','practice',day));
+  assert.deepEqual(Object.keys(groups.reviewOrders),['dueFirst','unseenFirst']);
   assert.deepEqual(cards,before);
 });
 

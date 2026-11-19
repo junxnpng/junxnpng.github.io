@@ -1,5 +1,5 @@
 import {newCard, editCard, rateCard, correctLastReview, reviewOptions, dueCards, dateLabel, intervalLabel, ratings, overdueMs, reviewLateMs, waitLabel} from './model.mjs?v=9';
-import {studyGroups,cardsInGroup,studyQueue,studyProgress,sortCards,sortOrders,resumeIndex,unseenFirst,setSection,inSection,sections,levelSummary} from './study-groups.mjs?v=16';
+import {studyGroups,cardsInGroup,studyQueue,studyProgress,sortCards,sortOrders,reviewOrders,resumeIndex,unseenFirst,setSection,inSection,sections,levelSummary} from './study-groups.mjs?v=17';
 import {FolderStore, rememberedFolder, friendlyError} from './storage.mjs?v=9';
 import {el, showCard} from './view.mjs?v=15';
 import {DropboxStore} from './dropbox-store.mjs?v=14';
@@ -9,7 +9,7 @@ import {parseBundle} from './bundle.mjs?v=2';
 import {prepareImagePatch,prepareAudioPatch,prepareTextPatch,patchKind} from './image-patch.mjs?v=15';
 import {openDropbox} from '../shared/dropbox.mjs?v=8';
 import {flagKinds,hasFlag,setFlag,pictureMark,memoryQuestion,memoryTags,hasHangul} from './image-flag.mjs?v=6';
-import {setSetting,syncSettings,settingKeys} from '../shared/sync.mjs?v=3';
+import {setSetting,syncSettings,settingKeys} from '../shared/sync.mjs?v=4';
 
 const $=id=>document.getElementById(id);
 let store=null, cachedFolder=null, view='library', busy=false, dirty=false, editedId=null, previewBack=false;
@@ -53,6 +53,9 @@ function applySettings(changed,{redraw=true,force=false}={}){
   if(changed.includes(modeKey)&&!isPractice()&&!unknownSession&&(force||(!busy&&!(view==='review'&&activeCard)))){
     const next=savedMode();modeChanged=next!==$('review-mode').value;$('review-mode').value=next;
   }
+  if(changed.includes(orderKey)&&(force||(!busy&&!(view==='review'&&activeCard)))){
+    const next=savedOrder();if(next!==$('review-order').value){$('review-order').value=next;if($('review-mode').value==='due'&&!unknownSession)modeChanged=true;}
+  }
   if(!redraw||busy)return;
   updateDecks();updateStats();controls();
   if(view==='library')renderLibrary();
@@ -76,6 +79,9 @@ const positionKey=section==='cards'?'saymore.cards.practice-position.v1':`saymor
 const modeKey=section==='cards'?'saymore.cards.review-mode.v2':`saymore.cards.review-mode.${section}.v2`;
 const ratedModes=['due','unseen'];
 const savedMode=()=>{try{const value=localStorage.getItem(modeKey);return ratedModes.includes(value)?value:'due';}catch{return 'due';}};
+// The order of 오늘 복습 in this tab (reviewOrders), shared the same way.
+const orderKey=section==='cards'?'saymore.cards.review-order.v1':`saymore.cards.review-order.${section}.v1`;
+const savedOrder=()=>{try{const value=localStorage.getItem(orderKey);return Object.hasOwn(reviewOrders,value||'')?value:'dueFirst';}catch{return 'dueFirst';}};
 try{selectedGroup=localStorage.getItem(groupKey)||'all';}catch{/* Selection is optional when browser storage is unavailable. */}
 
 function notice(message,error=false){noticeVersion++;$('notice').textContent=message;$('notice').hidden=!message;$('notice').classList.toggle('error',error);}
@@ -98,7 +104,7 @@ function controls(){
   $('bundle-data').disabled=busy;
   $('image-bundle-file').disabled=busy;
   $('import-bundle').disabled=$('append-bundle').disabled=busy||!online;
-  for(const id of ['deck-filter','review-group','review-mode','level-summary-open'])$(id).disabled=busy;
+  for(const id of ['deck-filter','review-group','review-mode','review-order','level-summary-open'])$(id).disabled=busy;
   $('practice-previous').disabled=busy||practiceIndex===0;
   $('practice-next').disabled=busy||!activeCard;
   $('save-help').textContent=store ? `저장하면 카드와 복습 일정이 ${online?'Dropbox':'선택한 폴더'}에 남아요.` : '먼저 위의 Dropbox 연결을 눌러주세요. 입력한 내용은 그대로 남아요.';
@@ -126,16 +132,19 @@ function retryControls(){
     const group=groups.find(g=>g.key===option.value);if(group)option.textContent=groupLabel(group,now);
   }
   const group=groups.find(g=>g.key===selectedGroup),progress=studyProgress(group?.cards||[],now);
-  $('review-settings-now').textContent=store?`${group?.label||''} · ${$('review-mode').selectedOptions[0]?.textContent.split(' · ')[0]||''}`:'';
+  const dueMode=$('review-mode').value==='due'&&!unknownSession;
+  $('review-order-label').hidden=!dueMode;
+  $('review-settings-now').textContent=store?`${group?.label||''} · ${$('review-mode').selectedOptions[0]?.textContent.split(' · ')[0]||''}${dueMode&&unseenFirstOrder()?` · ${reviewOrders.unseenFirst}`:''}`:'';
   $('rating-help').textContent=practice?'평가는 해도 되고 안 해도 돼요. 잘못 누른 평가는 ‘카드 목록’ 탭에서 그 카드의 ‘평가 고치기’로 고쳐요.':'모름 카드는 24시간 안에 다시 볼 수 있어요. 잘못 눌렀으면 ‘방금 평가 고치기’를 누르세요.';
   $('review-group-help').textContent=store?`전체 ${progress.total}장 · 지금 남음 ${progress.remaining}장 · 오늘 끝냄 ${progress.completedToday}장 · 나중에 ${progress.waiting}장`:section==='cards'?'Dropbox를 연결하면 등급별 단어 묶음(A1–B2)과 IPA 묶음을 고를 수 있어요.':'Dropbox를 연결하면 이 탭의 카드와 복습 날짜를 불러와요.';
   const rememberedId=practicePositions()[selectedGroup];
   const remembered=store&&cardsInGroup(cards(),selectedGroup).some(c=>c.id===rememberedId);
   const unseenLeft=store?studyQueue(cards(),selectedGroup,'unseen').length:0;
-  $('review-mode-help').textContent=unseenOnly()?(unseenLeft?`이 묶음에서 아직 안 본 카드 ${unseenLeft}장만 차례로 나와요. 복습할 때가 된 카드는 나오지 않아요.`:'이 묶음에는 안 본 카드가 없어요.'):$('review-mode').value==='resume'?(remembered?'지난번에 멈춘 카드부터 봐요.':'기억해 둔 위치가 없어서 아직 안 본 첫 카드부터 봐요.')+' 평가는 해도 되고 안 해도 돼요.':practice?'날짜와 상관없이 묶음 전체를 봐요. 평가는 해도 되고 안 해도 돼요.':'복습할 때가 된 카드 먼저, 그다음 아직 안 본 카드가 나와요.';
+  $('review-mode-help').textContent=unseenOnly()?(unseenLeft?`이 묶음에서 아직 안 본 카드 ${unseenLeft}장만 차례로 나와요. 복습할 때가 된 카드는 나오지 않아요.`:'이 묶음에는 안 본 카드가 없어요.'):$('review-mode').value==='resume'?(remembered?'지난번에 멈춘 카드부터 봐요.':'기억해 둔 위치가 없어서 아직 안 본 첫 카드부터 봐요.')+' 평가는 해도 되고 안 해도 돼요.':practice?'날짜와 상관없이 묶음 전체를 봐요. 평가는 해도 되고 안 해도 돼요.':unseenFirstOrder()?'아직 안 본 카드 먼저, 그다음 복습할 때가 된 카드가 나와요.':'복습할 때가 된 카드 먼저, 그다음 아직 안 본 카드가 나와요.';
 }
 function isPractice(){return ['practice','resume'].includes($('review-mode').value);}
 function unseenOnly(){return $('review-mode').value==='unseen'&&!unknownSession;}
+function unseenFirstOrder(){return $('review-order').value==='unseenFirst';}
 // Free practice remembers the card last shown in each group so "이어서 연습" can continue from it.
 function practicePositions(){try{const value=JSON.parse(localStorage.getItem(positionKey));return value&&typeof value==='object'?value:{};}catch{return {};}}
 // Practice shows cards never reviewed first. The order is fixed when practice starts, so a card that
@@ -675,7 +684,7 @@ async function showNextReview(){
   const request=++reviewRequest,owner=store,practice=isPractice();
   const queue=!store?[]:unknownSession?
     studyQueue(cards(),selectedGroup,'unknown').filter(c=>unknownSession.has(c.id)):
-    practice?practiceCards():studyQueue(cards(),selectedGroup,unseenOnly()?'unseen':'due',new Date());
+    practice?practiceCards():studyQueue(cards(),selectedGroup,unseenOnly()?'unseen':'due',new Date(),$('review-order').value);
   const remaining=practice?queue.slice(practiceIndex):queue;
   activeCard=withStaged(remaining[0]||null);revealed=false;
   if(staged&&staged.id!==activeCard?.id)void flushStaged();
@@ -889,6 +898,9 @@ $('level-summary-open').addEventListener('click',()=>{if(busy)return;$('search')
 try{localStorage.removeItem('saymore.cards.review-mode.v1');}catch{/* Nothing to clear. */}
 $('review-mode').value=savedMode();
 $('review-mode').addEventListener('change',()=>{const mode=$('review-mode').value;if(ratedModes.includes(mode)&&mode!==savedMode()){setSetting(modeKey,mode);shareSoon();}startReview();});
+for(const [value,label] of Object.entries(reviewOrders)){const option=el('option',label);option.value=value;$('review-order').append(option);}
+$('review-order').value=savedOrder();
+$('review-order').addEventListener('change',()=>{const order=$('review-order').value;if(order!==savedOrder()){setSetting(orderKey,order);shareSoon();}startReview();});
 
 $('card-form').addEventListener('input',()=>{dirty=true;renderPreview();});$('card-form').addEventListener('submit',saveCard);
 $('card-form').addEventListener('keydown',e=>{if((e.metaKey||e.ctrlKey)&&e.key==='Enter'){e.preventDefault();if(!busy&&store)$('card-form').requestSubmit(editedId?$('save-list'):$('save-next'));}});

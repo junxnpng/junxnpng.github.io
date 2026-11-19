@@ -56,7 +56,7 @@
   function fromCloud() {
     try { if (!localStorage.getItem('saymore.dropbox.auth.v1')) return; } catch (e) { return; }
     var cloud, sync;
-    Promise.all([import('/saymore/shared/dropbox.mjs?v=8'), import('/saymore/shared/sync.mjs?v=3')]).then(function (m) {
+    Promise.all([import('/saymore/shared/dropbox.mjs?v=8'), import('/saymore/shared/sync.mjs?v=4')]).then(function (m) {
       sync = m[1];
       return m[0].openDropbox();
     }).then(function (c) {
