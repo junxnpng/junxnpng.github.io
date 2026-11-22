@@ -136,7 +136,9 @@
     $("feedback").hidden = true;
     $("replay").focus({ preventScroll: true });
     trial.voice = core.trialVoice(audio, trial.set, trial.pair, turns);
-    status(trial.voice ? `음성: ${audio.voices[trial.voice]} · 미리 만든 합성 음성 파일` : `음성: ${voice.name} · 기기 합성 음성`);
+    status(!trial.voice ? `음성: ${voice.name} · 기기 합성 음성`
+      : core.isRecorded(audio, trial.voice) ? `음성: 사람 녹음 · ${audio.voices[trial.voice]}`
+      : `음성: ${audio.voices[trial.voice]} · 미리 만든 합성 음성 파일`);
     say(trial.pair[trial.answer].word);
   }
 

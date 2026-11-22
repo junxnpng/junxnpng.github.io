@@ -67,6 +67,8 @@
     return list[turn % list.length];
   }
   const fileUrl = (audio, voice, word) => `${audio.path}${voice}/${word.toLowerCase()}.m4a`;
+  // A "voice" listed in audio.recorded holds people's recordings rather than synthesized speech.
+  const isRecorded = (audio, voice) => Array.isArray(audio?.recorded) && audio.recorded.includes(voice);
 
-  globalThis.SayMoreListen = { empty, parse, record, weight, pickSet, nextTrial, fileVoices, trialVoice, fileUrl };
+  globalThis.SayMoreListen = { empty, parse, record, weight, pickSet, nextTrial, fileVoices, trialVoice, fileUrl, isRecorded };
 })();

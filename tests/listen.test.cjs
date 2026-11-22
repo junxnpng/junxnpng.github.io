@@ -91,3 +91,28 @@ test('pre-made audio covers only real pairs, every file it names exists, and a p
   assert.equal(core.trialVoice(null, set, pair, new Map()), null);
   assert.equal(core.fileUrl(audio, 'samantha', 'Luke'), '/saymore/listen-audio/samantha/luke.m4a');
 });
+
+test('every recorded file is credited to its Commons page, and every credit names a file that is played', () => {
+  const audio = JSON.parse(fs.readFileSync('data/saymore/listen_audio.json', 'utf8'));
+  assert.deepEqual(audio.recorded, ['wiki']);
+  assert.equal(core.isRecorded(audio, 'wiki'), true);
+  assert.equal(core.isRecorded(audio, 'samantha'), false);
+  assert.equal(core.isRecorded(null, 'wiki'), false);
+  const credits = audio.credits.wiki;
+  assert.equal(credits.license, 'CC BY-SA 3.0');
+  const credited = new Map(credits.files.map(f => [f.word, f]));
+  assert.equal(credited.size, credits.files.length, 'one credit per word');
+  for (const f of credits.files) {
+    assert.equal(f.file, `En-us-${f.word}.ogg`);
+    assert.equal(f.url, `https://commons.wikimedia.org/wiki/File:${f.file}`);
+    assert.match(f.author, /^[A-Za-z]+$/);
+  }
+  const played = new Set();
+  for (const [key, voices] of Object.entries(audio.pairs)) {
+    if (!voices.includes('wiki')) continue;
+    for (const word of key.split('|').slice(1)) { played.add(word.toLowerCase()); assert.ok(credited.has(word.toLowerCase()), `${word} has no credit`); }
+  }
+  assert.deepEqual([...credited.keys()].sort(), [...played].sort());
+  const onDisk = fs.readdirSync('static/saymore/listen-audio/wiki').map(f => f.replace(/\.m4a$/, '')).sort();
+  assert.deepEqual(onDisk, [...played].sort(), 'no unplayed recordings are published');
+});

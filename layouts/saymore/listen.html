@@ -17,7 +17,7 @@
       <optgroup label="자음">{{ range where $data.sets "kind" "consonant" }}<option value="{{ .id }}">/{{ (index .sounds 0).symbol }}/ ↔ /{{ (index .sounds 1).symbol }}/ · {{ (index (index .pairs 0) 0).word }}–{{ (index (index .pairs 0) 1).word }}</option>{{ end }}</optgroup>
     </select>
     <button type="button" class="sm-listen-primary" data-listen-start>10문제 시작</button>
-    <p class="sm-listen-status" data-listen-status role="status" aria-live="polite">미리 만든 미국식 합성 음성 파일로 들려줘요. 파일이 없는 단어는 기기의 합성 음성이 읽어요. 소리를 켜 주세요.</p>
+    <p class="sm-listen-status" data-listen-status role="status" aria-live="polite">미리 준비한 미국식 발음 파일(사람 녹음 또는 합성 음성)로 들려줘요. 파일이 없는 단어는 기기의 합성 음성이 읽어요. 소리를 켜 주세요.</p>
   </section>
   <section class="sm-listen-trial" data-listen-trial hidden aria-labelledby="listen-trial-title">
     <div class="sm-listen-top"><h2 id="listen-trial-title" data-listen-progress>1 / 10</h2><span data-listen-score>맞힌 문제 0</span></div>
@@ -61,7 +61,17 @@
       </tbody>
     </table>
   </section>
-  <p class="sm-footnote">Fluent Forever 3장의 최소 대립쌍 훈련을 따랐습니다. 음성은 사람 녹음이 아니라 합성 음성이에요. 두 단어가 구별되게 읽히는지 확인한 쌍은 맥의 미국식 음성(Samantha, Eddy, Flo, Reed 등)으로 미리 만든 파일을 들려주고, 쌍마다 목소리를 바꿔 가며 들려줘요. 나머지 쌍은 기기에 설치된 영어(미국) 합성 음성이 읽어서 기기마다 목소리가 달라요. 정답률은 Dropbox를 연결한 모든 기기의 답을 합쳐 보여 줍니다.</p>
+  <p class="sm-footnote">Fluent Forever 3장의 최소 대립쌍 훈련을 따랐습니다. 몇몇 쌍은 위키미디어 공용의 미국 영어 사람 녹음을 들려줘요(출처는 아래). 두 단어가 구별되게 읽히는지 확인한 다른 쌍은 맥의 미국식 합성 음성(Samantha, Eddy, Flo, Reed 등)으로 미리 만든 파일을 들려주고, 쌍마다 목소리를 바꿔 가며 들려줘요. 나머지 쌍은 기기에 설치된 영어(미국) 합성 음성이 읽어서 기기마다 목소리가 달라요. 정답률은 Dropbox를 연결한 모든 기기의 답을 합쳐 보여 줍니다.</p>
+  {{ with $audio.credits.wiki }}
+  <details class="sm-footnote sm-listen-credits">
+    <summary>사람 녹음 출처</summary>
+    <p>아래 녹음은 위키미디어 공용(Wikimedia Commons)의 파일이며 <a href="{{ .licenseUrl }}" rel="license">{{ .license }}</a> 라이선스를 따릅니다. 원본 Ogg 파일을 16 kHz 모노 AAC(m4a)로 바꾸고, 앞뒤 무음을 다듬고 음량을 맞췄어요. 바꾼 파일도 같은 {{ .license }} 라이선스로 공개합니다.</p>
+    <ul>
+      {{ range .files }}<li><span lang="en">{{ .word }}</span> — 녹음: <a href="https://commons.wikimedia.org/wiki/User:{{ .author }}">{{ .author }}</a> · <a href="{{ .url }}">{{ .file }}</a></li>
+      {{ end }}
+    </ul>
+  </details>
+  {{ end }}
   <script type="application/json" id="listen-data">{{ $data | jsonify | safeJS }}</script>
   <script type="application/json" id="listen-audio">{{ $audio | jsonify | safeJS }}</script>
 </article>

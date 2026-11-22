@@ -10,7 +10,8 @@
   "samantha": "Samantha",
   "samantha-ipa": "Samantha",
   "sandy": "Sandy",
-  "shelley": "Shelley"
+  "shelley": "Shelley",
+  "wiki": "위키미디어"
  },
  "pairs": {
   "i-ih|sheep|ship": [
@@ -154,6 +155,107 @@
   ],
   "n-ng|win|wing": [
    "samantha-ipa"
+  ],
+  "e-ae|pet|pat": [
+   "wiki"
+  ],
+  "uh-ah|hut|hot": [
+   "wiki"
+  ],
+  "ah-oh|got|goat": [
+   "wiki"
+  ],
+  "dh-d|then|den": [
+   "wiki"
+  ],
+  "dh-d|they|day": [
+   "wiki"
+  ],
+  "z-s|eyes|ice": [
+   "wiki"
   ]
+ },
+ "recorded": [
+  "wiki"
+ ],
+ "credits": {
+  "wiki": {
+   "license": "CC BY-SA 3.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+   "files": [
+    {
+     "word": "pet",
+     "file": "En-us-pet.ogg",
+     "author": "EncycloPetey",
+     "url": "https://commons.wikimedia.org/wiki/File:En-us-pet.ogg"
+    },
+    {
+     "word": "pat",
+     "file": "En-us-pat.ogg",
+     "author": "Dvortygirl",
+     "url": "https://commons.wikimedia.org/wiki/File:En-us-pat.ogg"
+    },
+    {
+     "word": "hut",
+     "file": "En-us-hut.ogg",
+     "author": "Dvortygirl",
+     "url": "https://commons.wikimedia.org/wiki/File:En-us-hut.ogg"
+    },
+    {
+     "word": "hot",
+     "file": "En-us-hot.ogg",
+     "author": "Dvortygirl",
+     "url": "https://commons.wikimedia.org/wiki/File:En-us-hot.ogg"
+    },
+    {
+     "word": "got",
+     "file": "En-us-got.ogg",
+     "author": "Dvortygirl",
+     "url": "https://commons.wikimedia.org/wiki/File:En-us-got.ogg"
+    },
+    {
+     "word": "goat",
+     "file": "En-us-goat.ogg",
+     "author": "Dvortygirl",
+     "url": "https://commons.wikimedia.org/wiki/File:En-us-goat.ogg"
+    },
+    {
+     "word": "then",
+     "file": "En-us-then.ogg",
+     "author": "Dvortygirl",
+     "url": "https://commons.wikimedia.org/wiki/File:En-us-then.ogg"
+    },
+    {
+     "word": "den",
+     "file": "En-us-den.ogg",
+     "author": "Neskaya",
+     "url": "https://commons.wikimedia.org/wiki/File:En-us-den.ogg"
+    },
+    {
+     "word": "they",
+     "file": "En-us-they.ogg",
+     "author": "Dvortygirl",
+     "url": "https://commons.wikimedia.org/wiki/File:En-us-they.ogg"
+    },
+    {
+     "word": "day",
+     "file": "En-us-day.ogg",
+     "author": "Dvortygirl",
+     "url": "https://commons.wikimedia.org/wiki/File:En-us-day.ogg"
+    },
+    {
+     "word": "eyes",
+     "file": "En-us-eyes.ogg",
+     "author": "Dvortygirl",
+     "url": "https://commons.wikimedia.org/wiki/File:En-us-eyes.ogg"
+    },
+    {
+     "word": "ice",
+     "file": "En-us-ice.ogg",
+     "author": "Dvortygirl",
+     "url": "https://commons.wikimedia.org/wiki/File:En-us-ice.ogg"
+    }
+   ]
+  }
  }
 }
