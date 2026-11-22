@@ -173,6 +173,12 @@
   ],
   "z-s|eyes|ice": [
    "wiki"
+  ],
+  "uh-ah|cut|cot": [
+   "wiki"
+  ],
+  "f-p|fork|pork": [
+   "wiki"
   ]
  },
  "recorded": [
@@ -254,6 +260,30 @@
      "file": "En-us-ice.ogg",
      "author": "Dvortygirl",
      "url": "https://commons.wikimedia.org/wiki/File:En-us-ice.ogg"
+    },
+    {
+     "word": "cut",
+     "file": "En-us-cut.ogg",
+     "author": "Dvortygirl",
+     "url": "https://commons.wikimedia.org/wiki/File:En-us-cut.ogg"
+    },
+    {
+     "word": "cot",
+     "file": "En-us-cot.ogg",
+     "author": "Dvortygirl",
+     "url": "https://commons.wikimedia.org/wiki/File:En-us-cot.ogg"
+    },
+    {
+     "word": "fork",
+     "file": "En-us-fork.ogg",
+     "author": "Dvortygirl",
+     "url": "https://commons.wikimedia.org/wiki/File:En-us-fork.ogg"
+    },
+    {
+     "word": "pork",
+     "file": "En-us-pork.ogg",
+     "author": "Dvortygirl",
+     "url": "https://commons.wikimedia.org/wiki/File:En-us-pork.ogg"
     }
    ]
   }
