@@ -64,3 +64,30 @@ test('the same pair is not asked twice in a row and both words are used as answe
   }
   assert.deepEqual([...answers].sort(), [0, 1]);
 });
+
+test('pre-made audio covers only real pairs, every file it names exists, and a pair takes turns between its voices', () => {
+  const audio = JSON.parse(fs.readFileSync('data/saymore/listen_audio.json', 'utf8'));
+  const keys = new Map(data.sets.flatMap(set => set.pairs.map(pair => [`${set.id}|${pair[0].word}|${pair[1].word}`, { set, pair }])));
+  assert.equal(audio.path, '/saymore/listen-audio/');
+  assert.ok(fs.existsSync('static/saymore/listen-audio/silence.m4a'));
+  for (const [key, voices] of Object.entries(audio.pairs)) {
+    const found = keys.get(key);
+    assert.ok(found, `${key} is not a pair`);
+    assert.ok(voices.length >= 1 && voices.length <= 3);
+    assert.deepEqual(plain(core.fileVoices(audio, found.set, found.pair)), voices);
+    for (const voice of voices) {
+      assert.ok(audio.voices[voice], voice);
+      for (const item of found.pair) {
+        const url = core.fileUrl(audio, voice, item.word);
+        assert.ok(fs.existsSync('static' + url), url);
+      }
+    }
+  }
+  const [key, voices] = Object.entries(audio.pairs).find(([, list]) => list.length === 3);
+  const { set, pair } = keys.get(key), turns = new Map();
+  assert.deepEqual([1, 2, 3, 4].map(() => core.trialVoice(audio, set, pair, turns)), [...voices, voices[0]]);
+  const bare = data.sets.flatMap(s => s.pairs.map(p => ({ set: s, pair: p }))).find(({ set, pair }) => !audio.pairs[`${set.id}|${pair[0].word}|${pair[1].word}`]);
+  assert.equal(core.trialVoice(audio, bare.set, bare.pair, new Map()), null, 'a pair without files is read by the device');
+  assert.equal(core.trialVoice(null, set, pair, new Map()), null);
+  assert.equal(core.fileUrl(audio, 'samantha', 'Luke'), '/saymore/listen-audio/samantha/luke.m4a');
+});

@@ -1,5 +1,6 @@
 {{ define "main" }}
 {{ $data := hugo.Data.saymore.minimal_pairs }}
+{{ $audio := hugo.Data.saymore.listen_audio }}
 <article class="saymore" lang="ko" data-listen>
   <nav class="sm-breadcrumb" aria-label="학습 경로"><a href="{{ "" | relURL }}">Say More</a><span aria-hidden="true">/</span><span>듣기 훈련</span></nav>
   <header class="sm-page-header">
@@ -16,7 +17,7 @@
       <optgroup label="자음">{{ range where $data.sets "kind" "consonant" }}<option value="{{ .id }}">/{{ (index .sounds 0).symbol }}/ ↔ /{{ (index .sounds 1).symbol }}/ · {{ (index (index .pairs 0) 0).word }}–{{ (index (index .pairs 0) 1).word }}</option>{{ end }}</optgroup>
     </select>
     <button type="button" class="sm-listen-primary" data-listen-start>10문제 시작</button>
-    <p class="sm-listen-status" data-listen-status role="status" aria-live="polite">기기의 미국식 합성 음성으로 들려줘요. 소리를 켜 주세요.</p>
+    <p class="sm-listen-status" data-listen-status role="status" aria-live="polite">미리 만든 미국식 합성 음성 파일로 들려줘요. 파일이 없는 단어는 기기의 합성 음성이 읽어요. 소리를 켜 주세요.</p>
   </section>
   <section class="sm-listen-trial" data-listen-trial hidden aria-labelledby="listen-trial-title">
     <div class="sm-listen-top"><h2 id="listen-trial-title" data-listen-progress>1 / 10</h2><span data-listen-score>맞힌 문제 0</span></div>
@@ -60,8 +61,9 @@
       </tbody>
     </table>
   </section>
-  <p class="sm-footnote">Fluent Forever 3장의 최소 대립쌍 훈련을 따랐습니다. 음성은 기기에 설치된 영어(미국) 합성 음성이며 녹음이 아닙니다. 아이폰과 맥처럼 기기가 다르면 목소리도 달라요. 정답률은 Dropbox를 연결한 모든 기기의 답을 합쳐 보여 줍니다.</p>
+  <p class="sm-footnote">Fluent Forever 3장의 최소 대립쌍 훈련을 따랐습니다. 음성은 사람 녹음이 아니라 합성 음성이에요. 두 단어가 구별되게 읽히는지 확인한 쌍은 맥의 미국식 음성(Samantha, Eddy, Flo, Reed 등)으로 미리 만든 파일을 들려주고, 쌍마다 목소리를 바꿔 가며 들려줘요. 나머지 쌍은 기기에 설치된 영어(미국) 합성 음성이 읽어서 기기마다 목소리가 달라요. 정답률은 Dropbox를 연결한 모든 기기의 답을 합쳐 보여 줍니다.</p>
   <script type="application/json" id="listen-data">{{ $data | jsonify | safeJS }}</script>
+  <script type="application/json" id="listen-audio">{{ $audio | jsonify | safeJS }}</script>
 </article>
 {{ $script := slice (resources.Get "js/saymore-listen-core.js") (resources.Get "js/saymore-listen.js") | resources.Concat "js/saymore-listen-bundle.js" | minify | fingerprint }}
 <script defer src="{{ $script.RelPermalink }}" integrity="{{ $script.Data.Integrity }}"></script>

@@ -51,5 +51,22 @@
     }
   }
 
-  globalThis.SayMoreListen = { empty, parse, record, weight, pickSet, nextTrial };
+  // Pre-made audio: the voices whose files were checked to keep this pair apart, in the order to take turns.
+  const pairKey = (set, pair) => `${set.id}|${pair[0].word}|${pair[1].word}`;
+  function fileVoices(audio, set, pair) {
+    const list = audio?.pairs?.[pairKey(set, pair)];
+    return Array.isArray(list) ? list.filter(id => typeof id === "string" && audio.voices?.[id]) : [];
+  }
+  // Both words of a question come from one voice, so the only difference heard is the sound being practised.
+  // Each time the pair comes back the next voice takes its turn.
+  function trialVoice(audio, set, pair, turns) {
+    const list = fileVoices(audio, set, pair);
+    if (!list.length) return null;
+    const key = pairKey(set, pair), turn = turns.get(key) || 0;
+    turns.set(key, turn + 1);
+    return list[turn % list.length];
+  }
+  const fileUrl = (audio, voice, word) => `${audio.path}${voice}/${word.toLowerCase()}.m4a`;
+
+  globalThis.SayMoreListen = { empty, parse, record, weight, pickSet, nextTrial, fileVoices, trialVoice, fileUrl };
 })();

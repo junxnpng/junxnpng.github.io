@@ -1,0 +1,159 @@
+{
+ "path": "/saymore/listen-audio/",
+ "voices": {
+  "eddy": "Eddy",
+  "flo": "Flo",
+  "grandma": "Grandma",
+  "grandpa": "Grandpa",
+  "reed": "Reed",
+  "rocko": "Rocko",
+  "samantha": "Samantha",
+  "samantha-ipa": "Samantha",
+  "sandy": "Sandy",
+  "shelley": "Shelley"
+ },
+ "pairs": {
+  "i-ih|sheep|ship": [
+   "sandy",
+   "flo",
+   "rocko"
+  ],
+  "i-ih|beat|bit": [
+   "samantha-ipa",
+   "eddy"
+  ],
+  "i-ih|feel|fill": [
+   "samantha"
+  ],
+  "i-ih|seat|sit": [
+   "samantha"
+  ],
+  "e-ae|bed|bad": [
+   "samantha"
+  ],
+  "e-ae|said|sad": [
+   "samantha"
+  ],
+  "uh-ah|luck|lock": [
+   "grandma"
+  ],
+  "u-uh|Luke|look": [
+   "shelley",
+   "grandma"
+  ],
+  "ah-oh|cot|coat": [
+   "sandy",
+   "samantha-ipa"
+  ],
+  "ah-oh|hop|hope": [
+   "grandpa",
+   "reed",
+   "shelley"
+  ],
+  "r-l|rock|lock": [
+   "grandma",
+   "samantha",
+   "shelley"
+  ],
+  "r-l|right|light": [
+   "samantha",
+   "grandma",
+   "shelley"
+  ],
+  "r-l|pray|play": [
+   "samantha",
+   "flo",
+   "shelley"
+  ],
+  "r-l|grass|glass": [
+   "grandma",
+   "shelley",
+   "flo"
+  ],
+  "r-l|correct|collect": [
+   "grandma",
+   "reed",
+   "eddy"
+  ],
+  "f-p|fan|pan": [
+   "samantha-ipa"
+  ],
+  "f-p|fine|pine": [
+   "samantha"
+  ],
+  "f-p|leaf|leap": [
+   "sandy",
+   "rocko",
+   "grandpa"
+  ],
+  "v-b|very|berry": [
+   "flo",
+   "shelley",
+   "grandma"
+  ],
+  "v-b|vest|best": [
+   "samantha",
+   "grandpa"
+  ],
+  "v-b|van|ban": [
+   "samantha-ipa",
+   "grandma"
+  ],
+  "v-b|vote|boat": [
+   "eddy",
+   "reed",
+   "shelley"
+  ],
+  "th-s|think|sink": [
+   "samantha-ipa"
+  ],
+  "th-s|mouth|mouse": [
+   "samantha-ipa"
+  ],
+  "th-s|path|pass": [
+   "samantha-ipa"
+  ],
+  "dh-d|breathe|breed": [
+   "samantha"
+  ],
+  "z-s|zip|sip": [
+   "shelley",
+   "grandpa",
+   "grandma"
+  ],
+  "z-s|rise|rice": [
+   "reed",
+   "sandy",
+   "shelley"
+  ],
+  "sh-s|she|sea": [
+   "samantha"
+  ],
+  "sh-s|sheet|seat": [
+   "samantha",
+   "reed",
+   "eddy"
+  ],
+  "sh-s|shoe|Sue": [
+   "samantha"
+  ],
+  "sh-s|ship|sip": [
+   "samantha-ipa",
+   "flo",
+   "reed"
+  ],
+  "n-ng|sin|sing": [
+   "samantha"
+  ],
+  "n-ng|thin|thing": [
+   "samantha-ipa",
+   "eddy"
+  ],
+  "n-ng|ran|rang": [
+   "samantha"
+  ],
+  "n-ng|win|wing": [
+   "samantha-ipa"
+  ]
+ }
+}

@@ -6,6 +6,11 @@
   const KEY = "saymore.listen.v1";
   const ROUND = 10;
   const sets = JSON.parse(document.getElementById("listen-data").textContent).sets;
+  const audio = JSON.parse(document.getElementById("listen-audio")?.textContent || "null");
+  // One element plays every file: iPhone Safari lets a page play sound from it once a tap has started it.
+  const player = new Audio();
+  player.preload = "auto";
+  const turns = new Map();
   const $ = name => root.querySelector(`[data-listen-${name}]`);
   const choices = [...root.querySelectorAll("[data-listen-choice]")];
   let state = core.parse(readStore());
@@ -18,7 +23,7 @@
     try {
       if (!sync) {
         if (!localStorage.getItem("saymore.dropbox.auth.v1")) return;
-        const [dropbox, shared] = await Promise.all([import("/saymore/shared/dropbox.mjs?v=8"), import("/saymore/shared/sync.mjs?v=3")]);
+        const [dropbox, shared] = await Promise.all([import("/saymore/shared/dropbox.mjs?v=8"), import("/saymore/shared/sync.mjs?v=4")]);
         cloud = await dropbox.openDropbox();
         sync = shared; others = shared.otherListenSets();
       }
@@ -58,10 +63,41 @@
     return usVoice(synth.getVoices());
   }
 
+  // A word cut short by the next one ends its wait as not finished, like a cancelled utterance.
+  let playing = null;
+  function stop() {
+    const done = playing;
+    player.onended = player.onerror = null; player.pause();
+    window.speechSynthesis?.cancel();
+    // Settled while it is still the word playing; only then is `playing` cleared.
+    done?.(false);
+    playing = null;
+  }
+  // The question's voice reads both words from its files; a pair without checked files, or a file that
+  // cannot be played, is read by the device's voice.
   function say(word) {
-    const ticket = ++speaking;
+    const ticket = ++speaking, file = trial?.voice;
+    if (!file) return speak(word, ticket);
+    stop();
     return new Promise(resolve => {
-      window.speechSynthesis.cancel();
+      const settle = value => { if (playing !== settle) return; playing = null; player.onended = player.onerror = null; resolve(value); };
+      playing = settle;
+      const fallback = () => {
+        if (playing !== settle) return;
+        playing = null; player.onended = player.onerror = null;
+        if (voice) speak(word, ticket).then(resolve);
+        else { status("소리 파일을 재생하지 못했어요. 다시 들어 보세요.", true); resolve(false); }
+      };
+      player.onended = () => settle(ticket === speaking);
+      player.onerror = fallback;
+      player.src = core.fileUrl(audio, file, word);
+      player.play()?.catch?.(error => { if (error?.name !== "AbortError") fallback(); });
+    });
+  }
+  function speak(word, ticket) {
+    if (!voice) return Promise.resolve(false);
+    return new Promise(resolve => {
+      stop();
       const utterance = new SpeechSynthesisUtterance(word);
       utterance.voice = voice; utterance.lang = "en-US"; utterance.rate = 0.8;
       utterance.onend = utterance.onerror = () => resolve(ticket === speaking);
@@ -99,6 +135,8 @@
     });
     $("feedback").hidden = true;
     $("replay").focus({ preventScroll: true });
+    trial.voice = core.trialVoice(audio, trial.set, trial.pair, turns);
+    status(trial.voice ? `음성: ${audio.voices[trial.voice]} · 미리 만든 합성 음성 파일` : `음성: ${voice.name} · 기기 합성 음성`);
     say(trial.pair[trial.answer].word);
   }
 
@@ -140,7 +178,7 @@
   }
 
   function finish() {
-    window.speechSynthesis.cancel();
+    stop();
     $("trial").hidden = true;
     $("summary").hidden = false;
     $("summary-title").textContent = `${ROUND}문제 중 ${score}문제를 맞혔어요.`;
@@ -153,10 +191,13 @@
     // iPhone Safari only lets a page speak from inside a tap. The voice list may take a moment,
     // so an empty utterance spoken now keeps the first word from being dropped.
     try { if (!voice && window.speechSynthesis) window.speechSynthesis.speak(new SpeechSynthesisUtterance("")); } catch { /* no speech on this device */ }
+    // The same for files: a short silence started from this tap lets later words play without one.
+    if (audio) { player.src = `${audio.path}silence.m4a`; player.play()?.catch?.(() => {}); }
     try { if (!voice) voice = await loadVoice(); } catch { voice = null; }
     $("start").disabled = false;
-    if (!voice) { status("미국식 영어 음성을 찾지 못했어요. 기기 설정에서 영어(미국) 음성을 설치한 뒤 다시 시도해 주세요.", true); return; }
-    status(`음성: ${voice.name} · 기기 합성 음성`);
+    // Questions read by the device's voice need one; a choice made only of pairs with files does not.
+    const needsVoice = activeSets().some(set => set.pairs.some(pair => !core.fileVoices(audio, set, pair).length));
+    if (!voice && needsVoice) { status("미국식 영어 음성을 찾지 못했어요. 기기 설정에서 영어(미국) 음성을 설치한 뒤 다시 시도해 주세요.", true); return; }
     done = 0; score = 0; trial = null;
     $("summary").hidden = true;
     $("trial").hidden = false;
@@ -177,7 +218,7 @@
     else if (event.key === " " && !onControl) { event.preventDefault(); trial && say(trial.pair[trial.answer].word); }
     else if (event.key === "Enter" && answered && !onControl) { event.preventDefault(); $("next").click(); }
   });
-  window.addEventListener("pagehide", () => window.speechSynthesis?.cancel());
+  window.addEventListener("pagehide", stop);
   renderStats();
   void share();
 })();
