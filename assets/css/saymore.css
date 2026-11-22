@@ -334,11 +334,11 @@ body:has(.saymore) .footer { font-size: 12px; }
 @media (max-width: 640px) {
   body:has(.saymore) { padding-bottom: calc(70px + env(safe-area-inset-bottom, 0px)); }
   body:has(.saymore) .header-nav .skin-picker { margin-left: auto; }
-  body:has(.saymore) #menu { position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; margin: 0; display: grid; grid-template-columns: repeat(7, 1fr); gap: 0; border-radius: 0; background: var(--entry); border-top: var(--sk-ctl-bw) solid var(--border); padding: 6px 8px calc(8px + env(safe-area-inset-bottom, 0px)); }
+  body:has(.saymore) #menu { position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; margin: 0; display: grid; grid-template-columns: repeat(8, 1fr); gap: 0; border-radius: 0; background: var(--entry); border-top: var(--sk-ctl-bw) solid var(--border); padding: 6px 4px calc(8px + env(safe-area-inset-bottom, 0px)); }
   body:has(.saymore) #menu a { font-size: 11px; color: var(--secondary); }
   body:has(.saymore) #menu a span { display: grid; justify-items: center; gap: 2px; padding: 3px 0; }
   body:has(.saymore) #menu .active { background: none; color: var(--primary); }
-  .sm-tab-glyph { display: block; font: 400 15px/1.3 var(--sk-ipa); padding: 1px 8px; border-radius: 999px; white-space: nowrap; }
+  .sm-tab-glyph { display: block; font: 400 15px/1.3 var(--sk-ipa); padding: 1px 6px; border-radius: 999px; white-space: nowrap; }
   body:has(.saymore) #menu .active .sm-tab-glyph { background: var(--sk-tab-bg); color: var(--sk-tab-ink); }
   body:has(.saymore) .top-link { bottom: calc(84px + env(safe-area-inset-bottom, 0px)); }
 }

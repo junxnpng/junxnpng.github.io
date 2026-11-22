@@ -4,9 +4,9 @@ import {flagKinds} from './image-flag.mjs?v=6';
 
 const isWord=card=>card.tags.includes('FF625')||card.tags.includes('OX3000')||card.deck==='Fluent Forever · First 625';
 const unlevelled='등급 밖';
-// Word-form cards and word-order cards each have a tab of their own and never appear among the
-// word cards. The page says which tab it is showing; every list below is limited to that one.
-export const sections={form:{tag:'FORM',label:'단어 형태'},order:{tag:'ORDER',label:'문장 어순'}};
+// Word-form cards, word-order cards and work-English cards each have a tab of their own and never appear among
+// the word cards. The page says which tab it is showing; every list below is limited to that one.
+export const sections={form:{tag:'FORM',label:'단어 형태'},order:{tag:'ORDER',label:'문장 어순'},work:{tag:'KVC',label:'업무 영어'}};
 let section='cards';
 export function setSection(value){section=Object.hasOwn(sections,value)?value:'cards';return section;}
 const sectionOf=card=>Object.keys(sections).find(name=>card.tags.includes(sections[name].tag))||'cards';
@@ -28,7 +28,12 @@ function buildGroups(every){
   // Cards marked during review to hear again later. Listed even when empty, so taking the mark off the last
   // one does not move a review going on in this group to another group.
   const listen={key:'listen',label:flagKinds.listen.list,section:'표시',cards:cards.filter(c=>c.tags.includes(flagKinds.listen.tag))};
-  if(section!=='cards')return [{key:'all',label:sections[section].label,section:'전체',cards},listen];
+  if(section!=='cards'){
+    // A tab whose cards come in more than one deck also lists each deck, so one part can be studied before the rest.
+    const decks=[...new Set(cards.map(c=>c.deck))].sort((a,b)=>a.localeCompare(b));
+    const parts=decks.length>1?decks.map(deck=>({key:`deck:${deck}`,label:deck,section:'묶음',cards:cards.filter(c=>c.deck===deck)})):[];
+    return [{key:'all',label:sections[section].label,section:'전체',cards},...parts,listen];
+  }
   const groups=[{key:'all',label:'전체 카드',section:'전체',cards}];
   const ipa=cards.filter(isIpa),words=cards.filter(isWord);
   // One group per CEFR level, in library order, which ratings and edits keep.

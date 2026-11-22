@@ -69,10 +69,10 @@ export function showCard(container, card, sources = {}, answer = false) {
     if(card.audio?.credit)body.append(el('p',card.audio.credit,'study-credit'));
     if(card.wordAudio?.credit)body.append(el('p',`단어 소리: ${card.wordAudio.credit}`,'study-credit'));
   } else {
-    // Word-form and word-order cards end with the word to use, set apart from the sentence like the hint on a paper card.
+    // Word-form, word-order and work-English cards end with the word to use, set apart from the sentence like the hint on a paper card.
     // The editor's preview passes the tag box as typed, a string; saved cards carry a list.
     const tags=Array.isArray(card.tags)?card.tags:String(card.tags||'').split(/[\s,]+/);
-    const cut=tags.some(tag=>tag==='FORM'||tag==='ORDER')?(card.front||'').lastIndexOf('\n'):-1;
+    const cut=tags.some(tag=>tag==='FORM'||tag==='ORDER'||tag==='KVC')?(card.front||'').lastIndexOf('\n'):-1;
     if(cut>0&&card.front.slice(cut+1).trim())body.append(english(el('p',card.front.slice(0,cut),'study-prompt')),english(el('p',card.front.slice(cut+1),'study-hint')));
     else body.append(english(el('p',card.front||(card.type==='picture'?'사진을 보고 영어로 말해보세요.':'질문 또는 힌트를 입력해주세요.'),'study-prompt')));
   }

@@ -9,7 +9,7 @@ Say More — Fluent Forever의 발음 우선 학습에서 영감을 받은 개�
 - `/saymore/listen/` — 최소 대립쌍 듣기 테스트. 문항은 `data/saymore/minimal_pairs.json`, 화면은 `layouts/saymore/listen.html`, 로직은 `assets/js/saymore-listen-core.js`(순수 함수)와 `saymore-listen.js`. 기기의 미국식 합성 음성으로 들려주고 소리별 정답률을 브라우저 `localStorage`에 저장한다. 정답률이 낮은 소리를 더 자주 낸다.
 - `/saymore/card-demo/` — 사진·발음·예문으로 연습하고 옵시디언 폴더에 저장하는 coffee 카드 예시. 소스와 사용법은 `examples/coffee-card/`.
 - `/saymore/cards/` — 여러 카드 추가·수정·미리 보기·Anki 기본 방식(SM-2) 간격의 복습. 카드와 일정의 정본은 연결한 Dropbox 앱 폴더의 `/cards/library.json`(과 최근 변경을 담는 `journal.json`)이다. 맥 Chrome·Edge에서는 로컬 폴더에 저장할 수도 있다. 사용법·저장 형식·검증은 `static/saymore/cards/README.md`.
-- `/saymore/forms/` · `/saymore/order/` — 단어 형태 카드와 문장 어순 카드. 각각 `/saymore/cards/?set=form`, `?set=order`로 연결한다.
+- `/saymore/forms/` · `/saymore/order/` · `/saymore/work/` — 단어 형태 카드, 문장 어순 카드, 업무 영어 카드. 각각 `/saymore/cards/?set=form`, `?set=order`, `?set=work`로 연결한다.
 - `/saymore/` — 메인 `/`으로 연결하는 이전 주소.
 - `content/saymore/` — 공개 콘텐츠. Hugo에서 콘텐츠 루트로 사용한다.
 - `data/saymore/ipa.json` · `layouts/saymore/` · `assets/css/saymore.css` — 발음 설명 데이터, 가이드 화면, 스타일.

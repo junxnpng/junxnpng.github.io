@@ -1,12 +1,12 @@
 import {newCard, editCard, rateCard, correctLastReview, reviewOptions, dueCards, dateLabel, intervalLabel, ratings, overdueMs, reviewLateMs, waitLabel} from './model.mjs?v=9';
-import {studyGroups,cardsInGroup,studyQueue,studyProgress,sortCards,sortOrders,reviewOrders,resumeIndex,unseenFirst,setSection,inSection,sections,levelSummary} from './study-groups.mjs?v=17';
+import {studyGroups,cardsInGroup,studyQueue,studyProgress,sortCards,sortOrders,reviewOrders,resumeIndex,unseenFirst,setSection,inSection,sections,levelSummary} from './study-groups.mjs?v=18';
 import {FolderStore, rememberedFolder, friendlyError} from './storage.mjs?v=9';
-import {el, showCard} from './view.mjs?v=15';
+import {el, showCard} from './view.mjs?v=16';
 import {DropboxStore} from './dropbox-store.mjs?v=14';
 import {readSnapshot,writeSnapshot,clearSnapshot} from './snapshot-cache.mjs?v=1';
 import {MediaCache} from './media-cache.mjs?v=1';
 import {parseBundle} from './bundle.mjs?v=2';
-import {prepareImagePatch,prepareAudioPatch,prepareTextPatch,patchKind} from './image-patch.mjs?v=15';
+import {prepareImagePatch,prepareAudioPatch,prepareTextPatch,patchKind} from './image-patch.mjs?v=16';
 import {openDropbox} from '../shared/dropbox.mjs?v=8';
 import {flagKinds,hasFlag,setFlag,pictureMark,memoryQuestion,memoryTags,hasHangul} from './image-flag.mjs?v=6';
 import {setSetting,syncSettings,settingKeys} from '../shared/sync.mjs?v=4';
@@ -62,7 +62,7 @@ function applySettings(changed,{redraw=true,force=false}={}){
   else if(view==='review'&&!activeCard){if(groupChanged||modeChanged)startReview(unknownSession!==null);else void showNextReview();}
 }
 try{const saved=localStorage.getItem('saymore.cards.sort.v1');if(Object.hasOwn(sortOrders,saved||''))sortOrder=saved;}catch{/* Sorting still works for this visit. */}
-// The same page serves three tabs: word cards, and with ?set=form or ?set=order the cards of that tab alone.
+// The same page serves four tabs: word cards, and with ?set=form, ?set=order or ?set=work the cards of that tab alone.
 // Dropbox sends the reader back to the bare address, so the tab they left from is kept across the sign-in.
 const returnKey='saymore.cards.auth-set.v1';
 const arrived=new URLSearchParams(location.search);
@@ -956,7 +956,8 @@ window.addEventListener('storage',async event=>{
 });
 if(section!=='cards'){
   const text={form:['WORD FORMS','단어 형태','went, children, says처럼 모양이 바뀌는 단어를 문장 속에서 익혀요.'],
-    order:['WORD ORDER','문장 어순','빠진 말이 문장의 어디에 들어가는지 익혀요.']}[section];
+    order:['WORD ORDER','문장 어순','빠진 말이 문장의 어디에 들어가는지 익혀요.'],
+    work:['WORK ENGLISH','업무 영어','일을 설명할 때 쓰는 동사를 문장 속에서 익혀요.']}[section];
   document.title=`${text[1]} · Say More`;
   document.querySelector('.intro .eyebrow').textContent=text[0];
   document.querySelector('.intro h1').textContent=text[1];

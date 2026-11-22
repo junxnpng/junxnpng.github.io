@@ -153,6 +153,23 @@ test('word-form and word-order cards live in tabs of their own and never among t
   }finally{groups.setSection('cards');}
 });
 
+test('work-English cards have a tab of their own, split into one group a deck when there are several decks',()=>{
+  const word=card('dog','Oxford 3000 · A1',['OX3000','A1']),form=card('went','Word forms',['FORM']);
+  const first=card('evicts','Work · 1',['KVC']),second=card('merged','Work · 2',['KVC']),third=card('held','Work · 1',['KVC']);
+  const all=[word,first,form,second,third],before=copy(all);
+  try{
+    groups.setSection('cards');
+    assert.deepEqual(groups.cardsInGroup(all,'all').map(c=>c.answer),['dog']);
+    assert.equal(groups.setSection('work'),'work');
+    assert.deepEqual(groups.studyGroups(all).map(g=>[g.key,g.label,g.cards.map(c=>c.answer)]),
+      [['all','업무 영어',['evicts','merged','held']],['deck:Work · 1','Work · 1',['evicts','held']],['deck:Work · 2','Work · 2',['merged']],['listen','발음 나중에 들을 카드',[]]]);
+    assert.deepEqual(groups.studyQueue(all,'deck:Work · 2','due',now).map(c=>c.answer),['merged']);
+    // One deck only: no deck groups, as in the word-form tab.
+    assert.deepEqual(groups.studyGroups([word,first,third]).map(g=>g.key),['all','listen']);
+    assert.deepEqual(all,before);
+  }finally{groups.setSection('cards');}
+});
+
 test('reviews that have come due go first, then every unseen card; there is no daily limit',()=>{
   groups.setSection('cards');
   const day=new Date(2026,10,10,12),earlier=new Date(2026,10,1,12);

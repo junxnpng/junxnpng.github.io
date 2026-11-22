@@ -34,6 +34,9 @@ test('the preview draws while tags are still being typed as text',()=>{
   // A word-form card typed into the editor still gets its hint line.
   showCard(box,{...card,type:'basic',front:'She ___ home.\nto go',tags:'FORM'},{},false);
   assert.equal(all(box,item=>item.className==='study-hint').length,1);
+  // So does a work-English card.
+  showCard(box,{...card,type:'basic',front:'The page is ___ first.\nto evict',tags:['KVC']},{},false);
+  assert.equal(all(box,item=>item.className==='study-hint').length,1);
 });
 
 test('English text is marked as English and Korean explanations are not',()=>{
