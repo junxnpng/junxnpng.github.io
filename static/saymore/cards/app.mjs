@@ -1,7 +1,7 @@
 import {newCard, editCard, rateCard, correctLastReview, reviewOptions, dueCards, dateLabel, intervalLabel, ratings, overdueMs, reviewLateMs, waitLabel} from './model.mjs?v=9';
 import {studyGroups,cardsInGroup,studyQueue,studyProgress,sortCards,sortOrders,reviewOrders,resumeIndex,unseenFirst,setSection,inSection,sections,levelSummary} from './study-groups.mjs?v=18';
 import {FolderStore, rememberedFolder, friendlyError} from './storage.mjs?v=9';
-import {el, showCard} from './view.mjs?v=16';
+import {el, showCard} from './view.mjs?v=17';
 import {DropboxStore} from './dropbox-store.mjs?v=14';
 import {readSnapshot,writeSnapshot,clearSnapshot} from './snapshot-cache.mjs?v=1';
 import {MediaCache} from './media-cache.mjs?v=1';
@@ -957,7 +957,7 @@ window.addEventListener('storage',async event=>{
 if(section!=='cards'){
   const text={form:['WORD FORMS','단어 형태','went, children, says처럼 모양이 바뀌는 단어를 문장 속에서 익혀요.'],
     order:['WORD ORDER','문장 어순','빠진 말이 문장의 어디에 들어가는지 익혀요.'],
-    work:['WORK ENGLISH','업무 영어','일을 설명할 때 쓰는 동사를 문장 속에서 익혀요.']}[section];
+    work:['WORK ENGLISH','업무 영어','문장 빈칸과 영어 뜻풀이를 보고 일할 때 쓰는 단어를 떠올려요. -s나 -ed가 붙어 형태가 달라도 단어를 떠올렸으면 맞힌 거예요.']}[section];
   document.title=`${text[1]} · Say More`;
   document.querySelector('.intro .eyebrow').textContent=text[0];
   document.querySelector('.intro h1').textContent=text[1];

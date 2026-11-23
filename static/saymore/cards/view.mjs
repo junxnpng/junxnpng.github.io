@@ -69,7 +69,7 @@ export function showCard(container, card, sources = {}, answer = false) {
     if(card.audio?.credit)body.append(el('p',card.audio.credit,'study-credit'));
     if(card.wordAudio?.credit)body.append(el('p',`단어 소리: ${card.wordAudio.credit}`,'study-credit'));
   } else {
-    // Word-form, word-order and work-English cards end with the word to use, set apart from the sentence like the hint on a paper card.
+    // Word-form, word-order and work-English cards end with a hint line (the base form, the missing word, or an English meaning), set apart from the sentence like the hint on a paper card.
     // The editor's preview passes the tag box as typed, a string; saved cards carry a list.
     const tags=Array.isArray(card.tags)?card.tags:String(card.tags||'').split(/[\s,]+/);
     const cut=tags.some(tag=>tag==='FORM'||tag==='ORDER'||tag==='KVC')?(card.front||'').lastIndexOf('\n'):-1;
