@@ -30,7 +30,8 @@ function buildGroups(every){
   const listen={key:'listen',label:flagKinds.listen.list,section:'표시',cards:cards.filter(c=>c.tags.includes(flagKinds.listen.tag))};
   if(section!=='cards'){
     // A tab whose cards come in more than one deck also lists each deck, so one part can be studied before the rest.
-    const decks=[...new Set(cards.map(c=>c.deck))].sort((a,b)=>a.localeCompare(b));
+    // Decks come in the order their cards were added (the work tab's verbs, then its nouns), not alphabetically.
+    const decks=[...new Set(cards.map(c=>c.deck))];
     const parts=decks.length>1?decks.map(deck=>({key:`deck:${deck}`,label:deck,section:'묶음',cards:cards.filter(c=>c.deck===deck)})):[];
     return [{key:'all',label:sections[section].label,section:'전체',cards},...parts,listen];
   }

@@ -47,6 +47,17 @@ test('English text is marked as English and Korean explanations are not',()=>{
   assert.equal(all(box,item=>item.className==='study-sentence')[0].lang,undefined);
 });
 
+test('on sentence-tab cards the line under the sentence is a note, apart from the sentence',()=>{
+  const box=node('div');
+  showCard(box,{...card,type:'basic',sentence:'The page is evicted first.\nevict = remove to make room',tags:['KVC']},{},true);
+  assert.deepEqual(all(box,item=>item.className==='study-sentence').map(item=>item.textContent),['The page is evicted first.']);
+  assert.deepEqual(all(box,item=>item.className==='study-sentence-note').map(item=>item.textContent),['evict = remove to make room']);
+  // Word cards keep their sentence whole.
+  showCard(box,{...card,sentence:'The dog barks.\nA second line.'},{},true);
+  assert.equal(all(box,item=>item.className==='study-sentence-note').length,0);
+  assert.equal(all(box,item=>item.className==='study-sentence')[0].textContent,'The dog barks.\nA second line.');
+});
+
 test('a card with two recordings offers the sound and the word as separate buttons',()=>{
   const box=node('div');
   const two={...card,audio:{path:'media/a.mp3',credit:'symbol demo'},wordAudio:{path:'media/b.mp3',credit:'word · CC BY-SA'}};

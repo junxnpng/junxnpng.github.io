@@ -166,6 +166,9 @@ test('work-English cards have a tab of their own, split into one group a deck wh
     assert.deepEqual(groups.studyQueue(all,'deck:Work · 2','due',now).map(c=>c.answer),['merged']);
     // One deck only: no deck groups, as in the word-form tab.
     assert.deepEqual(groups.studyGroups([word,first,third]).map(g=>g.key),['all','listen']);
+    // Decks follow the order their cards were added in, not the alphabet: verbs added first stay first.
+    const verb=card('splits','Work verbs · 1',['KVC']),noun=card('daemon','Work nouns · 1',['KVC']);
+    assert.deepEqual(groups.studyGroups([verb,noun]).map(g=>g.key),['all','deck:Work verbs · 1','deck:Work nouns · 1','listen']);
     assert.deepEqual(all,before);
   }finally{groups.setSection('cards');}
 });

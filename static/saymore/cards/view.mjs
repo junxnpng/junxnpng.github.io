@@ -17,6 +17,9 @@ export function dictionaryLinks(answer){
 // Cards that explain in Korean (the IPA deck) are left as they are.
 const english=node=>{if(!/[가-힣]/.test(node.textContent))node.lang='en';return node;};
 
+// Word-form, word-order and work-English cards. The editor's preview passes the tag box as typed, a string; saved cards carry a list.
+const sentenceTab=card=>(Array.isArray(card.tags)?card.tags:String(card.tags||'').split(/[\s,]+/)).some(tag=>tag==='FORM'||tag==='ORDER'||tag==='KVC');
+
 export function showCard(container, card, sources = {}, answer = false) {
   stopSpeech();
   const article=el('article',undefined,'study-card');
@@ -64,15 +67,16 @@ export function showCard(container, card, sources = {}, answer = false) {
       photo.href='https://www.google.com/search?tbm=isch&q='+encodeURIComponent(String(card.answer).split(' / ')[0].trim());photo.target='_blank';photo.rel='noopener noreferrer';
       pictures.append(photo);body.append(pictures);
     }
-    if(card.sentence)body.append(english(el('p',card.sentence,'study-sentence')));
+    // On sentence-tab cards the line after the sentence (the forms, or the word and its English meaning) is a note under it, not more of the sentence.
+    const note=sentenceTab(card)&&card.sentence?card.sentence.indexOf('\n'):-1;
+    if(note>0&&card.sentence.slice(note+1).trim())body.append(english(el('p',card.sentence.slice(0,note),'study-sentence')),english(el('p',card.sentence.slice(note+1),'study-sentence-note')));
+    else if(card.sentence)body.append(english(el('p',card.sentence,'study-sentence')));
     if(card.memory)body.append(el('p',card.memory,'study-memory'));
     if(card.audio?.credit)body.append(el('p',card.audio.credit,'study-credit'));
     if(card.wordAudio?.credit)body.append(el('p',`단어 소리: ${card.wordAudio.credit}`,'study-credit'));
   } else {
     // Word-form, word-order and work-English cards end with a hint line (the base form, the missing word, or an English meaning), set apart from the sentence like the hint on a paper card.
-    // The editor's preview passes the tag box as typed, a string; saved cards carry a list.
-    const tags=Array.isArray(card.tags)?card.tags:String(card.tags||'').split(/[\s,]+/);
-    const cut=tags.some(tag=>tag==='FORM'||tag==='ORDER'||tag==='KVC')?(card.front||'').lastIndexOf('\n'):-1;
+    const cut=sentenceTab(card)?(card.front||'').lastIndexOf('\n'):-1;
     if(cut>0&&card.front.slice(cut+1).trim())body.append(english(el('p',card.front.slice(0,cut),'study-prompt')),english(el('p',card.front.slice(cut+1),'study-hint')));
     else body.append(english(el('p',card.front||(card.type==='picture'?'사진을 보고 영어로 말해보세요.':'질문 또는 힌트를 입력해주세요.'),'study-prompt')));
   }
