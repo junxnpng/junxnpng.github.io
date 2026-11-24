@@ -5,7 +5,8 @@ import {speakUS,stopSpeech} from './speech.mjs?v=5';
 // Plain English answers ("dog", "street / road", "wake up") get a link to the Cambridge US entry, where
 // the US speaker plays a dictionary recording. IPA cards and long answers are left alone.
 export function dictionaryLinks(answer){
-  const terms=String(answer||'').split(' / ').map(t=>t.trim());
+  // A separated phrasal verb (turns … off) is looked up as the words around the gap.
+  const terms=String(answer||'').replace(/\s*…\s*/g,' ').split(' / ').map(t=>t.trim());
   if(!terms.length||terms.length>3||terms.some(t=>!/^[A-Za-z][A-Za-z' -]{0,39}$/.test(t)||t.split(' ').length>4))return [];
   // Compound numbers and these phrasal verbs have no entry of their own; link their words instead.
   const numbers=new Set('one two three four five six seven eight nine ten eleven twelve twenty thirty forty fifty sixty seventy eighty ninety hundred thousand million billion'.split(' '));
@@ -64,7 +65,7 @@ export function showCard(container, card, sources = {}, answer = false) {
       body.append(line);
       // Fluent Forever's picture game: look at what the word shows in real photographs.
       const pictures=el('p',undefined,'study-dictionary'),photo=el('a','Google 이미지에서 그림 보기 ↗');
-      photo.href='https://www.google.com/search?tbm=isch&q='+encodeURIComponent(String(card.answer).split(' / ')[0].trim());photo.target='_blank';photo.rel='noopener noreferrer';
+      photo.href='https://www.google.com/search?tbm=isch&q='+encodeURIComponent(String(card.answer).replace(/\s*…\s*/g,' ').split(' / ')[0].trim());photo.target='_blank';photo.rel='noopener noreferrer';
       pictures.append(photo);body.append(pictures);
     }
     // On sentence-tab cards the line after the sentence (the forms, or the word and its English meaning) is a note under it, not more of the sentence.

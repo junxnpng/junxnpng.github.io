@@ -37,6 +37,7 @@ test('plain English answers link to the Cambridge US entry; IPA and long answers
   assert.deepEqual(dictionaryLinks('street / road').map(l=>l.term),['street','road']);
   assert.equal(dictionaryLinks('cell phone')[0].url,'https://dictionary.cambridge.org/us/search/english/direct/?q=cell%20phone');
   assert.equal(dictionaryLinks('August')[0].url.endsWith('q=august'),true);
+  assert.equal(dictionaryLinks('turns … off')[0].url.endsWith('q=turns%20off'),true);
   assert.equal(dictionaryLinks('t-shirt').length,1);
   assert.deepEqual(dictionaryLinks('one hundred one').map(l=>l.term),['one','hundred']);
   assert.deepEqual(dictionaryLinks('twenty-two').map(l=>l.term),['twenty','two']);

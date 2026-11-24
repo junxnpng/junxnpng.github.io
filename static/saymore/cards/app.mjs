@@ -1,7 +1,7 @@
 import {newCard, editCard, rateCard, correctLastReview, reviewOptions, dueCards, dateLabel, intervalLabel, ratings, overdueMs, reviewLateMs, waitLabel} from './model.mjs?v=9';
 import {studyGroups,cardsInGroup,studyQueue,studyProgress,sortCards,sortOrders,reviewOrders,resumeIndex,unseenFirst,setSection,inSection,sections,levelSummary} from './study-groups.mjs?v=19';
 import {FolderStore, rememberedFolder, friendlyError} from './storage.mjs?v=9';
-import {el, showCard} from './view.mjs?v=18';
+import {el, showCard} from './view.mjs?v=19';
 import {DropboxStore} from './dropbox-store.mjs?v=14';
 import {readSnapshot,writeSnapshot,clearSnapshot} from './snapshot-cache.mjs?v=1';
 import {MediaCache} from './media-cache.mjs?v=1';
